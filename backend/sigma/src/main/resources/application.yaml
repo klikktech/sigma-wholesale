@@ -1,0 +1,24 @@
+server:
+  port: 6754
+
+spring:
+  jackson:
+    serialization:
+      fail_on_empty_beans: false
+  datasource:
+    username: klikktec_user
+    password: Test123@123
+    url: jdbc:mysql://ncr1.int3rnet.net:3306/klikktec_sigmawholesale?useSSL=false&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+  application:
+    name: sigma
+
