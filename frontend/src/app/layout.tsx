@@ -19,7 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={inter.className}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <div className="purple-dark">
+            {children}
+          </div>
+          </Providers>
       </body>
     </html>
   );

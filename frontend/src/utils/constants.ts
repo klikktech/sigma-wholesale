@@ -7,15 +7,58 @@ export const DESCRIPTION =
 
 export const NAV_MENU_ITEMS: INavbarMenuItem[] = [
   {
-    label: "Home",
-    path: HOME_PAGE_ROUTE,
+    label: "Products",
+    path: PRODUCTS_PAGE_ROUTE,
   },
   {
-    label: "Shop",
+    label: "New Arrivals",
     path: SHOP_PAGE_ROUTE,
   },
   {
-    label: "Products",
+    label: "Categories",
     path: PRODUCTS_PAGE_ROUTE,
+  },
+  {
+    label: "Brands",
+    path: SHOP_PAGE_ROUTE,
+  },
+  {
+    label: "contact",
+    path: PRODUCTS_PAGE_ROUTE,
+  },
+];
+
+export const TABS_LIST = [
+  {
+    title: "Kratom",
+    key: "kratom",
+  },
+  {
+    title: "Coils/Pods",
+    key: "coils",
+  },
+  {
+    title: "Detox",
+    key: "detox",
+  },
+  {
+    title: "E Juice",
+    key: "ejuice",
+  },
+  {
+    title: "Papers/Wraps",
+    key: "papers",
+  },
+  {
+    title: "THC",
+    key: "thc",
+  },
+  {
+    title: "Necotine Disposables",
+    key: "necotine",
+  },
+  {
+    title: "CBD",
+    key: "cbd",
   },
 ];
