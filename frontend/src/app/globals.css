@@ -31,6 +31,6 @@ body {
     text-wrap: balance;
   }
 } */
-body{
-  @apply bg-primary;
-}
+/* body{
+  @apply bg-background;
+} */
