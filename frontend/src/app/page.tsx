@@ -1,21 +1,17 @@
-import Button from "@/components/atoms/Button";
-import ProductCard from "@/components/molecules/ProductCard";
-import SkeletonProductCard from "@/components/molecules/ProductCard/SkeletonCard";
+import Carousel from "@/components/organisms/carousel";
+import InitialCategories from "@/components/organisms/Initial-categories";
 import Navbar from "@/components/organisms/Navbar";
-import { Suspense } from "react";
+import NewArrivals from "@/components/organisms/New-arrivals";
+import Tabs from "@/components/organisms/Tabs";
 
 const App = () => {
   return (
     <>
       <Navbar />
-      <Suspense fallback={<SkeletonProductCard />}>
-        <ProductCard
-          img={"https://nextui.org/images/album-cover.png"}
-          title={"Lemon"}
-          price={"$10.00"}
-        />
-      </Suspense>
-      <Button color="primary">ks me</Button>
+      <Carousel />
+      <InitialCategories />
+      <NewArrivals />
+      <Tabs />
     </>
   );
 };

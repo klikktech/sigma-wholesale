@@ -1,5 +1,6 @@
 "use client";
 import { NAV_MENU_ITEMS, SIGMA_WHOLESALE } from "@/utils/constants";
+import {Input} from "@nextui-org/input";
 import {
   Button,
   Link,
@@ -45,11 +46,18 @@ const Navbar = (props: Props) => {
         </NavbarContent>
         <NavbarContent justify="end">
           <NavbarItem className="hidden lg:flex">
-            <Link href="#">Login</Link>
+          <Input
+          type="text"
+          label="Search"
+          labelPlacement="inside"
+        />
+        </NavbarItem>
+          <NavbarItem className="hidden lg:flex">
+            <Link href="#">Sign In</Link>
           </NavbarItem>
           <NavbarItem>
             <Button as={Link} color="primary" href="#" variant="flat">
-              Sign Up
+              Register
             </Button>
           </NavbarItem>
         </NavbarContent>
