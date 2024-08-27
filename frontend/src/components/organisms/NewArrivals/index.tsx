@@ -4,7 +4,7 @@ import SkeletonProductCard from "@/components/molecules/ProductCard/SkeletonCard
 import React, { Suspense } from "react";
 
 const NewArrivals = () => {
-    return <div className="container">
+    return <div className="container mx-auto">
     <h1 className="my-3 text-xl">New Arrivals</h1>
     <div className="flex flex-wrap">
       <div className="w-full md:w-1/4">

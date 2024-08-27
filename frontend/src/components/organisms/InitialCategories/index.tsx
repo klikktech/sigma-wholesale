@@ -4,7 +4,7 @@ import SkeletonProductCard from "@/components/molecules/ProductCard/SkeletonCard
 import React, { Suspense } from "react";
 
 const InitialCategories = () => {
-    return <div className="container my-3">
+    return <div className="container mx-auto my-3">
     <div className="flex flex-wrap">
       <div className="w-full md:w-1/4">
         <Suspense fallback={<SkeletonProductCard />}>

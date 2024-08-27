@@ -1,87 +1,107 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useRef } from "react";
+import { AnimatePresence, motion, wrap } from "framer-motion";
+// import "./style.css"
 
 type Props = {
-    elements: React.ReactNode[];
+  elements: React.ReactNode[];
+};
+
+const variants = {
+  enter: (direction: number) => {
+    return {
+      x: direction > 0 ? "100%" : "-100%",
+      opacity: 0,
+    };
+  },
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1,
+  },
+  exit: (direction: number) => {
+    return {
+      zIndex: 0,
+      x: direction < 0 ? "-100%" : "100%",
+      opacity: 0,
+    };
+  },
+};
+
+const swipeConfidenceThreshold = 10000;
+const swipePower = (offset: number, velocity: number) => {
+  return Math.abs(offset) * velocity;
 };
 
 const Carousel = ({ elements }: Props) => {
-    const [active, setActive] = useState(0);
-    const [animationEnabled, setAnimationEnabled] = useState(true);
-    const totalElements = elements.length;
+  const [[page, direction], setPage] = useState([0, 0]);
 
-    const handleNext = () => {
-        if (active < totalElements - 1) {
-            setActive((prev) => prev + 1);
-        } else {
-            setActive(0);
-        }
-        setAnimationEnabled(false);
-    };
+  const imageIndex = wrap(0, elements.length, page);
 
-    const handlePrev = () => {
-        if (active === 0) {
-            setActive(totalElements - 1);
-        } else {
-            setActive((prev) => prev - 1);
-        }
-        setAnimationEnabled(false);
-    };
+  const paginate = (newDirection: number) => {
+    setPage([page + newDirection, newDirection]);
+  };
 
-    //   const handlePrevClick = () => {
-    //     setActiveIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
-    //     setAnimationEnabled(false);
-    //   };
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setPage([page + 1, 1]);
+    }, 5000);
 
-    //   const handleNextClick = () => {
-    //     setActiveIndex((prevIndex) => (prevIndex + 1) % images.length);
-    //     setAnimationEnabled(false);
-    //   };
+    return () => clearInterval(intervalId);
+  }, [page]);
 
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            if (animationEnabled) {
-                setActive((prevIndex) => (prevIndex + 1) % elements.length);
-            }
-        }, 5000);
+  return (
+    <div className="container mx-auto">
+      <div className="flex justify-center items-center carousel-container">
+        <span
+          className="material-symbols-rounded prev"
+          style={{ zIndex: 2 }}
+          onClick={() => paginate(-1)}
+        >
+          chevron_left
+        </span>
+        <AnimatePresence initial={false} custom={direction}>
+          <motion.div
+            key={page}
+            custom={direction}
+            variants={variants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            //   transition={{ duration: 0.5 }}
+            transition={{
+              x: { type: "spring", stiffness: 300, damping: 30 },
+              opacity: { duration: 0.2 },
+            }}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={1}
+            onDragEnd={(e, { offset, velocity }) => {
+              const swipe = swipePower(offset.x, velocity.x);
 
-        return () => clearInterval(intervalId);
-    }, [animationEnabled]);
-
-
-    return (
-        <div className="container mx-auto">
-            <div className="flex justify-center items-center">
-                <motion.div
-                    animate={{ x: -active * 100 + '%' }}
-                    transition={{ duration: 0.5, ease: 'easeInOut' }}
-                >
-                    <div className="flex justify-center items-center">
-                        <span className="material-symbols-rounded" onClick={handlePrev}>
-                            chevron_left
-                        </span>
-                        {elements.map((element, index) => (
-                            <>
-                                {active === index && (
-                                    <div
-                                        key={`carousel-${index}`}
-                                        className={`carousel-content items-center flex h-200`}
-                                    >
-                                        {element}
-                                    </div>
-                                )}
-                            </>
-                        ))}
-                        <span className="material-symbols-rounded" onClick={handleNext}>
-                            chevron_right
-                        </span>
-                    </div>
-                </motion.div>
+              if (swipe < -swipeConfidenceThreshold) {
+                paginate(1);
+              } else if (swipe > swipeConfidenceThreshold) {
+                paginate(-1);
+              }
+            }}
+          >
+            <div className={`carousel-content items-center flex h-200`}>
+              {elements[imageIndex]}
             </div>
-        </div>
-    );
+          </motion.div>
+        </AnimatePresence>
+        <span
+          className="material-symbols-rounded next"
+          style={{ zIndex: 2 }}
+          onClick={() => paginate(1)}
+        >
+          chevron_right
+        </span>
+      </div>
+    </div>
+  );
 };
 
 export default Carousel;
