@@ -1,28 +1,55 @@
-import ProductCard from "@/components/molecules/ProductCard";
-import SkeletonProductCard from "@/components/molecules/ProductCard/SkeletonCard";
-import { Button } from "@nextui-org/react";
-import React, { Suspense } from "react";
+// "use client";
+// import React, { useState } from "react";
 
-const Carousel = () => {
-    return <div className="container">
-        <div className="flex gap-4">
-            <div className="w-full md:w-1/2">
-                <Suspense fallback={<SkeletonProductCard />}>
-                    <img src={"https://png.pngtree.com/thumb_back/fh260/background/20231005/pngtree-smoke-engulfed-vape-mod-in-stunning-3d-render-image_13568825.png"} alt="" />
-                </Suspense>
-            </div>
-            <div className="w-full md:w-1/2">
-                <Suspense fallback={<SkeletonProductCard />}>
-                    <p className="text-5xl font-bold my-3 pt-16">High Quality Smoking Accessories</p>
-                    <p className="text-base my-3">Discover our exclusive collection of premium smoking gear.</p>
-                    <div className="flex gap-4 my-3">
-                        <Button color="primary">Shop now</Button>
-                        <Button color="primary">Learn More</Button>
-                    </div>
-                </Suspense>
-            </div>
-        </div>
-    </div>
-};
+// type Props = {
+//   height?: string;
+//   elements: React.ReactNode[];
+// };
 
-export default Carousel;
+// const Carousel = ({ height, elements }: Props) => {
+//   const [active, setActive] = useState(0);
+//   const totalElements = elements.length;
+
+//   const handleNext = () => {
+//     if (active < totalElements - 1) {
+//       setActive((prev) => prev + 1);
+//     } else {
+//       setActive(0);
+//     }
+//   };
+
+//   const handlePrev = () => {
+//     if (active === 0) {
+//       setActive(totalElements - 1);
+//     } else {
+//       setActive((prev) => prev - 1);
+//     }
+//   };
+
+//   return (
+//     <div className="container mx-auto">
+//       <div className="flex justify-center items-center gap-4">
+//         <span className="material-symbols-rounded" onClick={handlePrev}>
+//           chevron_left
+//         </span>
+//         {elements.map((element, index) => (
+//           <>
+//             {active === index && (
+//               <div
+//                 key={`carousel-${index}`}
+//                 className={`carousel-content items-center flex h-200`}
+//               >
+//                 {element}
+//               </div>
+//             )}
+//           </>
+//         ))}
+//         <span className="material-symbols-rounded" onClick={handleNext}>
+//           chevron_right
+//         </span>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Carousel;
