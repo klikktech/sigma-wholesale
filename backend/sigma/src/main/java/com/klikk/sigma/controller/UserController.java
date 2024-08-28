@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -41,6 +42,19 @@ public class UserController {
 
         try {
             var result = userService.save(user);
+            return ResponseEntity.of(Optional.of(result));
+        } catch (NotFoundException exception) {
+            return new ResponseEntity(exception.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception exception) {
+            return new ResponseEntity(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<User>> getUsers() {
+        try {
+            var result = userService.findAll();
+
             return ResponseEntity.of(Optional.of(result));
         } catch (NotFoundException exception) {
             return new ResponseEntity(exception.getMessage(), HttpStatus.NOT_FOUND);

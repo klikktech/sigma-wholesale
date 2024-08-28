@@ -2,8 +2,10 @@ package com.klikk.sigma.service;
 
 import com.klikk.sigma.dto.UserDto;
 import com.klikk.sigma.entity.User;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 
 public interface UserService {
     public List<User> findAll();
