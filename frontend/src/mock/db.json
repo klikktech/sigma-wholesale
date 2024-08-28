@@ -1,0 +1,42 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Admin",
+      "email": "admin@gmail.com",
+      "password": "Test@123"
+    },
+    {
+      "id": "2",
+      "name": "User 1",
+      "email": "klikk@gmail.com",
+      "password": "Test@123"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "title": "NIRVANA THCA+THCP LIQUID DIAMOND PREROLL 2G 10CT/JAR",
+      "sku": "NV-PR-2G",
+      "stock": "In stock",
+      "price": "27",
+      "category": ""
+    },
+    {
+      "id": 2,
+      "title": "ELYXR LA 2 IN 1 THCA DAB & SUGAR 3G",
+      "sku": "ELY-2IN1",
+      "stock": "In stock",
+      "price": "15",
+      "category": ""
+    },
+    {
+      "id": 3,
+      "title": "NOSE KNOWS AT5000 PUFFS DISPOSABLE 5CT/BX",
+      "sku": "NOSEKNOWS-VAPE",
+      "stock": "In stock",
+      "price": "30",
+      "category": ""
+    }
+  ]
+}
