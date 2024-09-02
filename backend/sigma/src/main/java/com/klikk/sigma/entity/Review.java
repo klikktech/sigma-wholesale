@@ -20,9 +20,20 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "reviews_sequence")
     private int id;
 
-    private int productId;
-//    private User user;
+    @ManyToOne
+    @JoinColumn(name = "product_id",referencedColumnName = "id")
+    private Product productId;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    private User user;
+
+    @Column(name = "rating")
     private double rating;
+
+    @Column(name = "comment")
     private String comment;
+
+    @Column(name = "review_date")
     private Date reviewDate;
 }

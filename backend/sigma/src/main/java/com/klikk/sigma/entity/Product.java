@@ -17,12 +17,28 @@ public class Product {
     @SequenceGenerator(name = "products_sequence",sequenceName = "products_sequence",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "products_sequence")
     private int id;
-    private int vendorId;
+
+    @OneToOne
+    @JoinColumn(name = "vendor_id",referencedColumnName = "id")
+    private Vendor vendorId;
+
+    @Column(name = "product_name")
     private String productName;
-    private int categoryId;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id",referencedColumnName = "id")
+    private Category categoryId;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "price")
     private double price;
+
+    @Column(name = "stock_quantity")
     private int stockQuantity;
+
+    @Column(name = "sku")
     private String sku;
 
 

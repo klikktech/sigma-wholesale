@@ -20,9 +20,20 @@ public class Order {
     @SequenceGenerator(name = "orders_sequence",sequenceName = "orders_sequence",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "orders_sequence")
     private int id;
-//    private User buyer;
+
+    @ManyToOne
+    @JoinColumn(name = "buyer_id",referencedColumnName = "id")
+    private User buyerId;
+
+    @Column(name = "order_date")
     private Date orderDate;
+
+    @Column(name = "shipping_address")
     private String shippingAddress;
+
+    @Column(name = "order_status")
     private String orderStatus;
+
+    @Column(name = "total_amount")
     private double totalAmount;
 }

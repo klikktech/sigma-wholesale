@@ -1,3 +1,5 @@
+
+
 package com.klikk.sigma.entity;
 
 import jakarta.persistence.*;
@@ -19,8 +21,18 @@ public class CartItem {
     @SequenceGenerator(name = "cart_items_sequence",sequenceName = "cart_items_sequence",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "cart_items_sequence")
     private int id;
-    private int cartId;
-    private int productId;
+
+    @ManyToOne
+    @JoinColumn(name = "cart_id",referencedColumnName = "id")
+    private Cart cartId;
+
+    @OneToOne
+    @JoinColumn(name = "product_id",referencedColumnName = "id")
+    private Product productId;
+
+    @Column(name = "quantity")
     private int quantity;
+
+    @Column(name = "added_at")
     private Date addedAt;
 }

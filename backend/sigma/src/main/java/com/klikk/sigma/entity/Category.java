@@ -17,7 +17,11 @@ public class Category {
     @SequenceGenerator(name = "categories_sequence",sequenceName = "categories_sequence",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "categories_sequence")
     private int id;
+
+    @Column(name = "category")
     private String categoryName;
+
+    @Column (name = "description")
     private String description;
 
 }

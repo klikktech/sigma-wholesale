@@ -20,7 +20,14 @@ public class Cart {
     @SequenceGenerator(name = "cart_sequence",sequenceName = "cart_sequence",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "cart_sequence")
     private int id;
-    private int userId;
+
+    @OneToOne
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    private User userId;
+
+    @Column(name = "created_at")
     private Date createdAt;
+
+    @Column(name = "updated_at")
     private Date updatedAt;
 }
