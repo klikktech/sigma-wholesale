@@ -7,10 +7,12 @@ import com.klikk.sigma.mapper.UserMapper;
 import com.klikk.sigma.repository.UserRepository;
 import com.klikk.sigma.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -30,6 +32,7 @@ public class UserServiceImpl implements UserService {
         User user = null;
         if (result.isPresent()) {
             user = result.get();
+            System.out.println(userMapper.userToUserDTO(user));
         } else {
             throw new NotFoundException("User with id : " + id + " not found.");
         }
@@ -41,6 +44,8 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.save(object);
         return userMapper.userToUserDTO(user);
     }
+
+
 
     @Override
     public void deleteById(int id) {
