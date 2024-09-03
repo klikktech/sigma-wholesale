@@ -22,7 +22,7 @@ const ProductCard = (props: Props) => {
           />
         </CardBody>
         <CardFooter className="text-small justify-between">
-          <b>{props.title}</b>
+          <b className="title">{props.title}</b>
           <p className="text-default-500">{props.price}</p>
         </CardFooter>
       </Card>
