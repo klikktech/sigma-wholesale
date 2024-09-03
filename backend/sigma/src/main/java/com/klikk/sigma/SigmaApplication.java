@@ -13,8 +13,4 @@ public class SigmaApplication {
 		SpringApplication.run(SigmaApplication.class, args);
 	}
 
-	@Bean
-	public RestTemplate restTemplate() {
-		return new RestTemplate();
-	}
 }

@@ -7,6 +7,7 @@ import com.klikk.sigma.mapper.UserMapper;
 import com.klikk.sigma.repository.UserRepository;
 import com.klikk.sigma.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,7 +33,6 @@ public class UserServiceImpl implements UserService {
         User user = null;
         if (result.isPresent()) {
             user = result.get();
-            System.out.println(userMapper.userToUserDTO(user));
         } else {
             throw new NotFoundException("User with id : " + id + " not found.");
         }
@@ -40,12 +40,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByEmail(String username) {
+        Optional<User> result = userRepository.findByEmail(username);
+        User user = null;
+        if (result.isPresent()) {
+            user = result.get();
+        } else {
+            throw new UsernameNotFoundException("User with username : " + username + " not found.");
+        }
+        return user;
+    }
+
+    @Override
     public UserDto save(User object) {
         User user = userRepository.save(object);
         return userMapper.userToUserDTO(user);
     }
-
-
 
     @Override
     public void deleteById(int id) {

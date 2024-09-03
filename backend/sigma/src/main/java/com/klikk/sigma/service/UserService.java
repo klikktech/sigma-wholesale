@@ -2,17 +2,18 @@ package com.klikk.sigma.service;
 
 import com.klikk.sigma.dto.UserDto;
 import com.klikk.sigma.entity.User;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
 public interface UserService {
-    public List<User> findAll();
+    List<User> findAll();
 
-    public UserDto findById(int id);
+    UserDto findById(int id);
 
-    public UserDto save(User object);
+    User findByEmail(String username);
 
-    public void deleteById(int id);
+    UserDto save(User object);
+
+    void deleteById(int id);
 }
