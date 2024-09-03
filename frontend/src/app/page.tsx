@@ -2,22 +2,25 @@
 import InitialCategories from "@/components/organisms/InitialCategories";
 import Navbar from "@/components/organisms/Navbar";
 import NewArrivals from "@/components/organisms/NewArrivals";
+import ProductView from "@/components/organisms/ProductView";
 import Tabs from "@/components/organisms/Tabs";
-import Carousel from "@/components/organisms/Test/Index";
+import Carousel from "@/components/organisms/Test";
+import { BASE_URL } from "@/utils/urls";
 import { Button } from "@nextui-org/react";
 
 const App = () => {
   return (
     <>
       <Navbar />
+      HEllO JS{BASE_URL}
       <Carousel
         // height="50rem"
         elements={[
           <>
             <div className="">
-              <div className="carousel-content 1 flex">
+              <div className="carousel-content 1 flex gap-x-10">
                 <div className="w-full md:w-1/2">
-                  <img
+                  <img className="rounded-2xl"
                     src={
                       "https://png.pngtree.com/thumb_back/fh260/background/20231005/pngtree-smoke-engulfed-vape-mod-in-stunning-3d-render-image_13568825.png"
                     }
@@ -41,9 +44,9 @@ const App = () => {
           </>,
           <>
             <div className="">
-              <div className="carousel-content 1 flex">
+              <div className="carousel-content 1 flex gap-x-10">
                 <div className="w-full md:w-1/2">
-                  <img
+                  <img className="rounded-2xl"
                     src={
                       "https://png.pngtree.com/thumb_back/fh260/background/20231005/pngtree-smoke-engulfed-vape-mod-in-stunning-3d-render-image_13568825.png"
                     }
@@ -67,9 +70,9 @@ const App = () => {
           </>,
           <>
             <div className="">
-              <div className="carousel-content 1 flex">
+              <div className="carousel-content 1 flex gap-x-10">
                 <div className="w-full md:w-1/2">
-                  <img
+                  <img className="rounded-2xl"
                     src={
                       "https://png.pngtree.com/thumb_back/fh260/background/20231005/pngtree-smoke-engulfed-vape-mod-in-stunning-3d-render-image_13568825.png"
                     }
@@ -96,6 +99,7 @@ const App = () => {
       <InitialCategories />
       <NewArrivals />
       <Tabs />
+      <ProductView/>
     </>
   );
 };

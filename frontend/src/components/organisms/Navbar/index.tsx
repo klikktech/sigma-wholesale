@@ -47,6 +47,7 @@ const Navbar = (props: Props) => {
         <NavbarContent justify="end">
           <NavbarItem className="hidden lg:flex">
           <Input
+          className="w-48"
           type="text"
           label="Search"
           labelPlacement="inside"
