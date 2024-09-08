@@ -99,7 +99,7 @@ const App = () => {
       <InitialCategories />
       <NewArrivals />
       <Tabs />
-      <ProductView/>
+      {/* <ProductView/> */}
     </>
   );
 };

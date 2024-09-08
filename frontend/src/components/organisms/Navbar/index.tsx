@@ -35,7 +35,7 @@ const Navbar = (props: Props) => {
             <NavbarItem key={`${item}-${index}`}>
               <Link
                 color="foreground"
-                className="w-full"
+                className="w-full text-sm"
                 href={item.path}
                 size="lg"
               >
@@ -47,10 +47,9 @@ const Navbar = (props: Props) => {
         <NavbarContent justify="end">
           <NavbarItem className="hidden lg:flex">
           <Input
-          className="w-48"
+          className="w-48 text-sm"
           type="text"
-          label="Search"
-          labelPlacement="inside"
+          placeholder="Search"
         />
         </NavbarItem>
           <NavbarItem className="hidden lg:flex">
