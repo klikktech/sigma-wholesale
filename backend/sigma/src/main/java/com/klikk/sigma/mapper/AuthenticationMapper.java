@@ -18,6 +18,7 @@ public abstract class AuthenticationMapper {
     @Mapping(source = "password", target = "passwordHash", qualifiedByName = "encodePassword")
     @Mapping(source = "firstname", target = "firstName")
     @Mapping(source = "lastname", target = "lastName")
+    @Mapping(source = "username", target = "username")
     public abstract User registerRequestToUser(RegisterRequest request);
 
     @Mapping(source = "jwtToken", target = "accessToken")

@@ -23,11 +23,14 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "users_sequence")
     private Integer id;
 
-    @Column(nullable = false)
-    private String email;
+    @Column(name = "username",nullable = false)
+    private String username;
 
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
+
+    @Column(nullable = false)
+    private String email;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;

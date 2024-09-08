@@ -1,6 +1,5 @@
 package com.klikk.sigma.service;
 
-import com.klikk.sigma.entity.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public interface JwtService {

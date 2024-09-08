@@ -27,7 +27,6 @@ public class UserController {
     public ResponseEntity<UserDto> getUserById(@PathVariable("id") int id) {
         try {
             var result = userService.findById(id);
-
             return ResponseEntity.of(Optional.of(result));
         } catch (NotFoundException exception) {
             return new ResponseEntity(exception.getMessage(), HttpStatus.NOT_FOUND);
@@ -39,7 +38,6 @@ public class UserController {
 
     @PostMapping("/")
     public ResponseEntity<UserDto> saveUser(@RequestBody User user) {
-
         try {
             var result = userService.save(user);
             return ResponseEntity.of(Optional.of(result));
