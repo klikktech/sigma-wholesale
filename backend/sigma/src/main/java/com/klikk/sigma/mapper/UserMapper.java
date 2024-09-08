@@ -5,9 +5,10 @@ import com.klikk.sigma.entity.User;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface UserMapper {
+public abstract class UserMapper {
 
-    UserDto userToUserDTO(User user);
 
-    User userDTOtoUser(UserDto dto);
+    public abstract UserDto userToUserDTO(User user);
+
+    public abstract User userDTOtoUser(UserDto dto);
 }

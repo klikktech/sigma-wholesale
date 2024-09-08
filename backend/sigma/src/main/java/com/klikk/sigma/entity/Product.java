@@ -1,10 +1,14 @@
 package com.klikk.sigma.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -16,30 +20,60 @@ public class Product {
     @Id
     @SequenceGenerator(name = "products_sequence",sequenceName = "products_sequence",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "products_sequence")
-    private int id;
+    private Integer id;
 
-    @OneToOne
-    @JoinColumn(name = "vendor_id",referencedColumnName = "id")
-    private Vendor vendorId;
+    @Column(name = "name",unique = true)
+    private String name;
 
-    @Column(name = "product_name")
-    private String productName;
+    @Column(name = "max_price")
+    private double maxPrice;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id",referencedColumnName = "id")
-    private Category categoryId;
+    @Column(name = "min_price")
+    private double minPrice;
 
-    @Column(name = "description")
-    private String description;
+    @Column(name = "sku",unique = true)
+    private String sku;
 
-    @Column(name = "price")
-    private double price;
+    @Column(name = "details")
+    private String details;
+
+    @Column(name = "on_sale")
+    private boolean isOnSale;
+
+    @Column(name = "stock_status")
+    private String status;
+
+    @Column(name = "display_status")
+    private String displayStatus;
 
     @Column(name = "stock_quantity")
     private int stockQuantity;
 
-    @Column(name = "sku")
-    private String sku;
+    @Column(name = "total_sales")
+    private int totalSales;
+
+    @Column(name = "comment_status")
+    private String commentStatus;
+
+    @Column(name = "product_id", unique = true)
+    private Long productId;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "modified_at")
+    private LocalDateTime modifiedAt;
+
+    @Column(name = "rating_count")
+    private int ratingCount;
+
+    @Column(name = "average_rating")
+    private double averageRating;
+
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "parent")
+    private List<Variation> variations;
 
 
 }
