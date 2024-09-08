@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Entity
@@ -65,5 +64,4 @@ public class Variation {
     @ManyToOne
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     private Product parent;
-
 }
