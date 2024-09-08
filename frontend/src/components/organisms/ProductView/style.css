@@ -1,8 +1,8 @@
 .images-list{
-    overflow-x: auto;
+    /* overflow-x: auto; */
     cursor: pointer;
     padding-bottom: 0.5rem;
-    scroll-behavior: smooth;
+    /* scroll-behavior: smooth; */
 }
 .quantity-btn {
     background-color: #f0ecec;

@@ -12,10 +12,8 @@ const NewArrivals = async () => {
     <h1 className="my-3 text-xl">New Arrivals</h1>
     <div className="flex gap-x-2.5">
       {res.data.map((item: any) => (
-        <Link
-          href={"/ProductView"}
-        >
-          <div className="w-full md:w-1/4 ">
+        <div className="w-full md:w-1/4 ">
+          <Link href={`/product/${item.id}`}>
             <Suspense fallback={<SkeletonProductCard />}>
               <ProductCard
                 img={"https://nextui.org/images/album-cover.png"}
@@ -23,12 +21,11 @@ const NewArrivals = async () => {
                 price={"$" + item.price}
               />
             </Suspense>
-          </div>
-        </Link>
-
+          </Link>
+        </div>
       ))}
     </div>
-  </div>
+  </div >
 };
 
 export default NewArrivals;

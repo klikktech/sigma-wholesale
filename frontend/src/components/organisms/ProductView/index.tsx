@@ -1,9 +1,16 @@
 'use client'
-import { Button } from "@nextui-org/react";
+import { Avatar, Button, Input, ScrollShadow, Textarea } from "@nextui-org/react";
 import React, { useState } from "react";
 import "./style.css"
+import { color } from "framer-motion";
 
 const ProductView = () => {
+
+    const reviewList = [
+        { name: "Alice", timeStamp: "10 Jan, 2024", avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d", comments: "Love the quality of the bong I purchased. Smooth transaction and fast shipping." },
+        { name: "Bob", timeStamp: "15 May, 2024", avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d", comments: "Great selection of pipes, found exactly what I was looking for." },
+        { name: "Charlie", timeStamp: "21 Aug, 2024", avatar: "https://i.pravatar.cc/150?u=a04258114e29026702d", comments: "Amazing customer service and the vaporizer works like a charm." },
+    ]
 
     const [quantities, setQuantities] = useState([
         { id: 1, image: "https://png.pngtree.com/thumb_back/fh260/background/20231005/pngtree-smoke-engulfed-vape-mod-in-stunning-3d-render-image_13568825.png", quantity: 0 },
@@ -32,23 +39,25 @@ const ProductView = () => {
     };
 
     return <>
-        <div className="flex gap-x-10">
+        <div className="flex gap-x-10 items-center">
             <div className="w-full md:w-1/2 flex flex-col gap-4">
                 <img className="rounded-2xl"
                     src={selectedImage}
                     alt=""
                 />
-                <div className="images-list flex gap-4">
-                    {quantities.map((item) => (
-                        <img className="rounded"
-                            width="24%"
-                            key={item.id}
-                            src={item.image}
-                            alt=""
-                            onClick={() => setSelectedImage(item.image)}
-                        />
-                    ))}
-                </div>
+                <ScrollShadow>
+                    <div className="images-list flex gap-4">
+                        {quantities.map((item) => (
+                            <img className="rounded-xl"
+                                width="24%"
+                                key={item.id}
+                                src={item.image}
+                                alt=""
+                                onClick={() => setSelectedImage(item.image)}
+                            />
+                        ))}
+                    </div>
+                </ScrollShadow>
             </div>
             <div className="w-full md:w-1/2">
                 <p className="text-2xl font-bold my-3">
@@ -99,6 +108,39 @@ const ProductView = () => {
                     <span className="material-symbols-rounded">shopping_cart</span>
                     Add to cart
                 </Button>
+            </div>
+        </div>
+        <div className="flex gap-4 mt-4">
+            <div className="w-full md:w-1/2 flex flex-col gap-4">
+                <div className="ml-1 flex items-center">
+                    {[1, 2, 3, 4, 5].map((rating) => (
+                        <span className="material-symbols-rounded star">star</span>
+                    ))}
+                </div>
+                <Textarea label="Review" placeholder="Write your review" className="w-full" />
+                <div className="flex gap-4">
+                    <Input className="w-full md:w-1/2" type="text" label="Name" placeholder="Enter your name" />
+                    <Input className="w-full md:w-1/2" type="email" label="Email" placeholder="Enter your email" />
+                </div>
+            </div>
+            <div className="w-full md:w-1/2 flex flex-col gap-4">
+                {reviewList.map((items) => (
+                    <div className="flex flex-col gap-1">
+                        <div className="flex gap-4 items-center">
+                            <Avatar src={items.avatar} />
+                            <div className="">
+                                <p>{items.name}</p>
+                                <p className="text-xs">{items.timeStamp}</p>
+                            </div>
+                        </div>
+                        <div className="ml-1 flex items-center">
+                            {[1, 2, 3, 4, 5].map((rating) => (
+                                <span className="material-symbols-rounded star">star</span>
+                            ))}
+                        </div>
+                        <div>{items.comments}</div>
+                    </div>
+                ))}
             </div>
         </div>
     </>
