@@ -6,14 +6,15 @@ spring:
     serialization:
       fail_on_empty_beans: false
   datasource:
-    username: klikktec_user
-    password: Test123@123
-    url: jdbc:mysql://ncr1.int3rnet.net:3306/klikktec_sigmawholesale?useSSL=false&serverTimezone=UTC
+    username: root
+    password: password
+    url: jdbc:mysql://localhost:3306/sigmawholesalebackup
+#    url: jdbc:mysql://localhost:3306/sigmawholesales
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 
     properties:
       hibernate:

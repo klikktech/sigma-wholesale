@@ -1,19 +1,18 @@
 package com.klikk.sigma.dto;
 
+
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationRequest {
+public class ProductDto {
 
-    private String email;
+    private String name;
 
-    private String password;
+    private String sku;
 
-    private String role;
+    private Long productId;
 }
