@@ -22,7 +22,6 @@ const request = {
   getAllProducts: async () => {
     try {
       const { data } = await axios.get(PRODUCTS_URL);
-      console.log(data);
       return { data };
     } catch (error) {}
   },
