@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../frontend/src/app/auth/[...nextauth]/route';
 import axios from 'axios';
+import { authOptions } from './app/auth/[...nextauth]/route';
 
 export default async function middleware(req: NextApiRequest, res: NextApiResponse) {
   const session = await getServerSession(req, res, authOptions);

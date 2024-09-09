@@ -1,8 +1,18 @@
-import ProductView from "@/components/organisms/ProductView"
+import ProductView from "@/components/organisms/ProductView";
+import { useParams } from "next/navigation";
 
-const ProductDetails = () => {
-    return <>
-        <ProductView />
-    </>
+interface Props {
+  params: {
+    productId: string;
+  };
 }
+
+const ProductDetails = (props: Props) => {
+  return (
+    <>
+      Product id - {props.params.productId}
+      <ProductView />
+    </>
+  );
+};
 export default ProductDetails;
