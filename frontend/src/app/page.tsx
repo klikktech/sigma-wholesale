@@ -5,14 +5,12 @@ import NewArrivals from "@/components/organisms/NewArrivals";
 import ProductView from "@/components/organisms/ProductView";
 import Tabs from "@/components/organisms/Tabs";
 import Carousel from "@/components/organisms/Test";
-import { BASE_URL } from "@/utils/urls";
 import { Button } from "@nextui-org/react";
+import Image from "next/image";
 
 const App = () => {
   return (
     <>
-      <Navbar />
-      HEllO JS{BASE_URL}
       <Carousel
         // height="50rem"
         elements={[
@@ -20,7 +18,8 @@ const App = () => {
             <div className="">
               <div className="carousel-content 1 flex gap-x-10">
                 <div className="w-full md:w-1/2">
-                  <img className="rounded-2xl"
+                  <img
+                    className="rounded-2xl"
                     src={
                       "https://png.pngtree.com/thumb_back/fh260/background/20231005/pngtree-smoke-engulfed-vape-mod-in-stunning-3d-render-image_13568825.png"
                     }
@@ -46,7 +45,8 @@ const App = () => {
             <div className="">
               <div className="carousel-content 1 flex gap-x-10">
                 <div className="w-full md:w-1/2">
-                  <img className="rounded-2xl"
+                  <img
+                    className="rounded-2xl"
                     src={
                       "https://png.pngtree.com/thumb_back/fh260/background/20231005/pngtree-smoke-engulfed-vape-mod-in-stunning-3d-render-image_13568825.png"
                     }
@@ -72,7 +72,8 @@ const App = () => {
             <div className="">
               <div className="carousel-content 1 flex gap-x-10">
                 <div className="w-full md:w-1/2">
-                  <img className="rounded-2xl"
+                  <img
+                    className="rounded-2xl"
                     src={
                       "https://png.pngtree.com/thumb_back/fh260/background/20231005/pngtree-smoke-engulfed-vape-mod-in-stunning-3d-render-image_13568825.png"
                     }

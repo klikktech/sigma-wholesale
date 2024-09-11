@@ -1,70 +1,63 @@
-'use client'
-import { useState } from 'react';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
-import { Button, Input, Spacer } from '@nextui-org/react';
+"use client";
+
+import { Input } from "@nextui-org/react";
+import { useFormState, useFormStatus } from "react-dom";
+import Button from "@/components/atoms/Button";
+import { authenticate } from "@/app/(auth)/login/action";
 
 const Login = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState(null);
-    const router = useRouter();
+  const [state, formAction] = useFormState(authenticate, undefined);
+  const { pending } = useFormStatus();
 
-    const handleSubmit = async (e: any) => {
-        e.preventDefault();
-        try {
-            const response = await axios.post('/api/auth/signin', {
-                username,
-                password,
-            });
-
-            const { accessToken, refreshToken } = response.data;
-
-            // Store tokens in local storage (or secure storage if preferred)
-            localStorage.setItem('accessToken', accessToken);
-            localStorage.setItem('refreshToken', refreshToken);
-
-            // Redirect to protected route or home page
-            router.push('/home');
-        } catch (error: any) {
-            setError(error.response.data.message);
-        }
-    };
-
-    return (
-        <div className="flex justify-center p-5">
-            <form onSubmit={handleSubmit} className="flex flex-col w-full" style={{ maxWidth: '600px' }}>
-                <Input
-                    label="Email *"
-                    name="email"
-                    placeholder="johndoe@example.com"
-                    labelPlacement='outside'
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                    fullWidth
-                />
-                <Spacer y={3} />
-                <Input
-                    label="Password *"
-                    name="password"
-                    type="password"
-                    placeholder="********"
-                    labelPlacement='outside'
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    fullWidth
-                />
-                <Spacer y={3} />
-                <Button type="submit" color="primary" size="lg">
-                    Register
-                </Button>
-            </form>
-            {error && <p>{error}</p>}
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <form
+        action={formAction}
+        className="flex flex-col w-full gap-4"
+        style={{ maxWidth: "600px" }}
+      >
+        <div className="flex flex-col gap-2">
+          <Input
+            label="Email *"
+            name="email"
+            type="text"
+            placeholder="johndoe@example.com"
+            labelPlacement="outside"
+            required
+            fullWidth
+          />
+          {state?.errors?.email && (
+            <p className="text-danger">{state.errors.email}</p>
+          )}
         </div>
-    );
+        <div className="flex flex-col gap-2">
+          <Input
+            label="Password *"
+            name="password"
+            type="password"
+            placeholder="********"
+            labelPlacement="outside"
+            required
+            fullWidth
+          />
+          {state?.errors?.password && (
+            <div className="text-danger">
+              <p>Password must:</p>
+              <ul>
+                {state.errors.password.map((error) => (
+                  <li key={error}>- {error}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+
+        <Button disabled={pending} type="submit" color="primary" size="lg">
+          Register
+        </Button>
+      </form>
+    </div>
+  );
 };
 
 export default Login;

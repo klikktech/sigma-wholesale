@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { DESCRIPTION, SIGMA_WHOLESALE } from "@/utils/constants";
 import { Providers } from "./providers";
+import Navbar from "@/components/organisms/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,9 +22,10 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <div className="light">
+            <Navbar />
             {children}
           </div>
-          </Providers>
+        </Providers>
       </body>
     </html>
   );
