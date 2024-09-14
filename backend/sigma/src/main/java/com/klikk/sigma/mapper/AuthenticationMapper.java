@@ -16,8 +16,6 @@ public abstract class AuthenticationMapper {
     private PasswordEncoder passwordEncoder;
 
     @Mapping(source = "password", target = "passwordHash", qualifiedByName = "encodePassword")
-    @Mapping(source = "firstname", target = "firstName")
-    @Mapping(source = "lastname", target = "lastName")
     @Mapping(source = "username", target = "username")
     public abstract User registerRequestToUser(RegisterRequest request);
 

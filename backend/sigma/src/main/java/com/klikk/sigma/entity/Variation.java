@@ -29,7 +29,7 @@ public class Variation {
     @Column(name = "type_info")
     private String typeInfo;
 
-    @Column(name = "name",unique = true)
+    @Column(name = "name")
     private String variationName;
 
     @Column(name = "sku",unique = true)
