@@ -22,7 +22,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "products_sequence")
     private Integer id;
 
-    @Column(name = "name",unique = true)
+    @Column(name = "name")
     private String name;
 
     @Column(name = "max_price")

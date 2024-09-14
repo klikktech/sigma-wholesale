@@ -2,22 +2,26 @@ server:
   port: 6754
 
 spring:
+  profiles:
+    active:
+      - dev
   jackson:
     serialization:
       fail_on_empty_beans: false
   datasource:
-    username: klikktec_user
-    password: Test123@123
-    url: jdbc:mysql://ncr1.int3rnet.net:3306/klikktec_sigmawholesale?useSSL=false&serverTimezone=UTC
+    username: root
+    password: password
+    #    url: jdbc:mysql://localhost:3306/sigmawholesale
+    url: jdbc:mysql://localhost:3306/sigmawholesalebackup
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.MySQLDialect
 
   application:
     name: sigma
@@ -28,3 +32,7 @@ spring:
         refresh-token:
           expiration: 604800000 # 7 days
 
+
+#    username: klikktec_user
+#    password: Test123@123
+#    url: jdbc:mysql://ncr1.int3rnet.net:3306/klikktec_sigmawholesale?useSSL=false&serverTimezone=UTC

@@ -22,13 +22,14 @@ public class OrderItem {
     @JoinColumn(name = "order_id",referencedColumnName = "id")
     private Order orderId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "product_id",referencedColumnName = "id")
     private Product productId;
 
+    @ManyToOne
+    @JoinColumn(name = "variation_id",referencedColumnName = "id")
+    private Variation variationId;
+
     @Column(name = "quantity")
     private int quantity;
-
-    @Column(name = "price_per_unit")
-    private double pricePerUnit;
 }

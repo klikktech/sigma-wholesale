@@ -1,5 +1,6 @@
 package com.klikk.sigma.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.klikk.sigma.utils.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -7,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -15,13 +17,15 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Table(name = "users")
 public class User implements UserDetails {
     @Id
     @SequenceGenerator(name = "users_sequence", sequenceName = "users_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "users_sequence")
     private Integer id;
+
+    @Column(name = "user_id",nullable = false)
+    private Integer userId;
 
     @Column(name = "username",nullable = false)
     private String username;
@@ -32,20 +36,12 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String email;
 
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
-
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
-
-    @Column(name = "phone_number", nullable = false)
-    private String phoneNumber;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    @Column(nullable = false)
-    private String address;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
