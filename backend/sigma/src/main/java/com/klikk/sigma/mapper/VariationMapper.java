@@ -7,6 +7,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Mapper(componentModel = "spring")
 public abstract class VariationMapper {
@@ -17,7 +18,9 @@ public abstract class VariationMapper {
 
     @Named("convertStringDateToDate")
     public LocalDateTime convertStringDateToDate(String date){
-        // write logic for date conversion here
-        return null;
+        // write logic for date conversion he
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+        LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
+        return dateTime;
     }
 }

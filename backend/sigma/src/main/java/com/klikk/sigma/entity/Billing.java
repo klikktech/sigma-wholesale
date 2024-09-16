@@ -43,4 +43,8 @@ public class Billing {
 
     @Column(name = "phone")
     private String phone;
+
+    @OneToOne
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    private Order order;
 }
