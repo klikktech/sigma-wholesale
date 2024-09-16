@@ -4,6 +4,7 @@ package com.klikk.sigma.controller;
 import com.klikk.sigma.dto.ProductDto;
 import com.klikk.sigma.dto.UserDto;
 import com.klikk.sigma.entity.Product;
+import com.klikk.sigma.service.ProductService;
 import com.klikk.sigma.service.impl.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,23 +16,17 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     @Autowired
-    public ProductServiceImpl productServiceImpl;
-
-//    @GetMapping
-//    public ResponseEntity<ProductDto> getProduct(){
-//
-//    }
+    public ProductService productService;
 
     @PostMapping("/")
-    public ResponseEntity<ProductDto> addProduct(@RequestBody Product product){
+    public ResponseEntity<String> addProduct(@RequestBody Product product){
         try {
-            return ResponseEntity.ok(productServiceImpl.saveProduct(product));
+            productService.saveProduct(product);
+            return ResponseEntity.ok("Product Added Successfully");
         }
         catch (Exception exception){
-            return new ResponseEntity(exception.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
         }
 
     }
-
-
 }
