@@ -23,8 +23,8 @@ public class Variation {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "variations_sequence")
     private int id;
 
-    @Column(name = "product_id")
-    private Long productId;
+    @Column(name = "variation_id")
+    private Long variationId;
 
     @Column(name = "type_info")
     private String typeInfo;

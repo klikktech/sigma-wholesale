@@ -9,6 +9,9 @@ import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Mapper(componentModel = "spring")
 public abstract class AuthenticationMapper {
 
@@ -16,7 +19,7 @@ public abstract class AuthenticationMapper {
     private PasswordEncoder passwordEncoder;
 
     @Mapping(source = "password", target = "passwordHash", qualifiedByName = "encodePassword")
-    @Mapping(source = "username", target = "username")
+    @Mapping(target = "createdAt", qualifiedByName = "convertStringDateToDate")
     public abstract User registerRequestToUser(RegisterRequest request);
 
     @Mapping(source = "jwtToken", target = "accessToken")
@@ -26,5 +29,14 @@ public abstract class AuthenticationMapper {
     @Named("encodePassword")
     public String encodePassword(String password) {
         return passwordEncoder.encode(password);
+    }
+
+
+    @Named("convertStringDateToDate")
+    public LocalDateTime convertStringDateToDate(String date){
+        // write logic for date conversion he
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+        LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
+        return dateTime;
     }
 }

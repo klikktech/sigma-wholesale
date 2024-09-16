@@ -24,16 +24,16 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "users_sequence")
     private Integer id;
 
-    @Column(name = "user_id",nullable = false)
+    @Column(name = "user_id",nullable = false,unique = true)
     private Integer userId;
 
-    @Column(name = "username",nullable = false)
+    @Column(name = "username",nullable = false,unique = true)
     private String username;
 
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String email;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
