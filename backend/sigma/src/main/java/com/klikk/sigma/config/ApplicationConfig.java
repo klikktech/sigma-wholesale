@@ -26,7 +26,7 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> userService.findByEmail(username);
+        return email -> userService.findByEmail(email);
     }
 
     @Bean
