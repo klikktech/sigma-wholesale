@@ -3,7 +3,10 @@ package com.klikk.sigma.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.klikk.sigma.utils.Role;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,16 +27,16 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "users_sequence")
     private Integer id;
 
-    @Column(name = "user_id",nullable = false,unique = true)
+    @Column(name = "user_id", nullable = false, unique = true)
     private Integer userId;
 
-    @Column(name = "username",nullable = false,unique = true)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
 
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
