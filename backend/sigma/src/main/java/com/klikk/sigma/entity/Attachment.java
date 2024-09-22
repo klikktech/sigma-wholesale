@@ -21,4 +21,8 @@ public class Attachment {
 
     @Enumerated(EnumType.STRING)
     private AttachmentType type;
+
+    @Lob
+    @Column(name = "file_content", nullable = false)
+    private byte[] fileContent;
 }
