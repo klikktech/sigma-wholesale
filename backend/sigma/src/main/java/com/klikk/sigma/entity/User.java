@@ -1,6 +1,7 @@
 package com.klikk.sigma.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.klikk.sigma.utils.AttachmentType;
 import com.klikk.sigma.utils.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,21 +28,38 @@ public class User implements UserDetails {
     @Column(name = "user_id",nullable = false,unique = true)
     private Integer userId;
 
-    @Column(name = "username",nullable = false,unique = true)
-    private String username;
+    @Column(name = "firstname")
+    private String firstname;
 
-    @Column(name = "password_hash", nullable = false)
-    private String passwordHash;
+    @Column(name = "lastname")
+    private String lastname;
 
     @Column(nullable = false,unique = true)
     private String email;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "password_hash", nullable = false)
+    private String passwordHash;
+
+    @Column(name = "phone")
+    private String phone;
+
+    @OneToOne
+    @JoinColumn(name = "store_address_id",referencedColumnName = "id")
+    private Address storeAddress;
+
+    @OneToOne
+    @JoinColumn(name = "shipping_address_id",referencedColumnName = "id")
+    private Address shippingAddress;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+//    @OneToOne
+//    @JoinColumn(name = "id")
+//    private Attachment taxDocument;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -20,6 +20,8 @@ public abstract class AuthenticationMapper {
 
     @Mapping(source = "password", target = "passwordHash", qualifiedByName = "encodePassword")
     @Mapping(target = "createdAt", qualifiedByName = "convertStringDateToDate")
+    @Mapping(target = "storeAddress",ignore = true)
+    @Mapping(target = "shippingAddress",ignore = true)
     public abstract User registerRequestToUser(RegisterRequest request);
 
     @Mapping(source = "jwtToken", target = "accessToken")

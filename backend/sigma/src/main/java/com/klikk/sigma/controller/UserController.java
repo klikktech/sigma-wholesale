@@ -1,6 +1,5 @@
 package com.klikk.sigma.controller;
-
-import com.klikk.sigma.dto.UserDto;
+import com.klikk.sigma.dto.UserResponseDto;
 import com.klikk.sigma.entity.User;
 import com.klikk.sigma.error.NotFoundException;
 import com.klikk.sigma.service.UserService;
@@ -24,22 +23,9 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable("id") int id) {
+    public ResponseEntity<UserResponseDto> getUserById(@PathVariable("id") int id) {
         try {
             var result = userService.findById(id);
-            return ResponseEntity.of(Optional.of(result));
-        } catch (NotFoundException exception) {
-            return new ResponseEntity(exception.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception exception) {
-            return new ResponseEntity(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-
-    @PostMapping("/")
-    public ResponseEntity<UserDto> saveUser(@RequestBody User user) {
-        try {
-            var result = userService.save(user);
             return ResponseEntity.of(Optional.of(result));
         } catch (NotFoundException exception) {
             return new ResponseEntity(exception.getMessage(), HttpStatus.NOT_FOUND);
@@ -52,7 +38,6 @@ public class UserController {
     public ResponseEntity<List<User>> getUsers() {
         try {
             var result = userService.findAll();
-
             return ResponseEntity.of(Optional.of(result));
         } catch (NotFoundException exception) {
             return new ResponseEntity(exception.getMessage(), HttpStatus.NOT_FOUND);

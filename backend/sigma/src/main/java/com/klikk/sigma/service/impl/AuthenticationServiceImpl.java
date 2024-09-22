@@ -3,6 +3,7 @@ package com.klikk.sigma.service.impl;
 import com.klikk.sigma.dto.AuthenticationRequest;
 import com.klikk.sigma.dto.AuthenticationResponse;
 import com.klikk.sigma.dto.RegisterRequest;
+import com.klikk.sigma.entity.Address;
 import com.klikk.sigma.entity.User;
 import com.klikk.sigma.mapper.AuthenticationMapper;
 import com.klikk.sigma.repository.UserRepository;
@@ -34,17 +35,52 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private AddressServiceImpl addressServiceImpl;
+
     @Override
     public AuthenticationResponse register(RegisterRequest request) {
         User user = authenticationMapper.registerRequestToUser(request);
-        if(request.getCreatedAt()==null){
+
+        // Save store address
+        Address storeAddress = null;
+        if (request.getStoreAddress() != null) {
+            storeAddress = addressServiceImpl.saveAddress(
+                    request.getStoreAddress(),
+                    request.getStoreCity(),
+                    request.getStoreState(),
+                    request.getStoreZip()
+            );
+            user.setStoreAddress(storeAddress);
+        }
+
+        // Save shipping address
+        Address shippingAddress = null;
+        if (request.getShippingAddress() != null) {
+            shippingAddress = addressServiceImpl.saveAddress(
+                    request.getShippingAddress(),
+                    request.getShippingCity(),
+                    request.getShippingState(),
+                    request.getShippingZip()
+            );
+            user.setShippingAddress(shippingAddress);
+        }
+
+        // Handle createdAt
+        if (request.getCreatedAt() == null) {
             user.setCreatedAt(LocalDateTime.now());
         }
+
+        // Save user
         userRepository.save(user);
+
+        // Generate JWT tokens
         String jwtToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
+
         return authenticationMapper.jwtTokenToAuthenticationResponse(jwtToken, refreshToken);
     }
+
 
     @Override
     public AuthenticationResponse authenticate(AuthenticationRequest request) {

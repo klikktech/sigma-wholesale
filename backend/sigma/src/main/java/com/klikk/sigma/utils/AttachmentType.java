@@ -1,5 +1,5 @@
 package com.klikk.sigma.utils;
 
 public enum AttachmentType {
-    IMAGE,VIDEO
+    PRODUCT_ATTACHMENT, TAX_ATTACHMENT, GENERAL_ATTACHMENT
 }

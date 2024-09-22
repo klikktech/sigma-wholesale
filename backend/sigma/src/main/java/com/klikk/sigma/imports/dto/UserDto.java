@@ -1,23 +1,21 @@
-package com.klikk.sigma.dto;
+package com.klikk.sigma.imports.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.klikk.sigma.utils.Role;
+import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
-@Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest {
-
+@Data
+public class UserDto {
     private Integer userId;
 
     private String firstname;
@@ -26,7 +24,7 @@ public class RegisterRequest {
 
     private String email;
 
-    private String password;
+    private String passwordHash;
 
     private String phone;
 
