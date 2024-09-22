@@ -1,5 +1,6 @@
 package com.klikk.sigma.service.impl;
 
+import com.klikk.sigma.entity.Token;
 import com.klikk.sigma.repository.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,17 +18,14 @@ public class LogoutServiceImpl implements LogoutHandler {
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        final String authHeader = request.getHeader("Authorization");
-        final String jwt;
+        String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return;
         }
-        jwt = authHeader.substring(7);
-        var storedToken = tokenRepository.findByToken(jwt)
-                .orElse(null);
+        String token = authHeader.substring(7);
+        Token storedToken = tokenRepository.findByAccessToken(token).orElse(null);
         if (storedToken != null) {
-            storedToken.setExpired(true);
-            storedToken.setRevoked(true);
+            storedToken.setLoggedOut(true);
             tokenRepository.save(storedToken);
             SecurityContextHolder.clearContext();
         }

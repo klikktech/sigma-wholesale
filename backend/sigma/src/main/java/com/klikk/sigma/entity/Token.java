@@ -1,6 +1,5 @@
 package com.klikk.sigma.entity;
 
-import com.klikk.sigma.utils.TokenType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,15 +16,14 @@ public class Token {
     @GeneratedValue
     public Integer id;
 
-    @Column(unique = true)
-    public String token;
+    @Column(name = "access_token")
+    private String accessToken;
 
-    @Enumerated(EnumType.STRING)
-    public TokenType tokenType = TokenType.BEARER;
+    @Column(name = "refresh_token")
+    private String refreshToken;
 
-    public boolean revoked;
-
-    public boolean expired;
+    @Column(name = "is_logged_out")
+    private boolean loggedOut;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
