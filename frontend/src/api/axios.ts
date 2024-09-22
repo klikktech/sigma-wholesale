@@ -1,18 +1,21 @@
-import { BASE_BACKEND_URL } from "@/utils/urls";
-import axios from "axios";
+import { BASE_BACKEND_URL, REFRESH_TOKEN_URL } from "@/utils/urls";
+import axios, { InternalAxiosRequestConfig } from "axios";
+import { createSession, getAccessToken, getRefreshToken } from "./session";
 
 const api = axios.create({
   baseURL: BASE_BACKEND_URL,
+  headers: {
+    "Content-type": "application/json",
+  },
   // Add other configuration options if needed
 });
 
 api.interceptors.request.use(
-  (config) => {
-    console.log("axio req use")
-    // const accessToken = localStorage.getItem("accessToken");
-    // if (accessToken) {
-    //   config.headers.Authorization = `Bearer ${accessToken}`;
-    // }
+  async (config: InternalAxiosRequestConfig) => {
+    const accessToken = getAccessToken();
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
     return config;
   },
   (error) => {
@@ -20,25 +23,34 @@ api.interceptors.request.use(
   }
 );
 
-// api.interceptors.response.use(
-//   (response) => response,
-//   (error) => {
-//     const { response } = error;
-//     if (response.status === 401 && response.data.message === "Unauthorized") {
-//       // Handle token expiration or invalid token
-//       return refreshAccessToken()
-//         .then((newAccessToken) => {
-//           localStorage.setItem("accessToken", newAccessToken);
-//           return api(error.config); // Retry the request with the new token
-//         })
-//         .catch((refreshError) => {
-//           // Handle refresh token failure (e.g., logout)
-//           console.error("Refresh token failed:", refreshError);
-//           // Redirect to login page or handle accordingly
-//         });
-//     }
-//     return Promise.reject(error);
-//   }
-// );
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      const newAccessToken = await refreshToken();
+      if (newAccessToken) {
+        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+        return api(originalRequest);
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
+const refreshToken = async (): Promise<string | null> => {
+  try {
+    const refreshToken = getRefreshToken();
+    const response = await axios.post(
+      `${BASE_BACKEND_URL}/${REFRESH_TOKEN_URL}`, {}, { headers: { Authorization: refreshToken }});
+    createSession(response.data);
+    const { accessToken } = response.data;
+    return accessToken;
+  } catch (error) {
+    console.error("Failed to refresh token", error);
+    return null;
+  }
+};
 
 export default api;
