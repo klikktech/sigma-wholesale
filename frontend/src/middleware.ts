@@ -1,7 +1,6 @@
 import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 import { LOGIN_PAGE_ROUTE, PRODUCTS_PAGE_ROUTE, SIGNUP_PAGE_ROUTE } from "./utils/urls";
-import { decrypt } from "./api/session";
-import { cookies } from "next/headers";
+import { decrypt, getAccessToken } from "./api/session";
 
 const protectedRoutes = ["/", PRODUCTS_PAGE_ROUTE];
 const publicRoutes = [LOGIN_PAGE_ROUTE, SIGNUP_PAGE_ROUTE];
@@ -12,8 +11,8 @@ export default function middleware(req: NextRequest, res: NextFetchEvent) {
     const isProtectedRoute = protectedRoutes.includes(path);
     const isPublicRoute = publicRoutes.includes(path);
 
-    const cookie = cookies().get("session")?.value;
-    const session = decrypt(cookie);
+    const token = getAccessToken();
+    const session = decrypt(token);
 
     if (isProtectedRoute && !session?.sub) {
       return NextResponse.redirect(new URL(LOGIN_PAGE_ROUTE, req.nextUrl));
