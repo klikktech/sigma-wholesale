@@ -1,0 +1,301 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Admin",
+      "email": "admin@gmail.com",
+      "password": "Test@123"
+    },
+    {
+      "id": "2",
+      "name": "User 1",
+      "email": "klikk@gmail.com",
+      "password": "Test@123"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "title": "NIRVANA THCA+THCP LIQUID DIAMOND PREROLL 2G 10CT/JAR",
+      "image": [],
+      "available_options": {
+        "type": "Colors",
+        "itmes": [
+          {
+            "name": "Black",
+            "price": "30"
+          },
+          {
+            "name": "Blue",
+            "price": "30"
+          }
+        ]
+      },
+      "reviews": [
+        {
+          "username": "klikk",
+          "comment": "awesone product!!",
+          "rating": 4,
+          "timestamp": "Jan 20, 2023"
+        },
+        {
+          "username": "jack",
+          "comment": "bad product!!",
+          "rating": 1,
+          "timestamp": "Jan 20, 2023"
+        },
+        {
+          "username": "rose",
+          "comment": "good product!!",
+          "rating": 3,
+          "timestamp": "Jan 20, 2023"
+        }
+      ],
+      "related_products": [
+        {
+          "id": 1,
+          "title": "NIRVANA THCA+THCP LIQUID DIAMOND PREROLL 2G 10CT/JAR",
+          "price": "30",
+          "image": "url"
+        },
+        {
+          "id": 2,
+          "title": "NIRVANA THCA+THCP LIQUID DIAMOND PREROLL 3G 10CT/JAR",
+          "price": "70",
+          "image": "url"
+        },
+        {
+          "id": 3,
+          "title": "NIRVANA THCA+THCP LIQUID DIAMOND PREROLL 4G 10CT/JAR",
+          "price": "40",
+          "image": "url"
+        },
+        {
+          "id": 4,
+          "title": "NIRVANA THCA+THCP LIQUID DIAMOND PREROLL 5G 10CT/JAR",
+          "price": "90",
+          "image": "url"
+        }
+      ],
+      "sku": "NV-PR-2G",
+      "stock": "In stock",
+      "price": "27",
+      "category": ""
+    },
+    {
+      "id": 2,
+      "title": "ELYXR LA 2 IN 1 THCA DAB & SUGAR 3G",
+      "image": [],
+      "available_options": {
+        "type": "options",
+        "itmes": [
+          {
+            "name": "Black",
+            "price": "30"
+          },
+          {
+            "name": "Blue",
+            "price": "30"
+          }
+        ]
+      },
+      "reviews": [
+        {
+          "username": "klikk",
+          "comment": "awesone product!!",
+          "rating": 4,
+          "timestamp": "Jan 20, 2023"
+        },
+        {
+          "username": "jack",
+          "comment": "bad product!!",
+          "rating": 1,
+          "timestamp": "Jan 20, 2023"
+        },
+        {
+          "username": "rose",
+          "comment": "good product!!",
+          "rating": 3,
+          "timestamp": "Jan 20, 2023"
+        }
+      ],
+      "related_products": [
+        {
+          "id": 1,
+          "title": "NIRVANA THCA+THCP LIQUID DIAMOND PREROLL 2G 10CT/JAR",
+          "price": "30",
+          "image": "url"
+        },
+        {
+          "id": 2,
+          "title": "NIRVANA THCA+THCP LIQUID DIAMOND PREROLL 3G 10CT/JAR",
+          "price": "70",
+          "image": "url"
+        },
+        {
+          "id": 3,
+          "title": "NIRVANA THCA+THCP LIQUID DIAMOND PREROLL 4G 10CT/JAR",
+          "price": "40",
+          "image": "url"
+        },
+        {
+          "id": 4,
+          "title": "NIRVANA THCA+THCP LIQUID DIAMOND PREROLL 5G 10CT/JAR",
+          "price": "90",
+          "image": "url"
+        }
+      ],
+      "sku": "ELY-2IN1",
+      "stock": "In stock",
+      "price": "15",
+      "category": ""
+    },
+    {
+      "id": 3,
+      "title": "NOSE KNOWS AT5000 PUFFS DISPOSABLE 5CT/BX",
+      "image": [],
+      "available_options": {
+        "type": "flavours",
+        "itmes": [
+          {
+            "name": "Black",
+            "price": "30"
+          },
+          {
+            "name": "Blue",
+            "price": "30"
+          }
+        ]
+      },
+      "reviews": [
+        {
+          "username": "klikk",
+          "comment": "awesone product!!",
+          "rating": 4,
+          "timestamp": "Jan 20, 2023"
+        },
+        {
+          "username": "jack",
+          "comment": "bad product!!",
+          "rating": 1,
+          "timestamp": "Jan 20, 2023"
+        },
+        {
+          "username": "rose",
+          "comment": "good product!!",
+          "rating": 3,
+          "timestamp": "Jan 20, 2023"
+        }
+      ],
+      "related_products": [
+        {
+          "id": 1,
+          "title": "NIRVANA THCA+THCP LIQUID DIAMOND PREROLL 2G 10CT/JAR",
+          "price": "30",
+          "image": "url"
+        },
+        {
+          "id": 2,
+          "title": "NIRVANA THCA+THCP LIQUID DIAMOND PREROLL 3G 10CT/JAR",
+          "price": "70",
+          "image": "url"
+        },
+        {
+          "id": 3,
+          "title": "NIRVANA THCA+THCP LIQUID DIAMOND PREROLL 4G 10CT/JAR",
+          "price": "40",
+          "image": "url"
+        },
+        {
+          "id": 4,
+          "title": "NIRVANA THCA+THCP LIQUID DIAMOND PREROLL 5G 10CT/JAR",
+          "price": "90",
+          "image": "url"
+        }
+      ],
+      "sku": "NOSEKNOWS-VAPE",
+      "stock": "In stock",
+      "price": "30",
+      "category": ""
+    },
+    {
+      "id": 4,
+      "title": "NOSE KNOWS AT5000 PUFFS DISPOSABLE 5CT/BX",
+      "image": [],
+      "available_options": {},
+      "reviews": [
+        {
+          "username": "klikk",
+          "comment": "awesone product!!",
+          "rating": 4,
+          "timestamp": "Jan 20, 2023"
+        },
+        {
+          "username": "jack",
+          "comment": "bad product!!",
+          "rating": 1,
+          "timestamp": "Jan 20, 2023"
+        },
+        {
+          "username": "rose",
+          "comment": "good product!!",
+          "rating": 3,
+          "timestamp": "Jan 20, 2023"
+        }
+      ],
+      "related_products": [
+        {
+          "id": 1,
+          "title": "NIRVANA THCA+THCP LIQUID DIAMOND PREROLL 2G 10CT/JAR",
+          "price": "30",
+          "image": "url"
+        },
+        {
+          "id": 2,
+          "title": "NIRVANA THCA+THCP LIQUID DIAMOND PREROLL 3G 10CT/JAR",
+          "price": "70",
+          "image": "url"
+        },
+        {
+          "id": 3,
+          "title": "NIRVANA THCA+THCP LIQUID DIAMOND PREROLL 4G 10CT/JAR",
+          "price": "40",
+          "image": "url"
+        },
+        {
+          "id": 4,
+          "title": "NIRVANA THCA+THCP LIQUID DIAMOND PREROLL 5G 10CT/JAR",
+          "price": "90",
+          "image": "url"
+        }
+      ],
+      "sku": "NOSEKNOWS-VAPE",
+      "stock": "In stock",
+      "price": "30",
+      "category": ""
+    }
+  ],
+  "cart": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "image": "url",
+      "title": "",
+      "quantity": ""
+    },
+    {
+      "id": 2,
+      "user_id": 3,
+      "image": "url",
+      "title": "",
+      "quantity": ""
+    },
+    {
+      "id": 3,
+      "user_id": 2,
+      "image": "url",
+      "title": "",
+      "quantity": ""
+    }
+  ]
+}

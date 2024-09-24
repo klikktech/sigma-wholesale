@@ -24,6 +24,7 @@ public abstract class AuthenticationMapper {
     @Mapping(target = "shippingAddress",ignore = true)
     public abstract User registerRequestToUser(RegisterRequest request);
 
+    
     @Mapping(source = "jwtToken", target = "accessToken")
     @Mapping(source = "refreshToken", target = "refreshToken")
     public abstract AuthenticationResponse jwtTokenToAuthenticationResponse(String jwtToken, String refreshToken);
@@ -36,7 +37,6 @@ public abstract class AuthenticationMapper {
 
     @Named("convertStringDateToDate")
     public LocalDateTime convertStringDateToDate(String date){
-        // write logic for date conversion he
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
         LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
         return dateTime;

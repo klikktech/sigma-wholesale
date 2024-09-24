@@ -18,9 +18,8 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-
-
     @PreAuthorize("hasAuthority('admin:read')")
+
     @GetMapping("/")
     public List<Order> getAllOrders() {
         return orderService.findAll();

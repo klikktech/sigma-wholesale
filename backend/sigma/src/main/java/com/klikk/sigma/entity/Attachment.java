@@ -25,4 +25,5 @@ public class Attachment {
     @Lob
     @Column(name = "file_content", nullable = false)
     private byte[] fileContent;
+
 }
