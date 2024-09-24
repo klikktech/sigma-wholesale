@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -51,7 +52,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     request.getStoreState(),
                     request.getStoreZip()
             );
-            user.setStoreAddress(storeAddress);
+
+            if (user.getStoreAddress() == null) {
+                user.setStoreAddress(new ArrayList<>());
+            }
+            user.getStoreAddress().add(storeAddress);
+
         }
 
         // Save shipping address
@@ -63,7 +69,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     request.getShippingState(),
                     request.getShippingZip()
             );
-            user.setShippingAddress(shippingAddress);
+            if (user.getShippingAddress() == null) {
+                user.setShippingAddress(new ArrayList<>());
+            }
+            user.getShippingAddress().add(shippingAddress);
+
+
         }
 
         // Handle createdAt

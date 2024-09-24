@@ -43,13 +43,13 @@ public class User implements UserDetails {
     @Column(name = "phone")
     private String phone;
 
-    @OneToOne
+    @OneToMany
     @JoinColumn(name = "store_address_id",referencedColumnName = "id")
-    private Address storeAddress;
+    private List<Address> storeAddress;
 
-    @OneToOne
+    @OneToMany
     @JoinColumn(name = "shipping_address_id",referencedColumnName = "id")
-    private Address shippingAddress;
+    private List<Address> shippingAddress;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -63,7 +63,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return role.getAuthorities();
     }
 
     @Override
