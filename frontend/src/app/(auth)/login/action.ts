@@ -5,6 +5,7 @@ import { createSession, decrypt } from "@/api/session";
 import { ResultCode } from "@/utils/functions";
 import { PRODUCTS_PAGE_ROUTE } from "@/utils/urls";
 import { LoginFormValidator } from "@/utils/validators";
+import { isRedirectError } from "next/dist/client/components/redirect";
 import { redirect } from "next/navigation";
 
 interface Result {
@@ -26,12 +27,14 @@ export async function authenticate(
       email,
       password,
     });
-
+    console.log("before parsed creds")
     if (parsedCredentials.success) {
       //   await new Promise((resolve) => {
       //     setTimeout(resolve, 5000);
       //   });
+      console.log("before response")
       const response = await request.authenticate(parsedCredentials.data);
+      console.log(response?.data, response?.status,"response")
       if (response?.status === 200) {
         const user = decrypt(response.data.accessToken);
         createSession(response.data);
@@ -54,6 +57,9 @@ export async function authenticate(
       };
     }
   } catch (error) {
+    if(isRedirectError(error)){
+      throw error
+    }
     // if (error instanceof Error) {
     //   switch (error.type) {
     //     case 'CredentialsSignin':
