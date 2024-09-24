@@ -6,6 +6,7 @@ import com.klikk.sigma.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,6 +24,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('admin:read')")
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable("id") int id) {
         try {
             var result = userService.findById(id);
@@ -35,6 +37,7 @@ public class UserController {
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasAuthority('admin:read')")
     public ResponseEntity<List<User>> getUsers() {
         try {
             var result = userService.findAll();
