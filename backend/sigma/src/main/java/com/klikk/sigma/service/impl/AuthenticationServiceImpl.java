@@ -76,9 +76,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new UnauthorisedException("Unauthorised");
         }
         String token = authHeader.substring(7);
-        String username = jwtService.extractUsername(token);
-        if (username != null) {
-            User user = userRepository.findByUsername(username)
+        String email = jwtService.extractUsername(token);
+        if (email != null) {
+            User user = userRepository.findByEmail(email)
                     .orElseThrow(() -> new UsernameNotFoundException("No user found"));
             if (jwtService.isRefreshTokenValid(token, user)) {
                 String accessToken = jwtService.generateToken(user);

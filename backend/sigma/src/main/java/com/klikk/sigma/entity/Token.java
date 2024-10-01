@@ -1,10 +1,12 @@
 package com.klikk.sigma.entity;
 
+import com.klikk.sigma.utils.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 @Data
 @Builder
@@ -13,8 +15,17 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Token {
     @Id
-    @GeneratedValue
-    public Integer id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "token_sequence")
+    @GenericGenerator(
+            name="token_sequence",
+            type = com.klikk.sigma.utils.StringPrefixedSequenceGenerator.class,
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.INCREMENT_PARAM, value = "1"),
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.PREFIX_VALUE_PARAM, value = "TKN_"),
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.NUMBER_FORMAT_PARAM,value = "%d")
+            }
+    )
+    private String id;
 
     @Column(name = "access_token")
     private String accessToken;

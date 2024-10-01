@@ -1,12 +1,15 @@
 package com.klikk.sigma.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.klikk.sigma.utils.AttachmentType;
 import com.klikk.sigma.utils.Role;
+import com.klikk.sigma.utils.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,21 +26,43 @@ import java.util.List;
 @Table(name = "users")
 public class User implements UserDetails {
     @Id
-    @SequenceGenerator(name = "users_sequence", sequenceName = "users_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "users_sequence")
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_sequence")
+    @GenericGenerator(
+            name="users_sequence",
+            type = com.klikk.sigma.utils.StringPrefixedSequenceGenerator.class,
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.INCREMENT_PARAM, value = "1"),
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.PREFIX_VALUE_PARAM, value = "USR_"),
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.NUMBER_FORMAT_PARAM,value = "%d")
+            }
+    )
+    private String id;
 
-    @Column(name = "user_id", nullable = false, unique = true)
+    @Column(name = "user_id",nullable = false,unique = true)
     private Integer userId;
 
-    @Column(name = "username", nullable = false, unique = true)
-    private String username;
+    @Column(name = "firstname")
+    private String firstname;
+
+    @Column(name = "lastname")
+    private String lastname;
+
+    @Column(nullable = false,unique = true)
+    private String email;
 
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
-    @Column(nullable = false, unique = true)
-    private String email;
+    @Column(name = "phone")
+    private String phone;
+
+    @OneToMany
+    @JoinColumn(name = "store_address_id",referencedColumnName = "id")
+    private List<Address> storeAddress;
+
+    @OneToMany
+    @JoinColumn(name = "shipping_address_id",referencedColumnName = "id")
+    private List<Address> shippingAddress;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "created_at")
@@ -46,9 +71,13 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+//    @OneToOne
+//    @JoinColumn(name = "id")
+//    private Attachment taxDocument;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return role.getAuthorities();
     }
 
     @Override
