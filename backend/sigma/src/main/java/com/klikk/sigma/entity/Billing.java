@@ -1,9 +1,11 @@
 package com.klikk.sigma.entity;
 
+import com.klikk.sigma.utils.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @NoArgsConstructor
@@ -13,9 +15,17 @@ import lombok.NoArgsConstructor;
 public class Billing {
 
     @Id
-    @SequenceGenerator(name = "billing_sequence", sequenceName = "billing_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "billing_sequence")
-    private String ID;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "billing_sequence")
+    @GenericGenerator(
+            name="billing_sequence",
+            type = com.klikk.sigma.utils.StringPrefixedSequenceGenerator.class,
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.INCREMENT_PARAM, value = "1"),
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.PREFIX_VALUE_PARAM, value = "BILL_"),
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.NUMBER_FORMAT_PARAM,value = "%d")
+            }
+    )
+    private String id;
 
     @Column(name = "first_name")
     private String firstName;

@@ -2,10 +2,12 @@ package com.klikk.sigma.entity;
 
 
 import com.klikk.sigma.utils.CommentType;
+import com.klikk.sigma.utils.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Data
@@ -15,9 +17,17 @@ import lombok.NoArgsConstructor;
 public class Comment {
 
     @Id
-    @SequenceGenerator(name = "comments_sequence", sequenceName = "comments_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "comments_sequence")
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comment_sequence")
+    @GenericGenerator(
+            name="comment_sequence",
+            type = com.klikk.sigma.utils.StringPrefixedSequenceGenerator.class,
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.INCREMENT_PARAM, value = "1"),
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.PREFIX_VALUE_PARAM, value = "COM_"),
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.NUMBER_FORMAT_PARAM,value = "%d")
+            }
+    )
+    private String id;
 
     @Enumerated(EnumType.STRING)
     private CommentType commentType;

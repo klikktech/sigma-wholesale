@@ -1,10 +1,12 @@
 package com.klikk.sigma.entity;
 
+import com.klikk.sigma.utils.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Date;
 
@@ -17,9 +19,17 @@ import java.sql.Date;
 public class Cart {
 
     @Id
-    @SequenceGenerator(name = "cart_sequence",sequenceName = "cart_sequence",allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "cart_sequence")
-    private int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cart_sequence")
+    @GenericGenerator(
+            name="cart_sequence",
+            type = com.klikk.sigma.utils.StringPrefixedSequenceGenerator.class,
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.INCREMENT_PARAM, value = "1"),
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.PREFIX_VALUE_PARAM, value = "CT_"),
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.NUMBER_FORMAT_PARAM,value = "%d")
+            }
+    )
+    private String id;
 
     @OneToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
