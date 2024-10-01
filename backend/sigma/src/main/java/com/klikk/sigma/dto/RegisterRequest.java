@@ -46,11 +46,7 @@ public class RegisterRequest {
 
     private String shippingZip;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createdAt;
-
 //    private MultipartFile taxDocument;
-
     @Enumerated(EnumType.STRING)
     private Role role;
 }
