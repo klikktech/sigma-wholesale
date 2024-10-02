@@ -6,6 +6,8 @@ import com.klikk.sigma.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AddressServiceImpl implements AddressService {
 
@@ -19,5 +21,9 @@ public class AddressServiceImpl implements AddressService {
         newAddress.setState(state);
         newAddress.setZipcode(zipcode);
         return addressRepository.save(newAddress);
+    }
+
+    public Optional<Address> getAddress(String address){
+        return addressRepository.findByAddress(address);
     }
 }
