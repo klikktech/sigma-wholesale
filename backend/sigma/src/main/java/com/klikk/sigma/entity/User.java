@@ -47,6 +47,9 @@ public class User implements UserDetails {
     @Column(name = "lastname")
     private String lastname;
 
+    @Column(name = "nickname")
+    private String nickname;
+
     @Column(nullable = false,unique = true)
     private String email;
 
@@ -56,12 +59,20 @@ public class User implements UserDetails {
     @Column(name = "phone")
     private String phone;
 
-    @OneToMany
-    @JoinColumn(name = "store_address_id",referencedColumnName = "id")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_store_address",
+            joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "address_id",referencedColumnName = "id")
+    )
     private List<Address> storeAddress;
 
-    @OneToMany
-    @JoinColumn(name = "shipping_address_id",referencedColumnName = "id")
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_shipping_address",
+            joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "address_id",referencedColumnName = "id")
+    )
     private List<Address> shippingAddress;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

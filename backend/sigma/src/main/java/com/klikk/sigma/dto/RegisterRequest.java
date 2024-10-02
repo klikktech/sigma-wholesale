@@ -26,6 +26,8 @@ public class RegisterRequest {
 
     private String lastname;
 
+    private String nickname;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 

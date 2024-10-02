@@ -28,7 +28,7 @@ public class Address {
     )
     private String id;
 
-    @Column(name = "address")
+    @Column(name = "address",unique = true)
     private String address;
 
     @Column(name = "store_city")
