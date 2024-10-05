@@ -53,7 +53,7 @@ const Login = () => {
         </div>
 
         <Button disabled={pending} type="submit" color="primary" size="lg">
-          Register
+          Login
         </Button>
       </form>
     </div>
