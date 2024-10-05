@@ -33,9 +33,6 @@ public class Variation {
     )
     private String id;
 
-    @Column(name = "variation_id")
-    private Long variationId;
-
     @Column(name = "type_info")
     private String typeInfo;
 
@@ -60,11 +57,9 @@ public class Variation {
     @Column(name = "stock_quantity")
     private int stockQuantity;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "modified_at")
     private LocalDateTime modifiedAt;
 

@@ -38,9 +38,6 @@ public class User implements UserDetails {
     )
     private String id;
 
-    @Column(name = "user_id",nullable = false,unique = true)
-    private Integer userId;
-
     @Column(name = "firstname")
     private String firstname;
 
@@ -75,7 +72,6 @@ public class User implements UserDetails {
     )
     private List<Address> shippingAddress;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

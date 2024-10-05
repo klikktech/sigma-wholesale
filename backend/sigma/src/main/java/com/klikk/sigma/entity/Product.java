@@ -65,14 +65,9 @@ public class Product {
     @Column(name = "comment_status")
     private String commentStatus;
 
-    @Column(name = "product_id", unique = true)
-    private Long productId;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "modified_at")
     private LocalDateTime modifiedAt;
 

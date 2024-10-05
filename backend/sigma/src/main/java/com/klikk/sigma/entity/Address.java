@@ -1,6 +1,5 @@
 package com.klikk.sigma.entity;
 
-
 import com.klikk.sigma.utils.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
