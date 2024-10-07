@@ -15,6 +15,10 @@ public class AddressServiceImpl implements AddressService {
     private AddressRepository addressRepository;
     @Override
     public Address saveAddress(String address, String city, String state, String zipcode) {
+        Optional<Address> existingAddress=addressRepository.findByAddress(address);
+        if(existingAddress.isPresent()){
+            return existingAddress.get();
+        }
         Address newAddress=new Address();
         newAddress.setAddress(address);
         newAddress.setCity(city);

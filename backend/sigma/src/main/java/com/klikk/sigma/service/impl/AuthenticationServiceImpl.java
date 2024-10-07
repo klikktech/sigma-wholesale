@@ -3,6 +3,7 @@ package com.klikk.sigma.service.impl;
 import com.klikk.sigma.dto.AuthenticationRequest;
 import com.klikk.sigma.dto.AuthenticationResponse;
 import com.klikk.sigma.dto.RegisterRequest;
+import com.klikk.sigma.entity.Address;
 import com.klikk.sigma.entity.Token;
 import com.klikk.sigma.entity.User;
 import com.klikk.sigma.error.UnauthorisedException;
@@ -22,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,11 +47,47 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+
+    @Autowired
+    private AddressServiceImpl addressServiceImpl;
+
     @Override
     public AuthenticationResponse register(RegisterRequest request) {
         User user = authenticationMapper.registerRequestToUser(request);
         if (request.getCreatedAt() == null) {
             user.setCreatedAt(LocalDateTime.now());
+        }
+        Address storeAddress = null;
+        if (request.getStoreAddress() != null) {
+            storeAddress = addressServiceImpl.saveAddress(
+                    request.getStoreAddress(),
+                    request.getStoreCity(),
+                    request.getStoreState(),
+                    request.getStoreZip()
+            );
+
+            if (user.getStoreAddress() == null) {
+                user.setStoreAddress(new ArrayList<>());
+            }
+            user.getStoreAddress().add(storeAddress);
+
+        }
+
+        // Save shipping address
+        Address shippingAddress = null;
+        if (request.getShippingAddress() != null) {
+            shippingAddress = addressServiceImpl.saveAddress(
+                    request.getShippingAddress(),
+                    request.getShippingCity(),
+                    request.getShippingState(),
+                    request.getShippingZip()
+            );
+            if (user.getShippingAddress() == null) {
+                user.setShippingAddress(new ArrayList<>());
+            }
+            user.getShippingAddress().add(shippingAddress);
+
+
         }
         User savedUser = userRepository.save(user);
         String jwtToken = jwtService.generateToken(user);
