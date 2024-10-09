@@ -1,6 +1,6 @@
 package com.klikk.sigma.config;
 
-import com.klikk.sigma.filters.JwtAuthenticationFilter;
+import com.klikk.sigma.filter.JwtAuthenticationFilter;
 import com.klikk.sigma.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

@@ -2,7 +2,7 @@ package com.klikk.sigma.service.impl;
 
 import com.klikk.sigma.entity.Attachment;
 import com.klikk.sigma.service.AttachmentService;
-import com.klikk.sigma.utils.AttachmentType;
+import com.klikk.sigma.type.AttachmentType;
 import org.springframework.stereotype.Service;
 
 @Service

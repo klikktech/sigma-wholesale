@@ -1,7 +1,5 @@
-package com.klikk.sigma.utils;
+package com.klikk.sigma.util;
 
-import com.sun.jdi.LongType;
-import org.h2.mvstore.type.LongDataType;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;

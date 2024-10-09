@@ -1,4 +1,4 @@
-package com.klikk.sigma.utils;
+package com.klikk.sigma.type;
 
 public enum CommentType {
     PRODUCT_COMMENT,

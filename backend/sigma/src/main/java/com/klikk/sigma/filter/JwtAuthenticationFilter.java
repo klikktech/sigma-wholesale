@@ -1,4 +1,4 @@
-package com.klikk.sigma.filters;
+package com.klikk.sigma.filter;
 
 import com.klikk.sigma.repository.TokenRepository;
 import com.klikk.sigma.service.JwtService;

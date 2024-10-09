@@ -1,4 +1,4 @@
-package com.klikk.sigma.utils;
+package com.klikk.sigma.util;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;

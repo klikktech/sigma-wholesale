@@ -1,10 +1,10 @@
-package com.klikk.sigma.utils;
+package com.klikk.sigma.type;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public enum Permission {
+public enum PermissionType {
 
     ADMIN_READ("admin:read"),
     ADMIN_WRITE("admin:write"),
