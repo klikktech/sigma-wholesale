@@ -1,7 +1,7 @@
 package com.klikk.sigma.config;
 
 import com.klikk.sigma.service.UserService;
-import com.klikk.sigma.utils.PhpPassPasswordEncoder;
+import com.klikk.sigma.util.PhpPassPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

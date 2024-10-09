@@ -1,16 +1,14 @@
 package com.klikk.sigma.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.klikk.sigma.utils.StringPrefixedSequenceGenerator;
+import com.klikk.sigma.util.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.cglib.core.Local;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Entity
@@ -25,7 +23,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_sequence")
     @GenericGenerator(
             name="order_sequence",
-            type = com.klikk.sigma.utils.StringPrefixedSequenceGenerator.class,
+            type = com.klikk.sigma.util.StringPrefixedSequenceGenerator.class,
             parameters = {
                     @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.INCREMENT_PARAM, value = "1"),
                     @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.PREFIX_VALUE_PARAM, value = "ODR_"),

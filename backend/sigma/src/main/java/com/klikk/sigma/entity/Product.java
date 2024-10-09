@@ -1,7 +1,7 @@
 package com.klikk.sigma.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.klikk.sigma.utils.StringPrefixedSequenceGenerator;
+import com.klikk.sigma.util.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +23,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_sequence")
     @GenericGenerator(
             name="product_sequence",
-            type = com.klikk.sigma.utils.StringPrefixedSequenceGenerator.class,
+            type = com.klikk.sigma.util.StringPrefixedSequenceGenerator.class,
             parameters = {
                     @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.INCREMENT_PARAM, value = "1"),
                     @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.PREFIX_VALUE_PARAM, value = "PDT_"),

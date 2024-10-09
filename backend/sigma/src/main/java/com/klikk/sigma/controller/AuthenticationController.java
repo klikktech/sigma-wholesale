@@ -1,8 +1,8 @@
 package com.klikk.sigma.controller;
 
-import com.klikk.sigma.dto.AuthenticationRequest;
-import com.klikk.sigma.dto.AuthenticationResponse;
-import com.klikk.sigma.dto.RegisterRequest;
+import com.klikk.sigma.dto.request.AuthenticationRequest;
+import com.klikk.sigma.dto.response.AuthenticationResponse;
+import com.klikk.sigma.dto.request.RegisterRequest;
 import com.klikk.sigma.error.UnauthorisedException;
 import com.klikk.sigma.service.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,10 +10,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -23,6 +21,9 @@ public class AuthenticationController {
 
     @Autowired
     private AuthenticationService authenticationService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
@@ -43,5 +44,11 @@ public class AuthenticationController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping("/pass")
+    public boolean pass(@RequestBody String hash, @RequestParam String pass) {
+//        PasswordEncoder passPasswordEncoder = new PhpPassPasswordEncoder();
+        return passwordEncoder.matches(pass, hash);
     }
 }

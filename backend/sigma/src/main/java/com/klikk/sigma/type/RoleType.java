@@ -1,36 +1,34 @@
-package com.klikk.sigma.utils;
+package com.klikk.sigma.type;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public enum Role {
+public enum RoleType {
     USER(
             Set.of(
-                    Permission.USER_READ,
-                    Permission.USER_WRITE,
-                    Permission.USER_PUT,
-                    Permission.USER_DELETE
+                    PermissionType.USER_READ,
+                    PermissionType.USER_WRITE,
+                    PermissionType.USER_PUT,
+                    PermissionType.USER_DELETE
             )
     ),
     ADMIN(
             Set.of(
-                    Permission.ADMIN_READ,
-                    Permission.ADMIN_WRITE,
-                    Permission.ADMIN_PUT,
-                    Permission.ADMIN_DELETE
+                    PermissionType.ADMIN_READ,
+                    PermissionType.ADMIN_WRITE,
+                    PermissionType.ADMIN_PUT,
+                    PermissionType.ADMIN_DELETE
             )
     );
 
     @Getter
-    private final Set<Permission> permissions;
+    private final Set<PermissionType> permissions;
 
     public List<SimpleGrantedAuthority> getAuthorities() {
         var authorities = getPermissions().stream().map(

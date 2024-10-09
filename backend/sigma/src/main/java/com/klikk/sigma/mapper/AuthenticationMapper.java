@@ -1,7 +1,7 @@
 package com.klikk.sigma.mapper;
 
-import com.klikk.sigma.dto.AuthenticationResponse;
-import com.klikk.sigma.dto.RegisterRequest;
+import com.klikk.sigma.dto.response.AuthenticationResponse;
+import com.klikk.sigma.dto.request.RegisterRequest;
 import com.klikk.sigma.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

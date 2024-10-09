@@ -1,7 +1,7 @@
 package com.klikk.sigma.entity;
 
 
-import com.klikk.sigma.utils.StringPrefixedSequenceGenerator;
+import com.klikk.sigma.util.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +19,7 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_sequence")
     @GenericGenerator(
             name="address_sequence",
-            type = com.klikk.sigma.utils.StringPrefixedSequenceGenerator.class,
+            type = com.klikk.sigma.util.StringPrefixedSequenceGenerator.class,
             parameters = {
                     @Parameter(name = StringPrefixedSequenceGenerator.INCREMENT_PARAM, value = "1"),
                     @Parameter(name = StringPrefixedSequenceGenerator.PREFIX_VALUE_PARAM, value = "ADD_"),

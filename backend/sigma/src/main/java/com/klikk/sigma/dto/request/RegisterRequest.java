@@ -1,16 +1,13 @@
-package com.klikk.sigma.dto;
+package com.klikk.sigma.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.klikk.sigma.utils.Role;
+import com.klikk.sigma.type.RoleType;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDateTime;
 
 import java.time.LocalDateTime;
 
@@ -55,5 +52,5 @@ public class RegisterRequest {
 
 //    private MultipartFile taxDocument;
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private RoleType role;
 }
