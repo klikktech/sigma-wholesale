@@ -1,11 +1,18 @@
+import { Metadata } from "next";
+import { Poppins } from "next/font/google";
 import "./globals.css";
-import { Inter } from "next/font/google";
 import { Providers } from "./providers";
-import SideNav from "@/components/organisms/SideNav";
-import BreadcrumbSkeleton from "@/components/molecules/BreadCrumbSkeleton";
 
-const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({
+  subsets: ["latin"],
+  variable: "--font-poppins",
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
 
+export const metadata: Metadata = {
+  title: "Sigma wholesale",
+  description: "Admin website",
+};
 
 export default function RootLayout({
   children,
@@ -14,16 +21,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={poppins.className}>
         <Providers>
-          <div className="flex w-full">
-            <div className="w-1/6">
-              <SideNav />
-            </div>
-            <div className="w-5/6 p-3">
-              {children}
-            </div>
-          </div>
+          <main className="sigmaTheme">{children}</main>
         </Providers>
       </body>
     </html>
