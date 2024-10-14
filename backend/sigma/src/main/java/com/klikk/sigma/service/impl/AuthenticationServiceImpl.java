@@ -1,8 +1,8 @@
 package com.klikk.sigma.service.impl;
 
-import com.klikk.sigma.dto.AuthenticationRequest;
-import com.klikk.sigma.dto.AuthenticationResponse;
-import com.klikk.sigma.dto.RegisterRequest;
+import com.klikk.sigma.dto.request.AuthenticationRequest;
+import com.klikk.sigma.dto.response.AuthenticationResponse;
+import com.klikk.sigma.dto.request.RegisterRequest;
 import com.klikk.sigma.entity.Token;
 import com.klikk.sigma.entity.User;
 import com.klikk.sigma.error.UnauthorisedException;

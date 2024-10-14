@@ -2,7 +2,7 @@
 
 package com.klikk.sigma.entity;
 
-import com.klikk.sigma.utils.StringPrefixedSequenceGenerator;
+import com.klikk.sigma.util.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +23,7 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cart_item_sequence")
     @GenericGenerator(
             name="cart_item_sequence",
-            type = com.klikk.sigma.utils.StringPrefixedSequenceGenerator.class,
+            type = com.klikk.sigma.util.StringPrefixedSequenceGenerator.class,
             parameters = {
                     @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.INCREMENT_PARAM, value = "1"),
                     @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.PREFIX_VALUE_PARAM, value = "CT_ITM_"),

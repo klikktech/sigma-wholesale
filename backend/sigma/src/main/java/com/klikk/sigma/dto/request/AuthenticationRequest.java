@@ -1,4 +1,4 @@
-package com.klikk.sigma.dto;
+package com.klikk.sigma.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationResponse {
+public class AuthenticationRequest {
 
-    private String accessToken;
+    private String email;
 
-    private String refreshToken;
+    private String password;
+
+    private String role;
 }
