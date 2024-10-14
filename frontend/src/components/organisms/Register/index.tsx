@@ -4,6 +4,9 @@ import { FC } from "react";
 import { useFormState } from "react-dom";
 import { Button, Input, Spacer, Textarea } from "@nextui-org/react";
 import { createNewUser } from "@/app/(auth)/register/action";
+import Image from "next/image";
+import logo from "../../../assets/sigma-logo.webp"
+
 
 interface FormErrorProps {
     errors?: string[];
@@ -31,28 +34,29 @@ const SignUp = () => {
     });
 
     return (
-        <div className="flex justify-center p-5">
-            <form action={formAction} className="flex flex-col w-full" style={{ maxWidth: '600px' }}>
-                <div className="flex gap-3">
-                    <div className="w-full">
-                        <Input
-                            label="First Name *"
-                            name="firstName"
-                            placeholder="John"
-                            labelPlacement='outside'
-                        />
-                        <FormError errors={state.errors?.firstName} />
-                    </div>
-                    <div className="w-full">
-                        <Input
-                            label="Last Name *"
-                            name="lastName"
-                            placeholder="Doe"
-                            labelPlacement='outside'
-                        />
-                        <FormError errors={state.errors?.lastName} />
-                    </div>
+        <div className="flex justify-center items-center p-2">
+            <form action={formAction} className="flex flex-col w-full" style={{ maxWidth: '500rem' }}>
+                <div className="mb-3 mx-10">
+                    <Image src={logo} alt={"logo"} />
                 </div>
+
+                <Input
+                    label="First Name *"
+                    name="firstName"
+                    placeholder="John"
+                    labelPlacement='outside'
+                />
+                <FormError errors={state.errors?.firstName} />
+
+                <Spacer y={3} />
+
+                <Input
+                    label="Last Name *"
+                    name="lastName"
+                    placeholder="Doe"
+                    labelPlacement='outside'
+                />
+                <FormError errors={state.errors?.lastName} />
 
                 <Spacer y={3} />
                 <Input
@@ -76,30 +80,27 @@ const SignUp = () => {
                 <FormError errors={state.errors?.companyName} />
 
                 <Spacer y={3} />
-                <div className="flex gap-3">
-                    <div className="w-full">
-                        <Input
-                            label="Phone Number *"
-                            name="phoneNumber"
-                            type="tel"
-                            placeholder="123-456-7890"
-                            labelPlacement='outside'
-                            fullWidth
-                        />
-                        <FormError errors={state.errors?.phoneNumber} />
-                    </div>
-                    <div className="w-full">
-                        <Input
-                            label="Alternative Phone Number"
-                            name="altPhoneNumber"
-                            type="tel"
-                            placeholder="Optional"
-                            labelPlacement='outside'
-                            fullWidth
-                        />
-                        <FormError errors={state.errors?.altPhoneNumber} />
-                    </div>
-                </div>
+
+                <Input
+                    label="Phone Number *"
+                    name="phoneNumber"
+                    type="tel"
+                    placeholder="123-456-7890"
+                    labelPlacement='outside'
+                    fullWidth
+                />
+                <FormError errors={state.errors?.phoneNumber} />
+                <Spacer y={3} />
+
+                <Input
+                    label="Alternative Phone Number"
+                    name="altPhoneNumber"
+                    type="tel"
+                    placeholder="Optional"
+                    labelPlacement='outside'
+                    fullWidth
+                />
+                <FormError errors={state.errors?.altPhoneNumber} />
 
                 <Spacer y={3} />
                 <Input
@@ -123,32 +124,29 @@ const SignUp = () => {
                 <FormError errors={state.errors?.website} />
 
                 <Spacer y={3} />
-                <div className="flex gap-3">
-                    <div className="w-full">
-                        <Input
-                            label="Password *"
-                            name="password"
-                            type="password"
-                            placeholder="********"
-                            labelPlacement='outside'
-                            // required
-                            fullWidth
-                        />
-                        <FormError errors={state.errors?.password} />
-                    </div>
-                    <div className="w-full">
-                        <Input
-                            label="Confirm Password *"
-                            name="confirmPassword"
-                            type="password"
-                            placeholder="********"
-                            labelPlacement='outside'
-                            // required
-                            fullWidth
-                        />
-                        <FormError errors={state.errors?.confirmPassword} />
-                    </div>
-                </div>
+
+                <Input
+                    label="Password *"
+                    name="password"
+                    type="password"
+                    placeholder="********"
+                    labelPlacement='outside'
+                    // required
+                    fullWidth
+                />
+                <FormError errors={state.errors?.password} />
+                <Spacer y={3} />
+
+                <Input
+                    label="Confirm Password *"
+                    name="confirmPassword"
+                    type="password"
+                    placeholder="********"
+                    labelPlacement='outside'
+                    // required
+                    fullWidth
+                />
+                <FormError errors={state.errors?.confirmPassword} />
 
                 <Spacer y={3} />
                 <Textarea
@@ -182,42 +180,38 @@ const SignUp = () => {
                 <FormError errors={state.errors?.address2} />
 
                 <Spacer y={3} />
-                <div className="flex gap-3">
-                    <div className="w-full">
-                        <Input
-                            label="City *"
-                            name="city"
-                            placeholder="City"
-                            labelPlacement='outside'
-                            // required
-                            fullWidth
-                        />
-                        <FormError errors={state.errors?.city} />
-                    </div>
-                    <div className="w-full">
-                        <Input
-                            label="Country *"
-                            name="country"
-                            placeholder="Country"
-                            labelPlacement='outside'
-                            // required
-                            fullWidth
-                        />
-                        <FormError errors={state.errors?.country} />
-                    </div>
 
-                    <div className="w-full">
-                        <Input
-                            label="Zip Code *"
-                            name="zipCode"
-                            placeholder="ZIP"
-                            labelPlacement='outside'
-                            // required
-                            fullWidth
-                        />
-                        <FormError errors={state.errors?.zipCode} />
-                    </div>
-                </div>
+                <Input
+                    label="City *"
+                    name="city"
+                    placeholder="City"
+                    labelPlacement='outside'
+                    // required
+                    fullWidth
+                />
+                <FormError errors={state.errors?.city} />
+                <Spacer y={3} />
+
+                <Input
+                    label="Country *"
+                    name="country"
+                    placeholder="Country"
+                    labelPlacement='outside'
+                    // required
+                    fullWidth
+                />
+                <FormError errors={state.errors?.country} />
+                <Spacer y={3} />
+
+                <Input
+                    label="Zip Code *"
+                    name="zipCode"
+                    placeholder="ZIP"
+                    labelPlacement='outside'
+                    // required
+                    fullWidth
+                />
+                <FormError errors={state.errors?.zipCode} />
 
                 <Spacer y={3} />
                 {/* {error && <p style={{ color: 'red' }}>{error}</p>}

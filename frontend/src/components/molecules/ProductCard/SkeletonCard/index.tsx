@@ -5,7 +5,7 @@ import React from "react";
 
 const SkeletonProductCard = () => {
   return (
-    <Card shadow="sm" className="max-w-[300px]">
+    <Card shadow="sm" className="max-w-[230px]">
       <CardBody className="overflow-visible p-0">
         <Skeleton className="w-full h-[140px] rounded=lg" />
       </CardBody>

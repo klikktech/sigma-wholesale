@@ -1,6 +1,6 @@
 "use client";
 import { NAV_MENU_ITEMS, SIGMA_WHOLESALE } from "@/utils/constants";
-import {Input} from "@nextui-org/input";
+import { Input } from "@nextui-org/input";
 import {
   Button,
   Link,
@@ -11,12 +11,21 @@ import {
   NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
+  user,
+  Avatar,
+  Badge,
 } from "@nextui-org/react";
+import Image from "next/image";
 import React, { useState } from "react";
+import logo from "../../../assets/sigma-logo.webp"
+import { cookies } from "next/headers";
+import { decrypt } from "@/api/session";
 
-type Props = {};
+type Props = {
+  user: any
+};
 
-const Navbar = (props: Props) => {
+const Navbar = ({ user }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <>
@@ -27,7 +36,7 @@ const Navbar = (props: Props) => {
             className="sm:hidden"
           />
           <NavbarBrand>
-            <p className="font-bold text-inherit">{SIGMA_WHOLESALE}</p>
+            <Image src={logo} alt={"logo"} />
           </NavbarBrand>
         </NavbarContent>
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
@@ -46,20 +55,32 @@ const Navbar = (props: Props) => {
         </NavbarContent>
         <NavbarContent justify="end">
           <NavbarItem className="hidden lg:flex">
-          <Input
-          className="w-48 text-sm"
-          type="text"
-          placeholder="Search"
-        />
-        </NavbarItem>
-          <NavbarItem className="hidden lg:flex">
-            <Link href="#">Sign In</Link>
+            <Input
+              className="w-48 text-sm"
+              type="text"
+              placeholder="Search"
+            />
           </NavbarItem>
-          <NavbarItem>
-            <Button as={Link} color="primary" href="#" variant="flat">
-              Register
-            </Button>
-          </NavbarItem>
+          {user ? <>
+                    <NavbarItem className="hidden lg:flex">
+                      <Badge color="danger" size="sm" content={50} shape="circle">
+                        <span
+                          className="material-symbols-rounded text-3xl"
+                        >
+                          shopping_cart
+                        </span>
+                      </Badge>
+                    </NavbarItem>
+                    <NavbarItem className="hidden lg:flex">
+                      <Avatar />
+                    </NavbarItem>
+                  </>
+                : <NavbarItem className="hidden lg:flex">
+                    <Link href="#">Sign In</Link>
+                  </NavbarItem>
+          }
+
+
         </NavbarContent>
         <NavbarMenu>
           {NAV_MENU_ITEMS.map((item, index) => (

@@ -3,10 +3,9 @@ import ProductCard from "@/components/molecules/ProductCard";
 import SkeletonProductCard from "@/components/molecules/ProductCard/SkeletonCard";
 import Link from "next/link";
 import React, { Suspense } from "react";
-import ProductsCarousel from "../ProductsCarousel";
+import { Tabs } from "@nextui-org/react";
 
-// Async function in the component for server-side data fetching
-const NewArrivals = async () => {
+const Tabview = async () => {
   let products = [];
   
   try {
@@ -37,10 +36,9 @@ const NewArrivals = async () => {
 
   return (
     <div className="container mx-auto">
-      <h1 className="my-2 text-xl">New Arrivals</h1>
-      <ProductsCarousel elements={productElements} />
+      {/* <Tabs elements={productElements} /> */}
     </div>
   );
 };
 
-export default NewArrivals;
+export default Tabview;

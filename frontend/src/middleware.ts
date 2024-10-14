@@ -9,24 +9,29 @@ const publicRoutes = [LOGIN_PAGE_ROUTE, SIGNUP_PAGE_ROUTE];
 export default function middleware(req: NextRequest, res: NextFetchEvent) {
   try {
     const path = req.nextUrl.pathname;
+    console.log(path,"path")
     const isProtectedRoute = protectedRoutes.includes(path);
     const isPublicRoute = publicRoutes.includes(path);
 
     const cookie = cookies().get("session")?.value;
     const session = decrypt(cookie);
-
+    console.log(cookie,session,"cookiee")
+    console.log(isProtectedRoute, session?.sub, "protected")
     if (isProtectedRoute && !session?.sub) {
+      console.log("back to login")
       return NextResponse.redirect(new URL(LOGIN_PAGE_ROUTE, req.nextUrl));
     }
-
+    console.log("logging 1")
+    console.log(isPublicRoute,req.nextUrl.pathname.startsWith(PRODUCTS_PAGE_ROUTE) , "public")
     if (
       isPublicRoute &&
       session?.sub &&
       !req.nextUrl.pathname.startsWith(PRODUCTS_PAGE_ROUTE)
     ) {
+      console.log("login success")
       return NextResponse.redirect(new URL(PRODUCTS_PAGE_ROUTE, req.nextUrl));
     }
-
+    console.log("logging 2")
     return NextResponse.next();
   } catch (error) {
     // Handle authentication errors

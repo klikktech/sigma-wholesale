@@ -10,7 +10,7 @@ interface Props {
 const ProductCard = (props: Props) => {
   return (
     <>
-      <Card shadow="sm" className="max-w-[300px]">
+      <Card shadow="sm" className="max-w-[230px] w-100">
         <CardBody className="overflow-visible p-0">
           <Image
             shadow="sm"

@@ -3,7 +3,7 @@
 import request from "@/api";
 import { createSession, decrypt } from "@/api/session";
 import { ResultCode } from "@/utils/functions";
-import { PRODUCTS_PAGE_ROUTE } from "@/utils/urls";
+import { HOME_PAGE_ROUTE } from "@/utils/urls";
 import { LoginFormValidator } from "@/utils/validators";
 import { isRedirectError } from "next/dist/client/components/redirect";
 import { redirect } from "next/navigation";
@@ -39,7 +39,7 @@ export async function authenticate(
         const user = decrypt(response.data.accessToken);
         createSession(response.data);
         console.log("jka");
-        redirect(PRODUCTS_PAGE_ROUTE);
+        redirect(HOME_PAGE_ROUTE);
         // return {
         //   type: "success",
         //   resultCode: ResultCode.UserLoggedIn,
