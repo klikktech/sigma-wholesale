@@ -68,11 +68,13 @@ public class Product {
     @Column(name = "product_id", unique = true)
     private Long productId;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @ManyToOne
+    @JoinColumn(name = "category_id",referencedColumnName = "id")
+    private Category category;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "modified_at")
     private LocalDateTime modifiedAt;
 
