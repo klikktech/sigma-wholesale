@@ -33,12 +33,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void saveOrder(OrderDto orderDto) {
-        User user=userRepository.findByUserId(orderDto.getBuyerId());
+        Optional<User> user=userRepository.findById(orderDto.getBuyerId());
         Order newOrder=orderMapper.orderDtoToOrder(orderDto);
-        if(user==null){
+        if(user.isEmpty()){
             return;
         }
-        newOrder.setBuyer(user);
+        newOrder.setBuyer(user.get());
         orderRepository.save(newOrder);
     }
 }

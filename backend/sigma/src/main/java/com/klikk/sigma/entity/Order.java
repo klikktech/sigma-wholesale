@@ -33,14 +33,9 @@ public class Order {
     private String id;
 
 
-    @Column(name = "order_id", unique = true)
-    private Integer orderId;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "order_creation_date")
     private LocalDateTime orderCreatedAt;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "order_modified_date")
     private LocalDateTime orderModifiedAt;
 

@@ -4,7 +4,7 @@ import com.klikk.sigma.dto.UserResponseDto;
 import com.klikk.sigma.entity.Address;
 import com.klikk.sigma.entity.User;
 import com.klikk.sigma.error.NotFoundException;
-import com.klikk.sigma.imports.dto.UserDto;
+//import com.klikk.sigma.imports.dto.UserDto;
 import com.klikk.sigma.mapper.UserMapper;
 import com.klikk.sigma.repository.UserRepository;
 import com.klikk.sigma.service.UserService;
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto findById(int id) {
+    public UserResponseDto findById(Integer id) {
         Optional<User> result = userRepository.findById(id);
         User user = null;
         if (result.isPresent()) {
