@@ -36,7 +36,7 @@ public class VariationDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedAt;
 
-    private int orderCount;
+    private Long orderCount;
 
-    private int parentId;
+    private Long parentId;
 }

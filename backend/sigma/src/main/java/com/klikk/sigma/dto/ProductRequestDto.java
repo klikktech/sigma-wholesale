@@ -42,9 +42,6 @@ public class ProductRequestDto {
 
     private Long productId;
 
-
-    private String category;
-
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 

@@ -1,5 +1,6 @@
 package com.klikk.sigma.mapper;
 
+import com.klikk.sigma.dto.ProductCategoryDto;
 import com.klikk.sigma.dto.ProductDto;
 import com.klikk.sigma.entity.Product;
 import com.klikk.sigma.entity.ProductRequestDto;
@@ -11,5 +12,6 @@ public interface ProductMapper {
     ProductDto ProductToProductDto(Product product);
 
     @Mapping(target = "category",ignore = true)
+    @Mapping(target = "id",ignore = true)
     Product ProductRequestToProduct(ProductRequestDto productRequestDto);
 }
