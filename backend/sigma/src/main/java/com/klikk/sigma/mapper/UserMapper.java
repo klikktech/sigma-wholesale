@@ -10,10 +10,10 @@ import org.mapstruct.Mappings;
 public interface UserMapper {
     UserResponseDto userToUserResponseDto(User user);
 
-//    @Mappings({
-//            @Mapping(target = "storeAddress", ignore = true),
-//            @Mapping(target = "shippingAddress", ignore = true)
-////            @Mapping(target = "taxDocument", ignore = true)
-//    })
-//    User userDtoToUser(UserDto userDto);
+    @Mappings({
+            @Mapping(target = "storeAddress", ignore = true),
+            @Mapping(target = "shippingAddress", ignore = true)
+//            @Mapping(target = "taxDocument", ignore = true)
+    })
+    User userDtoToUser(UserResponseDto userDto);
 }

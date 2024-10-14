@@ -3,7 +3,7 @@ package com.klikk.sigma.controller;
 import com.klikk.sigma.dto.request.AuthenticationRequest;
 import com.klikk.sigma.dto.response.AuthenticationResponse;
 import com.klikk.sigma.dto.request.RegisterRequest;
-import com.klikk.sigma.error.UnauthorisedException;
+import com.klikk.sigma.exception.UnauthorisedException;
 import com.klikk.sigma.service.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

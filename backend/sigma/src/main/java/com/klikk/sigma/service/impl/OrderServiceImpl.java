@@ -3,7 +3,6 @@ package com.klikk.sigma.service.impl;
 import com.klikk.sigma.dto.OrderDto;
 import com.klikk.sigma.entity.Order;
 import com.klikk.sigma.entity.User;
-import com.klikk.sigma.error.NotFoundException;
 import com.klikk.sigma.mapper.OrderMapper;
 import com.klikk.sigma.repository.OrderRepository;
 import com.klikk.sigma.repository.UserRepository;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {

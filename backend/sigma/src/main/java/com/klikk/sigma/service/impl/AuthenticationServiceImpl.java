@@ -5,12 +5,13 @@ import com.klikk.sigma.dto.response.AuthenticationResponse;
 import com.klikk.sigma.dto.request.RegisterRequest;
 import com.klikk.sigma.entity.Token;
 import com.klikk.sigma.entity.User;
-import com.klikk.sigma.error.UnauthorisedException;
+import com.klikk.sigma.exception.UnauthorisedException;
 import com.klikk.sigma.mapper.AuthenticationMapper;
 import com.klikk.sigma.repository.TokenRepository;
 import com.klikk.sigma.repository.UserRepository;
 import com.klikk.sigma.service.AuthenticationService;
 import com.klikk.sigma.service.JwtService;
+import com.klikk.sigma.type.RoleType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +68,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         revokeAllUserTokens(user);
         saveUserToken(jwtToken, refreshToken, user);
         return authenticationMapper.jwtTokenToAuthenticationResponse(jwtToken, refreshToken);
+    }
+
+    @Override
+    public AuthenticationResponse adminAuthenticate(AuthenticationRequest request) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+        RoleType role = user.getRole();
+        if(role.equals(RoleType.ADMIN)){
+            String jwtToken = jwtService.generateToken(user);
+            String refreshToken = jwtService.generateRefreshToken(user);
+            revokeAllUserTokens(user);
+            saveUserToken(jwtToken, refreshToken, user);
+            return authenticationMapper.jwtTokenToAuthenticationResponse(jwtToken, refreshToken);
+        }
+        else {
+            throw new UnauthorisedException("You don't have enough permissions to login");
+        }
     }
 
     @Override

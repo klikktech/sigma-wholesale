@@ -1,7 +1,7 @@
 package com.klikk.sigma.controller;
 import com.klikk.sigma.dto.UserResponseDto;
 import com.klikk.sigma.entity.User;
-import com.klikk.sigma.error.NotFoundException;
+import com.klikk.sigma.exception.NotFoundException;
 import com.klikk.sigma.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
