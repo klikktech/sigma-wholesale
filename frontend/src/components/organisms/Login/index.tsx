@@ -5,7 +5,7 @@ import { useFormState, useFormStatus } from "react-dom";
 import Button from "@/components/atoms/Button";
 import { authenticate } from "@/app/(auth)/login/action";
 import Image from "next/image";
-import logo from "../../../assets/sigma-logo.webp"
+import logo from "../../../assets/sigma-logo.png"
 import { SIGNUP_PAGE_ROUTE } from "@/utils/urls";
 
 const Login = () => {

@@ -12,6 +12,7 @@ const SkeletonProductCard = () => {
       <CardFooter className="text-small justify-between">
         <Skeleton className="h-3 w-3/5 rounded-lg" />
         <Skeleton className="h-3 w-1/5 rounded-lg" />
+        <Skeleton className="w-full rounded=lg" />
       </CardFooter>
     </Card>
   );

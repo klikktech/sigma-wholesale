@@ -5,7 +5,7 @@ import { useFormState } from "react-dom";
 import { Button, Input, Spacer, Textarea } from "@nextui-org/react";
 import { createNewUser } from "@/app/(auth)/register/action";
 import Image from "next/image";
-import logo from "../../../assets/sigma-logo.webp"
+import logo from "../../../assets/sigma-logo.png"
 
 
 interface FormErrorProps {

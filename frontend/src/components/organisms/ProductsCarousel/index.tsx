@@ -25,9 +25,9 @@ const ProductsCarousel = ({ elements }: Props) => {
   }
   else{
     return (
-        <div className='embla mx-auto mt-12'>
+        <div className='embla mt-5'>
           <div className='embla__viewport' ref={emblaRef}>
-            <div className='embla__container test1 h-full'>
+            <div className='embla__container test1 h-full '>
               {elements.map((element, index) => (
                 <div key={index} className='embla__slide test2 flex items-center justify-center'>
                   {element}

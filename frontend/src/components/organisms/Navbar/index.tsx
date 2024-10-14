@@ -17,7 +17,7 @@ import {
 } from "@nextui-org/react";
 import Image from "next/image";
 import React, { useState } from "react";
-import logo from "../../../assets/sigma-logo.webp"
+import logo from "../../../assets/sigma-logo.png"
 import { cookies } from "next/headers";
 import { decrypt } from "@/api/session";
 

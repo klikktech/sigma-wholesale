@@ -4,6 +4,7 @@ import SkeletonProductCard from "@/components/molecules/ProductCard/SkeletonCard
 import Link from "next/link";
 import React, { Suspense } from "react";
 import ProductsCarousel from "../ProductsCarousel";
+import Button from "@/components/atoms/Button";
 
 // Async function in the component for server-side data fetching
 const NewArrivals = async () => {
@@ -39,6 +40,12 @@ const NewArrivals = async () => {
     <div className="container mx-auto">
       <h1 className="my-2 text-xl">New Arrivals</h1>
       <ProductsCarousel elements={productElements} />
+      <div className="text-center">
+      <Button color="primary" className="mt-4 text-black py-2 rounded-lg hover:bg-primary-300">
+        view more
+      </Button>
+      </div>
+
     </div>
   );
 };

@@ -3,9 +3,6 @@ import { Inter, Manrope, Poppins } from "next/font/google";
 import "./globals.css";
 import { DESCRIPTION, SIGMA_WHOLESALE } from "@/utils/constants";
 import { Providers } from "./providers";
-import Navbar from "@/components/organisms/Navbar";
-import { cookies } from "next/headers";
-import { decrypt } from "@/api/session";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -22,15 +19,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookie = cookies().get("session")?.value;
-  const session = decrypt(cookie);
-  console.log(session,"session in layout")
   return (
     <html lang="en" className="SigmaLTheme">
       <body className={manrope.variable}>
         <Providers>
           <div className="">
-            <Navbar user={session?.sub}/>
             {children}
           </div>
         </Providers>

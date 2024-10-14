@@ -25,7 +25,6 @@
   .test1 {
     display: flex;
     flex-direction: row;
-    /* gap: 20px; */
   }
   
   .test2 {
