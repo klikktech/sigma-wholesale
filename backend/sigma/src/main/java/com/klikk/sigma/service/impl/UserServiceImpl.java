@@ -1,10 +1,8 @@
 package com.klikk.sigma.service.impl;
 
 import com.klikk.sigma.dto.UserResponseDto;
-import com.klikk.sigma.entity.Address;
 import com.klikk.sigma.entity.User;
-import com.klikk.sigma.error.NotFoundException;
-//import com.klikk.sigma.imports.dto.UserDto;
+import com.klikk.sigma.exception.NotFoundException;
 import com.klikk.sigma.mapper.UserMapper;
 import com.klikk.sigma.repository.UserRepository;
 import com.klikk.sigma.service.UserService;
@@ -12,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 

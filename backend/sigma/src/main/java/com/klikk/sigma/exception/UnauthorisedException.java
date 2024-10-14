@@ -1,4 +1,4 @@
-package com.klikk.sigma.error;
+package com.klikk.sigma.exception;
 
 public class UnauthorisedException extends RuntimeException {
 
