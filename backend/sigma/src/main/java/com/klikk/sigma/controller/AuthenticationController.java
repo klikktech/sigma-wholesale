@@ -35,6 +35,11 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 
+    @PostMapping("/admin/authenticate")
+    public ResponseEntity<AuthenticationResponse> adminAuthenticate(@RequestBody AuthenticationRequest request) {
+        return ResponseEntity.ok(authenticationService.adminAuthenticate(request));
+    }
+
     @PostMapping("/refresh-token")
     public ResponseEntity<AuthenticationResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
