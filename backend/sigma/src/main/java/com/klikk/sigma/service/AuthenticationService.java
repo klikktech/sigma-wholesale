@@ -12,5 +12,7 @@ public interface AuthenticationService {
 
     AuthenticationResponse authenticate(AuthenticationRequest request);
 
+    AuthenticationResponse adminAuthenticate(AuthenticationRequest request);
+
     AuthenticationResponse refreshToken(HttpServletRequest request, HttpServletResponse response);
 }

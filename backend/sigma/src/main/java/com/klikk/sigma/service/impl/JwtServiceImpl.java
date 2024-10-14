@@ -1,5 +1,6 @@
 package com.klikk.sigma.service.impl;
 
+import com.klikk.sigma.entity.User;
 import com.klikk.sigma.repository.TokenRepository;
 import com.klikk.sigma.service.JwtService;
 import io.jsonwebtoken.Claims;
@@ -38,8 +39,12 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+    public String generateToken(User user) {
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("name", user.getFirstname()+ " "+ user.getLastname());
+        extraClaims.put("email", user.getEmail());
+        extraClaims.put("username", user.getUsername());
+        return generateToken(extraClaims, user);
     }
 
     @Override
@@ -63,8 +68,8 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String generateRefreshToken(UserDetails userDetails) {
-        return buildToken(new HashMap<>(), userDetails, refreshExpiration);
+    public String generateRefreshToken(User user) {
+        return buildToken(new HashMap<>(), user, refreshExpiration);
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
