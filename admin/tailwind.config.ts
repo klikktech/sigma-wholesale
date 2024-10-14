@@ -10,7 +10,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      colors: {},
+      colors: {
+        shadow: "#A5A4A433",
+        card_hover: "#F3F2F5",
+      },
     },
   },
   plugins: [

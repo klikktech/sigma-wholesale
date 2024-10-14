@@ -1,8 +1,8 @@
 "use server";
 
 import { axios } from "@/lib/axios";
-import { createSession } from "@/lib/axios/session";
-import { USERS_PAGE_ROUTE } from "@/utils/routes";
+import { createSession, deleteSession } from "@/lib/axios/session";
+import { SIGNIN_PAGE_ROUTE, USERS_PAGE_ROUTE } from "@/utils/routes";
 import { Message } from "@/utils/types";
 import { SignInFormValidator } from "@/utils/validators";
 import { redirect } from "next/navigation";
@@ -36,4 +36,10 @@ export const signInAction = async (
   }
 
   return { error: "Something went wrong, please try again" };
+};
+
+export const signOutAction = async () => {
+  await axios.auth.signOut();
+  deleteSession();
+  return redirect(SIGNIN_PAGE_ROUTE);
 };

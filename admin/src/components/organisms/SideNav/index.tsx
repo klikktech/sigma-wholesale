@@ -1,40 +1,71 @@
-import { Avatar, Link } from "@nextui-org/react";
-import { color } from "framer-motion";
-import router from "next/router";
+import { Link, Tooltip, User } from "@nextui-org/react";
+import logo from "@/assets/sigma-logo.webp";
+import Image from "next/image";
+import { INavItem, IUser } from "@/utils/types";
+import Button from "@/components/atoms/Button";
+import { signOutAction } from "@/app/(auth-pages)/actions";
 
-const SideNav = () => {
-    return <>
-        <div className="flex flex-col justify-between" style={{ height: "100vh", backgroundColor: '#f4f4f5' }}>
-            <div className="flex flex-col gap-5 px-3">
-                <p className="py-3 font-bold text-inherit">
-                    Sigma Wholesale
-                </p>
-                <Link href="/users">
-                    <div className="flex gap-2" style={{color:'black'}}>
-                        <span className="material-symbols-rounded">group</span>
-                        <span>Users</span>
-                    </div>
-                </Link>
-                <Link href="/products" style={{color:'black'}}>
-                    <div className="flex gap-2">
-                        <span className="material-symbols-rounded">package_2</span>
-                        <span>Products</span>
-                    </div>
-                </Link>
-                <Link href="/orders" style={{color:'black'}}>
-                    <div className="flex gap-2">
-                        <span className="material-symbols-rounded">shopping_cart</span>
-                        <span>Orders</span>
-                    </div>
-                </Link>
-            </div>
-            <div className="flex gap-2 m-2 p-2 items-center justify-around" style={{ border: "1px solid #949191", borderRadius: "5px" }}>
-                <Avatar className="w-1/6" src="https://i.pravatar.cc/150?u=a04258a2462d826712d" size="sm" />
-                <span className="w-4/6">Ravi kalyan</span>
-                <span className="material-symbols-rounded w-1/6">logout</span>
-            </div>
-        </div>
-    </>
+interface Props {
+  items: INavItem[];
+  user: IUser;
 }
+
+const SideNav = ({ items, user }: Props) => {
+  return (
+    <div className="flex flex-col justify-between max-w-72 min-w-64 bg-card_hover h-svh">
+      <div className="flex flex-col gap-3 px-3">
+        <p className="py-3 font-bold text-inherit">
+          <Image alt="sidenav brand" src={logo} height={50} />
+        </p>
+        <div className="flex flex-col gap-2">
+          {items.map((item) => (
+            <Link key={`navitem-${item.path}`} href={item.path}>
+              <div className="w-full hover:bg-shadow rounded-lg p-2 flex gap-3 text-black">
+                <span className="material-symbols-rounded w-[24px]">
+                  {item.icon}
+                </span>
+                <span>{item.label}</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+      <div className="flex gap-2 m-2 p-2 items-center justify-around border rounded-lg">
+        <div className="flex items-center gap-2">
+          <User
+            avatarProps={{
+              radius: "full",
+              className: "",
+              src: user.image,
+              showFallback: true,
+              fallback: (
+                <span className="material-symbols-rounded text-default-500">
+                  person
+                </span>
+              ),
+            }}
+            description={user.email}
+            name={<span className="capitalize">{user.name}</span>}
+          />
+        </div>
+        <form>
+          <Tooltip content="Logout" showArrow offset={0}>
+            <Button
+              type="submit"
+              isIconOnly
+              variant="faded"
+              className="border-0 text-black"
+              formAction={signOutAction}
+            >
+              <span className="material-symbols-rounded text-default-500 cursor-pointer">
+                logout
+              </span>
+            </Button>
+          </Tooltip>
+        </form>
+      </div>
+    </div>
+  );
+};
 
 export default SideNav;
