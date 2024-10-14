@@ -65,6 +65,13 @@ public class Product {
     @Column(name = "comment_status")
     private String commentStatus;
 
+    @Column(name = "product_id", unique = true)
+    private Long productId;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id",referencedColumnName = "id")
+    private Category category;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

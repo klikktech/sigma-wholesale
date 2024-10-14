@@ -1,5 +1,6 @@
 package com.klikk.sigma.controller;
 import com.klikk.sigma.entity.Product;
+import com.klikk.sigma.entity.ProductRequestDto;
 import com.klikk.sigma.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,7 @@ public class ProductController {
 
     @PostMapping("/")
     @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
-    public ResponseEntity<String> addProduct(@RequestBody Product product){
+    public ResponseEntity<String> addProduct(@RequestBody ProductRequestDto product){
         try {
             productService.saveProduct(product);
             return ResponseEntity.ok("Product Added Successfully");

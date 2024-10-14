@@ -2,9 +2,14 @@ package com.klikk.sigma.mapper;
 
 import com.klikk.sigma.dto.ProductDto;
 import com.klikk.sigma.entity.Product;
+import com.klikk.sigma.entity.ProductRequestDto;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
     ProductDto ProductToProductDto(Product product);
+
+    @Mapping(target = "category",ignore = true)
+    Product ProductRequestToProduct(ProductRequestDto productRequestDto);
 }
