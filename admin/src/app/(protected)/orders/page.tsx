@@ -1,4 +1,4 @@
-import BreadcrumbSkeleton from "@/components/molecules/BreadCrumbSkeleton"
+import Breadcrumb from "@/components/molecules/BreadCrumb"
 import UserTable from "@/components/molecules/UserTable"
 import { User } from "@/components/molecules/UserTable/columns"
 
@@ -10,12 +10,12 @@ async function getUsers(): Promise<User[]> {
     return data
 }
 
-export default async function Products() {
+export default async function Orders() {
     const users = await getUsers()
 
     return (
         <>
-            <BreadcrumbSkeleton current={'Products'} />
+            <Breadcrumb />
             <section className='py-2'>
                 <div className='container'>
                     <UserTable users={users} />

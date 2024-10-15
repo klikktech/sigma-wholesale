@@ -3,6 +3,13 @@ export type Message =
   | { error: string }
   | { message: string };
 
+export interface ITableColumn {
+  key: string;
+  label: string;
+  isSortable?: boolean;
+  isSearchable?: boolean;
+}
+
 export interface IUser {
   image?: string;
   name: string;

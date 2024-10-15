@@ -1,5 +1,5 @@
 import { Link, Tooltip, User } from "@nextui-org/react";
-import logo from "@/assets/sigma-logo.webp";
+import logo from "@/assets/sigma-logo-removebg-preview.png";
 import Image from "next/image";
 import { INavItem, IUser } from "@/utils/types";
 import Button from "@/components/atoms/Button";
