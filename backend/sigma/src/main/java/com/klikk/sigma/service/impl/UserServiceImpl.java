@@ -1,6 +1,7 @@
 package com.klikk.sigma.service.impl;
 
 import com.klikk.sigma.dto.UserResponseDto;
+import com.klikk.sigma.dto.response.UsersResponse;
 import com.klikk.sigma.entity.User;
 import com.klikk.sigma.exception.NotFoundException;
 import com.klikk.sigma.mapper.UserMapper;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -29,8 +31,11 @@ public class UserServiceImpl implements UserService {
     private AttachmentServiceImpl attachmentServiceImpl;
 
     @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<UsersResponse> findAll() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(user -> userMapper.userToUserResponse(user)) // adjust fields as needed
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -55,5 +60,17 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("User with username : " + email + " not found.");
         }
         return user;
+    }
+
+    @Override
+    public UsersResponse findUserByEmail(String email) {
+        Optional<User> result = userRepository.findByEmail(email);
+        User user = null;
+        if (result.isPresent()) {
+            user = result.get();
+        } else {
+            throw new UsernameNotFoundException("User with username : " + email + " not found.");
+        }
+        return userMapper.userToUserResponse(user);
     }
 }
