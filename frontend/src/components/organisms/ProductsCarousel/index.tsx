@@ -40,7 +40,7 @@ const ProductsCarousel = ({ elements }: Props) => {
             <span className="material-symbols-rounded prev2" onClick={scrollPrev}>
               chevron_left
             </span>
-            <span className="material-symbols-rounded next" onClick={scrollNext}>
+            <span className="material-symbols-rounded next2" onClick={scrollNext}>
               chevron_right
             </span>
           </div>

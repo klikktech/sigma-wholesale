@@ -1,6 +1,6 @@
 .next2,
 .prev2 {
-  top: 40%;
+  /* top: 40%;
   position: absolute;
   display: flex;
   justify-content: center;
@@ -9,15 +9,15 @@
   cursor: pointer;
   font-weight: bold;
   font-size: 18px;
-  z-index: 2;
+  z-index: 2; */
 }
-.next2 {
+/* .next2 {
     right: 6rem;
   }
   
   .prev2 {
     left: 6rem;
-  }
+  } */
   .embla__viewport {
     overflow: hidden;
   }

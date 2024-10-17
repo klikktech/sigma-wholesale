@@ -33,7 +33,7 @@ const ProductCard = (props: Props) => {
       </Card> */}
     <div className="max-w-60 bg-gray-200 text-black rounded-xl shadow-lg p-4">
       <div className="relative">
-        <img
+        <Image
           className="w-full rounded-lg"
           src={props.img}
           alt={props.title}

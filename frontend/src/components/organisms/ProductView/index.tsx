@@ -2,6 +2,7 @@
 import {
   Avatar,
   Button,
+  Image,
   Input,
   ScrollShadow,
   Textarea,
@@ -91,11 +92,11 @@ const ProductView = () => {
     <>
       <div className="flex gap-x-10 items-center">
         <div className="w-full md:w-1/2 flex flex-col gap-4">
-          <img className="rounded-2xl" src={selectedImage} alt="" />
+          <Image className="rounded-2xl" src={selectedImage} alt="" />
           <ScrollShadow>
             <div className="images-list flex gap-4">
               {quantities.map((item) => (
-                <img
+                <Image
                   className="rounded-xl"
                   width="24%"
                   key={item.id}
@@ -123,7 +124,7 @@ const ProductView = () => {
             >
               <div className="md:w-2/3">
                 <div className="flex gap-x-3 ">
-                  <img
+                  <Image
                     className="rounded-full"
                     width="16%"
                     src={item.image}
