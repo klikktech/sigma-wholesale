@@ -1,7 +1,8 @@
 package com.klikk.sigma.entity;
 
 
-import com.klikk.sigma.utils.CommentType;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.klikk.sigma.utils.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,14 +30,34 @@ public class Comment {
     )
     private String id;
 
-    @Enumerated(EnumType.STRING)
-    private CommentType commentType;
+    @ManyToOne
+    @JoinColumn(name = "order_id",referencedColumnName = "id")
+    private Order order;
 
     @Column(name = "parent_id")
-    private Integer parentId;
+    private Long orderId;
 
-    @Column(name = "comment")
+    @Column(name = "comment",columnDefinition = "TEXT")
     private String comment;
 
+    @Column(name = "comment_author")
+    private String commentAuthor;
+
+    @Column(name = "comment_author_email")
+    private String commentAuthorEmail;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "comment_date")
+    private String commentDate;
+
+    @JsonIgnore
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @JsonIgnore
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 
 }

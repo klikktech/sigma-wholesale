@@ -1,4 +1,4 @@
-package com.klikk.sigma.entity;
+package com.klikk.sigma.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.klikk.sigma.utils.StringPrefixedSequenceGenerator;

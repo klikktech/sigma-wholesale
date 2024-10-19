@@ -1,6 +1,5 @@
 package com.klikk.sigma.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.klikk.sigma.utils.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -86,4 +85,11 @@ public class Product {
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "parent")
     private List<Variation> variations;
+
+//    @OneToMany(cascade = CascadeType.ALL,mappedBy = "product")
+//    private List<Attachment> images;
+
+    @ManyToOne
+    @JoinColumn(name = "attachment_id",referencedColumnName = "id")
+    private Attachment displayImage;
 }

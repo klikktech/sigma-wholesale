@@ -23,10 +23,10 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 
     @Override
     public void addProductCategory(ProductCategoryDto productCategoryDto) {
-        Optional<Product> product= productRepository.findByproductId(productCategoryDto.getProductId()) ;
-        Category category=categoryRepository.findByCategoryId(productCategoryDto.getCategoryId());
-        if(product.isPresent()){
-            product.get().setCategory(category);
+        Optional<Product> product= productRepository.findByProductId(productCategoryDto.getProductId()) ;
+        Optional<Category> category=categoryRepository.findByCategoryId(productCategoryDto.getCategoryId());
+        if(product.isPresent() && category.isPresent()){
+            product.get().setCategory(category.get());
             productRepository.save(product.get());
         }
     }

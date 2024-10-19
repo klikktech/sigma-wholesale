@@ -1,9 +1,9 @@
 package com.klikk.sigma.mapper;
 
-import com.klikk.sigma.dto.ProductCategoryDto;
+//import com.klikk.sigma.dto.ProductCategoryDto;
 import com.klikk.sigma.dto.ProductDto;
+import com.klikk.sigma.dto.ProductRequestDto;
 import com.klikk.sigma.entity.Product;
-import com.klikk.sigma.entity.ProductRequestDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
