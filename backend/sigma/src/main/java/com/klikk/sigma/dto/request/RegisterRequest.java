@@ -1,15 +1,9 @@
 package com.klikk.sigma.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.klikk.sigma.type.RoleType;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -17,16 +11,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class RegisterRequest {
 
-    private Integer userId;
-
     private String firstname;
 
     private String lastname;
 
     private String nickname;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createdAt;
 
     private String email;
 
@@ -49,8 +38,4 @@ public class RegisterRequest {
     private String shippingState;
 
     private String shippingZip;
-
-//    private MultipartFile taxDocument;
-    @Enumerated(EnumType.STRING)
-    private RoleType role;
 }

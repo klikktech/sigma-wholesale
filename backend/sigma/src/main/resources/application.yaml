@@ -9,7 +9,7 @@ spring:
     username: root
     password: password
     #    url: jdbc:mysql://localhost:3306/sigmawholesale
-    url: jdbc:mysql://localhost:3306/sigmawholesalebackup
+    url: jdbc:mysql://localhost:3306/sigmawholesale
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true

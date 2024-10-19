@@ -57,7 +57,7 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_store_address",
-            joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
+            joinColumns = @JoinColumn(name = "id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "address_id",referencedColumnName = "id")
     )
     private List<Address> storeAddress;
@@ -65,7 +65,7 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_shipping_address",
-            joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
+            joinColumns = @JoinColumn(name = "id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "address_id",referencedColumnName = "id")
     )
     private List<Address> shippingAddress;
@@ -119,7 +119,7 @@ public class User implements UserDetails {
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
-                ", userId=" + userId +
+//                ", userId=" + userId +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", nickname='" + nickname + '\'' +

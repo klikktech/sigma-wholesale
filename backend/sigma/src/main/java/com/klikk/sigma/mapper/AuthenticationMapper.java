@@ -19,9 +19,10 @@ public abstract class AuthenticationMapper {
     private PasswordEncoder passwordEncoder;
 
     @Mapping(source = "password", target = "passwordHash", qualifiedByName = "encodePassword")
-    @Mapping(target = "createdAt", qualifiedByName = "convertStringDateToDate")
+    @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "storeAddress",ignore = true)
     @Mapping(target = "shippingAddress",ignore = true)
+    @Mapping(target = "role", ignore = true)
     public abstract User registerRequestToUser(RegisterRequest request);
 
     @Mapping(source = "jwtToken", target = "accessToken")
@@ -33,12 +34,4 @@ public abstract class AuthenticationMapper {
         return passwordEncoder.encode(password);
     }
 
-
-    @Named("convertStringDateToDate")
-    public LocalDateTime convertStringDateToDate(String date){
-        // write logic for date conversion he
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-        LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
-        return dateTime;
-    }
 }
