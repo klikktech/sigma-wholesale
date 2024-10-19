@@ -1,6 +1,6 @@
 package com.klikk.sigma.service;
 
-import com.klikk.sigma.dto.ProductRequestDto;
+import com.klikk.sigma.dto.request.ProductRequestDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

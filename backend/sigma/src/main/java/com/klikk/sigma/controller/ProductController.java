@@ -1,6 +1,7 @@
 package com.klikk.sigma.controller;
 
-import com.klikk.sigma.dto.ProductRequestDto;
+
+import com.klikk.sigma.dto.request.ProductRequestDto;
 import com.klikk.sigma.service.impl.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class ProductController {
     @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
     public ResponseEntity<String> addProduct(
             @RequestPart("product") ProductRequestDto productRequestDto,
-            @RequestPart(value = "displayImage",required = false) MultipartFile displayImage
+            @RequestPart(value = "displayImage", required = false) MultipartFile displayImage
 //            @RequestPart(value = "images",required = false) MultipartFile[] images,
 //            @RequestPart(value = "imageIds",required = false) String[] imageIds
     ) {

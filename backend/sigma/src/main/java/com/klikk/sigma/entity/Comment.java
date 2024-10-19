@@ -3,7 +3,7 @@ package com.klikk.sigma.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.klikk.sigma.utils.StringPrefixedSequenceGenerator;
+import com.klikk.sigma.util.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +21,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comment_sequence")
     @GenericGenerator(
             name="comment_sequence",
-            type = com.klikk.sigma.utils.StringPrefixedSequenceGenerator.class,
+            type = com.klikk.sigma.util.StringPrefixedSequenceGenerator.class,
             parameters = {
                     @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.INCREMENT_PARAM, value = "1"),
                     @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.PREFIX_VALUE_PARAM, value = "COM_"),

@@ -3,7 +3,7 @@ package com.klikk.sigma.service.impl;
 import com.klikk.sigma.entity.Attachment;
 import com.klikk.sigma.repository.AttachmentRepository;
 import com.klikk.sigma.service.AttachmentService;
-import com.klikk.sigma.utils.AttachmentType;
+import com.klikk.sigma.type.AttachmentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

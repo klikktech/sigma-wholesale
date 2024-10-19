@@ -20,8 +20,8 @@ public class ReviewServiceImpl implements ReviewService {
     private ProductRepository productRepository;
     @Override
     public void addReview(Review review) {
-        Optional<Product> linkedProduct=productRepository.findByproductId(review.getProductId());
-        linkedProduct.ifPresent(review::setProduct);
+//        Optional<Product> linkedProduct=productRepository.findById(review.getId());
+//        linkedProduct.ifPresent(review::setProduct);
         reviewRepository.save(review);
     }
 }

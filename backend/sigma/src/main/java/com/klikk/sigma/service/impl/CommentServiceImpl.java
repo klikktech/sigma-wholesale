@@ -21,8 +21,8 @@ public class CommentServiceImpl implements CommentService {
     private OrderRepository orderRepository;
     @Override
     public void addComment(Comment comment) {
-        Optional<Order> linkedOrder=orderRepository.findByOrderId(comment.getOrderId());
-        linkedOrder.ifPresent(comment::setOrder);
+//        Optional<Order> linkedOrder=orderRepository.findById(comment.getOrderId());
+//        linkedOrder.ifPresent(comment::setOrder);
         commentRepository.save(comment);
     }
 }
