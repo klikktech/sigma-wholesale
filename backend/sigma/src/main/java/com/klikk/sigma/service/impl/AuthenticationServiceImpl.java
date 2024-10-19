@@ -49,9 +49,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public AuthenticationResponse register(RegisterRequest request) {
         User user = authenticationMapper.registerRequestToUser(request);
-        if (request.getCreatedAt() == null) {
-            user.setCreatedAt(LocalDateTime.now());
-        }
+        user.setCreatedAt(LocalDateTime.now());
+        user.setRole(RoleType.PENDING);
         User savedUser = userRepository.save(user);
         String jwtToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);

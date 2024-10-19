@@ -27,10 +27,10 @@ public class Token {
     )
     private String id;
 
-    @Column(name = "access_token")
+    @Column(name = "access_token",length = 512)
     private String accessToken;
 
-    @Column(name = "refresh_token")
+    @Column(name = "refresh_token",length = 512)
     private String refreshToken;
 
     @Column(name = "is_logged_out")

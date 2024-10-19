@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public enum RoleType {
-    USER(
+    CUSTOMER(
             Set.of(
                     PermissionType.USER_READ,
                     PermissionType.USER_WRITE,
@@ -24,6 +24,15 @@ public enum RoleType {
                     PermissionType.ADMIN_WRITE,
                     PermissionType.ADMIN_PUT,
                     PermissionType.ADMIN_DELETE
+            )
+    ),
+
+    PENDING(
+            Set.of(
+            PermissionType.ADMIN_READ,
+            PermissionType.ADMIN_WRITE,
+            PermissionType.ADMIN_PUT,
+            PermissionType.ADMIN_DELETE
             )
     );
 
