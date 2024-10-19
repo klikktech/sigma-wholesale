@@ -1,27 +1,27 @@
 package com.klikk.sigma.entity;
 
-import com.klikk.sigma.util.StringPrefixedSequenceGenerator;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.klikk.sigma.utils.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.sql.Date;
-
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@AllArgsConstructor
 @Table(name = "reviews")
 public class Review {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "review_sequence")
     @GenericGenerator(
             name="review_sequence",
-            type = com.klikk.sigma.util.StringPrefixedSequenceGenerator.class,
+            type = com.klikk.sigma.utils.StringPrefixedSequenceGenerator.class,
             parameters = {
                     @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.INCREMENT_PARAM, value = "1"),
                     @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.PREFIX_VALUE_PARAM, value = "REV_"),
@@ -32,18 +32,38 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "product_id",referencedColumnName = "id")
-    private Product productId;
+    private Product product;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
-    private User user;
+    @Column(name = "review",columnDefinition = "TEXT")
+    private String review;
+
+    @Column(name = "parent_id")
+    private Long productId;
+
+    @Column(name = "review_author")
+    private String reviewAuthor;
+
+    @Column(name = "review_author_email")
+    private String reviewAuthorEmail;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "review_date")
+    private String reviewDate;
 
     @Column(name = "rating")
     private double rating;
 
-    @Column(name = "comment")
-    private String comment;
+    @Column(name = "verified")
+    private Integer verified;
 
-    @Column(name = "review_date")
-    private Date reviewDate;
+    @JsonIgnore
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @JsonIgnore
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 }
+

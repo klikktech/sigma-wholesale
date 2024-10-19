@@ -33,6 +33,10 @@ public class Attachment {
     private AttachmentType type;
 
     @Lob
-    @Column(name = "file_content", nullable = false)
+    @Column(name = "file_content", nullable = false, columnDefinition = "LONGBLOB")
     private byte[] fileContent;
+
+//    @ManyToOne
+//    @JoinColumn(name = "product_id")
+//    private Product product;
 }

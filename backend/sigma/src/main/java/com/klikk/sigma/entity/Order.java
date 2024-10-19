@@ -1,14 +1,16 @@
 package com.klikk.sigma.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.klikk.sigma.util.StringPrefixedSequenceGenerator;
+import com.klikk.sigma.utils.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.cglib.core.Local;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Entity
@@ -23,7 +25,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_sequence")
     @GenericGenerator(
             name="order_sequence",
-            type = com.klikk.sigma.util.StringPrefixedSequenceGenerator.class,
+            type = com.klikk.sigma.utils.StringPrefixedSequenceGenerator.class,
             parameters = {
                     @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.INCREMENT_PARAM, value = "1"),
                     @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.PREFIX_VALUE_PARAM, value = "ODR_"),
@@ -33,9 +35,14 @@ public class Order {
     private String id;
 
 
+    @Column(name = "order_id", unique = true)
+    private Long orderId;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "order_creation_date")
     private LocalDateTime orderCreatedAt;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "order_modified_date")
     private LocalDateTime orderModifiedAt;
 
