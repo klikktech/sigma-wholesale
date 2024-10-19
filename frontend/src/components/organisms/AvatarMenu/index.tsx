@@ -1,5 +1,5 @@
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, User } from "@nextui-org/react";
-
+import userIcon from '@/assets/user-icon.png'
 export default function AvatarMenu() {
     return (
         <div className="flex items-center gap-4">
@@ -8,8 +8,9 @@ export default function AvatarMenu() {
                     <User
                         as="button"
                         avatarProps={{
-                            isBordered: true,
-                            src: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+                            // isBordered: true,
+                            showFallback:true,
+                            src: `${userIcon}`
                         }}
                         className="transition-transform"
                         description="@tonyreichert"

@@ -1,41 +1,13 @@
 "use client";
 import {
-  Avatar,
   Button,
-  Image,
-  Input,
   ScrollShadow,
-  Textarea,
 } from "@nextui-org/react";
 import React, { useState } from "react";
 import "./style.css";
-import { color } from "framer-motion";
+import ReviewList from "../ReviewsList";
 
 const ProductView = () => {
-  const reviewList = [
-    {
-      name: "Alice",
-      timeStamp: "10 Jan, 2024",
-      avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-      comments:
-        "Love the quality of the bong I purchased. Smooth transaction and fast shipping.",
-    },
-    {
-      name: "Bob",
-      timeStamp: "15 May, 2024",
-      avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d",
-      comments:
-        "Great selection of pipes, found exactly what I was looking for.",
-    },
-    {
-      name: "Charlie",
-      timeStamp: "21 Aug, 2024",
-      avatar: "https://i.pravatar.cc/150?u=a04258114e29026702d",
-      comments:
-        "Amazing customer service and the vaporizer works like a charm.",
-    },
-  ];
-
   const [quantities, setQuantities] = useState([
     {
       id: 1,
@@ -89,34 +61,21 @@ const ProductView = () => {
   };
 
   return (
-    <>
-      <div className="flex gap-x-10 items-center">
-        <div className="w-full md:w-1/2 flex flex-col gap-4">
-          <Image className="rounded-2xl" src={selectedImage} alt="" />
-          <ScrollShadow>
-            <div className="images-list flex gap-4">
-              {quantities.map((item) => (
-                <Image
-                  className="rounded-xl"
-                  width="24%"
-                  key={item.id}
-                  src={item.image}
-                  alt=""
-                  onClick={() => setSelectedImage(item.image)}
-                />
-              ))}
-            </div>
-          </ScrollShadow>
-        </div>
-        <div className="w-full md:w-1/2">
-          <p className="text-2xl font-bold my-3">
+    <div className="px-40">
+      <div className="flex justify-between">
+        <div className="">
+          <p className="text-2xl font-bold mb-1">
             NIRVANA THCA+THCP LIQUID DIAMOND PREROLL 2G 10CT/JAR
           </p>
-          <p className="text-base my-3">
+          <p className="text-base mb-5">
             Discover our exclusive collection of premium smoking gear.
           </p>
-          <p className="text-xl font-bold my-3">$34</p>
-          <p className="text-large font-bold my-3">Available Options</p>
+        </div>
+        <p className="text-3xl font-bold">$34</p>
+      </div>
+      <div className="flex gap-x-10">
+        <div className="w-full md:w-1/2">
+          <p className="text-2xl font-bold mb-5">Available Options</p>
           {quantities.map((item) => (
             <div
               key={item.id}
@@ -124,9 +83,9 @@ const ProductView = () => {
             >
               <div className="md:w-2/3">
                 <div className="flex gap-x-3 ">
-                  <Image
-                    className="rounded-full"
-                    width="16%"
+                  <img
+                    className="rounded-md"
+                    width="20%"
                     src={item.image}
                     alt=""
                   />
@@ -134,7 +93,7 @@ const ProductView = () => {
                     <p className="text-sm">
                       Discover our exclusive collection of premium smoking gear.
                     </p>
-                    <p className="font-extralight text-sm">$34</p>
+                    <p className="font-semibold text-sm">$34</p>
                   </div>
                 </div>
               </div>
@@ -157,65 +116,33 @@ const ProductView = () => {
               </div>
             </div>
           ))}
-          <Button className="w-1/3 mt-3" color="primary">
+        </div>
+        <div className="md:w-1/2 w-full flex flex-col gap-4">
+          <img className="rounded-2xl" src={selectedImage} alt="" />
+          <ScrollShadow>
+            <div className="images-list flex gap-4">
+              {quantities.map((item) => (
+                <img
+                  className="rounded-xl"
+                  width="24%"
+                  key={item.id}
+                  src={item.image}
+                  alt=""
+                  onClick={() => setSelectedImage(item.image)}
+                />
+              ))}
+            </div>
+          </ScrollShadow>
+          <Button className="w-full mt-3" color="primary">
             <span className="material-symbols-rounded">shopping_cart</span>
             Add to cart
           </Button>
         </div>
       </div>
-      <div className="flex gap-4 mt-4">
-        <div className="w-full md:w-1/2 flex flex-col gap-4">
-          <div className="ml-1 flex items-center">
-            {[1, 2, 3, 4, 5].map((rating) => (
-              <span className="material-symbols-rounded star" key={`review-${rating}`}>star</span>
-            ))}
-          </div>
-          <Textarea
-            label="Review"
-            placeholder="Write your review"
-            className="w-full"
-          />
-          <div className="flex gap-4">
-            <Input
-              className="w-full md:w-1/2"
-              type="text"
-              label="Name"
-              placeholder="Enter your name"
-            />
-            <Input
-              className="w-full md:w-1/2"
-              type="email"
-              label="Email"
-              placeholder="Enter your email"
-            />
-          </div>
-        </div>
-        <div className="w-full md:w-1/2 flex flex-col gap-4">
-          {reviewList.map((items) => (
-            <div className="flex flex-col gap-1" key={items.name}>
-              <div className="flex gap-4 items-center">
-                <Avatar src={items.avatar} />
-                <div className="">
-                  <p>{items.name}</p>
-                  <p className="text-xs">{items.timeStamp}</p>
-                </div>
-              </div>
-              <div className="ml-1 flex items-center">
-                {[1, 2, 3, 4, 5].map((rating) => (
-                  <span
-                    className="material-symbols-rounded star"
-                    key={`${items.name}-${rating}`}
-                  >
-                    star
-                  </span>
-                ))}
-              </div>
-              <div>{items.comments}</div>
-            </div>
-          ))}
-        </div>
+      <div className="mt-3">
+        <ReviewList/>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -31,7 +31,7 @@ const ProductCard = (props: Props) => {
           </div>
 
       </Card> */}
-    <div className="max-w-60 bg-gray-200 text-black rounded-xl shadow-lg p-4">
+    <div className="max-w-60 bg-gray-200 text-black rounded-xl shadow-lg">
       <div className="relative">
         <Image
           className="w-full rounded-lg"
@@ -39,13 +39,15 @@ const ProductCard = (props: Props) => {
           alt={props.title}
         />
       </div>
-      <div className="mt-4">
-        <h3 className="text-sm title font-semibold">{props.title}</h3>
+      <div className="mt-2 p-4">
+      <div className="flex">
+        <h3 className="text-sm font-semibold h-10 overflow-hidden line-clamp-2">{props.title}</h3>
         <p className="text-gray-400">{props.price}</p>
       </div>
       <Button color="primary" className="mt-4 w-full text-black py-2 rounded-lg hover:bg-primary-300">
         Add to cart
       </Button>
+      </div>
     </div>
     </>
   );

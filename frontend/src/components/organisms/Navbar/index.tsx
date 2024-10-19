@@ -1,8 +1,7 @@
 "use client";
-import { NAV_MENU_ITEMS, SIGMA_WHOLESALE } from "@/utils/constants";
+import { NAV_MENU_ITEMS } from "@/utils/constants";
 import { Input } from "@nextui-org/input";
 import {
-  Button,
   Link,
   Navbar as NextUINavbar,
   NavbarBrand,
@@ -11,8 +10,6 @@ import {
   NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
-  user,
-  Avatar,
   Badge,
 } from "@nextui-org/react";
 import Image from "next/image";

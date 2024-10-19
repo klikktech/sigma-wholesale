@@ -29,21 +29,27 @@ const ProductsCarousel = ({ elements }: Props) => {
           <div className='embla__viewport' ref={emblaRef}>
             <div className='embla__container test1 h-full '>
               {elements.map((element, index) => (
-                <div key={index} className='embla__slide test2 flex items-center justify-center'>
+                <div key={index} className='embla__slide test2 flex items-center justify-center w-full'>
                   {element}
                 </div>
               ))}
             </div>
           </div>
     
-          <div className='flex justify-between'>
-            <span className="material-symbols-rounded prev2" onClick={scrollPrev}>
-              chevron_left
-            </span>
-            <span className="material-symbols-rounded next2" onClick={scrollNext}>
-              chevron_right
-            </span>
-          </div>
+          <div className=''>
+      <span
+          className="material-symbols-rounded prev2"
+          onClick={scrollPrev}
+        >
+          chevron_left
+        </span>
+        <span
+          className="material-symbols-rounded next2"
+          onClick={scrollNext}
+        >
+          chevron_right
+        </span>
+      </div>
         </div>
       );
   }

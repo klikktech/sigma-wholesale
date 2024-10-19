@@ -3,7 +3,7 @@ import ProductCard from "@/components/molecules/ProductCard";
 import SkeletonProductCard from "@/components/molecules/ProductCard/SkeletonCard";
 import Link from "next/link";
 import React, { Suspense } from "react";
-import { Tabs } from "@nextui-org/react";
+import Tabs from "../Tabs";
 
 const Tabview = async () => {
   let products = [];
@@ -36,7 +36,7 @@ const Tabview = async () => {
 
   return (
     <div className="container mx-auto">
-      {/* <Tabs elements={productElements} /> */}
+      <Tabs elements={productElements} />
     </div>
   );
 };
