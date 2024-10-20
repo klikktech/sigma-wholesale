@@ -33,6 +33,6 @@ public class Attachment {
     private AttachmentType type;
 
     @Lob
-    @Column(name = "file_content", nullable = false)
+    @Column(name = "file_content", nullable = false,columnDefinition = "LONGBLOB")
     private byte[] fileContent;
 }

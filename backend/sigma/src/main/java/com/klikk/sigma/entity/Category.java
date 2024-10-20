@@ -28,11 +28,8 @@ public class Category {
     )
     private String id;
 
-    @Column(name = "name")
+    @Column(name = "name",unique = true)
     private String name;
-
-    @Column(name = "category_id")
-    private Long categoryId;
 
     @Column(name = "slug")
     private String slug;
@@ -40,5 +37,8 @@ public class Category {
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "category")
     private List<Product> products;
 
+    @ManyToOne
+    @JoinColumn(name = "parent_id",referencedColumnName = "id")
+    private Category parentCategory;
 
 }
