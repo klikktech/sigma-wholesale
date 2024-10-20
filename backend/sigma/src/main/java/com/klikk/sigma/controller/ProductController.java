@@ -1,4 +1,6 @@
 package com.klikk.sigma.controller;
+
+import com.klikk.sigma.dto.response.ProductResponseDto;
 import com.klikk.sigma.entity.Product;
 import com.klikk.sigma.entity.ProductRequestDto;
 import com.klikk.sigma.service.ProductService;
@@ -7,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/products")
@@ -17,14 +20,20 @@ public class ProductController {
 
     @PostMapping("/")
     @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
-    public ResponseEntity<String> addProduct(@RequestBody ProductRequestDto product){
+    public ResponseEntity<String> addProduct(@RequestPart("product") ProductRequestDto productRequest,
+                                             @RequestPart(value = "displayImage") MultipartFile displayImage
+    ) {
         try {
-            productService.saveProduct(product);
+            productService.saveProduct(productRequest, displayImage);
             return ResponseEntity.ok("Product Added Successfully");
-        }
-        catch (Exception exception){
+        } catch (Exception exception) {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
         }
+
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponseDto> getProduct(@PathVariable String id){
 
     }
 }

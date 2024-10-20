@@ -11,5 +11,12 @@ public interface ProductMapper {
     ProductDto ProductToProductDto(Product product);
 
     @Mapping(target = "category",ignore = true)
+    @Mapping(target = "id",ignore = true)
+    @Mapping(target = "createdAt",ignore = true)
+    @Mapping(target = "modifiedAt",ignore = true)
+    @Mapping(target = "ratingCount",ignore = true)
+    @Mapping(target = "averageRating",ignore = true)
+    @Mapping(target = "stockQuantity",ignore = true)
+    @Mapping(target = "totalSales",ignore = true)
     Product ProductRequestToProduct(ProductRequestDto productRequestDto);
 }
