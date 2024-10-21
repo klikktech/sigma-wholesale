@@ -23,7 +23,7 @@ const NewArrivals = async () => {
   }
 
   const productElements = products.map((item: any) => (
-    <div className="" key={item.id}>
+    <div className="embla__slide flex embla-slide w-full" key={item.id}>
       <Link href={`/product/${item.id}`}>
         <Suspense fallback={<SkeletonProductCard />}>
           <ProductCard
@@ -39,7 +39,7 @@ const NewArrivals = async () => {
   return (
     <div className="container mx-auto">
       <h1 className="my-2 text-xl">New Arrivals</h1>
-      <ProductsCarousel elements={productElements} />
+      <ProductsCarousel>{productElements}</ProductsCarousel>
       <div className="text-center">
       <Button color="primary" className="mt-4 text-black py-2 rounded-lg hover:bg-primary-300">
         view more
