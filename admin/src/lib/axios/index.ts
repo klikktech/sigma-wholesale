@@ -5,7 +5,7 @@ import {
   SIGNOUT_ENDPOINT,
 } from "@/utils/urls";
 import api from "./instance";
-import { AxiosErrorResponse, AxiosResponse } from "@/utils/types";
+import { AxiosErrorResponse, AxiosResponse, UserDetails } from "@/utils/types";
 
 export const axios = {
   auth: {
@@ -33,6 +33,14 @@ export const axios = {
     getAllUsers: async (): Promise<AxiosResponse> => {
       try {
         const { data, status } = await api.get(GET_ALL_USERS_ENDPOINT);
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    addUser: async (userDetails: UserDetails): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.post(GET_ALL_USERS_ENDPOINT, userDetails);
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;

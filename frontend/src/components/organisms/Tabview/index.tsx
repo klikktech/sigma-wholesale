@@ -30,7 +30,7 @@ const Tabview = async () => {
     }
   
     const productElements = products.map((item: any, index:any) => (
-      <div className="" key={item.id}>
+      <div className="embla__slide flex embla-slide w-full" key={item.id}>
           <Suspense fallback={<SkeletonProductCard />}>
             <ProductCard
               img={images[index].src}
@@ -44,8 +44,8 @@ const Tabview = async () => {
 
   return (
     <div className="container mx-auto">
-      <ProductsCarousel elements={productElements}/>
-    </div>
+      <ProductsCarousel>{productElements}</ProductsCarousel>
+      </div>
   );
 };
 
