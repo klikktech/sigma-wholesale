@@ -1,5 +1,6 @@
 package com.klikk.sigma.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.klikk.sigma.utils.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -37,8 +38,22 @@ public class Category {
     @Column(name = "slug")
     private String slug;
 
+    @ManyToOne
+    @JoinColumn(name = "parent_category",referencedColumnName = "id")
+    private Category parent;
+
+    private Long parentId;
+
+    @Column(name = "count")
+    private Long count;
+
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "category")
     private List<Product> products;
+
+    @JsonIgnore
+    public void setParent(Category parent){
+        this.parent=parent;
+    }
 
 
 }
