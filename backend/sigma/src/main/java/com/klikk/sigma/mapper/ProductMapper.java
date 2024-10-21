@@ -1,6 +1,7 @@
 package com.klikk.sigma.mapper;
 
 import com.klikk.sigma.dto.ProductDto;
+import com.klikk.sigma.dto.response.ProductResponseDto;
 import com.klikk.sigma.entity.Product;
 import com.klikk.sigma.entity.ProductRequestDto;
 import org.mapstruct.Mapper;
@@ -8,7 +9,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
-    ProductDto ProductToProductDto(Product product);
+    ProductResponseDto productToProductResponseDto(Product product);
 
     @Mapping(target = "category",ignore = true)
     @Mapping(target = "id",ignore = true)
@@ -18,5 +19,5 @@ public interface ProductMapper {
     @Mapping(target = "averageRating",ignore = true)
     @Mapping(target = "stockQuantity",ignore = true)
     @Mapping(target = "totalSales",ignore = true)
-    Product ProductRequestToProduct(ProductRequestDto productRequestDto);
+    Product productRequestToProduct(ProductRequestDto productRequestDto);
 }

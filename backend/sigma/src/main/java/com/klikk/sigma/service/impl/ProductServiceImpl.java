@@ -1,8 +1,8 @@
 package com.klikk.sigma.service.impl;
 
 import com.klikk.sigma.dto.ProductDto;
+import com.klikk.sigma.dto.response.ProductResponseDto;
 import com.klikk.sigma.entity.Attachment;
-import com.klikk.sigma.entity.Category;
 import com.klikk.sigma.entity.Product;
 import com.klikk.sigma.entity.ProductRequestDto;
 import com.klikk.sigma.mapper.ProductMapper;
@@ -15,7 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -33,8 +36,8 @@ public class ProductServiceImpl implements ProductService {
     private CategoryRepository categoryRepository;
 
     @Override
-    public ProductDto saveProduct(ProductRequestDto productRequest, MultipartFile displayImage) throws IOException {
-        Product newProduct=productMapper.ProductRequestToProduct(productRequest);
+    public ProductResponseDto saveProduct(ProductRequestDto productRequest, MultipartFile displayImage) throws IOException {
+        Product newProduct=productMapper.productRequestToProduct(productRequest);
         if(displayImage!=null){
             Attachment att = attachmentServiceImpl.saveAttachment(AttachmentType.PRODUCT_ATTACHMENT, displayImage.getBytes());
             newProduct.setDisplayImage(att);
@@ -42,6 +45,22 @@ public class ProductServiceImpl implements ProductService {
 //        Optional<Category> productCategory= categoryRepository.findById(productRequest.getCategory());
 //        newProduct.setCategory(productCategory.get());
 //        System.out.println(newProduct.getCategory().getName());
-        return productMapper.ProductToProductDto(productRepository.save(newProduct));
+        return productMapper.productToProductResponseDto(productRepository.save(newProduct));
+    }
+
+    @Override
+    public ProductResponseDto getProduct(String sku) {
+        Optional<Product> product=productRepository.findBySku(sku);
+        return productMapper.productToProductResponseDto(product.get());
+    }
+
+    @Override
+    public List<ProductResponseDto> getAllProducts() {
+        List<Product> products=productRepository.findAll();
+        List<ProductResponseDto> productResponseDtos=new ArrayList<>();
+        for(Product product:products){
+            productResponseDtos.add(productMapper.productToProductResponseDto(product));
+        }
+        return productResponseDtos;
     }
 }

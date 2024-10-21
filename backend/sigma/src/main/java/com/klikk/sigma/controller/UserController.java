@@ -27,28 +27,28 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('admin:read')")
-    public ResponseEntity<UserResponseDto> getUserById(@PathVariable("id") int id) {
-        try {
-            var result = userService.findById(id);
-            return ResponseEntity.of(Optional.of(result));
-        } catch (NotFoundException exception) {
-            return new ResponseEntity(exception.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception exception) {
-            return new ResponseEntity(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @GetMapping("/{id}")
+//    @PreAuthorize("hasAuthority('admin:read')")
+//    public ResponseEntity<UserResponseDto> getUserById(@PathVariable("id") int id) {
+//        try {
+//            var result = userService.findById(id);
+//            return ResponseEntity.of(Optional.of(result));
+//        } catch (NotFoundException exception) {
+//            return new ResponseEntity(exception.getMessage(), HttpStatus.NOT_FOUND);
+//        } catch (Exception exception) {
+//            return new ResponseEntity(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
-    @GetMapping()
+    @GetMapping("/")
     @PreAuthorize("hasAuthority('admin:read')")
     public ResponseEntity<List<UsersResponse>> getUsers() {
         return ResponseEntity.ok(userService.findAll());
     }
 
-    @GetMapping("{email}")
+    @GetMapping("/{email}")
     @PreAuthorize("hasAuthority('admin:read')")
-    public ResponseEntity<UsersResponse> getUserByEmail(@PathVariable("id") String email) {
+    public ResponseEntity<UsersResponse> getUserByEmail(@PathVariable("email") String email) {
         return ResponseEntity.ok(userService.findUserByEmail(email));
     }
 
