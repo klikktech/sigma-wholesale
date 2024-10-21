@@ -48,6 +48,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public AuthenticationResponse register(RegisterRequest request) {
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("User already exists");
+        }
         User user = authenticationMapper.registerRequestToUser(request);
         user.setCreatedAt(LocalDateTime.now());
         user.setRole(RoleType.PENDING);

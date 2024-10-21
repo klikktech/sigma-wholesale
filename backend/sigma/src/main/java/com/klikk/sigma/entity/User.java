@@ -1,6 +1,5 @@
 package com.klikk.sigma.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.klikk.sigma.type.RoleType;
 import com.klikk.sigma.util.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
@@ -119,7 +118,6 @@ public class User implements UserDetails {
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
-//                ", userId=" + userId +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", nickname='" + nickname + '\'' +
