@@ -3,6 +3,8 @@ package com.klikk.sigma.service.impl;
 import com.klikk.sigma.dto.ProductDto;
 import com.klikk.sigma.dto.response.ProductResponseDto;
 import com.klikk.sigma.entity.Attachment;
+import com.klikk.sigma.dto.response.ProductsResponse;
+import com.klikk.sigma.entity.Category;
 import com.klikk.sigma.entity.Product;
 import com.klikk.sigma.entity.ProductRequestDto;
 import com.klikk.sigma.mapper.ProductMapper;
@@ -16,6 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -62,5 +67,15 @@ public class ProductServiceImpl implements ProductService {
             productResponseDtos.add(productMapper.productToProductResponseDto(product));
         }
         return productResponseDtos;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<ProductsResponse> getAllProductsForAdmin() {
+        List<Product> products = productRepository.findAll();
+        return products.stream()
+                .sorted(Comparator.comparing(Product::getCreatedAt).reversed())
+                .map(product -> productMapper.productToProductsResponse(product))
+                .collect(Collectors.toList());
     }
 }
