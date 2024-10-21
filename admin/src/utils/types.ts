@@ -3,6 +3,17 @@ export type Message =
   | { error: string }
   | { message: string };
 
+  export interface UserDetails {
+    firstName?: string;
+    lastName?: string;
+    username: string;
+    phone: string;
+    role: string;
+    email: string;
+    password: string;
+    address?: string;
+  }
+
 export interface ITableColumn {
   key: string;
   label: string;

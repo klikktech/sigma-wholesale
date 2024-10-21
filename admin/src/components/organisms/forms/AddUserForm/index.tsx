@@ -3,35 +3,19 @@ import Button from "@/components/atoms/Button";
 import Input from "@/components/atoms/Input";
 import { Select, SelectItem, Textarea } from "@nextui-org/react";
 import React from "react";
+import { addUserAction } from "../actions";
+import { useFormState, useFormStatus } from "react-dom";
+import FormMessage from "@/components/molecules/FormMessage";
+import Link from "next/link";
+import { USERS_PAGE_ROUTE } from "@/utils/routes";
 
 const AddUserForm = () => {
-  //   const [formData, setFormData] = useState({
-  //     firstName: "",
-  //     lastName: "",
-  //     email: "",
-  //     username: "",
-  //     password: "",
-  //     role: "",
-  //     phone: "",
-  //     address: "",
-  //   });
-
-  //   const handleChange = (e: { target: { name: any; value: any } }) => {
-  //     const { name, value } = e.target;
-  //     setFormData({ ...formData, [name]: value });
-  //   };
-
-  //   const handleSubmit = (e: { preventDefault: () => void }) => {
-  //     e.preventDefault();
-  //     // Handle form submission logic
-  //     console.log("Form submitted:", formData);
-  //   };
+  const [state, formAction] = useFormState(addUserAction, undefined);
+  const { pending } = useFormStatus();
   return (
     <form
-    //   onSubmit={handleSubmit}
-    //   className="max-w-md mx-auto p-4 bg-white rounded shadow"
+      action={formAction}
     >
-      <h2 className="text-lg font-semibold mb-4">Add User</h2>
       <div className="flex flex-col gap-4">
         <div className="flex w-full gap-2">
           <div className="w-full">
@@ -45,9 +29,6 @@ const AddUserForm = () => {
               type="text"
               id="firstName"
               name="firstName"
-              // value={formData.firstName}
-              // onChange={handleChange}
-              //   className="block w-full p-2 border border-gray-300 rounded"
               required
             />
           </div>
@@ -62,9 +43,6 @@ const AddUserForm = () => {
               type="text"
               id="lastName"
               name="lastName"
-              // value={formData.lastName}
-              // onChange={handleChange}
-              // className="block w-full p-2 border border-gray-300 rounded"
             />
           </div>
           <div className="w-full">
@@ -78,9 +56,6 @@ const AddUserForm = () => {
               type="text"
               id="username"
               name="username"
-              // value={formData.username}
-              // onChange={handleChange}
-              // className="block w-full p-2 border border-gray-300 rounded"
               required
             />
           </div>
@@ -94,9 +69,6 @@ const AddUserForm = () => {
               type="email"
               id="email"
               name="email"
-              //   value={formData.email}
-              //   onChange={handleChange}
-              //   className="block w-full p-2 border border-gray-300 rounded"
               required
             />
           </div>
@@ -111,7 +83,6 @@ const AddUserForm = () => {
               type="password"
               id="password"
               name="password"
-              // value={formData.password}
               required
             />
           </div>
@@ -124,15 +95,12 @@ const AddUserForm = () => {
             <Select
               id="role"
               name="role"
-              defaultSelectedKeys={["pending"]}
-              //   value={formData.role}
-              //   onChange={handleChange}
-              //   className="block w-full p-2 border border-gray-300 rounded"
+              defaultSelectedKeys={["PENDING"]}
               required
             >
-              <SelectItem key="customer">Customer</SelectItem>
-              <SelectItem key="pending">Pending</SelectItem>
-              <SelectItem key="admin">Administrator</SelectItem>
+              <SelectItem key="CUSTOMER">Customer</SelectItem>
+              <SelectItem key="PENDING">Pending</SelectItem>
+              <SelectItem key="ADMIN">Administrator</SelectItem>
             </Select>
           </div>
           <div className="w-full">
@@ -143,9 +111,6 @@ const AddUserForm = () => {
               type="tel"
               id="phone"
               name="phone"
-              //   value={formData.phone}
-              //   onChange={handleChange}
-              //   className="block w-full p-2 border border-gray-300 rounded"
             />
           </div>
         </div>
@@ -157,12 +122,24 @@ const AddUserForm = () => {
           <Textarea
             id="address"
             name="address"
-            // value={formData.address}
-            // onChange={handleChange}
-            // className="block w-full p-2 border border-gray-300 rounded"
           ></Textarea>
         </div>
-        <Button type="submit">Add User</Button>
+        <div className="flex gap-2 w-full">
+          <Button
+            className="w-full"
+            type="submit"
+            disabled={pending}
+            aria-disabled={pending}
+          >
+            {pending ? "Adding new user" : "Add User"}
+          </Button>
+          <Link className="w-full" href={USERS_PAGE_ROUTE}>
+            <Button className="w-full" color="default">
+              Cancel
+            </Button>
+          </Link>
+        </div>
+        {state && <FormMessage message={state} />}
       </div>
     </form>
   );

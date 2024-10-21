@@ -16,11 +16,10 @@ const AuthLayout = async ({ children }: { children: React.ReactNode }) => {
                 className="object-cover h-[80vh] w-full"
               />
             </div>
-            <div className="w-1/2 p-14 flex flex-col items-center gap-12"><Image
-                src={brandLogo}
-                alt="auth-banner"
-                height={70}
-              />{children}</div>
+            <div className="w-1/2 p-14 flex flex-col items-center justify center gap-12">
+              <Image src={brandLogo} alt="auth-banner" height={70} />
+              {children}
+            </div>
           </div>
         </CardBody>
       </Card>

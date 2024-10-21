@@ -1,31 +1,43 @@
 "use client";
-import { User, Tooltip } from "@nextui-org/react";
+import { User, Tooltip, Chip } from "@nextui-org/react";
 import { DeleteIcon, EditIcon, EyeIcon } from "@/utils/icons";
 import Modal from "@/components/molecules/Modal";
 import React from "react";
 import { ITableColumn } from "@/utils/types";
 
-interface User {
+interface Product {
   id: string;
-  firstname: string;
-  lastname: string;
-  email: string;
+  name: string;
+  sku: string;
+  price: string;
+  status: string;
+  createdAt: string;
 }
 
 export const PRODUCT_COLUMNS: ITableColumn[] = [
   {
-    key: "firstname",
+    key: "name",
     label: "Name",
     isSortable: true,
-    isSearchable: true
+    isSearchable: true,
   },
   {
-    key: "email",
-    label: "Email",
+    key: "sku",
+    label: "Sku",
   },
   {
-    key: "role",
-    label: "Role",
+    key: "price",
+    label: "Price",
+  },
+  {
+    key: "status",
+    label: "Stock",
+    isSortable: true,
+  },
+  {
+    key: "createdAt",
+    label: "Joined us",
+    isSortable: true,
   },
   {
     key: "actions",
@@ -33,31 +45,49 @@ export const PRODUCT_COLUMNS: ITableColumn[] = [
   },
 ];
 
-export const renderCell = (user: User, columnKey: React.Key) => {
-  const cellValue = user[columnKey as keyof object];
+const stockChipColorMap = {
+  instock: "success",
+  outofstock: "danger",
+};
+
+export const renderCell = (product: Product, columnKey: React.Key) => {
+  const cellValue = product[columnKey as keyof object];
 
   switch (columnKey) {
-    case "firstname":
+    case "name":
       return (
         <User
           avatarProps={{
             radius: "full",
-            className: "",
             // src: user.,
             showFallback: true,
             fallback: (
               <span className="material-symbols-rounded text-default-500">
-                person
+                vaping_rooms
               </span>
             ),
           }}
-          description={user.email}
-          name={user.firstname + " " + user.lastname}
+          name={<span className="capitalize">{product.name}</span>}
         >
-          {user.email}
+          {/* {product.name} */}
         </User>
       );
-    case "lastSeen":
+    case "status":
+      return (
+        <Chip
+          className="capitalize"
+          color={
+            stockChipColorMap[product.status as "instock" | "outofstock"] as
+              | "success"
+              | "danger"
+          }
+          size="sm"
+          variant="flat"
+        >
+          {cellValue}
+        </Chip>
+      );
+    case "createdAt":
       return <span>{new Date(cellValue).toLocaleDateString()}</span>;
     case "actions":
       return (
@@ -78,7 +108,7 @@ export const renderCell = (user: User, columnKey: React.Key) => {
                 body={<>Are you sure you want to delete it</>}
                 onSuccess={() => {
                   console.log(
-                    "deleting user of id: " + user["firstName" as keyof object]
+                    "deleting user of id: " + product["name" as keyof object]
                   );
                 }}
                 successButton="Delete"
