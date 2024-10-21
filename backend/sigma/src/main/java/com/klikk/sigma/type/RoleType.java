@@ -28,12 +28,7 @@ public enum RoleType {
     ),
 
     PENDING(
-            Set.of(
-            PermissionType.ADMIN_READ,
-            PermissionType.ADMIN_WRITE,
-            PermissionType.ADMIN_PUT,
-            PermissionType.ADMIN_DELETE
-            )
+            Set.of()
     );
 
     @Getter

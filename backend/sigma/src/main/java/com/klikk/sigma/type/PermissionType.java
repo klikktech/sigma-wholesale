@@ -17,6 +17,7 @@ public enum PermissionType {
     USER_DELETE("user:delete")
     ;
 
+
     @Getter
     private final String permission;
 }
