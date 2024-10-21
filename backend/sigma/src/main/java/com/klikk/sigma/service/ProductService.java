@@ -11,6 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
+import java.util.List;
+
 public interface ProductService {
     ProductResponseDto saveProduct(ProductRequestDto product, MultipartFile displayImage) throws IOException;
 
