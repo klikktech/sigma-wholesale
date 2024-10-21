@@ -1,0 +1,34 @@
+.next2,
+.prev2 {
+  top: 110%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 18px;
+  z-index: 2;
+}
+.next2 {
+    right: 6rem;
+  }
+  
+  .prev2 {
+    left: 6rem;
+  }
+  .embla__viewport {
+    overflow: hidden;
+  }
+  
+  .test1 {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .test2 {
+    flex: 0 0 25%; /* This makes 4 slides visible at a time */
+    /* padding: 10px; */
+    /* box-sizing: border-box; */
+  }

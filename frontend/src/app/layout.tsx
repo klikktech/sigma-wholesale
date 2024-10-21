@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Manrope, Poppins } from "next/font/google";
 import "./globals.css";
 import { DESCRIPTION, SIGMA_WHOLESALE } from "@/utils/constants";
 import { Providers } from "./providers";
-import Navbar from "@/components/organisms/Navbar";
 
-const inter = Inter({ subsets: ["latin"] });
-
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-manrope",
+  weight: ["200", "300", "400", "500", "600", "700", "800"],
+});
 export const metadata: Metadata = {
   title: SIGMA_WHOLESALE,
   description: DESCRIPTION,
@@ -18,11 +20,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body className={inter.className}>
+    <html lang="en" className="SigmaLTheme">
+      <body className={manrope.variable}>
         <Providers>
-          <div className="light">
-            <Navbar />
+          <div className="">
             {children}
           </div>
         </Providers>

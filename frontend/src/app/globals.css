@@ -1,12 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded");
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
-.title{
+.title {
     color: #000;
-    width: 16rem; 
-    overflow: hidden; 
-    white-space: nowrap; 
+    /* width: 14rem; */
+    overflow: hidden;
     text-overflow: ellipsis;
 }
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #E0DC0D; /* Set the color of the scrollbar thumb */
+  }

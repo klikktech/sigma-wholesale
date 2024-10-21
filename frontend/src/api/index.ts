@@ -2,6 +2,7 @@ import {
   LOGIN_URL,
   PRODUCT_BY_ID_URL,
   PRODUCTS_URL,
+  SIGNUP_URL,
   USER_BY_ID_URL,
   USERS_URL,
 } from "@/utils/urls";
@@ -11,6 +12,12 @@ const request = {
   authenticate: async (credentials: { email: string; password: string }) => {
     try {
       const response = await api.post(LOGIN_URL, credentials);
+      return response;
+    } catch (error) {}
+  },
+  register: async (credentials: { email: string; password: string }) => {
+    try {
+      const response = await api.post(SIGNUP_URL, credentials);
       return response;
     } catch (error) {}
   },

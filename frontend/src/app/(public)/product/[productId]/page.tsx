@@ -1,5 +1,4 @@
 import ProductView from "@/components/organisms/ProductView";
-import { useParams } from "next/navigation";
 
 interface Props {
   params: {
@@ -10,7 +9,6 @@ interface Props {
 const ProductDetails = (props: Props) => {
   return (
     <>
-      Product id - {props.params.productId}
       <ProductView />
     </>
   );

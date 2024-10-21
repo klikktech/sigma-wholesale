@@ -10,8 +10,11 @@
     "mock": "json-server --watch src/mock/db.json --port 1234"
   },
   "dependencies": {
+    "@nextui-org/dropdown": "^2.1.31",
     "@nextui-org/react": "^2.4.6",
     "axios": "^1.7.5",
+    "embla-carousel-autoplay": "^8.3.0",
+    "embla-carousel-react": "^8.3.0",
     "framer-motion": "^11.3.30",
     "json-server": "^1.0.0-beta.2",
     "next": "14.2.6",
