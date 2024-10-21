@@ -8,7 +8,7 @@ const AddReviewButton = () => {
   const closeModal = () => setModalOpen(false);
     return (
         <>
-        <button className="bg-blue-500 text-white rounded-md p-2 my-4 flex items-center gap-2" onClick={openModal}>
+        <button className="bg-red-500 text-white rounded-md p-2 my-4 flex items-center gap-2" onClick={openModal}>
             Add Review
             <span className="material-symbols-rounded">rate_review</span>
         </button>
