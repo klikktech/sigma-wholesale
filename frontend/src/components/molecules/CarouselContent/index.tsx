@@ -8,7 +8,7 @@ const content = CarouselInfo
 
 const CarouselContent = () => {
     const elements = content.map((item, index) => (
-        <div key={index} className="flex gap-x-10">
+        <div key={index} className="flex gap-x-10 items-center">
           <div className="w-full md:w-1/2">
             <Image className="rounded-2xl" src={item.image} alt={item.title} />
           </div>
