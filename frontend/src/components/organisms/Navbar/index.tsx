@@ -61,7 +61,7 @@ const Navbar = ({ user }: Props) => {
           </NavbarItem>
           {/* {user ? <> */}
                     <NavbarItem className="hidden lg:flex">
-                      <Badge color="danger" size="sm" content={50} shape="circle">
+                      <Badge color="danger" size="sm" content={10} shape="circle">
                         <span
                           className="material-symbols-rounded text-3xl"
                         >
