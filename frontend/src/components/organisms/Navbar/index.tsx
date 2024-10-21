@@ -34,11 +34,11 @@ const Navbar = ({ user }: Props) => {
             className="sm:hidden"
           />
           <NavbarBrand>
-            <Image src={logo} alt={"logo"} />
+            <Image width={250} src={logo} alt={"logo"} />
           </NavbarBrand>
         </NavbarContent>
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
-          {NAV_MENU_ITEMS.map((item, index) => (
+          {/* {NAV_MENU_ITEMS.map((item, index) => (
             <NavbarItem key={`${item}-${index}`}>
               <Link
                 color="foreground"
@@ -49,7 +49,7 @@ const Navbar = ({ user }: Props) => {
                 {item.label}
               </Link>
             </NavbarItem>
-          ))}
+          ))} */}
         </NavbarContent>
         <NavbarContent justify="end">
           <NavbarItem className="hidden lg:flex">

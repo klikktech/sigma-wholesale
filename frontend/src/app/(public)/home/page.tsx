@@ -6,7 +6,7 @@ import React from 'react';
 
 const HomePage = () => {
  return (
-  <div className='px-32'>
+  <div className=''>
   <CarouselContent/>
   <NewArrivals/>
   <Tabs>

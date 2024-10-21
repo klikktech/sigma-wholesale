@@ -1,39 +1,20 @@
 import { Button, Image } from "@nextui-org/react";
+import Link from "next/link";
 
 interface Props {
-  img: string;
+  img: any;
   title: string;
   price: string;
+  link:string;
 }
 
 const ProductCard = (props: Props) => {
   return (
     <>
-      {/* <Card shadow="sm" className="max-w-[230px] w-100">
-        <CardBody className="overflow-visible p-0">
-          <Image
-            shadow="sm"
-            radius="lg"
-            width="100%"
-            alt={props.title}
-            className="w-full object-cover h-[140px]"
-            src={props.img}
-          />
-        </CardBody>
-
-          <div className="text-small justify-between">
-            <b className="title">{props.title}</b>
-            <p className="text-default-500">{props.price}</p>
-          </div>
-          <div className="text-center">
-          <Button color="primary">Shop now</Button>
-          </div>
-
-      </Card> */}
     <div className="max-w-60 bg-gray-200 text-black rounded-xl shadow-lg">
       <div className="relative">
         <Image
-          className="w-full rounded-lg"
+          className="w-full rounded-lg h-[250px] object-cover"
           src={props.img}
           alt={props.title}
         />
@@ -44,7 +25,7 @@ const ProductCard = (props: Props) => {
         <p className="text-gray-400">{props.price}</p>
       </div>
       <Button color="primary" className="mt-4 w-full text-black py-2 rounded-lg hover:bg-primary-300">
-        Add to cart
+        <Link href={props.link}>Shop now</Link>
       </Button>
       </div>
     </div>

@@ -1,10 +1,18 @@
 import request from "@/api";
 import ProductCard from "@/components/molecules/ProductCard";
 import SkeletonProductCard from "@/components/molecules/ProductCard/SkeletonCard";
-import Link from "next/link";
 import React, { Suspense } from "react";
-import Tabs from "../Tabs";
 import ProductsCarousel from "../ProductsCarousel";
+import first1 from "../../../../public/images/product_1.webp"
+import first2 from "../../../../public/images/product_2.webp"
+import first3 from "../../../../public/images/product_3.webp"
+import first4 from "../../../../public/images/product_4.webp"
+import first5 from "../../../../public/images/product_5.png"
+import first6 from "../../../../public/images/product_6.webp"
+import first7 from "../../../../public/images/product_7.jpg"
+import first8 from "../../../../public/images/product_8.jpg"
+
+const images = [first1, first2, first3, first4, first5, first6, first7, first8]
 
 const Tabview = async () => {
   let products = [];
@@ -21,25 +29,23 @@ const Tabview = async () => {
       return <div>Error fetching products</div>;
     }
   
-    const productElements = products.map((item: any) => (
+    const productElements = products.map((item: any, index:any) => (
       <div className="" key={item.id}>
-        <Link href={`/product/${item.id}`}>
           <Suspense fallback={<SkeletonProductCard />}>
             <ProductCard
-              img={"https://nextui.org/images/album-cover.png"}
+              img={images[index].src}
               title={item.title}
               price={"$" + item.price}
+              link={`/product/${item.id}`}
             />
           </Suspense>
-        </Link>
       </div>
     ));
 
   return (
     <div className="container mx-auto">
-      abc test
-                        <ProductsCarousel elements={productElements}/>
-                        </div>
+      <ProductsCarousel elements={productElements}/>
+    </div>
   );
 };
 

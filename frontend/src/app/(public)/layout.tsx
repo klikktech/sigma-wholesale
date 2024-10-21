@@ -8,8 +8,8 @@ import Footer from "@/components/organisms/Footer";
 const PublicLayout = async ({ children }: { children: React.ReactNode }) => {
     return (
         <>
-            <Navbar user={''} />
-            <div className="">
+            <Navbar user={''}/>
+            <div className="px-32">
                 {children}
             </div>
             <Footer/>
