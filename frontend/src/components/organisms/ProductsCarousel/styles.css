@@ -1,6 +1,15 @@
+.embla-container {
+  position: relative;
+}
+
+.embla-content {
+  margin: 1.25rem auto 0;
+  width: calc(100% - 76px);
+}
+
 .next2,
 .prev2 {
-  top: 110%;
+  top: 50%;
   position: absolute;
   display: flex;
   justify-content: center;
@@ -11,24 +20,25 @@
   font-size: 18px;
   z-index: 2;
 }
+
 .next2 {
-    right: 6rem;
+  right: 0;
+}
+.embla__viewport {
+  overflow: hidden;
+}
+
+.embla-inner-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.embla-slide {
+  flex: 0 0 25%;
+}
+
+@media (min-width: 1550px) {
+  .embla-slide {
+    flex: 0 0 20%; /* Breakpoint SM slide covers 50% of the viewport */
   }
-  
-  .prev2 {
-    left: 6rem;
-  }
-  .embla__viewport {
-    overflow: hidden;
-  }
-  
-  .test1 {
-    display: flex;
-    flex-direction: row;
-  }
-  
-  .test2 {
-    flex: 0 0 25%; /* This makes 4 slides visible at a time */
-    /* padding: 10px; */
-    /* box-sizing: border-box; */
-  }
+}

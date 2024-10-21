@@ -1,16 +1,19 @@
-'use client';
+"use client";
 
-import React, { useCallback } from 'react';
-import useEmblaCarousel from 'embla-carousel-react';
-import Autoplay from 'embla-carousel-autoplay';
+import React, { useCallback } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 import "./styles.css";
 
 type Props = {
-  elements: React.ReactNode[];
+  children: React.ReactNode;
 };
 
-const ProductsCarousel = ({ elements }: Props) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({slidesToScroll: 2, loop: true }, [Autoplay()]);
+const ProductsCarousel = ({ children }: Props) => {
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { slidesToScroll: 2, loop: true },
+    [Autoplay()]
+  );
 
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
@@ -20,38 +23,22 @@ const ProductsCarousel = ({ elements }: Props) => {
     if (emblaApi) emblaApi.scrollNext();
   }, [emblaApi]);
 
-  if (!elements ) {
-    return <div>No items to display</div>;
-  }
-  else{
-    return (
-        <div className='embla mt-5'>
-          <div className='embla__viewport' ref={emblaRef}>
-            <div className='embla__container test1 h-full '>
-              {elements.map((element, index) => (
-                <div key={index} className='embla__slide test2 flex items-center justify-center w-full'>
-                  {element}
-                </div>
-              ))}
-            </div>
+  return (
+    <div className="embla-container">
+      <div className="embla embla-content">
+        <div className="embla__viewport" ref={emblaRef}>
+          <div className="embla__container embla-inner-container">
+            {children}
           </div>
-    
-          <div className=''>
-      <span
-          className="material-symbols-rounded prev2"
-          onClick={scrollPrev}
-        >
-          chevron_left
-        </span>
-        <span
-          className="material-symbols-rounded next2"
-          onClick={scrollNext}
-        >
-          chevron_right
-        </span>
-      </div>
         </div>
-      );
-  }
-}
+      </div>
+      <span className="material-symbols-rounded prev2" onClick={scrollPrev}>
+        chevron_left
+      </span>
+      <span className="material-symbols-rounded next2" onClick={scrollNext}>
+        chevron_right
+      </span>
+    </div>
+  );
+};
 export default ProductsCarousel;
