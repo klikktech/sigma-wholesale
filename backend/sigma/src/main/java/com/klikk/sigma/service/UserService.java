@@ -1,19 +1,21 @@
 package com.klikk.sigma.service;
 
-import com.klikk.sigma.dto.UserDto;
+
+import com.klikk.sigma.dto.UserResponseDto;
+import com.klikk.sigma.dto.response.UsersResponse;
 import com.klikk.sigma.entity.User;
 
 import java.util.List;
 
 
 public interface UserService {
-    List<User> findAll();
 
-    UserDto findById(int id);
+    List<UsersResponse> findAll();
 
-    User findByEmail(String username);
+    UserResponseDto findById(Integer id);
 
-    UserDto save(User object);
+    User findByEmail(String email);
 
-    void deleteById(int id);
+    UsersResponse findUserByEmail(String email);
+
 }

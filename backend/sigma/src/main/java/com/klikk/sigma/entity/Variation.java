@@ -1,12 +1,13 @@
 package com.klikk.sigma.entity;
 
-
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.klikk.sigma.util.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 
@@ -19,17 +20,22 @@ import java.time.LocalDateTime;
 public class Variation {
 
     @Id
-    @SequenceGenerator(name = "variations_sequence",sequenceName = "variations_sequence",allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "variations_sequence")
-    private int id;
-
-    @Column(name = "product_id")
-    private Long productId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "variations_sequence")
+    @GenericGenerator(
+            name="variations_sequence",
+            type = com.klikk.sigma.util.StringPrefixedSequenceGenerator.class,
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.INCREMENT_PARAM, value = "1"),
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.PREFIX_VALUE_PARAM, value = "ATT_"),
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.NUMBER_FORMAT_PARAM,value = "%d")
+            }
+    )
+    private String id;
 
     @Column(name = "type_info")
     private String typeInfo;
 
-    @Column(name = "name",unique = true)
+    @Column(name = "name")
     private String variationName;
 
     @Column(name = "sku",unique = true)
@@ -50,11 +56,9 @@ public class Variation {
     @Column(name = "stock_quantity")
     private int stockQuantity;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "modified_at")
     private LocalDateTime modifiedAt;
 

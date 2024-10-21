@@ -15,24 +15,60 @@ const encodedKey = new TextEncoder().encode(secretKey);
 
 export const createSession = (session: {
   accessToken: string;
-  refreshToke: string;
+  refreshToken: string;
 }) => {
-  const expiresAt = new Date(
+  setAccessToken(session.accessToken)
+  setRefreshToken(session.refreshToken)
+};
+
+export const deleteSession = () => {
+  cookies().delete("session");
+  cookies().delete("refresh");
+};
+
+export const getAccessToken = () => {
+  return cookies().get("accessToken")?.value
+};
+
+export const getRefreshToken = () => {
+  return cookies().get("refreshToken")?.value
+};
+
+const setAccessToken = (token: string) => {
+  const tokenExpiresAt = new Date(
     Date.now() + Number(process.env.SESSION_TOKEN_EXPIRATION)
   );
-  // const session = await encrypt({ userId, expiresAt })
-  cookies().set("session", session.accessToken, {
+  cookies().set("accessToken", token, {
     httpOnly: true,
     secure: true,
-    expires: expiresAt,
+    expires: tokenExpiresAt,
     sameSite: "lax",
     path: "/",
   });
 };
 
-export const deleteSession = () => {
-  cookies().delete('session')
-}
+const setRefreshToken = (token: string) => {
+  const refreshExpiresAt = new Date(
+    Date.now() + Number(process.env.SESSION_REFRESH_TOKEN_EXPIRATION)
+  );
+  cookies().set("refreshToken", token, {
+    httpOnly: true,
+    secure: true,
+    expires: refreshExpiresAt,
+    sameSite: "lax",
+    path: "/",
+  });
+};
+
+export const isTokenExpired = (token: string): boolean => {
+  const decodedToken: JWTPayload = decodeJwt(token);
+  const currentTime = Date.now() / 1000;
+  if (decodedToken.exp) {
+    return decodedToken.exp < currentTime;
+  } else {
+    return false;
+  }
+};
 
 // export const getUser = async () => {
 //   try {

@@ -10,6 +10,8 @@ import com.klikk.sigma.service.VariationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 @Service
 public class VariationServiceImpl implements VariationService {
@@ -26,9 +28,14 @@ public class VariationServiceImpl implements VariationService {
     @Override
     public void saveVariation(VariationDto variationDto) {
         Integer parentId=variationDto.getParentId();
-        Product parentProduct=productRepository.getReferenceById(parentId);
+        Optional<Product> parentProduct=productRepository.findById(parentId);
         Variation variation=variationMapper.variationDtoToVariation(variationDto);
-        variation.setParent(parentProduct);
+        if(parentProduct.isPresent()){
+            variation.setParent(parentProduct.get());
+        }
+        else{
+            return;
+        }
         variationRepository.save(variation);
     }
 }

@@ -1,27 +1,44 @@
 package com.klikk.sigma.entity;
 
+import com.klikk.sigma.util.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+
+import java.util.List;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@AllArgsConstructor
 @Table(name = "categories")
 public class Category {
     @Id
-    @SequenceGenerator(name = "categories_sequence",sequenceName = "categories_sequence",allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "categories_sequence")
-    private int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_sequence")
+    @GenericGenerator(
+            name="category_sequence",
+            type = com.klikk.sigma.util.StringPrefixedSequenceGenerator.class,
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.INCREMENT_PARAM, value = "1"),
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.PREFIX_VALUE_PARAM, value = "CAT_"),
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.NUMBER_FORMAT_PARAM,value = "%d")
+            }
+    )
+    private String id;
 
-    @Column(name = "category")
-    private String categoryName;
+    @Column(name = "name",unique = true)
+    private String name;
 
-    @Column (name = "description")
-    private String description;
+    @Column(name = "slug")
+    private String slug;
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "category")
+    private List<Product> products;
+
+    @ManyToOne
+    @JoinColumn(name = "parent_id",referencedColumnName = "id")
+    private Category parentCategory;
 
 }

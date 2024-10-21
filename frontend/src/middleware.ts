@@ -1,6 +1,6 @@
 import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 import { LOGIN_PAGE_ROUTE, PRODUCTS_PAGE_ROUTE, SIGNUP_PAGE_ROUTE } from "./utils/urls";
-import { decrypt } from "./api/session";
+import { decrypt, getAccessToken } from "./api/session";
 import { cookies } from "next/headers";
 
 const protectedRoutes = ["/", PRODUCTS_PAGE_ROUTE];

@@ -1,11 +1,13 @@
 package com.klikk.sigma.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.klikk.sigma.util.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,11 +20,19 @@ import java.util.List;
 @Table(name = "products")
 public class Product {
     @Id
-    @SequenceGenerator(name = "products_sequence",sequenceName = "products_sequence",allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "products_sequence")
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_sequence")
+    @GenericGenerator(
+            name="product_sequence",
+            type = com.klikk.sigma.util.StringPrefixedSequenceGenerator.class,
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.INCREMENT_PARAM, value = "1"),
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.PREFIX_VALUE_PARAM, value = "PDT_"),
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.NUMBER_FORMAT_PARAM,value = "%d")
+            }
+    )
+    private String id;
 
-    @Column(name = "name",unique = true)
+    @Column(name = "name")
     private String name;
 
     @Column(name = "max_price")
@@ -58,11 +68,13 @@ public class Product {
     @Column(name = "product_id", unique = true)
     private Long productId;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @ManyToOne
+    @JoinColumn(name = "category_id",referencedColumnName = "id")
+    private Category category;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "modified_at")
     private LocalDateTime modifiedAt;
 
@@ -74,4 +86,8 @@ public class Product {
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "parent")
     private List<Variation> variations;
+
+    @ManyToOne
+    @JoinColumn(name = "attachment_id",referencedColumnName = "id")
+    private Attachment displayImage;
 }

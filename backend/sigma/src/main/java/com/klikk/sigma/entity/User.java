@@ -1,12 +1,18 @@
 package com.klikk.sigma.entity;
 
-import com.klikk.sigma.utils.Role;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.klikk.sigma.type.RoleType;
+import com.klikk.sigma.util.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -15,41 +21,68 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Table(name = "users")
 public class User implements UserDetails {
     @Id
-    @SequenceGenerator(name = "users_sequence", sequenceName = "users_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "users_sequence")
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_sequence")
+    @GenericGenerator(
+            name="users_sequence",
+            type = com.klikk.sigma.util.StringPrefixedSequenceGenerator.class,
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.INCREMENT_PARAM, value = "1"),
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.PREFIX_VALUE_PARAM, value = "USR_"),
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.NUMBER_FORMAT_PARAM,value = "%d")
+            }
+    )
+    private String id;
 
-    @Column(name = "username",nullable = false)
-    private String username;
+    @Column(name = "firstname")
+    private String firstname;
+
+    @Column(name = "lastname")
+    private String lastname;
+
+    @Column(name = "nickname")
+    private String nickname;
+
+    @Column(nullable = false,unique = true)
+    private String email;
 
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
-    @Column(nullable = false)
-    private String email;
+    @Column(name = "phone")
+    private String phone;
 
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_store_address",
+            joinColumns = @JoinColumn(name = "id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "address_id",referencedColumnName = "id")
+    )
+    private List<Address> storeAddress;
 
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_shipping_address",
+            joinColumns = @JoinColumn(name = "id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "address_id",referencedColumnName = "id")
+    )
+    private List<Address> shippingAddress;
 
-    @Column(name = "phone_number", nullable = false)
-    private String phoneNumber;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private RoleType role;
 
-    @Column(nullable = false)
-    private String address;
+//    @OneToOne
+//    @JoinColumn(name = "id")
+//    private Attachment taxDocument;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return role.getAuthorities();
     }
 
     @Override
@@ -81,4 +114,20 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+//                ", userId=" + userId +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", email='" + email + '\'' +
+                ", passwordHash='" + passwordHash + '\'' +
+                ", phone='" + phone + '\'' +
+                ", role=" + role +
+                '}';
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.klikk.sigma.service;
 
+import com.klikk.sigma.entity.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public interface JwtService {
@@ -7,7 +8,9 @@ public interface JwtService {
 
     boolean isTokenValid(String jwt, UserDetails userDetails);
 
-    String generateToken(UserDetails userDetails);
+    boolean isRefreshTokenValid(String jwt, UserDetails userDetails);
 
-    String generateRefreshToken(UserDetails userDetails);
+    String generateToken(User user);
+
+    String generateRefreshToken(User user);
 }

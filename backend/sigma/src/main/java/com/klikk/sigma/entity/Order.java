@@ -1,12 +1,15 @@
 package com.klikk.sigma.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.klikk.sigma.util.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -17,23 +20,36 @@ import java.sql.Date;
 public class Order {
 
     @Id
-    @SequenceGenerator(name = "orders_sequence",sequenceName = "orders_sequence",allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "orders_sequence")
-    private int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_sequence")
+    @GenericGenerator(
+            name="order_sequence",
+            type = com.klikk.sigma.util.StringPrefixedSequenceGenerator.class,
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.INCREMENT_PARAM, value = "1"),
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.PREFIX_VALUE_PARAM, value = "ODR_"),
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.NUMBER_FORMAT_PARAM,value = "%d")
+            }
+    )
+    private String id;
+
+
+    @Column(name = "order_creation_date")
+    private LocalDateTime orderCreatedAt;
+
+    @Column(name = "order_modified_date")
+    private LocalDateTime orderModifiedAt;
 
     @ManyToOne
-    @JoinColumn(name = "buyer_id",referencedColumnName = "id")
-    private User buyerId;
+    @JoinColumn(name = "buyer_id")
+    private User buyer;
 
-    @Column(name = "order_date")
-    private Date orderDate;
+    @Column(name = "payment_method")
+    private String paymentMethod;
 
-    @Column(name = "shipping_address")
-    private String shippingAddress;
+    @Column(name = "customer_ip")
+    private String customerIp;
 
-    @Column(name = "order_status")
-    private String orderStatus;
+    @Column(name = "order_total")
+    private Double orderTotal;
 
-    @Column(name = "total_amount")
-    private double totalAmount;
 }

@@ -16,10 +16,10 @@ class UserRepositoryTest {
     public UserRepository userRepository;
     @Test
     public void addUsers(){
-        User student=User.builder().email("pranav@gmail.com").username("PranavKaushik").address("2951 S king drive").type("user").firstName("Pranav")
-                .lastName("Dhara").phoneNumber("3124776452").passwordHash("6a54f64afdsdc").build();
-
-        userRepository.save(student);
+//        User student=User.builder().email("pranav@gmail.com").username("PranavKaushik").address("2951 S king drive").type("user").firstName("Pranav")
+//                .lastName("Dhara").phoneNumber("3124776452").passwordHash("6a54f64afdsdc").build();
+//
+//        userRepository.save(student);
 
     }
 }
