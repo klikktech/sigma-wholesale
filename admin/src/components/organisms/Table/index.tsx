@@ -24,7 +24,11 @@ interface Props {
   searchPlaceholder?: string;
   initialRowsPerPage?: 10 | 20 | 50 | 100;
   headerContent?: JSX.Element;
-  renderCell?: (row: Record<string, any> | any, columnKey: React.Key) => JSX.Element;
+  itemsKey?: string;
+  renderCell?: (
+    row: Record<string, any> | any,
+    columnKey: React.Key
+  ) => JSX.Element;
 }
 
 const Table = ({
@@ -32,6 +36,7 @@ const Table = ({
   searchPlaceholder = "Search by name",
   data,
   columns,
+  itemsKey = "id",
   initialRowsPerPage = 10,
   ...props
 }: Props) => {
@@ -65,28 +70,13 @@ const Table = ({
   const [page, setPage] = useState(1);
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
-  const items = useMemo(() => {
-    const start = (page - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
-
-    return filteredItems.slice(start, end);
-  }, [page, rowsPerPage, filteredItems]);
-
-  const onRowsPerPageChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setRowsPerPage(Number(e.target.value));
-      setPage(1);
-    },
-    []
-  );
-
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
     // column: "firstName",
     // direction: "ascending",
   });
 
   const sortedItems = useMemo(() => {
-    return [...items].sort((a, b) => {
+    return [...filteredItems].sort((a, b) => {
       const first = a[
         sortDescriptor.column as keyof Record<string, any>
       ] as string;
@@ -97,7 +87,22 @@ const Table = ({
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
     });
-  }, [sortDescriptor, items]);
+  }, [sortDescriptor, filteredItems]);
+
+  const items = useMemo(() => {
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+
+    return sortedItems.slice(start, end);
+  }, [page, rowsPerPage, sortedItems]);
+
+  const onRowsPerPageChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setRowsPerPage(Number(e.target.value));
+      setPage(1);
+    },
+    []
+  );
 
   const onSearchChange = useCallback((value?: string) => {
     if (value) {
@@ -149,7 +154,9 @@ const Table = ({
       bottomContent={
         pages > 0 ? (
           <div className="flex w-full justify-between items-center">
-            <span className="text-default-400 text-small">Total {data.length} entries</span>
+            <span className="text-default-400 text-small">
+              Total {data.length} entries
+            </span>
             <Pagination
               isCompact
               showControls
@@ -166,7 +173,11 @@ const Table = ({
                 onChange={onRowsPerPageChange}
                 value={rowsPerPage}
               >
-                {[10, 20, 50, 100].map((item) => (<option value={item} key={item}>{item}</option>))}
+                {[10, 20, 50, 100].map((item) => (
+                  <option value={item} key={item}>
+                    {item}
+                  </option>
+                ))}
               </select>
             </label>
           </div>
@@ -186,9 +197,9 @@ const Table = ({
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody items={sortedItems} emptyContent={"No users to display."}>
+      <TableBody items={items} emptyContent={"No items to display."}>
         {(item) => (
-          <TableRow key={item?.id}>
+          <TableRow key={item[itemsKey]}>
             {(columnKey) => (
               <TableCell>
                 {props.renderCell
