@@ -8,20 +8,20 @@ export type Message =
   | { message: string };
 
 export interface RegisterDetails {
-  "firstname": string,
-  "lastname": string,
-  "nickname": string,
-  "email": string,
-  "password": string,
-  "phone": string,
-  "storeAddress": string,
-  "storeCity": string,
-  "storeState": string,
-  "storeZip": string,
-  "shippingAddress": string,
-  "shippingCity": string,
-  "shippingState": string,
-  "shippingZip": string
+  firstname: string,
+  lastname: string,
+  nickname: string,
+  email: string,
+  password: string,
+  phone: string,
+  storeAddress: string,
+  storeCity: string,
+  storeState: string,
+  storeZip: string,
+  shippingAddress: string,
+  shippingCity: string,
+  shippingState: string,
+  shippingZip: string
 }
 
 export interface AxiosErrorResponse {
