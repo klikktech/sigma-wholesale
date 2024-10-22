@@ -5,6 +5,8 @@ import com.klikk.sigma.dto.response.ProductsResponse;
 import com.klikk.sigma.entity.ProductRequestDto;
 import com.klikk.sigma.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,10 +24,10 @@ public class ProductController {
     @Autowired
     public ProductService productService;
 
-    @PostMapping("/")
+    @PostMapping()
     @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
     public ResponseEntity<String> addProduct(@RequestPart("product") ProductRequestDto productRequest,
-                                             @RequestPart(value = "displayImage") MultipartFile displayImage
+                                             @RequestPart(value = "displayImage",required = false) MultipartFile displayImage
     ) {
         try {
             productService.saveProduct(productRequest, displayImage);
@@ -35,9 +37,9 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<ProductResponseDto>> getAllProducts(){
-        return ResponseEntity.ok().body(productService.getAllProducts());
+    @GetMapping()
+    public ResponseEntity<Page<ProductResponseDto>> getAllProducts(Pageable pageable){
+        return ResponseEntity.ok().body(productService.getAllProducts(pageable));
     }
 
     @GetMapping("/{sku}")
@@ -45,7 +47,7 @@ public class ProductController {
         return ResponseEntity.ok().body((productService.getProduct(sku)));
     }
 
-    @GetMapping()
+    @GetMapping("/admin")
     @PreAuthorize("hasAnyAuthority('admin:read')")
     public ResponseEntity<List<ProductsResponse>> getAllProductsForAdmin() {
         return ResponseEntity.ok(productService.getAllProductsForAdmin());

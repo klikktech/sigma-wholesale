@@ -34,8 +34,9 @@ public class VariationServiceImpl implements VariationService {
             variation.setParent(parentProduct.get());
         }
         else{
+            variationRepository.save(variation);
             return;
         }
-        variationRepository.save(variation);
+
     }
 }

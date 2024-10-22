@@ -13,6 +13,8 @@ import com.klikk.sigma.repository.ProductRepository;
 import com.klikk.sigma.service.ProductService;
 import com.klikk.sigma.type.AttachmentType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -60,14 +62,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponseDto> getAllProducts() {
-        List<Product> products=productRepository.findAll();
-        List<ProductResponseDto> productResponseDtos=new ArrayList<>();
-        for(Product product:products){
-            productResponseDtos.add(productMapper.productToProductResponseDto(product));
-        }
-        return productResponseDtos;
+    public Page<ProductResponseDto> getAllProducts(Pageable pageable) {
+        // Fetch products in a paginated way from the repository
+        Page<Product> products = productRepository.findAll(pageable);
+
+        // Map each product entity to a ProductResponseDto
+        return products.map(product -> productMapper.productToProductResponseDto(product));
     }
+
 
     @Transactional(readOnly = true)
     @Override

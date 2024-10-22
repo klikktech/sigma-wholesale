@@ -43,7 +43,6 @@ public class JwtServiceImpl implements JwtService {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("name", user.getFirstname()+ " "+ user.getLastname());
         extraClaims.put("email", user.getEmail());
-        extraClaims.put("username", user.getUsername());
         return generateToken(extraClaims, user);
     }
 
