@@ -1,8 +1,8 @@
 import Button from "@/components/atoms/Button";
-import MainCarousel from "@/components/organisms/MainCarousel";
 import { CarouselInfo } from "@/utils/constants";
 import { Image } from "@nextui-org/react";
 import React from "react";
+import MainCarousel from "../MainCarousel";
 
 const content = CarouselInfo
 

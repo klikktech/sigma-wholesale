@@ -1,5 +1,5 @@
 import { INavbarMenuItem } from "./types";
-import { HOME_PAGE_ROUTE, PRODUCTS_PAGE_ROUTE, SHOP_PAGE_ROUTE } from "./urls";
+import { HOME_PAGE_ROUTE, PRODUCTS_PAGE_ROUTE } from "./urls";
 
 export const SIGMA_WHOLESALE = "Sigma Wholesale";
 export const DESCRIPTION =
@@ -32,7 +32,7 @@ export const NAV_MENU_ITEMS: INavbarMenuItem[] = [
   },
   {
     label: "New Arrivals",
-    path: SHOP_PAGE_ROUTE,
+    path: PRODUCTS_PAGE_ROUTE,
   },
   {
     label: "Categories",
@@ -40,7 +40,7 @@ export const NAV_MENU_ITEMS: INavbarMenuItem[] = [
   },
   {
     label: "Brands",
-    path: SHOP_PAGE_ROUTE,
+    path: PRODUCTS_PAGE_ROUTE,
   },
   {
     label: "contact",

@@ -1,7 +1,9 @@
 "use server";
 import { axios } from "@/lib/axios";
 import { Message, RegisterDetails } from "@/utils/types";
+import { LOGIN_PAGE_ROUTE } from "@/utils/urls";
 import { RegisterFormValidator } from "@/utils/validators";
+import { redirect } from "next/navigation";
 
 export interface SignUpErrors {
   errors?: {
@@ -83,9 +85,8 @@ export const createNewUser = async (
       if (error) {
         return { error: error.message };
       }
-    // if (data && status === 200) {
-    //   createSession(data);
-    //   redirect(USERS_PAGE_ROUTE);
-    // }
+    if (data && status === 200) {
+      redirect(LOGIN_PAGE_ROUTE);
+    }
   }
 };

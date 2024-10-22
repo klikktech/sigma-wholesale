@@ -3,13 +3,14 @@
 import { Input, Link, Spacer } from "@nextui-org/react";
 import { useFormState, useFormStatus } from "react-dom";
 import Button from "@/components/atoms/Button";
-import { authenticate } from "@/app/(auth)/login/action";
+import { signInAction } from "@/app/(auth)/login/action";
 import Image from "next/image";
 import logo from "../../../assets/sigma-logo.png"
 import { SIGNUP_PAGE_ROUTE } from "@/utils/urls";
+import FormMessage from "@/components/molecules/FormMessage";
 
 const Login = () => {
-  const [state, formAction] = useFormState(authenticate, undefined);
+  const [state, formAction] = useFormState(signInAction, undefined);
   const { pending } = useFormStatus();
 
   return (
@@ -29,9 +30,6 @@ const Login = () => {
           required
           fullWidth
         />
-        {state?.errors?.email && (
-          <p className="text-danger">{state.errors.email}</p>
-        )}
 
         <Spacer y={5} />
 
@@ -44,16 +42,6 @@ const Login = () => {
           required
           fullWidth
         />
-        {state?.errors?.password && (
-          <div className="text-danger">
-            <p>Password must:</p>
-            <ul>
-              {state.errors.password.map((error) => (
-                <li key={error}>- {error}</li>
-              ))}
-            </ul>
-          </div>
-        )}
 
         <Spacer y={5} />
 
@@ -71,7 +59,7 @@ const Login = () => {
         </div>
 
         <Spacer y={5} />
-
+        {state && <FormMessage message={state} />}
         <Button className="mb-10" disabled={pending} type="submit" color="primary" size="lg">
           Login
         </Button>

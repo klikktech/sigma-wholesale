@@ -2,7 +2,7 @@
 export const SIGNUP_PAGE_ROUTE = "/register";
 export const LOGIN_PAGE_ROUTE = "/login";
 export const HOME_PAGE_ROUTE = "/home";
-export const SHOP_PAGE_ROUTE = "/shop";
+export const PRODUCT_VIEW_PAGE_ROUTE = (id: string) =>  `/product/${id}`;
 export const PRODUCTS_PAGE_ROUTE = "/product";
 
 // API Endpoints

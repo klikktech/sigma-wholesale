@@ -1,5 +1,5 @@
 import {
-  // GET_ALL_PRODUCTS_ENDPOINT,
+  PRODUCTS_URL,
   SIGNUP_URL,
   LOGIN_URL,
   LOGOUT_URL,
@@ -48,14 +48,14 @@ export const axios = {
   //   },
 
   // },
-  // products: {
-  //   getAllProducts: async (): Promise<AxiosResponse> => {
-  //     try {
-  //       const { data, status } = await api.get(GET_ALL_PRODUCTS_ENDPOINT);
-  //       return { data, status };
-  //     } catch (error) {
-  //       return error as AxiosErrorResponse;
-  //     }
-  //   },
-  // }
+  products: {
+    getAllProducts: async (): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.get(PRODUCTS_URL);
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+  }
 };

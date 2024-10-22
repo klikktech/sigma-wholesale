@@ -1,4 +1,4 @@
-import CarouselContent from '@/components/molecules/CarouselContent';
+import CarouselContent from '@/components/organisms/CarouselContent';
 import NewArrivals from '@/components/organisms/NewArrivals';
 import Tabs from '@/components/organisms/Tabs';
 import Tabview from '@/components/organisms/Tabview';

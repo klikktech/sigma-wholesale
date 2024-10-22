@@ -1,78 +1,46 @@
 "use server";
 
-import request from "@/api";
-import { createSession, decrypt } from "@/api/session";
-import { ResultCode } from "@/utils/functions";
-import { HOME_PAGE_ROUTE } from "@/utils/urls";
+import { axios } from "@/lib/axios";
+import { createSession, deleteSession } from "@/lib/axios/session";
+import { Message } from "@/utils/types";
+import { HOME_PAGE_ROUTE, LOGIN_PAGE_ROUTE } from "@/utils/urls";
 import { LoginFormValidator } from "@/utils/validators";
-import { isRedirectError } from "next/dist/client/components/redirect";
 import { redirect } from "next/navigation";
 
-interface Result {
-  type: string;
-  resultCode: ResultCode;
-}
-
-export async function authenticate(
-  //   _prevState: Result | undefined,
-  state: any,
+export const signInAction = async (
+  state: undefined | Message,
   formData: FormData
-) {
-  try {
-    const email = formData.get("email");
-    const password = formData.get("password");
-    console.log("action", email, password);
+) => {
+  const email = formData.get("email");
+  const password = formData.get("password");
 
-    const parsedCredentials = LoginFormValidator.safeParse({
-      email,
-      password,
-    });
-    console.log("before parsed creds")
-    if (parsedCredentials.success) {
-      //   await new Promise((resolve) => {
-      //     setTimeout(resolve, 5000);
-      //   });
-      console.log("before response")
-      const response = await request.authenticate(parsedCredentials.data);
-      console.log(response?.data, response?.status,"response")
-      if (response?.status === 200) {
-        const user = decrypt(response.data.accessToken);
-        createSession(response.data);
-        console.log("jka");
-        redirect(HOME_PAGE_ROUTE);
-        // return {
-        //   type: "success",
-        //   resultCode: ResultCode.UserLoggedIn,
-        // };
-      }
-      return {
-        type: "error",
-        resultCode: ResultCode.UnknownError,
-      };
-    } else {
-      return {
-        errors: parsedCredentials.error.flatten().fieldErrors,
-        // type: "error",
-        // resultCode: ResultCode.InvalidCredentials,
-      };
-    }
-  } catch (error) {
-    if(isRedirectError(error)){
-      throw error
-    }
-    // if (error instanceof Error) {
-    //   switch (error.type) {
-    //     case 'CredentialsSignin':
-    //       return {
-    //         type: 'error',
-    //         resultCode: ResultCode.InvalidCredentials
-    //       }
-    //     default:
-    return {
-      type: "error",
-      resultCode: ResultCode.UnknownError,
-      //       }
-      //   }
-    };
+  const parsedCredentials = LoginFormValidator.safeParse({
+    email,
+    password,
+  });
+  if (parsedCredentials.error) {
+    return { error: parsedCredentials.error.errors[0].message as string };
   }
-}
+
+  if (parsedCredentials.success) {
+    const { data, status, error } = await axios.auth.signInWithEmail(
+      parsedCredentials.data
+    );
+    if (error) {
+      return { error: error.message };
+    }
+    if (data && status === 200) {
+      createSession(data);
+      redirect(HOME_PAGE_ROUTE);
+    }
+  }
+
+  return { error: "Something went wrong, please try again" };
+};
+
+export const signOutAction = async () => {
+  console.log("inside signout")
+  await axios.auth.signOut();
+  deleteSession();
+  return redirect(LOGIN_PAGE_ROUTE);
+};

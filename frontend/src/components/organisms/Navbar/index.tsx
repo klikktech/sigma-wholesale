@@ -15,9 +15,8 @@ import {
 import Image from "next/image";
 import React, { useState } from "react";
 import logo from "../../../assets/sigma-logo.png"
-import { cookies } from "next/headers";
-import { decrypt } from "@/api/session";
 import AvatarMenu from "../AvatarMenu";
+import { LOGIN_PAGE_ROUTE } from "@/utils/urls";
 
 type Props = {
   user: any
@@ -59,7 +58,7 @@ const Navbar = ({ user }: Props) => {
               placeholder="Search"
             />
           </NavbarItem>
-          {/* {user ? <> */}
+          {user ? <>
                     <NavbarItem className="hidden lg:flex">
                       <Badge color="danger" size="sm" content={10} shape="circle">
                         <span
@@ -70,13 +69,13 @@ const Navbar = ({ user }: Props) => {
                       </Badge>
                     </NavbarItem>
                     <NavbarItem className="hidden lg:flex">
-                      <AvatarMenu />
+                      <AvatarMenu user={user}/>
                     </NavbarItem>
-                  {/* </>
-          //       : <NavbarItem className="hidden lg:flex">
-          //           <Link href="#">Sign In</Link>
-          //         </NavbarItem>
-          // } */}
+                  </>
+          : <NavbarItem className="hidden lg:flex">
+          <Link href={LOGIN_PAGE_ROUTE}>Sign In</Link>
+                   </NavbarItem>
+          }
 
 
         </NavbarContent>

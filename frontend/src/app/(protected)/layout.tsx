@@ -1,13 +1,11 @@
 import Navbar from "@/components/organisms/Navbar";
-import { cookies } from "next/headers";
-import { decrypt } from "@/api/session";
+import { getUser } from "@/lib/axios/session";
 
-const cookie = cookies().get("session")?.value;
-const session = decrypt(cookie);
 const ProtectedLayout = async ({ children }: { children: React.ReactNode }) => {
+    const user = getUser()
     return (
         <>
-            <Navbar user={session?.sub} />
+            <Navbar user={user} />
             <div className="">
                 {children}
             </div>

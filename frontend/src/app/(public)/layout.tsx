@@ -1,14 +1,13 @@
 import Navbar from "@/components/organisms/Navbar";
-import { cookies } from "next/headers";
-import { decrypt } from "@/api/session";
 import Footer from "@/components/organisms/Footer";
+import { getUser } from "@/lib/axios/session";
 
-// const cookie = cookies().get("session")?.value;
-// const session = decrypt(cookie);
 const PublicLayout = async ({ children }: { children: React.ReactNode }) => {
+    const user = getUser()
+    console.log(user,"user")
     return (
         <>
-            <Navbar user={''}/>
+            <Navbar user={user}/>
             <div className="px-32">
                 {children}
             </div>
