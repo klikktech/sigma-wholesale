@@ -1,11 +1,12 @@
 "use client";
 import {
-  Button,
   ScrollShadow,
 } from "@nextui-org/react";
 import React, { useState } from "react";
 import "./style.css";
 import ReviewList from "../ReviewsList";
+import Link from "next/link";
+import Button from "@/components/atoms/Button";
 
 const ProductView = () => {
   const [quantities, setQuantities] = useState([
@@ -61,7 +62,7 @@ const ProductView = () => {
   };
 
   return (
-    <div className="px-40">
+    <div className="">
       <div className="flex justify-between">
         <div className="">
           <p className="text-2xl font-bold mb-1">
@@ -71,7 +72,7 @@ const ProductView = () => {
             Discover our exclusive collection of premium smoking gear.
           </p>
         </div>
-        <p className="text-3xl font-bold">$34</p>
+        <p className="text-3xl text-red-500 font-bold">$34</p>
       </div>
       <div className="flex gap-x-10">
         <div className="w-full md:w-1/2">
@@ -134,8 +135,10 @@ const ProductView = () => {
             </div>
           </ScrollShadow>
           <Button className="w-full mt-3" color="primary">
+            <Link href={"/cart-list"} className="flex items-center">
+            <span>Add to cart</span>
             <span className="material-symbols-rounded">shopping_cart</span>
-            Add to cart
+            </Link>
           </Button>
         </div>
       </div>

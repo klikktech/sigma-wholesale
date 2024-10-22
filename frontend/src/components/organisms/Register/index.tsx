@@ -2,36 +2,35 @@
 
 import { FC } from "react";
 import { useFormState } from "react-dom";
-import { Button, Input, Spacer, Textarea } from "@nextui-org/react";
+import { Input, Spacer } from "@nextui-org/react";
 import { createNewUser } from "@/app/(auth)/register/action";
 import Image from "next/image";
 import logo from "../../../assets/sigma-logo.png"
+import Button from "@/components/atoms/Button";
 
 
 interface FormErrorProps {
     errors?: string[];
 }
 
-const FormError: FC<FormErrorProps> = ({ errors }) => {
-    if (!errors?.length) return null;
+// const FormError: FC<FormErrorProps> = ({ errors }) => {
+//     if (!errors?.length) return null;
 
-    return (
-        <div className="p-2">
-            {errors.map((err) => {
-                return (
-                    <p className="text-tiny text-red-400 list-item" key={err}>
-                        {err}
-                    </p>
-                );
-            })}
-        </div>
-    );
-};
+//     return (
+//         <div className="p-2">
+//             {errors.map((err) => {
+//                 return (
+//                     <p className="text-tiny text-red-400 list-item" key={err}>
+//                         {err}
+//                     </p>
+//                 );
+//             })}
+//         </div>
+//     );
+// };
 
 const SignUp = () => {
-    const [state, formAction] = useFormState(createNewUser, {
-        success: false,
-    });
+    const [state, formAction] = useFormState(createNewUser, undefined);
 
     return (
         <div className="flex justify-center items-center p-2">
@@ -46,7 +45,6 @@ const SignUp = () => {
                     placeholder="John"
                     labelPlacement='outside'
                 />
-                <FormError errors={state.errors?.firstName} />
 
                 <Spacer y={3} />
 
@@ -56,7 +54,15 @@ const SignUp = () => {
                     placeholder="Doe"
                     labelPlacement='outside'
                 />
-                <FormError errors={state.errors?.lastName} />
+
+                <Spacer y={3} />
+                <Input
+                    label="Nick Name"
+                    name="nickName"
+                    placeholder="Howdy"
+                    labelPlacement='outside'
+                    fullWidth
+                />
 
                 <Spacer y={3} />
                 <Input
@@ -67,20 +73,8 @@ const SignUp = () => {
                     labelPlacement='outside'
                     fullWidth
                 />
-                <FormError errors={state.errors?.email} />
 
                 <Spacer y={3} />
-                <Input
-                    label="Company Name"
-                    name="companyName"
-                    placeholder="Company LLC"
-                    labelPlacement='outside'
-                    fullWidth
-                />
-                <FormError errors={state.errors?.companyName} />
-
-                <Spacer y={3} />
-
                 <Input
                     label="Phone Number *"
                     name="phoneNumber"
@@ -89,40 +83,6 @@ const SignUp = () => {
                     labelPlacement='outside'
                     fullWidth
                 />
-                <FormError errors={state.errors?.phoneNumber} />
-                <Spacer y={3} />
-
-                <Input
-                    label="Alternative Phone Number"
-                    name="altPhoneNumber"
-                    type="tel"
-                    placeholder="Optional"
-                    labelPlacement='outside'
-                    fullWidth
-                />
-                <FormError errors={state.errors?.altPhoneNumber} />
-
-                <Spacer y={3} />
-                <Input
-                    label="Sales Tax Number"
-                    name="taxNumber"
-                    placeholder="123456789"
-                    labelPlacement='outside'
-                    fullWidth
-                />
-                <FormError errors={state.errors?.taxNumber} />
-
-                <Spacer y={3} />
-                <Input
-                    label="Website"
-                    name="website"
-                    type="url"
-                    placeholder="https://yourwebsite.com"
-                    labelPlacement='outside'
-                    fullWidth
-                />
-                <FormError errors={state.errors?.website} />
-
                 <Spacer y={3} />
 
                 <Input
@@ -134,7 +94,6 @@ const SignUp = () => {
                     // required
                     fullWidth
                 />
-                <FormError errors={state.errors?.password} />
                 <Spacer y={3} />
 
                 <Input
@@ -146,72 +105,86 @@ const SignUp = () => {
                     // required
                     fullWidth
                 />
-                <FormError errors={state.errors?.confirmPassword} />
-
-                <Spacer y={3} />
-                <Textarea
-                    label="Tell us a little about yourself"
-                    name="bio"
-                    placeholder="This will help us verify your business identity"
-                    labelPlacement='outside'
-                    fullWidth
-                />
-                <FormError errors={state.errors?.bio} />
 
                 <Spacer y={3} />
                 <Input
-                    label="Address 1 *"
-                    name="address1"
+                    label="Shipping Address *"
+                    name="shippingAddress"
                     placeholder="123 Main St"
                     labelPlacement='outside'
                     // required
                     fullWidth
                 />
-                <FormError errors={state.errors?.address1} />
-
-                <Spacer y={3} />
-                <Input
-                    label="Address 2"
-                    name="address2"
-                    placeholder="Apartment, suite, etc."
-                    labelPlacement='outside'
-                    fullWidth
-                />
-                <FormError errors={state.errors?.address2} />
-
                 <Spacer y={3} />
 
                 <Input
-                    label="City *"
-                    name="city"
+                    label="Shipping City *"
+                    name="shippingCity"
                     placeholder="City"
                     labelPlacement='outside'
                     // required
                     fullWidth
                 />
-                <FormError errors={state.errors?.city} />
                 <Spacer y={3} />
 
                 <Input
-                    label="Country *"
-                    name="country"
-                    placeholder="Country"
+                    label="Shipping State *"
+                    name="shippingState"
+                    placeholder="State"
                     labelPlacement='outside'
                     // required
                     fullWidth
                 />
-                <FormError errors={state.errors?.country} />
                 <Spacer y={3} />
 
                 <Input
-                    label="Zip Code *"
-                    name="zipCode"
+                    label="Shipping Zip Code *"
+                    name="shippingZip"
                     placeholder="ZIP"
                     labelPlacement='outside'
                     // required
                     fullWidth
                 />
-                <FormError errors={state.errors?.zipCode} />
+                <Spacer y={3} />
+
+                <Input
+                    label="Store Address *"
+                    name="storeAddress"
+                    placeholder="123 Main St"
+                    labelPlacement='outside'
+                    // required
+                    fullWidth
+                />
+                <Spacer y={3} />
+
+                <Input
+                    label="Store City *"
+                    name="storeCity"
+                    placeholder="City"
+                    labelPlacement='outside'
+                    // required
+                    fullWidth
+                />
+                <Spacer y={3} />
+
+                <Input
+                    label="Store State *"
+                    name="storeState"
+                    placeholder="State"
+                    labelPlacement='outside'
+                    // required
+                    fullWidth
+                />
+                <Spacer y={3} />
+
+                <Input
+                    label="Store Zip Code *"
+                    name="storeZip"
+                    placeholder="ZIP"
+                    labelPlacement='outside'
+                    // required
+                    fullWidth
+                />
 
                 <Spacer y={3} />
                 {/* {error && <p style={{ color: 'red' }}>{error}</p>}

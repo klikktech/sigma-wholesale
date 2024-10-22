@@ -45,7 +45,7 @@ const NewArrivals = async () => {
   ));
 
   return (
-    <div className="">
+    <div className="container mx-auto">
       <h1 className="my-2 text-xl">New Arrivals</h1>
       <ProductsCarousel>{productElements}</ProductsCarousel>
       <div className="text-center">

@@ -31,15 +31,6 @@ export const RegisterFormValidator = z.object({
     .string()
     .min(10, { message: "must be 10 characters long" })
     .regex(/[0-9]/, { message: "Please enter vaild Phone number." }),
-  altPhoneNumber: z
-    .string()
-    .min(10, { message: "must be 10 characters long" })
-    .regex(/[0-9]/, { message: "Please enter vaild Phone number." }),
-  taxNumber: z
-    .string()
-    .min(10, { message: "must be 10 characters long" })
-    .regex(/[0-9]/, { message: "Please enter vaild tax number." }),
-  website: z.string().url({ message: "Please enter a valid website." }).trim(),
   password: z
   .string()
   .min(8, { message: "Be at least 8 characters long" })

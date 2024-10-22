@@ -2,7 +2,6 @@
 import {
     Card,
     Input,
-    Button,
     Radio,
     Checkbox,
     Spacer,
@@ -18,6 +17,7 @@ import {
 import { useFormState, useFormStatus } from "react-dom";
 import { checkOutAction } from "@/app/(public)/check-out/action";
 import FormMessage from "@/components/molecules/FormMessage";
+import Button from "@/components/atoms/Button";
 
 
 interface Item {
@@ -191,7 +191,7 @@ export default function CheckOut() {
                                 disabled={pending}
                                 aria-disabled={pending}
                             >
-                                {pending ? "Checking Out..." : "Check Out"}
+                                {pending ? "Placing Order..." : "Place Order"}
                             </Button>
                             {state && <FormMessage message={state} />}
                         </CardBody>

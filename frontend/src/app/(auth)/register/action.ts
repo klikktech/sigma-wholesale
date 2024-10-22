@@ -1,4 +1,6 @@
 "use server";
+import { axios } from "@/lib/axios";
+import { Message, RegisterDetails } from "@/utils/types";
 import { RegisterFormValidator } from "@/utils/validators";
 
 export interface SignUpErrors {
@@ -6,53 +8,93 @@ export interface SignUpErrors {
             password?: string[];
             firstName?: string[];
             lastName?: string[];
-            companyName?: string[];
+            nickName?: string[];
             phoneNumber?: string[];
-            altPhoneNumber?: string[];
-            taxNumber?: string[];
-            website?: string[];
             confirmPassword?: string[];
-            bio?: string[];
-            address1?: string[];
-            address2?: string[];
-            city?: string[];
-            country?: string[];
-            zipCode?: string[];
+            shippingAddress?: string[];
+            shippingCity?: string[];
+            shippingState?: string[];
+            shippingZipCode?: string[];
+            billingAddress?: string[];
+            billingCity?: string[];
+            billingState?: string[];
+            billingZipCode?: string[];
          };
   success: boolean;
 }
 
 export const createNewUser = async (
-  data: SignUpErrors,
+  state: undefined | Message,
   formData: FormData
-): Promise<SignUpErrors> => {
-  const result = RegisterFormValidator.safeParse({
-    firstName: formData.get("firstName"),
-    lastName: formData.get("lastName"),
-    email: formData.get("email"),
-    password: formData.get("password"),
-    companyName: formData.get("companyName"),
-    phoneNumber: formData.get("phoneNumber"),
-    altPhoneNumber: formData.get("altPhoneNumber"),
-    taxNumber: formData.get("taxNumber"),
-    website: formData.get("website"),
-    confirmPassword: formData.get("confirmPassword"),
-    bio: formData.get("bio"),
-    address1: formData.get("address1"),
-    address2: formData.get("address2"),
-    city: formData.get("city"),
-    country: formData.get("country"),
-    zipcode: formData.get("zipcode"),
-  });
+) => {
+  const firstName = formData.get("firstName")
+  const lastName = formData.get("lastName")
+  const email = formData.get("email")
+  const password = formData.get("password")
+  const nickName = formData.get("nickName")
+  const phoneNumber = formData.get("phoneNumber")
+  const confirmPassword = formData.get("confirmPassword")
+  const shippingAddress = formData.get("shippingAddress")
+  const shippingCity = formData.get("shippingCity")
+  const shippingState = formData.get("shippingState")
+  const shippingZip = formData.get("shippingZip")
+  const storeAddress = formData.get("storeAddress")
+  const storeCity = formData.get("storeCity")
+  const storeState = formData.get("storeState")
+  const storeZip = formData.get("storeZip")
 
-  if (result.success) {
-    // now you can sign up or create new user inside your database
-    console.log(result.data);
-    return { success: true };
+  const formDetails = {
+    firstName,
+    lastName,
+    email,
+    password,
+    nickName,
+    phoneNumber,
+    confirmPassword,
+    shippingAddress,
+    shippingCity,
+    shippingState,
+    shippingZip,
+    storeAddress,
+    storeCity,
+    storeState,
+    storeZip
   }
+  const parsedCredentials = RegisterFormValidator.safeParse({
+    firstName,
+    lastName,
+    email,
+    password,
+    nickName,
+    phoneNumber,
+    confirmPassword,
+    shippingAddress,
+    shippingCity,
+    shippingState,
+    shippingZip,
+    storeAddress,
+    storeCity,
+    storeState,
+    storeZip
+  });
+  
+  let { confirmPassword, ...payload } = formDetails;
+  payload = payload as RegisterDetails;
 
-  return {
-    success: false,
-    errors: result.error.flatten().fieldErrors,
-  };
+  console.log(payload,"register data");
+
+  // if (parsedCredentials.success) {
+    const { data, status, error } = await axios.auth.signUpWithEmail(
+      payload
+    );
+    console.log(status, error, data)
+
+    if (error) {
+      return { error: error.message };
+    // }
+    // if (data && status === 200) {
+    //   createSession(data);
+    //   redirect(USERS_PAGE_ROUTE);
+    // }
+  }
 };

@@ -1,5 +1,6 @@
 'use client'
 import Button from '@/components/atoms/Button';
+import Link from 'next/link';
 import React, { useState } from 'react';
 
 interface CartItem {
@@ -91,7 +92,7 @@ const CartList = () => {
               <p>${totalCost.toFixed(2)}</p>
             </div>
             <div className="mb-4">
-                <p>Promo Code</p>
+              <p>Promo Code</p>
               <div className="flex space-x-2 w-full justify-between">
                 <input
                   type="text"
@@ -105,7 +106,11 @@ const CartList = () => {
               <p>Total Cost</p>
               <p>${(totalCost + 5).toFixed(2)}</p>
             </div>
-            < Button className="w-full py-3 mt-4" color='primary'>Checkout</Button>
+            < Button className="w-full py-3 mt-4" color='primary'>
+              <Link href={"/check-out"}>
+                Checkout
+              </Link>
+            </Button>
           </div>
         </div>
       </div>

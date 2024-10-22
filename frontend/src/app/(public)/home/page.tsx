@@ -14,7 +14,6 @@ const HomePage = () => {
         <Tabview/>
     </div>
   </Tabs>
-  {/* <Review /> */}
   </div>
  )
 };
