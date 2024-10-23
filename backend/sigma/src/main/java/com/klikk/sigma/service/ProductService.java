@@ -3,6 +3,7 @@ package com.klikk.sigma.service;
 import com.klikk.sigma.dto.ProductDto;
 import com.klikk.sigma.dto.response.ProductResponseDto;
 import com.klikk.sigma.dto.response.ProductsResponse;
+import com.klikk.sigma.dto.response.VariationResponseDto;
 import com.klikk.sigma.entity.ProductRequestDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;  // Use Spring's Pageable
@@ -20,4 +21,6 @@ public interface ProductService {
     Page<ProductResponseDto> getAllProducts(Pageable pageable);
 
     List<ProductsResponse> getAllProductsForAdmin();
+
+    List<VariationResponseDto> getProductVariations(String sku);
 }
