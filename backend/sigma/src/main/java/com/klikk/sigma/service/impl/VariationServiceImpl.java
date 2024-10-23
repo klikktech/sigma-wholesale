@@ -32,10 +32,11 @@ public class VariationServiceImpl implements VariationService {
         Variation variation=variationMapper.variationDtoToVariation(variationDto);
         if(parentProduct.isPresent()){
             variation.setParent(parentProduct.get());
+            variationRepository.save(variation);
         }
         else{
+            variationRepository.save(variation);
             return;
         }
-        variationRepository.save(variation);
     }
 }

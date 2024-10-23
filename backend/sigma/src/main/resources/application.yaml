@@ -2,6 +2,10 @@ server:
   port: 6754
 
 spring:
+  servlet:
+    multipart:
+      max-request-size: 4GB
+      max-file-size: 4GB
   jackson:
     serialization:
       fail_on_empty_beans: false
