@@ -30,13 +30,8 @@ public class VariationServiceImpl implements VariationService {
         Integer parentId=variationDto.getParentId();
         Optional<Product> parentProduct=productRepository.findById(parentId);
         Variation variation=variationMapper.variationDtoToVariation(variationDto);
-        if(parentProduct.isPresent()){
-            variation.setParent(parentProduct.get());
-        }
-        else{
-            variationRepository.save(variation);
-            return;
-        }
+        parentProduct.ifPresent(variation::setParent);
+        variationRepository.save(variation);
 
     }
 }
