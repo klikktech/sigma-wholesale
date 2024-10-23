@@ -16,7 +16,7 @@ const ProductsPage = async () => {
         <div className="container">
           <Table
             searchable
-            data={data || []}
+            data={data?.content}
             columns={PRODUCT_COLUMNS}
             headerContent={
               <>
@@ -31,6 +31,7 @@ const ProductsPage = async () => {
                 </Link>
               </>
             }
+            itemsKey='sku'
             renderCell={renderCell}
           />
         </div>

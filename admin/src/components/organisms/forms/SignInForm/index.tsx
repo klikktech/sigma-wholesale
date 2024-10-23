@@ -1,14 +1,12 @@
 "use client";
-import React from "react";
+
 import { signInAction } from "@/app/(auth-pages)/actions";
 import Input from "@/components/atoms/Input";
-import FormMessage from "@/components/molecules/FormMessage";
-import { useFormState, useFormStatus } from "react-dom";
-import Button from "@/components/atoms/Button";
+import FormSubmitButton from "@/components/molecules/FormSubmitButtton";
+import { useFormState } from "react-dom";
 
 const SignInForm = () => {
   const [state, formAction] = useFormState(signInAction, undefined);
-  const { pending } = useFormStatus();
 
   return (
     <form
@@ -55,15 +53,7 @@ const SignInForm = () => {
               required
             />
           </div>
-          <Button
-            type="submit"
-            disabled={pending}
-            aria-disabled={pending}
-            className="mt-6"
-          >
-            {pending ? "Signing in..." : "Sign in"}
-          </Button>
-          {state && <FormMessage message={state} />}
+          <FormSubmitButton errorMessage={state} />
         </div>
       </div>
     </form>

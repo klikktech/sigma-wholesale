@@ -9,6 +9,7 @@ interface Product {
   id: string;
   name: string;
   sku: string;
+  displayImage: any;
   price: string;
   status: string;
   createdAt: string;
@@ -58,8 +59,10 @@ export const renderCell = (product: Product, columnKey: React.Key) => {
       return (
         <User
           avatarProps={{
-            radius: "full",
-            // src: user.,
+            radius: "lg",
+            src: `data:image/png;base64,${product.displayImage?.fileContent}`,
+            alt: product.displayImage?.id,
+            className: "w-[300px] h-[300px]",
             showFallback: true,
             fallback: (
               <span className="material-symbols-rounded text-default-500">
