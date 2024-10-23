@@ -21,12 +21,12 @@ public class OrderController {
 
 
     @PreAuthorize("hasAuthority('admin:read')")
-    @GetMapping("/")
+    @GetMapping()
     public List<Order> getAllOrders() {
         return orderService.findAll();
     }
 
-    @PostMapping("/")
+    @PostMapping()
     public ResponseEntity<String> addOrder(@RequestBody OrderDto orderDto) {
         try {
             orderService.saveOrder(orderDto);

@@ -16,7 +16,7 @@ public class CategoryController {
     @Autowired
     private CategoryServiceImpl categoryServiceImpl;
 
-    @PostMapping("/")
+    @PostMapping()
     public ResponseEntity<String> addCategory(@RequestBody Category category){
         categoryServiceImpl.saveCategory(category);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("Category created");
