@@ -2,6 +2,7 @@ package com.klikk.sigma.controller;
 
 import com.klikk.sigma.dto.response.ProductResponseDto;
 import com.klikk.sigma.dto.response.ProductsResponse;
+import com.klikk.sigma.dto.response.VariationResponseDto;
 import com.klikk.sigma.entity.ProductRequestDto;
 import com.klikk.sigma.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,5 +52,10 @@ public class ProductController {
     @PreAuthorize("hasAnyAuthority('admin:read')")
     public ResponseEntity<List<ProductsResponse>> getAllProductsForAdmin() {
         return ResponseEntity.ok(productService.getAllProductsForAdmin());
+    }
+
+    @GetMapping({"/{sku}/variations"})
+    public ResponseEntity<List<VariationResponseDto>> getVariations(@PathVariable String sku) {
+        return ResponseEntity.ok().body(this.productService.getProductVariations(sku));
     }
 }

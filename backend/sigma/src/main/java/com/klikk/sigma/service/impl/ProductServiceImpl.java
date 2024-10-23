@@ -2,12 +2,14 @@ package com.klikk.sigma.service.impl;
 
 import com.klikk.sigma.dto.ProductDto;
 import com.klikk.sigma.dto.response.ProductResponseDto;
+import com.klikk.sigma.dto.response.VariationResponseDto;
 import com.klikk.sigma.entity.Attachment;
 import com.klikk.sigma.dto.response.ProductsResponse;
 import com.klikk.sigma.entity.Category;
 import com.klikk.sigma.entity.Product;
 import com.klikk.sigma.entity.ProductRequestDto;
 import com.klikk.sigma.mapper.ProductMapper;
+import com.klikk.sigma.mapper.VariationMapper;
 import com.klikk.sigma.repository.CategoryRepository;
 import com.klikk.sigma.repository.ProductRepository;
 import com.klikk.sigma.service.ProductService;
@@ -41,6 +43,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private VariationMapper variationMapper;
 
     @Override
     public ProductResponseDto saveProduct(ProductRequestDto productRequest, MultipartFile displayImage) throws IOException {
@@ -79,5 +84,11 @@ public class ProductServiceImpl implements ProductService {
                 .sorted(Comparator.comparing(Product::getCreatedAt).reversed())
                 .map(product -> productMapper.productToProductsResponse(product))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<VariationResponseDto> getProductVariations(String sku) {
+        Optional<Product> product=productRepository.findBySku(sku);
+        return product.map(value -> value.getVariations().stream().map(variation -> variationMapper.variationToVariationResponseDto(variation)).toList()).orElseGet(List::of);
     }
 }

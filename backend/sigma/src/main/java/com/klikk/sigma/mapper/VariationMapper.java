@@ -1,6 +1,7 @@
 package com.klikk.sigma.mapper;
 
 import com.klikk.sigma.dto.VariationDto;
+import com.klikk.sigma.dto.response.VariationResponseDto;
 import com.klikk.sigma.entity.Variation;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -23,4 +24,6 @@ public abstract class VariationMapper {
         LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
         return dateTime;
     }
+
+    public abstract VariationResponseDto variationToVariationResponseDto(Variation variation);
 }
