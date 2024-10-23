@@ -12,7 +12,6 @@ import org.mapstruct.Mapping;
 public interface ProductMapper {
     ProductResponseDto productToProductResponseDto(Product product);
 
-    @Mapping(target = "category",ignore = true)
     @Mapping(target = "id",ignore = true)
     @Mapping(target = "createdAt",ignore = true)
     @Mapping(target = "modifiedAt",ignore = true)
