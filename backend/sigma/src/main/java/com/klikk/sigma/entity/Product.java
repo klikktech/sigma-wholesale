@@ -68,9 +68,13 @@ public class Product {
     @Column(name = "product_id", unique = true)
     private Long productId;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id",referencedColumnName = "id")
-    private Category category;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "product_categories",
+            joinColumns = @JoinColumn(name = "product_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id",referencedColumnName = "id")
+    )
+    private List<Category> categories;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
