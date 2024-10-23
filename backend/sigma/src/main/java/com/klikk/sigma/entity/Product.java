@@ -41,6 +41,9 @@ public class Product {
     @Column(name = "min_price")
     private double minPrice;
 
+    @Column(name = "price")
+    private double price;
+
     @Column(name = "sku",unique = true)
     private String sku;
 
