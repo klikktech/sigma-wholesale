@@ -10,6 +10,7 @@ import com.klikk.sigma.service.ProductCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -26,7 +27,10 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         Optional<Product> product= productRepository.findByProductId(productCategoryDto.getProductId()) ;
         Optional<Category> category=categoryRepository.findByCategoryId(productCategoryDto.getCategoryId());
         if(product.isPresent() && category.isPresent()){
-            product.get().setCategory(category.get());
+            if(product.get().getCategories()==null){
+                product.get().setCategories(new ArrayList<>());
+            }
+            product.get().getCategories().add(category.get());
             productRepository.save(product.get());
         }
     }

@@ -11,7 +11,6 @@ import org.mapstruct.Mapping;
 public interface ProductMapper {
     ProductDto ProductToProductDto(Product product);
 
-    @Mapping(target = "category",ignore = true)
     @Mapping(target = "id",ignore = true)
     Product ProductRequestToProduct(ProductRequestDto productRequestDto);
 }

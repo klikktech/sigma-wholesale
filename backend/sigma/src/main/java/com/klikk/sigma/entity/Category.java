@@ -47,7 +47,7 @@ public class Category {
     @Column(name = "count")
     private Long count;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "category")
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Product> products;
 
     @JsonIgnore

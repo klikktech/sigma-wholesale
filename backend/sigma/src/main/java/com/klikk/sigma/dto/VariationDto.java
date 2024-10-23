@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class VariationDto {
 
-    private Long productId;
+    private Long variationId;
 
     private String typeInfo;
 

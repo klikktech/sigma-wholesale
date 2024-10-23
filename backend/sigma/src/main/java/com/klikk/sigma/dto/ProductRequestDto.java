@@ -24,6 +24,8 @@ public class ProductRequestDto {
 
     private double minPrice;
 
+    private double price;
+
     private String sku;
 
     private String details;
