@@ -61,8 +61,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponseDto getProduct(String sku) {
-        Optional<Product> product=productRepository.findBySku(sku);
+    public ProductResponseDto getProduct(String details) {
+        Optional<Product> product=productRepository.findByDetails(details);
         return productMapper.productToProductResponseDto(product.get());
     }
 
@@ -87,8 +87,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<VariationResponseDto> getProductVariations(String sku) {
-        Optional<Product> product=productRepository.findBySku(sku);
+    public List<VariationResponseDto> getProductVariations(String details) {
+        Optional<Product> product=productRepository.findByDetails(details);
         return product.map(value -> value.getVariations().stream().map(variation -> variationMapper.variationToVariationResponseDto(variation)).toList()).orElseGet(List::of);
     }
 }
