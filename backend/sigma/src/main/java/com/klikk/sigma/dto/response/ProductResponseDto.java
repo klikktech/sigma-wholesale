@@ -23,6 +23,8 @@ public class ProductResponseDto {
 
     private String sku;
 
+    private String details;
+
     private List<VariationResponseDto> variations;
 
     private List<Category> categories;

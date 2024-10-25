@@ -43,9 +43,9 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.getAllProducts(pageable));
     }
 
-    @GetMapping("/{sku}")
-    public ResponseEntity<ProductResponseDto> getProduct(@PathVariable String sku){
-        return ResponseEntity.ok().body((productService.getProduct(sku)));
+    @GetMapping("/{details}")
+    public ResponseEntity<ProductResponseDto> getProduct(@PathVariable String details){
+        return ResponseEntity.ok().body((productService.getProduct(details)));
     }
 
     @GetMapping("/admin")
@@ -54,8 +54,8 @@ public class ProductController {
         return ResponseEntity.ok(productService.getAllProductsForAdmin());
     }
 
-    @GetMapping({"/{sku}/variations"})
-    public ResponseEntity<List<VariationResponseDto>> getVariations(@PathVariable String sku) {
-        return ResponseEntity.ok().body(this.productService.getProductVariations(sku));
+    @GetMapping({"/{details}/variations"})
+    public ResponseEntity<List<VariationResponseDto>> getVariations(@PathVariable String details) {
+        return ResponseEntity.ok().body(this.productService.getProductVariations(details));
     }
 }
