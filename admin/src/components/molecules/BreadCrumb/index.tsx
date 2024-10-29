@@ -24,7 +24,7 @@ const Breadcrumb = ({ path }: Props) => {
             href={href}
             className="capitalize"
           >
-            {item}
+            {item.replaceAll("-", " ")}
           </BreadcrumbItem>
         );
       })}
