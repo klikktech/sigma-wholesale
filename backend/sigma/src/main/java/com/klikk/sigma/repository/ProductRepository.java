@@ -12,4 +12,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     Optional<Product> findBySku(String sku);
 
     Optional<Product> findByDetails(String details);
+
+    boolean existsByDetails(String details);
 }

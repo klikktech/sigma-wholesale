@@ -1,29 +1,26 @@
 package com.klikk.sigma.service.impl;
 
-import com.klikk.sigma.dto.ProductDto;
+import com.klikk.sigma.dto.request.ProductRequestDto;
 import com.klikk.sigma.dto.response.ProductResponseDto;
+import com.klikk.sigma.dto.response.ProductsResponse;
 import com.klikk.sigma.dto.response.VariationResponseDto;
 import com.klikk.sigma.entity.Attachment;
-import com.klikk.sigma.dto.response.ProductsResponse;
-import com.klikk.sigma.entity.Category;
 import com.klikk.sigma.entity.Product;
-import com.klikk.sigma.entity.ProductRequestDto;
+import com.klikk.sigma.exception.NotFoundException;
 import com.klikk.sigma.mapper.ProductMapper;
 import com.klikk.sigma.mapper.VariationMapper;
 import com.klikk.sigma.repository.CategoryRepository;
 import com.klikk.sigma.repository.ProductRepository;
+import com.klikk.sigma.service.AttachmentService;
 import com.klikk.sigma.service.ProductService;
 import com.klikk.sigma.type.AttachmentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import org.springframework.transaction.annotation.Transactional;
-
+import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -39,7 +36,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductMapper productMapper;
 
     @Autowired
-    private AttachmentServiceImpl attachmentServiceImpl;
+    private AttachmentService attachmentService;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -48,16 +45,26 @@ public class ProductServiceImpl implements ProductService {
     private VariationMapper variationMapper;
 
     @Override
-    public ProductResponseDto saveProduct(ProductRequestDto productRequest, MultipartFile displayImage) throws IOException {
+    public void saveProduct(ProductRequestDto productRequest) {
         Product newProduct=productMapper.productRequestToProduct(productRequest);
-        if(displayImage!=null){
-            Attachment att = attachmentServiceImpl.saveAttachment(AttachmentType.PRODUCT_ATTACHMENT, displayImage.getBytes());
-            newProduct.setDisplayImage(att);
+        newProduct.setDetails(generateUniqueDetails(newProduct));
+        newProduct.setCreatedAt(LocalDateTime.now());
+        newProduct.setModifiedAt(LocalDateTime.now());
+        if (productRequest.getDisplayImage()!=null) {
+            byte[] displayImageBytes = Base64.getDecoder().decode(productRequest.getDisplayImage());
+            Attachment displayAttachment = attachmentService.saveAttachment(AttachmentType.PRODUCT_ATTACHMENT, displayImageBytes);
+            newProduct.setDisplayImage(displayAttachment);
+        }
+        if (productRequest.getImages()!=null) {
+            List<Attachment> attachments = productRequest.getImages().stream()
+                    .map(attachment -> attachmentService.saveAttachment(AttachmentType.PRODUCT_ATTACHMENT, Base64.getDecoder().decode(attachment)))
+                    .collect(Collectors.toList());
+            newProduct.setImages(attachments);
         }
 //        Optional<Category> productCategory= categoryRepository.findById(productRequest.getCategory());
 //        newProduct.setCategory(productCategory.get());
 //        System.out.println(newProduct.getCategory().getName());
-        return productMapper.productToProductResponseDto(productRepository.save(newProduct));
+        productMapper.productToProductResponseDto(productRepository.save(newProduct));
     }
 
     @Override
@@ -76,14 +83,24 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-    @Transactional(readOnly = true)
+    //    @Transactional(readOnly = true)
     @Override
     public List<ProductsResponse> getAllProductsForAdmin() {
         List<Product> products = productRepository.findAll();
         return products.stream()
                 .sorted(Comparator.comparing(Product::getCreatedAt).reversed())
-                .map(product -> productMapper.productToProductsResponse(product))
+                .map(product -> productMapper.adminAllProductsResponse(product))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ProductsResponse getProductForAdmin(String details) {
+        Optional<Product> product = productRepository.findByDetails(details);
+        if (product.isPresent()) {
+            return productMapper.adminProductsResponse(product.get());
+        } else {
+            throw new NotFoundException("Product not found with details : " + details + ".");
+        }
     }
 
     @Override
@@ -91,4 +108,27 @@ public class ProductServiceImpl implements ProductService {
         Optional<Product> product=productRepository.findByDetails(details);
         return product.map(value -> value.getVariations().stream().map(variation -> variationMapper.variationToVariationResponseDto(variation)).toList()).orElseGet(List::of);
     }
+
+    private String generateUniqueDetails(Product product) {
+        String baseDetails = product.getName().toLowerCase().replace(" ", "-");
+        String uniqueDetails = baseDetails;
+        int counter = 1;
+        while (productRepository.existsByDetails(uniqueDetails)) {
+            uniqueDetails = baseDetails + "-" + counter;
+            counter++;
+        }
+        return uniqueDetails;
+    }
+
+//    private Attachment saveImage(MultipartFile file) {
+//        Attachment attachment = new Attachment();
+//        try {
+//            attachment.setFileName(file.getOriginalFilename());
+//            attachment.setFileType(file.getContentType());
+//            attachment.setData(file.getBytes());  // Store image as byte array
+//        } catch (IOException e) {
+//            throw new RuntimeException("Failed to store image", e);
+//        }
+//        return attachmentRepository.save(attachment);
+//    }
 }
