@@ -38,8 +38,8 @@ public class CartItem {
     private Cart cart;
 
     @OneToOne
-    @JoinColumn(name = "product_id",referencedColumnName = "id")
-    private Product product;
+    @JoinColumn(name = "variation_id",referencedColumnName = "id")
+    private Variation variation;
 
     @Column(name = "quantity")
     private int quantity;

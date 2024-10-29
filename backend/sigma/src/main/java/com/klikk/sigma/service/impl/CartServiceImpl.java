@@ -2,15 +2,9 @@ package com.klikk.sigma.service.impl;
 
 import com.klikk.sigma.dto.request.CartRequest;
 import com.klikk.sigma.dto.request.CartItemRequest;
-import com.klikk.sigma.entity.Cart;
-import com.klikk.sigma.entity.CartItem;
-import com.klikk.sigma.entity.Product;
-import com.klikk.sigma.entity.User;
+import com.klikk.sigma.entity.*;
 import com.klikk.sigma.exception.NotFoundException;
-import com.klikk.sigma.repository.CartItemsRepository;
-import com.klikk.sigma.repository.CartRepository;
-import com.klikk.sigma.repository.ProductRepository;
-import com.klikk.sigma.repository.UserRepository;
+import com.klikk.sigma.repository.*;
 import com.klikk.sigma.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +27,9 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private VariationRepository variationRepository;
+
     @Override
     @Transactional
     public void addCart(CartRequest cartRequestDto) {
@@ -50,12 +47,12 @@ public class CartServiceImpl implements CartService {
 
         // Add items to the cart
         for (CartItemRequest itemDto : cartRequestDto.getCartItemsList()) {
-            Product product = productRepository.findByDetails(itemDto.getProduct())
-                    .orElseThrow(() -> new RuntimeException("Product not found"));
+            Variation variation = variationRepository.findByDetails(itemDto.getVariation())
+                    .orElseThrow(() -> new RuntimeException("Variation not found"));
 
             CartItem cartItem = CartItem.builder()
                     .cart(cart)
-                    .product(product)
+                    .variation(variation)
                     .quantity(itemDto.getQuantity())
                     .addedAt(LocalDateTime.now())
                     .build();

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CartItemRequest {
 
-    private String product;
+    private String variation;
 
     private int quantity;
 }
