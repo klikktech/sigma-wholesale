@@ -51,6 +51,12 @@ public class Variation {
     @Column(name = "max_price")
     private double maxPrice;
 
+    @Column(name = "price")
+    private double price;
+
+    @Column(name = "details")
+    private String details;
+
     @Column(name = "display_status")
     private String displayStatus;
 

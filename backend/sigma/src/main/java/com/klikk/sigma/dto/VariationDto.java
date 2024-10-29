@@ -24,6 +24,10 @@ public class VariationDto {
 
     private double maxPrice;
 
+    private double price;
+
+    private String details;
+
     private String displayStatus;
 
     private String stockStatus;
