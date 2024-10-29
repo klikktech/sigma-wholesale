@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -34,15 +35,15 @@ public class CartItem {
 
     @ManyToOne
     @JoinColumn(name = "cart_id",referencedColumnName = "id")
-    private Cart cartId;
+    private Cart cart;
 
     @OneToOne
     @JoinColumn(name = "product_id",referencedColumnName = "id")
-    private Product productId;
+    private Product product;
 
     @Column(name = "quantity")
     private int quantity;
 
     @Column(name = "added_at")
-    private Date addedAt;
+    private LocalDateTime addedAt;
 }
