@@ -4,6 +4,7 @@ import { PRODUCT_COLUMNS, renderCell } from "./columns";
 import Link from "next/link";
 import Button from "@/components/atoms/Button";
 import { axios } from "@/lib/axios";
+import { ADD_PRODUCT_PAGE_ROUTE } from "@/utils/routes";
 
 const ProductsPage = async () => {
   const { data } = await axios.products.getAllProducts();
@@ -16,11 +17,11 @@ const ProductsPage = async () => {
         <div className="container">
           <Table
             searchable
-            data={data?.content}
+            data={data || []}
             columns={PRODUCT_COLUMNS}
             headerContent={
               <>
-                <Link href="#">
+                <Link href={ADD_PRODUCT_PAGE_ROUTE}>
                   <Button
                     endContent={
                       <span className="material-symbols-rounded">add</span>
@@ -31,7 +32,7 @@ const ProductsPage = async () => {
                 </Link>
               </>
             }
-            itemsKey='sku'
+            itemsKey="sku"
             renderCell={renderCell}
           />
         </div>

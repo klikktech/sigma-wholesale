@@ -4,12 +4,15 @@ import { DeleteIcon, EditIcon, EyeIcon } from "@/utils/icons";
 import Modal from "@/components/molecules/Modal";
 import React from "react";
 import { ITableColumn } from "@/utils/types";
+import Link from "next/link";
+import { EDIT_PRODUCT_PAGE_ROUTE } from "@/utils/routes";
 
 interface Product {
   id: string;
   name: string;
   sku: string;
   displayImage: any;
+  details: string;
   price: string;
   status: string;
   createdAt: string;
@@ -60,9 +63,9 @@ export const renderCell = (product: Product, columnKey: React.Key) => {
         <User
           avatarProps={{
             radius: "lg",
-            src: `data:image/png;base64,${product.displayImage?.fileContent}`,
+            src: `data:image/png;base64,${product.displayImage}`,
             alt: product.displayImage?.id,
-            className: "w-[300px] h-[300px]",
+            className: "w-10 h-10",
             showFallback: true,
             fallback: (
               <span className="material-symbols-rounded text-default-500">
@@ -101,9 +104,11 @@ export const renderCell = (product: Product, columnKey: React.Key) => {
             </span>
           </Tooltip>
           <Tooltip content="Edit user">
-            <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
-              <EditIcon />
-            </span>
+            <Link href={EDIT_PRODUCT_PAGE_ROUTE(product.details)}>
+              <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
+                <EditIcon />
+              </span>
+            </Link>
           </Tooltip>
           <Tooltip color="danger" content="Delete user">
             <span className="cursor-pointer text-lg text-danger active:opacity-50">
