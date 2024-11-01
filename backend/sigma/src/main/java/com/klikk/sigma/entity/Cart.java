@@ -32,7 +32,7 @@ public class Cart {
     )
     private String id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;
 
