@@ -15,5 +15,7 @@ public class CartRequest {
 
     private String email;
 
+    private double price;
+
     private List<CartItemRequest> cartItemsList;
 }

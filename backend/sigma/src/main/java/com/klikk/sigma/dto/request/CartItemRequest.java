@@ -15,4 +15,6 @@ public class CartItemRequest {
     private String variation;
 
     private int quantity;
+
+    private double price;
 }

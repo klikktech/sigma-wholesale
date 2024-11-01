@@ -36,6 +36,9 @@ public class Cart {
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;
 
+    @Column(name = "price")
+    private double price;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

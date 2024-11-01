@@ -7,5 +7,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/checkout")
 public class CheckoutController {
 
-    public void checkout()
+//    public void checkout()
 }
