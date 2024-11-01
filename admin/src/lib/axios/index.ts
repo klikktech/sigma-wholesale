@@ -3,10 +3,11 @@ import {
   GET_ALL_PRODUCTS_ENDPOINT,
   GET_ALL_USERS_ENDPOINT,
   GET_PRODUCT_ENDPOINT,
+  REFRESH_TOKEN_URL,
   SIGNIN_ENDPOINT,
   SIGNOUT_ENDPOINT,
 } from "@/utils/urls";
-import api from "./instance";
+import api, { authInstance } from "./instance";
 import {
   AxiosErrorResponse,
   AxiosResponse,
@@ -21,7 +22,22 @@ export const axios = {
       password: string;
     }): Promise<AxiosResponse> => {
       try {
-        const { data, status } = await api.post(SIGNIN_ENDPOINT, credentials);
+        const { data, status } = await authInstance.post(
+          SIGNIN_ENDPOINT,
+          credentials
+        );
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    refreshToken: async (refreshToken: string): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await authInstance.post(
+          REFRESH_TOKEN_URL,
+          {},
+          { headers: { Authorization: `Bearer ${refreshToken}` } }
+        );
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;

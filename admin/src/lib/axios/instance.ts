@@ -1,7 +1,17 @@
-import { BASE_BACKEND_URL, REFRESH_TOKEN_URL } from "@/utils/urls";
+"use server";
+import { BASE_BACKEND_URL } from "@/utils/urls";
 import axios, { InternalAxiosRequestConfig } from "axios";
 import { createSession, getAccessToken, getRefreshToken } from "./session";
 import { AxiosErrorResponse } from "@/utils/types";
+import { axios as api } from "@/lib/axios";
+
+export const authInstance = axios.create({
+  baseURL: BASE_BACKEND_URL,
+  headers: {
+    "Content-type": "application/json",
+  },
+  // Add other configuration options if needed
+});
 
 const axiosInstance = axios.create({
   baseURL: BASE_BACKEND_URL,
@@ -24,38 +34,44 @@ axiosInstance.interceptors.request.use(
   }
 );
 
+authInstance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const errorResponse = handleAxiosError(error);
+    return Promise.reject(errorResponse);
+  }
+);
+
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      originalRequest.method != "get"
+    ) {
       originalRequest._retry = true;
-      const newAccessToken = await refreshToken();
-      if (newAccessToken) {
-        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-        return axiosInstance(originalRequest);
+      const refreshToken = getRefreshToken();
+      const { data, status, error } = await api.auth.refreshToken(
+        refreshToken as string
+      );
+      if (error) {
+        return Promise.reject({ error, status });
+      } else {
+        if (data.accessToken) {
+          createSession(data);
+          originalRequest.headers[
+            "Authorization"
+          ] = `Bearer ${data.accessToken}`;
+          return axiosInstance(originalRequest);
+        }
       }
     }
     const errorResponse = handleAxiosError(error);
     return Promise.reject(errorResponse);
   }
 );
-
-const refreshToken = async (): Promise<string | null> => {
-  try {
-    const refreshToken = getRefreshToken();
-    const response = await axios.post(
-      `${BASE_BACKEND_URL}/${REFRESH_TOKEN_URL}`,
-      {},
-      { headers: { Authorization: refreshToken } }
-    );
-    createSession(response.data);
-    const { accessToken } = response.data;
-    return accessToken;
-  } catch (error) {
-    return null;
-  }
-};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const handleAxiosError = (error: any): AxiosErrorResponse => {
@@ -64,7 +80,7 @@ const handleAxiosError = (error: any): AxiosErrorResponse => {
     switch (status) {
       case 401:
         return formatErrorResponse(
-          error.response.data.message || "Unauthorized - Please log in again",
+          error.response.data.message || "Unauthorised - Please log in again",
           status
         );
       case 403:

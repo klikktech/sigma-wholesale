@@ -7,8 +7,10 @@ import { axios } from "@/lib/axios";
 import { ADD_PRODUCT_PAGE_ROUTE } from "@/utils/routes";
 
 const ProductsPage = async () => {
-  const { data } = await axios.products.getAllProducts();
-  // if(error) signOutAction()
+  const { data, error } = await axios.products.getAllProducts();
+  if (error) {
+    throw new Error(error.message);
+  }
 
   return (
     <>
