@@ -3,8 +3,11 @@ import { axios } from "@/lib/axios";
 import React from "react";
 
 const EditProductPage = async ({ params }: { params: { details: string } }) => {
-  const { data } = await axios.products.getProductForDetails(params.details);
-  console.log(data, "product");
+  const { data, error } = await axios.products.getProductForDetails(params.details);
+  if (error) {
+    throw new Error(error.message);
+  }
+  
   return (
     <div>
       <EditProductForm product={data} />
