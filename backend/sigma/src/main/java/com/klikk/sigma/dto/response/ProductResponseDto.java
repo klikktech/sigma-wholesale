@@ -25,6 +25,8 @@ public class ProductResponseDto {
 
     private String details;
 
+    private String price;
+
     private List<VariationResponseDto> variations;
 
     private List<Category> categories;
