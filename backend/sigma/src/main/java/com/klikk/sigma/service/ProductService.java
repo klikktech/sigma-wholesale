@@ -8,5 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 public interface ProductService {
-    void saveProduct(ProductRequestDto product, MultipartFile displayImage) throws IOException;
+    void saveProduct(ProductRequestDto product, String displayImage) throws IOException;
+
+    String uploadFileToAws(MultipartFile image);
 }

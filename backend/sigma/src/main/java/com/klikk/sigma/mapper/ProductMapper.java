@@ -12,5 +12,6 @@ public interface ProductMapper {
     ProductDto ProductToProductDto(Product product);
 
     @Mapping(target = "id",ignore = true)
+    @Mapping(target = "displayImage",ignore = true)
     Product ProductRequestToProduct(ProductRequestDto productRequestDto);
 }

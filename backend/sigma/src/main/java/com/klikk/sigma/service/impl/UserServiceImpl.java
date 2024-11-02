@@ -28,9 +28,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
-    @Autowired
-    private AttachmentServiceImpl attachmentServiceImpl;
-
     @Override
     public List<User> findAll() {
         return userRepository.findAll();

@@ -14,4 +14,6 @@ public class ProductDto {
     private String sku;
 
     private Long productId;
+
+    private String displayImage;
 }
