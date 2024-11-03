@@ -1,6 +1,7 @@
 package com.klikk.sigma.mapper;
 
 import com.klikk.sigma.dto.request.CartItemRequest;
+import com.klikk.sigma.dto.response.CartItemResponseDto;
 import com.klikk.sigma.entity.CartItem;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,4 +13,7 @@ public interface CartItemMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "addedAt", ignore = true)
     public CartItem CartItemRequestToCartItem(CartItemRequest cartItemRequest);
+
+    @Mapping(target = "variation",ignore = true)
+    public CartItemResponseDto cartItemToCartItemResponseDto(CartItem cartItem);
 }

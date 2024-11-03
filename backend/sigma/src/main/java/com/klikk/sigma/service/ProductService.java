@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.List;
 
 public interface ProductService {
-    ProductResponseDto saveProduct(ProductRequestDto product, MultipartFile displayImage) throws IOException;
+    ProductResponseDto saveProduct(ProductRequestDto product, String displayImage) throws IOException;
 
     ProductResponseDto getProduct(String details);
 
@@ -24,4 +24,6 @@ public interface ProductService {
     List<ProductsResponse> getAllProductsForAdmin();
 
     List<VariationResponseDto> getProductVariations(String details);
+
+    String uploadFileToAws(MultipartFile image);
 }

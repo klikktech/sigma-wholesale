@@ -1,6 +1,11 @@
 server:
   port: 6754
-
+aws:
+  s3:
+    bucketName: "sigmawholesaleimages"
+    productImagesPath: "products"
+    accessKeyId: "AKIAYM7POCIYGBSQHBFN"
+    secretKey: "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"
 spring:
   servlet:
     multipart:

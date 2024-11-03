@@ -1,5 +1,6 @@
 package com.klikk.sigma.service.impl;
 
+import com.klikk.sigma.aws.AwsS3Properties;
 import com.klikk.sigma.dto.ProductDto;
 import com.klikk.sigma.dto.response.ProductResponseDto;
 import com.klikk.sigma.dto.response.VariationResponseDto;
@@ -20,9 +21,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import org.springframework.transaction.annotation.Transactional;
+import software.amazon.awssdk.awscore.exception.AwsServiceException;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.util.Comparator;
 import java.util.List;
@@ -39,7 +48,11 @@ public class ProductServiceImpl implements ProductService {
     public ProductMapper productMapper;
 
     @Autowired
-    private AttachmentServiceImpl attachmentServiceImpl;
+    private AwsS3Properties awsS3Properties;
+
+    @Autowired
+    private S3Client s3Client;
+
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -48,15 +61,9 @@ public class ProductServiceImpl implements ProductService {
     private VariationMapper variationMapper;
 
     @Override
-    public ProductResponseDto saveProduct(ProductRequestDto productRequest, MultipartFile displayImage) throws IOException {
+    public ProductResponseDto saveProduct(ProductRequestDto productRequest, String displayImage) throws IOException {
         Product newProduct=productMapper.productRequestToProduct(productRequest);
-        if(displayImage!=null){
-            Attachment att = attachmentServiceImpl.saveAttachment(AttachmentType.PRODUCT_ATTACHMENT, displayImage.getBytes());
-            newProduct.setDisplayImage(att);
-        }
-//        Optional<Category> productCategory= categoryRepository.findById(productRequest.getCategory());
-//        newProduct.setCategory(productCategory.get());
-//        System.out.println(newProduct.getCategory().getName());
+        newProduct.setDisplayImage(displayImage);
         return productMapper.productToProductResponseDto(productRepository.save(newProduct));
     }
 
@@ -90,5 +97,49 @@ public class ProductServiceImpl implements ProductService {
     public List<VariationResponseDto> getProductVariations(String details) {
         Optional<Product> product=productRepository.findByDetails(details);
         return product.map(value -> value.getVariations().stream().map(variation -> variationMapper.variationToVariationResponseDto(variation)).toList()).orElseGet(List::of);
+    }
+
+    @Override
+    public String uploadFileToAws(MultipartFile image) {
+        String fileName = "";
+        try {
+            final File file = convertMultiPartFileToFile(image);
+            fileName = awsS3Properties.getProductImagesPath() + "/" + file.getName();
+            uploadFileToS3Bucket(awsS3Properties.getBucketName(), fileName, file);
+            file.delete(); // Delete immediately after upload to save space
+
+        } catch (AwsServiceException ex) {
+            System.out.println("Error while uploading file: " + ex.getMessage());
+        } catch (IOException e) {
+            System.out.println("Error converting the multi-part file to file: " + e.getMessage());
+        }
+
+        return String.format("https://%s.s3.%s.amazonaws.com/%s", awsS3Properties.getBucketName(), Region.US_EAST_2, fileName);
+    }
+
+    @Transactional
+    private void uploadFileToS3Bucket(final String bucketName, final String fileName, final File file) {
+        PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                .bucket(bucketName)
+                .key(fileName)
+                .build();
+
+        s3Client.putObject(putObjectRequest, software.amazon.awssdk.core.sync.RequestBody.fromFile(file));
+    }
+
+    private File convertMultiPartFileToFile(MultipartFile image) throws IOException {
+        // Create a temporary file in the default temp directory with the same file extension as the uploaded file
+        String originalFileName = image.getOriginalFilename();
+        String fileExtension = originalFileName != null && originalFileName.contains(".")
+                ? originalFileName.substring(originalFileName.lastIndexOf("."))
+                : "";
+
+        Path tempFilePath = Files.createTempFile("upload-", fileExtension);
+        File file = tempFilePath.toFile();
+
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
+            outputStream.write(image.getBytes());
+        }
+        return file;
     }
 }

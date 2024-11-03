@@ -33,7 +33,7 @@ public class CartItem {
     )
     private String id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id",referencedColumnName = "id")
     private Cart cart;
 
@@ -42,7 +42,7 @@ public class CartItem {
     private Variation variation;
 
     @Column(name = "quantity")
-    private int quantity;
+    private Long quantity;
 
     @Column(name = "added_at")
     private LocalDateTime addedAt;

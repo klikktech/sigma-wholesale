@@ -31,7 +31,8 @@ public class ProductController {
                                              @RequestPart(value = "displayImage",required = false) MultipartFile displayImage
     ) {
         try {
-            productService.saveProduct(productRequest, displayImage);
+            String imageUrl=productService.uploadFileToAws(displayImage);
+            productService.saveProduct(productRequest, imageUrl);
             return ResponseEntity.ok("Product Added Successfully");
         } catch (Exception exception) {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);

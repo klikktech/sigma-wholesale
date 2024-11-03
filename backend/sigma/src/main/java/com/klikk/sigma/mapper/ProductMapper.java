@@ -19,8 +19,10 @@ public interface ProductMapper {
     @Mapping(target = "averageRating",ignore = true)
     @Mapping(target = "stockQuantity",ignore = true)
     @Mapping(target = "totalSales",ignore = true)
+    @Mapping(target = "displayImage",ignore = true)
     Product productRequestToProduct(ProductRequestDto productRequestDto);
 
     @Mapping(source = "maxPrice", target = "price")
+    @Mapping(target = "displayImage",ignore = true)
     ProductsResponse productToProductsResponse(Product product);
 }

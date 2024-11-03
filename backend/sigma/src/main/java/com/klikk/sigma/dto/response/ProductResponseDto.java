@@ -19,7 +19,7 @@ public class ProductResponseDto {
 
     private String status;
 
-    private Attachment displayImage;
+    private String displayImage;
 
     private String sku;
 

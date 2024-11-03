@@ -35,8 +35,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private AuthenticationMapper authenticationMapper;
 
-    @Autowired
-    private AttachmentServiceImpl attachmentServiceImpl;
 
     @Override
     public List<UsersResponse> findAll() {

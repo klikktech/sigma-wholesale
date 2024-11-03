@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Date;
@@ -32,12 +33,19 @@ public class Cart {
     )
     private String id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;
 
     @Column(name = "price")
     private double price;
+
+    @Column(name = "quantity")
+    private Long quantity;
+
+    @OneToOne
+    @JoinColumn(name = "product_id",referencedColumnName = "id")
+    private Product product;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

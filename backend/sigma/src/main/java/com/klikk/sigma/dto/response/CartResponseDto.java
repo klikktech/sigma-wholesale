@@ -1,23 +1,19 @@
-package com.klikk.sigma.dto.request;
+package com.klikk.sigma.dto.response;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartRequest {
-
+@Builder
+public class CartResponseDto {
     private double price;
-
     private Long quantity;
-
-    private String productDetails;
-
-    private List<CartItemRequest> cartItemsList;
+    private ProductResponseDto product;
+    private List<CartItemResponseDto> cartItems;
 }
