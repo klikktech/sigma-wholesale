@@ -11,13 +11,13 @@ import org.hibernate.annotations.GenericGenerator;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Table(name = "billing_details")
-public class Billing {
+@Table(name = "checkout")
+public class Checkout {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "billing_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "checkout_sequence")
     @GenericGenerator(
-            name="billing_sequence",
+            name="checkout_sequence",
             type = com.klikk.sigma.utils.StringPrefixedSequenceGenerator.class,
             parameters = {
                     @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.INCREMENT_PARAM, value = "1"),

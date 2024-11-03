@@ -19,6 +19,8 @@ import jakarta.transaction.Transactional;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -50,8 +52,9 @@ public class ProductServiceImpl implements ProductService {
         String fileName = "";
         try {
             final File file = convertMultiPartFileToFile(image);
-            fileName = uploadFileToS3Bucket(awsS3Properties.getBucketName(), file);
-            file.deleteOnExit();  // To remove the file locally created in the project folder.
+            fileName = awsS3Properties.getProductImagesPath() + "/" + file.getName();
+            uploadFileToS3Bucket(awsS3Properties.getBucketName(), fileName, file);
+            file.delete(); // Delete immediately after upload to save space
 
         } catch (AwsServiceException ex) {
             System.out.println("Error while uploading file: " + ex.getMessage());
@@ -63,19 +66,25 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Transactional
-    private String uploadFileToS3Bucket(final String bucketName, final File file) {
+    private void uploadFileToS3Bucket(final String bucketName, final String fileName, final File file) {
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(bucketName)
-                .key(file.getName())
+                .key(fileName)
                 .build();
 
         s3Client.putObject(putObjectRequest, software.amazon.awssdk.core.sync.RequestBody.fromFile(file));
-
-        return file.getName();
     }
 
     private File convertMultiPartFileToFile(MultipartFile image) throws IOException {
-        final File file = new File(image.getOriginalFilename());
+        // Create a temporary file in the default temp directory with the same file extension as the uploaded file
+        String originalFileName = image.getOriginalFilename();
+        String fileExtension = originalFileName != null && originalFileName.contains(".")
+                ? originalFileName.substring(originalFileName.lastIndexOf("."))
+                : "";
+
+        Path tempFilePath = Files.createTempFile("upload-", fileExtension);
+        File file = tempFilePath.toFile();
+
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
             outputStream.write(image.getBytes());
         }
