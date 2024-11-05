@@ -82,10 +82,6 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-//    @OneToOne
-//    @JoinColumn(name = "id")
-//    private Attachment taxDocument;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return role.getAuthorities();

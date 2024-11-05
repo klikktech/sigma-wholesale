@@ -44,6 +44,9 @@ public class Category {
 
     private Long parentId;
 
+    @Column(name = "type")
+    private String type;
+
     @Column(name = "count")
     private Long count;
 
