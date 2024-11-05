@@ -34,7 +34,7 @@ public class Category {
     @Column(name = "slug")
     private String slug;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Product> products;
 
     @ManyToOne

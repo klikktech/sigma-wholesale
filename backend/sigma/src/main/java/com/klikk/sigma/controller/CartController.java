@@ -42,7 +42,7 @@ public class CartController {
 
     @PostMapping()
     public ResponseEntity<String> addCartItems(@RequestBody CartRequest cartRequest, HttpServletRequest request ){
-        cartService.addCart(cartRequest,request.getHeader("Authorization"));
+        cartService.addOrUpdateCart(cartRequest,request.getHeader("Authorization"));
         return ResponseEntity.ok().body("Cart Items added Successfully");
     }
 

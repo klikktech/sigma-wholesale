@@ -1,9 +1,12 @@
 package com.klikk.sigma.repository;
 
 import com.klikk.sigma.entity.Cart;
+import com.klikk.sigma.entity.Product;
 import com.klikk.sigma.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface CartRepository extends JpaRepository<Cart,String> {
-    public Cart findByUser(User user);
+    public Optional<Cart> findByUser(User user);
 }

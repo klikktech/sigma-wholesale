@@ -16,16 +16,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class OrderDto {
 
-    private Integer orderId;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime orderCreatedAt;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime orderModifiedAt;
-
-    private Integer buyerId;
-
     private String paymentMethod;
 
     private String customerIp;

@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel ="spring")
 public interface CartMapper {
-    @Mapping(target = "product",ignore = true)
+
     @Mapping(target = "cartItems",ignore = true)
     public CartResponseDto cartToCartResponseDto(Cart cart);
 }

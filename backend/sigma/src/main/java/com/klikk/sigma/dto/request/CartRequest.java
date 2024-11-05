@@ -17,7 +17,7 @@ public class CartRequest {
 
     private Long quantity;
 
-    private String productDetails;
+//    private String productDetails;
 
     private List<CartItemRequest> cartItemsList;
 }

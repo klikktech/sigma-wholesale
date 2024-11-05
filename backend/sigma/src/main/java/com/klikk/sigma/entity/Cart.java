@@ -33,7 +33,7 @@ public class Cart {
     )
     private String id;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;
 
@@ -42,10 +42,6 @@ public class Cart {
 
     @Column(name = "quantity")
     private Long quantity;
-
-    @OneToOne
-    @JoinColumn(name = "product_id",referencedColumnName = "id")
-    private Product product;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

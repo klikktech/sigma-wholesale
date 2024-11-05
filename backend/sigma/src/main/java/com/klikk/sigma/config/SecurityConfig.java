@@ -24,7 +24,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private static final String[] WHITE_LIST_URL = {"/api/auth/**"};
+    private static final String[] WHITE_LIST_URL = new String[]{"/api/auth/**","/products/*"};
 
     @Autowired
     private UserService userService;
@@ -40,25 +40,28 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(req ->
-                req.requestMatchers(WHITE_LIST_URL)
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated()
-        )
-                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(
-                        e -> e.accessDeniedHandler(
-                                        (request, response, accessDeniedException) -> response.setStatus(403)
-                                )
-                                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-                .logout(logout ->
-                        logout.logoutUrl("/api/auth/logout")
-                                .addLogoutHandler(logoutHandler)
-                                .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
+        http
+                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for stateless API
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers(WHITE_LIST_URL).permitAll() // Allow listed URLs
+                        .anyRequest().authenticated()                // Authenticate all other requests
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(STATELESS) // Use stateless sessions
+                )
+                .authenticationProvider(authenticationProvider) // Inject custom authentication provider
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class) // JWT filter before username/password auth
+                .exceptionHandling(exceptions -> exceptions
+                        .accessDeniedHandler((request, response, accessDeniedException) -> response.setStatus(HttpStatus.FORBIDDEN.value()))
+                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/api/auth/logout")
+                        .addLogoutHandler(logoutHandler)
+                        .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
                 );
+
         return http.build();
     }
+
 }

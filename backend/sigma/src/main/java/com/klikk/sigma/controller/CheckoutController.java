@@ -1,6 +1,12 @@
 package com.klikk.sigma.controller;
 
 import com.klikk.sigma.entity.Checkout;
+import com.klikk.sigma.service.CheckoutService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.coyote.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,8 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/checkout")
 public class CheckoutController {
 
-//    @PostMapping()
-//    public void checkout(@RequestBody Checkout){
-//
-//    }
+    @Autowired
+    private CheckoutService checkoutService;
+    @PostMapping("")
+    public ResponseEntity<String> checkout(@RequestBody Checkout checkoutDetails, HttpServletRequest request){
+        checkoutService.addCheckoutDetails(checkoutDetails,request);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Billing details added successfully");
+    }
 }

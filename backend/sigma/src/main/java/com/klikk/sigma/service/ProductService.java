@@ -21,6 +21,8 @@ public interface ProductService {
     // Return Page instead of List for pagination support
     Page<ProductResponseDto> getAllProducts(Pageable pageable);
 
+    List<ProductResponseDto> getNewArrivals();
+
     List<ProductsResponse> getAllProductsForAdmin();
 
     List<VariationResponseDto> getProductVariations(String details);

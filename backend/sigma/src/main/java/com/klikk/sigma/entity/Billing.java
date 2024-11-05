@@ -4,30 +4,30 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.klikk.sigma.util.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Table(name = "checkout")
-public class Checkout {
+@Builder
+@Table(name = "billing")
+public class Billing {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "checkout_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "billing_sequence")
     @GenericGenerator(
-            name="checkout_sequence",
+            name="billing_sequence",
             type = com.klikk.sigma.util.StringPrefixedSequenceGenerator.class,
             parameters = {
                     @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.INCREMENT_PARAM, value = "1"),
-                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.PREFIX_VALUE_PARAM, value = "CT_"),
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.PREFIX_VALUE_PARAM, value = "BILL_"),
                     @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.NUMBER_FORMAT_PARAM,value = "%d")
             }
     )
-    @JsonIgnore
     private String id;
 
     @Column(name = "first_name")
@@ -37,19 +37,19 @@ public class Checkout {
     private String lastname;
 
     @Column(name = "address")
-    private  String billingAddress;
+    private  String address;
 
     @Column(name = "city")
-    private String billingCity;
+    private String city;
 
     @Column(name = "state")
-    private String billingState;
+    private String state;
 
     @Column(name = "postcode")
     private Integer postcode;
 
     @Column(name = "country")
-    private String billingCountry;
+    private String country;
 
     @Column(name = "email")
     private String email;
@@ -57,17 +57,7 @@ public class Checkout {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "payment_method")
-    private String paymentMethod;
-
-    @Column(name = "customer_ip")
-    private String customerIp;
-
-    @Column(name = "order_total")
-    private double orderTotal;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
-    @JoinColumn(name = "user_id")
-    private User user;
+    @OneToOne
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    private Order order;
 }

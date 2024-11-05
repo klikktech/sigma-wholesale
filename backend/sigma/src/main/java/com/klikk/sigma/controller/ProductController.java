@@ -44,6 +44,11 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.getAllProducts(pageable));
     }
 
+    @GetMapping("/new-arrivals")
+    public ResponseEntity<List<ProductResponseDto>> getNewArrivals(){
+        return ResponseEntity.ok().body(productService.getNewArrivals());
+    }
+
     @GetMapping("/{details}")
     public ResponseEntity<ProductResponseDto> getProduct(@PathVariable String details){
         return ResponseEntity.ok().body((productService.getProduct(details)));

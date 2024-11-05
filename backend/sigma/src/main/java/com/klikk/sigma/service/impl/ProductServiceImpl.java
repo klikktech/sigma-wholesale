@@ -82,6 +82,14 @@ public class ProductServiceImpl implements ProductService {
         return products.map(product -> productMapper.productToProductResponseDto(product));
     }
 
+    @Override
+    public List<ProductResponseDto> getNewArrivals() {
+        List<Product> products=productRepository.findTop6ByStatusOrderByCreatedAtDesc("instock");
+        return products.stream().map(product -> {
+            return productMapper.productToProductResponseDto(product);
+        }).toList();
+    }
+
 
     @Transactional(readOnly = true)
     @Override
