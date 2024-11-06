@@ -1,9 +1,9 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { getUser } from "./session";
-import { HOME_PAGE_ROUTE, LOGIN_PAGE_ROUTE, PRODUCTS_PAGE_ROUTE, SIGNUP_PAGE_ROUTE } from "@/utils/urls";
+import { CART_LIST_PAGE_ROUTE, HOME_PAGE_ROUTE, LOGIN_PAGE_ROUTE, PRODUCTS_PAGE_ROUTE, SIGNUP_PAGE_ROUTE } from "@/utils/urls";
 
 const authRoutes = [LOGIN_PAGE_ROUTE,SIGNUP_PAGE_ROUTE];
-const publicRoutes = [HOME_PAGE_ROUTE,PRODUCTS_PAGE_ROUTE]
+const publicRoutes = ['/',HOME_PAGE_ROUTE, PRODUCTS_PAGE_ROUTE]
 
 export const verifyClient = (request: NextRequest) => {
   try {
@@ -15,18 +15,15 @@ export const verifyClient = (request: NextRequest) => {
     if(isPublicRoute){
       return NextResponse.next();
     }
-
-    if (!isAuthRoute && !user) {
+    else if (!isAuthRoute && !user) {
       return NextResponse.redirect(new URL(LOGIN_PAGE_ROUTE, request.url));
     }
-
-    if (isAuthRoute && user) {
+    else if (isAuthRoute && user) {
       return NextResponse.redirect(new URL(HOME_PAGE_ROUTE, request.url));
     }
-
     return NextResponse.next();
   } catch (e) {
-    console.error(e);
+    console.error(e,"middleware error");
     return NextResponse.next();
   }
 };

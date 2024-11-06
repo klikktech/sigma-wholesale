@@ -8,19 +8,19 @@ export type Message =
   | { message: string };
 
 export interface RegisterDetails {
-  firstname: string,
-  lastname: string,
-  nickname: string,
-  email: string,
-  password: string,
-  phone: string,
-  storeAddress: string,
-  storeCity: string,
-  storeState: string,
-  storeZip: string,
-  shippingAddress: string,
-  shippingCity: string,
-  shippingState: string,
+  firstname: string
+  lastname: string
+  nickname: string
+  email: string
+  password: string
+  phone: string
+  storeAddress: string
+  storeCity: string
+  storeState: string
+  storeZip: string
+  shippingAddress: string
+  shippingCity: string
+  shippingState: string
   shippingZip: string
 }
 
@@ -44,4 +44,70 @@ export interface IUser {
   image?: string;
   name: string;
   email: string;
+}
+
+export interface Product {
+  name: string;
+  status:string;
+  category: string[];
+  sku:string;
+  price: number;
+  displayImage: any;
+  variations:string[];
+  details:string;
+}
+
+export interface ProdDetails {
+  name: string;
+  price:number;
+  status:string;
+  category: string[];
+  sku:string;
+  displayImage: any;
+  variations:variation[];
+  details:string;
+}
+
+export interface ProductResponse {
+  products: Product[];
+  totalPages: number;
+  totalElements: number;
+  size: number;
+}
+
+export interface variation {
+  typeInfo: string;
+  variationName: string;
+  sku: string;
+  price:number
+  details: string;
+  stockStatus: string;
+}
+
+export interface FormState {
+  firstname: string;
+  lastname: string;
+  nickname: string;
+  email: string;
+  phone: string;
+  password: string;
+  confirmPassword: string;
+  shippingAddress: string;
+  shippingCity: string;
+  shippingState: string;
+  shippingZip: string;
+  storeAddress: string;
+  storeCity: string;
+  storeState: string;
+  storeZip: string;
+  error?: string;
+}
+
+export interface CartItem {
+  variation: cartvariation
+  quantity: number;
+}
+export interface cartvariation {
+  variationName: string;
+  price: number;
 }

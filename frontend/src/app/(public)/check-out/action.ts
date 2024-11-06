@@ -1,5 +1,6 @@
 "use server";
 
+import { axios } from "@/lib/axios";
 // import { axios } from "@/lib/axios";
 // import { createSession, deleteSession } from "@/lib/axios/session";
 // import { SIGNIN_PAGE_ROUTE, USERS_PAGE_ROUTE } from "@/utils/routes";
@@ -8,20 +9,41 @@ import { Message } from "@/utils/types";
 
 export const checkOutAction = async (
   state: undefined | Message,
-  formData: FormData
+  formData: FormData,
+  totalCost:number
 ) => {
+  const response = await fetch('https://api64.ipify.org?format=json');
+  const ipData = await response.json();
+  const ipAddress = ipData.ip
+
   const email = formData.get("email");
-  const password = formData.get("password");
-  const  firstName = formData.get("firstName");
-  const  lastName = formData.get("lastName");
-  const  address = formData.get("address");
-  const  apt = formData.get("apt");
-  const  city = formData.get("city");
-  const  country = formData.get("country");
-  const  postalCode = formData.get("postalCode");
+  const  firstname = formData.get("firstName");
+  const  lastname = formData.get("lastName");
+  const  billingAddress = formData.get("address");
+  const  billingState = formData.get("state");
+  const  billingCity = formData.get("city");
+  const  billingCountry = formData.get("country");
+  const  postcode = formData.get("postalCode");
   const  phone = formData.get("phone");
-  const  addressType = formData.get("addressType");
-  const  coupon = formData.get("coupon");
+  const customerIp = ipAddress;
+  const orderTotal = totalCost;
+  const paymentMethod ='COD';
+
+  const formDetails = {
+    email,
+    firstname,
+    lastname,
+    billingAddress,
+    billingState,
+    billingCity,
+    billingCountry,
+    postcode,
+    phone,
+    customerIp,
+    orderTotal,
+    paymentMethod
+  };
+  console.log(formDetails,"formdetails")
 
 //   const parsedCredentials = checkOutFormValidator.safeParse({
 //     email,
@@ -32,16 +54,17 @@ export const checkOutAction = async (
 //   }
 
 //   if (parsedCredentials.success) {
-//     const { data, status, error } = await axios.auth.signInWithEmail(
-//       parsedCredentials.data
-//     );
-//     if (error) {
-//       return { error: error.message };
-//     }
-//     if (data && status === 200) {
-//       createSession(data);
-//       redirect(USERS_PAGE_ROUTE);
-//     }
+    const { data, status, error } = await axios.products.checkOut(
+      formDetails
+    );
+    console.log(data,status,error)
+
+    if (error) {
+      return { error: error.message };
+    }
+    if (data && status === 200) {
+      // redirect(USERS_PAGE_ROUTE);
+    }
 //   }
 
   return { error: "Something went wrong, please try again" };

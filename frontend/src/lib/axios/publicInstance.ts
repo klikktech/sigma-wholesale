@@ -1,11 +1,10 @@
-import { BASE_BACKEND_URL, REFRESH_TOKEN_URL } from "@/utils/urls";
-import axios, { InternalAxiosRequestConfig } from "axios";
-import { createSession, getAccessToken, getRefreshToken } from "./session";
+import { BASE_BACKEND_URL } from "@/utils/urls";
+import axios from "axios";
 import { AxiosErrorResponse } from "@/utils/types";
 
 console.log(BASE_BACKEND_URL,"BASE_BACKEND_URL")
 
-const axiosInstance = axios.create({
+const publicInstance = axios.create({
   baseURL: BASE_BACKEND_URL,
   headers: {
     "Content-type": "application/json",
@@ -13,51 +12,13 @@ const axiosInstance = axios.create({
   // Add other configuration options if needed
 });
 
-axiosInstance.interceptors.request.use(
-  async (config: InternalAxiosRequestConfig) => {
-    const accessToken = getAccessToken();
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-    return config;
-  },
-  (error) => {
-    Promise.reject(error);
-  }
-);
-
-axiosInstance.interceptors.response.use(
+publicInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const originalRequest = error.config;
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      const newAccessToken = await refreshToken();
-      if (newAccessToken) {
-        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-        return axiosInstance(originalRequest);
-      }
-    }
     const errorResponse = handleAxiosError(error);
     return Promise.reject(errorResponse);
   }
 );
-
-const refreshToken = async (): Promise<string | null> => {
-  try {
-    const refreshToken = getRefreshToken();
-    const response = await axios.post(
-      `${BASE_BACKEND_URL}/${REFRESH_TOKEN_URL}`,
-      {},
-      { headers: { Authorization: refreshToken } }
-    );
-    createSession(response.data);
-    const { accessToken } = response.data;
-    return accessToken;
-  } catch (error) {
-    return null;
-  }
-};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const handleAxiosError = (error: any): AxiosErrorResponse => {
@@ -102,4 +63,4 @@ const formatErrorResponse = (
   return { error: { message }, status };
 };
 
-export default axiosInstance;
+export default publicInstance;

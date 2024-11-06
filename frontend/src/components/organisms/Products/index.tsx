@@ -1,44 +1,54 @@
-import ProductCard from "@/components/molecules/ProductCard";
-import SkeletonProductCard from "@/components/molecules/ProductCard/SkeletonCard";
-import { axios } from "@/lib/axios";
-import { Pagination } from "@nextui-org/react";
-import React, { Suspense } from "react";
+'use client'
+import { Suspense } from 'react';
+import { Card, CardBody, Pagination } from '@nextui-org/react';
+import { Product } from '@/utils/types';
+import ProductCard from '@/components/molecules/ProductCard';
+import SkeletonProductCard from '@/components/molecules/ProductCard/SkeletonCard';
+import { useRouter } from 'next/navigation';
 
-const Products = async () => {
-    let products: any = [];
+interface ProductsProps {
+  products: Product[];
+  totalPages: number;
+  currentPage: number;
+  size: number;
+}
 
-      try {
-        const res: any = await axios.products.getAllProducts();
-        if (res && res.data) {
-            console.log(res)
-          products = res.data;
-        } else {
-          return <div>No products available</div>;
-        }
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        return <div>Error fetching products</div>;
-      }
+const Products = ({products, totalPages, currentPage, size}:ProductsProps) => {
+  const router = useRouter();
+  
+  const handlePageChange = (page: number) => {
+    router.push(`/products?page=${page}&size=${size}`);
+  };
 
-    return (
-        <div className="container mx-auto">
-            {
-                products.map((item: any, index: any) => (
-                    <div className="w-full" key={item.id}>
-                        <Suspense fallback={<SkeletonProductCard />}>
-                            <ProductCard
-                                img={item.img}
-                                title={item.title}
-                                price={"$" + item.price}
-                                link={`/product/${item.id}`}
-                            />
-                        </Suspense>
-                    </div>
-                ))
-            }
-            <Pagination showControls total={10} initialPage={1} />
-        </div>
-    );
+  return (
+    <div className="flex flex-col items-center">
+      <p className="text-large font-bold text-red-500 py-10">ALL PRODUCTS</p>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {products.map((product) => (
+          <div className="w-full" key={product.sku}>
+            <Suspense fallback={<SkeletonProductCard />}>
+              <ProductCard
+                img={product.displayImage}
+                title={product.name}
+                price={product.price ? ("$" + product.price) : ''}
+                details={product.details}
+              />
+            </Suspense>
+          </div>
+        ))}
+      </div>
+
+      <Pagination
+        showControls 
+        total={totalPages}
+        initialPage={currentPage}
+        page={currentPage}
+        onChange={handlePageChange}
+        className="my-8"
+      />
+    </div>
+  );
 };
 
 export default Products;

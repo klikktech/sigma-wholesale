@@ -1,10 +1,11 @@
-"use client";
+'use client'
 import { TABS_LIST } from "@/utils/constants";
 import { Tabs as NextUITabs, Tab } from "@nextui-org/react";
 import React from "react";
 import Button from "@/components/atoms/Button";
+import Tabview from "../Tabview";
 
-const Tabs = ({ children }: { children: React.ReactNode }) => {
+const Tabs = () => {
   return (
     <div className="my-3">
       <NextUITabs
@@ -12,10 +13,12 @@ const Tabs = ({ children }: { children: React.ReactNode }) => {
         key="underlined"
         variant="underlined"
         aria-label="Tabs variants"
+        items={TABS_LIST}
       >
         {TABS_LIST.map((tab) => (
           <Tab key={tab.key} title={tab.title} className="flex gap-3">
-            <div className="w-full">{children}</div>
+            <div>{tab.key}</div>
+            <Tabview category={tab.key}/>
           </Tab>
         ))}
       </NextUITabs>

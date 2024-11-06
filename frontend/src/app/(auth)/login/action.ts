@@ -18,18 +18,25 @@ export const signInAction = async (
     email,
     password,
   });
+  console.log(parsedCredentials,"parsedCredentials")
   if (parsedCredentials.error) {
+    console.log(parsedCredentials.error,"parsedCredentials error")
+
     return { error: parsedCredentials.error.errors[0].message as string };
   }
 
   if (parsedCredentials.success) {
+    console.log("inside login")
     const { data, status, error } = await axios.auth.signInWithEmail(
       parsedCredentials.data
     );
+    console.log(data,status,error,"data status error")
     if (error) {
+      console.log("error", error)
       return { error: error.message };
     }
     if (data && status === 200) {
+      console.log("success", status, data)
       createSession(data);
       redirect(HOME_PAGE_ROUTE);
     }

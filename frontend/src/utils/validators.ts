@@ -14,15 +14,15 @@ export const LoginFormValidator = z.object({
 });
 
 export const RegisterFormValidator = z.object({
-  firstname: z
+  firstName: z
     .string()
     .min(2, { message: "First name must be at least 2 characters long." })
     .trim(),
-  lastname: z
+  lastName: z
     .string()
     .min(2, { message: "Last name must be at least 2 characters long." })
     .trim(),
-  nickname: z
+  nickName: z
     .string()
     .min(2, { message: "Nick name must be at least 2 characters long." })
     .trim(),
@@ -33,7 +33,7 @@ export const RegisterFormValidator = z.object({
     .regex(/[0-9]/, { message: "Please enter vaild Phone number." }),
   password: z
     .string()
-    .min(8, { message: "Password be at least 8 characters long" })
+    .min(8, { message: "Password must be at least 8 characters long" })
     .regex(/[a-zA-Z]/, {
       message: "Password must contain at least one letter.",
     })
@@ -62,18 +62,18 @@ export const RegisterFormValidator = z.object({
     .trim(),
   storeAddress: z
     .string()
-    .min(2, { message: "Name must be at least 2 characters long." })
+    .min(2, { message: "Store Address must be at least 2 characters long." })
     .trim(),
   storeCity: z
     .string()
-    .min(2, { message: "Name must be at least 2 characters long." })
+    .min(2, { message: "Store City must be at least 2 characters long." })
     .trim(),
   storeState: z
     .string()
-    .min(2, { message: "Name must be at least 2 characters long." })
+    .min(2, { message: "Store State must be at least 2 characters long." })
     .trim(),
   storeZip: z
     .string()
-    .min(5, { message: "must be 5 characters long" })
+    .min(5, { message: "Store Zip must be 5 characters long" })
     .regex(/[0-9]/, { message: "Please enter vaild zipcode." }),
 });

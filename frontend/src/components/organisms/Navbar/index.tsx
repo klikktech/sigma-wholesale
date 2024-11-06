@@ -24,6 +24,7 @@ type Props = {
 
 const Navbar = ({ user }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
     <>
       <NextUINavbar onMenuOpenChange={setIsMenuOpen}>

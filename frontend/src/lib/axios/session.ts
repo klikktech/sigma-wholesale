@@ -86,3 +86,10 @@ const decodeToken = (token: string): JwtPayload | null => {
     return null;
   }
 };
+
+export const setAgeVerification = () =>{
+  cookies().set('isVerified', 'true');
+}
+export const getAgeVerification = () => {
+  return cookies().get("isVerified")?.value;
+};

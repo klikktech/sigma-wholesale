@@ -7,7 +7,7 @@ type Order = {
     destination: string;
     estimatedArrival: string;
     status: string;
-    items: { name: string; price: number; size: number }[];
+    items: { name: string; price: number; quantity: number }[];
     totalPrice: number;
     itemCount: number;
 };
@@ -20,12 +20,12 @@ const orders: Order[] = [
         estimatedArrival: "28 May 2024",
         status: "On Deliver",
         items: [
-            { name: "Nike Air Max SYSTM", price: 1459000, size: 24 },
-            { name: "Nike Air Rift", price: 1909000, size: 24 },
-            { name: "Nike Gamma Force", price: 1399000, size: 24 },
-            { name: "Nike Air Max SYSTM", price: 1459000, size: 24 },
-            { name: "Nike Air Rift", price: 1909000, size: 24 },
-            { name: "Nike Gamma Force", price: 1399000, size: 24 },
+            { name: "Nike Air Max SYSTM", price: 1459000, quantity: 24 },
+            { name: "Nike Air Rift", price: 1909000, quantity: 24 },
+            { name: "Nike Gamma Force", price: 1399000, quantity: 24 },
+            { name: "Nike Air Max SYSTM", price: 1459000, quantity: 24 },
+            { name: "Nike Air Rift", price: 1909000, quantity: 24 },
+            { name: "Nike Gamma Force", price: 1399000, quantity: 24 },
         ],
         totalPrice: 7890000,
         itemCount: 6,
@@ -37,8 +37,8 @@ const orders: Order[] = [
         estimatedArrival: "",
         status: "On Deliver",
         items: [
-            { name: "Nike Gamma Force", price: 1399000, size: 24 },
-            { name: "Nike Air Rift", price: 1909000, size: 24 },
+            { name: "Nike Gamma Force", price: 1399000, quantity: 24 },
+            { name: "Nike Air Rift", price: 1909000, quantity: 24 },
         ],
         totalPrice: 2900000,
         itemCount: 2,
@@ -50,7 +50,7 @@ const orders: Order[] = [
         estimatedArrival: "10 Aug 2024",
         status: "On Process",
         items: [
-            { name: "Nike Calm", price: 1069000, size: 24 },
+            { name: "Nike Calm", price: 1069000, quantity: 24 },
         ],
         totalPrice: 1400000,
         itemCount: 1,
@@ -62,10 +62,10 @@ const orders: Order[] = [
         estimatedArrival: "",
         status: "On Deliver",
         items: [
-            { name: "Nike Air Max Pulse", price: 2379000, size: 24 },
-            { name: "Nike Air Rift", price: 1909000, size: 24 },
-            { name: "Nike Gamma Force", price: 1399000, size: 24 },
-            { name: "Nike Air Max SYSTM", price: 1459000, size: 24 },
+            { name: "Nike Air Max Pulse", price: 2379000, quantity: 24 },
+            { name: "Nike Air Rift", price: 1909000, quantity: 24 },
+            { name: "Nike Gamma Force", price: 1399000, quantity: 24 },
+            { name: "Nike Air Max SYSTM", price: 1459000, quantity: 24 },
         ],
         totalPrice: 6758000,
         itemCount: 4,
@@ -99,7 +99,7 @@ const OrderCards = () => {
                                 <div key={index} className="flex justify-between items-center py-1 border-b border-gray-200">
                                     <div>
                                         <p>{item.name}</p>
-                                        <p className="text-sm text-gray-500">Size: {item.size}</p>
+                                        <p className="text-sm text-gray-500">quantity: {item.quantity}</p>
                                     </div>
                                     <p className="font-semibold">Rp {item.price.toLocaleString('id-ID')}</p>
                                 </div>

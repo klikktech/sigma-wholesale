@@ -11,6 +11,7 @@ import first5 from "../../../../public/images/product_5.png"
 import first6 from "../../../../public/images/product_6.webp"
 import first7 from "../../../../public/images/product_7.jpg"
 import first8 from "../../../../public/images/product_8.jpg"
+import { axios } from "@/lib/axios";
 
 const images = [first1, first2, first3, first4, first5, first6, first7, first8]
 
@@ -18,26 +19,27 @@ const images = [first1, first2, first3, first4, first5, first6, first7, first8]
 const NewArrivals = async () => {
   let products:any = [];
   
-  // try {
-  //   const res: any = await request.getAllProducts();
-  //   if (res && res.data) {
-  //     products = res.data;
-  //   } else {
-  //     return <div>No products available</div>;
-  //   }
-  // } catch (error) {
-  //   console.error("Error fetching products:", error);
-  //   return <div>Error fetching products</div>;
-  // }
+  try {
+    const { data, error } = await axios.products.getNewArrivals();
+    console.log(data,error, "new arrivals")
+    if (data) {
+      products = data;
+    } else {
+      return <div>No products available</div>;
+    }
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return <div>Error fetching products</div>;
+  }
 
   const productElements = products.map((item: any, index:any) => (
     <div className="embla__slide flex embla-slide w-full" key={item.id}>
         <Suspense fallback={<SkeletonProductCard />}>
           <ProductCard
-            img={item.img}
-            title={item.title}
-            price={"$" + item.price}
-            link = {`/product/${item.id}`}
+            img={item.displayImage}
+            title={item.name}
+            price={item.price ? ("$" + item.price) : ''}
+            details = {item.details}
           />
         </Suspense>
     </div>

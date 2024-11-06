@@ -5,34 +5,13 @@ import { LOGIN_PAGE_ROUTE } from "@/utils/urls";
 import { RegisterFormValidator } from "@/utils/validators";
 import { redirect } from "next/navigation";
 
-export interface SignUpErrors {
-  errors?: {
-    email?: string[];
-    password?: string[];
-    firstName?: string[];
-    lastName?: string[];
-    nickName?: string[];
-    phoneNumber?: string[];
-    confirmPassword?: string[];
-    shippingAddress?: string[];
-    shippingCity?: string[];
-    shippingState?: string[];
-    shippingZipCode?: string[];
-    billingAddress?: string[];
-    billingCity?: string[];
-    billingState?: string[];
-    billingZipCode?: string[];
-  };
-  success: boolean;
-}
-
 export const createNewUser = async (
   state: undefined | Message,
   formData: FormData
 ) => {
-  const firstname = formData.get("firstname");
-  const lastname = formData.get("lastname");
-  const nickname = formData.get("nickname");
+  const firstName = formData.get("firstName");
+  const lastName = formData.get("lastName");
+  const nickName = formData.get("nickName");
   const email = formData.get("email");
   const phone = formData.get("phone");
   const password = formData.get("password");
@@ -47,9 +26,9 @@ export const createNewUser = async (
   const storeZip = formData.get("storeZip");
 
   const formDetails = {
-    firstname,
-    lastname,
-    nickname,
+    firstName,
+    lastName,
+    nickName,
     email,
     phone,
     password,
@@ -63,9 +42,8 @@ export const createNewUser = async (
     storeState,
     storeZip,
   };
-  const parsedCredentials = RegisterFormValidator.safeParse(formDetails);
 
-  // console.log(parsedCredentials.error)
+  const parsedCredentials = RegisterFormValidator.safeParse(formDetails);
 
   if (parsedCredentials.error) {
     return { error: parsedCredentials.error.errors[0].message as string };
@@ -77,14 +55,12 @@ export const createNewUser = async (
 
   const payload: RegisterDetails = formDetails as unknown as RegisterDetails;
 
-  console.log(payload, "register data");
-
   if (parsedCredentials.success) {
-      const { data, status, error } = await axios.auth.signUpWithEmail(payload);
-      console.log(status, error, data);
-      if (error) {
-        return { error: error.message };
-      }
+    const { data, status, error } = await axios.auth.signUpWithEmail(payload);
+    console.log(status, error, data);
+    if (error) {
+      return { error: error.message };
+    }
     if (data && status === 200) {
       redirect(LOGIN_PAGE_ROUTE);
     }
