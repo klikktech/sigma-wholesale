@@ -1,5 +1,6 @@
 package com.klikk.sigma.service.impl;
 
+import com.klikk.sigma.dto.response.CategoryProductsDto;
 import com.klikk.sigma.dto.response.ProductResponseDto;
 import com.klikk.sigma.entity.Category;
 import com.klikk.sigma.entity.Product;
@@ -26,11 +27,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<ProductResponseDto> getProductsOfCategory(String name) {
-        Category category=categoryRepository.findFirstByName(name);
+    public List<CategoryProductsDto> getProductsOfCategory(String name) {
+        Category category=categoryRepository.findBySlugAndType(name,"product_cat");
         List<Product> products=category.getProducts();
         return products.stream().map(product -> {
-            return productMapper.productToProductResponseDto(product);
+            return productMapper.productToCategoryProductsDto(product);
         }).toList();
     }
 }

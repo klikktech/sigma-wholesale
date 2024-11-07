@@ -1,6 +1,7 @@
 package com.klikk.sigma.controller;
 
 import com.klikk.sigma.dto.CategoryRequest;
+import com.klikk.sigma.dto.response.CategoryProductsDto;
 import com.klikk.sigma.dto.response.ProductResponseDto;
 import com.klikk.sigma.entity.Category;
 import com.klikk.sigma.service.CategoryService;
@@ -26,7 +27,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{name}/products")
-    public ResponseEntity<List<ProductResponseDto>> getProductsOfCategory(@PathVariable String name){
+    public ResponseEntity<List<CategoryProductsDto>> getProductsOfCategory(@PathVariable String name){
             return ResponseEntity.ok(categoryServiceImpl.getProductsOfCategory(name));
     }
 }

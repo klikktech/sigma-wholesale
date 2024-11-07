@@ -1,12 +1,11 @@
 package com.klikk.sigma.dto.response;
 
-import com.klikk.sigma.entity.Attachment;
+
 import com.klikk.sigma.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductResponseDto {
+public class CategoryProductsDto {
     private String name;
 
     private String status;
@@ -29,5 +28,4 @@ public class ProductResponseDto {
 
     private List<VariationResponseDto> variations;
 
-//    private List<CategoryResponseDto> categories;
 }

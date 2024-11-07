@@ -34,8 +34,11 @@ public class Category {
     @Column(name = "slug")
     private String slug;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
     private List<Product> products;
+
+    @Column(name = "type")
+    private String type;
 
     @ManyToOne
     @JoinColumn(name = "parent_id",referencedColumnName = "id")

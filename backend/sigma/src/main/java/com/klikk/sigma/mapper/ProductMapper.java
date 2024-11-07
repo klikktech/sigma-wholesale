@@ -1,6 +1,7 @@
 package com.klikk.sigma.mapper;
 
 import com.klikk.sigma.dto.ProductDto;
+import com.klikk.sigma.dto.response.CategoryProductsDto;
 import com.klikk.sigma.dto.response.ProductResponseDto;
 import com.klikk.sigma.dto.response.ProductsResponse;
 import com.klikk.sigma.entity.Product;
@@ -22,7 +23,11 @@ public interface ProductMapper {
     @Mapping(target = "displayImage",ignore = true)
     Product productRequestToProduct(ProductRequestDto productRequestDto);
 
+
+
     @Mapping(source = "maxPrice", target = "price")
     @Mapping(target = "displayImage",ignore = true)
     ProductsResponse productToProductsResponse(Product product);
+
+    CategoryProductsDto productToCategoryProductsDto(Product product);
 }
