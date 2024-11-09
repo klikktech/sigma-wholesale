@@ -25,10 +25,11 @@ const Tabview = ({ category }: { category: string }) => {
           <div className="embla__slide flex embla-slide w-full" key={item.id}>
             <Suspense fallback={<SkeletonProductCard />}>
               <ProductCard
-                img={item.img}
-                title={item.title}
+                img={item.displayImage}
+                title={item.name}
                 price={"$" + item.price}
                 details={item.details}
+                stockStatus={item.status}
               />
             </Suspense>
           </div>

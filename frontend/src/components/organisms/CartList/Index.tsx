@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { useFormState } from 'react-dom';
 import { updateCartAction } from '../../../app/(public)/cart-list/action';
 import { Message } from '@/utils/types';
+import { useCartStore } from '@/store/cartStore';
 
 interface CartItem {
   variation: variation
@@ -21,9 +22,17 @@ interface CartListProps {
 }
 
 const CartList = ({ cartItemsList }:CartListProps) => {
+  const setCartCount = useCartStore((state) => state.setCartCount);
+
   const [cartItems, setCartItems] = useState<CartItem[]>(cartItemsList || []);
-  const [state, formAction] = useFormState((state:undefined | Message, formData:FormData) =>
-    updateCartAction(state, formData, cartItems), undefined);
+
+  const [state, formAction] = useFormState(async (state: undefined | Message, formData: FormData) => {
+    const result = await updateCartAction(state, formData, cartItems);
+    if (result?.success) {
+      setCartCount(result.totalQuantity);
+    }
+    return result;
+  }, undefined);
 
   const updateQuantity = (name: string, amount: number) => {
     setCartItems((prevItems) =>

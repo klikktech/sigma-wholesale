@@ -34,5 +34,6 @@ export const updateCartAction = async (
     }
     if (data && status === 200) {
         console.log("success", status, data)
+        return { error:'',success: true, totalQuantity };
     }
 };

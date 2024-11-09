@@ -41,9 +41,9 @@ const CheckOut = ({ cartItemsList, totalCost, discount, tax }: CartListProps) =>
     const total = totalCost - discount + tax;
 
     return (
-        <div className="container mt-3">
+        <div className="container my-3">
             <form action={formAction}>
-                <div className="flex flex-row gap-2 flex-wrap">
+                <div className="flex flex-row justify-center gap-5">
                     <div className="flex flex-col" style={{ width: "100%", maxWidth: "600px" }}>
                         <Card>
                             <CardBody>

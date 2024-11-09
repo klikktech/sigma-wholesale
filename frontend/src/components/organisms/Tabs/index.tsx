@@ -17,7 +17,6 @@ const Tabs = () => {
       >
         {TABS_LIST.map((tab) => (
           <Tab key={tab.key} title={tab.title} className="flex gap-3">
-            <div>{tab.key}</div>
             <Tabview category={tab.key}/>
           </Tab>
         ))}

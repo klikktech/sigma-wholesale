@@ -26,26 +26,26 @@ export const CarouselInfo =  [
     },
   ];
 export const NAV_MENU_ITEMS: INavbarMenuItem[] = [
-  {
-    label: "Products",
-    path: PRODUCTS_PAGE_ROUTE,
-  },
-  {
-    label: "New Arrivals",
-    path: PRODUCTS_PAGE_ROUTE,
-  },
-  {
-    label: "Categories",
-    path: PRODUCTS_PAGE_ROUTE,
-  },
-  {
-    label: "Brands",
-    path: PRODUCTS_PAGE_ROUTE,
-  },
-  {
-    label: "contact",
-    path: PRODUCTS_PAGE_ROUTE,
-  },
+  // {
+  //   label: "Products",
+  //   path: PRODUCTS_PAGE_ROUTE,
+  // },
+  // {
+  //   label: "New Arrivals",
+  //   path: PRODUCTS_PAGE_ROUTE,
+  // },
+  // {
+  //   label: "Categories",
+  //   path: PRODUCTS_PAGE_ROUTE,
+  // },
+  // {
+  //   label: "Brands",
+  //   path: PRODUCTS_PAGE_ROUTE,
+  // },
+  // {
+  //   label: "contact",
+  //   path: PRODUCTS_PAGE_ROUTE,
+  // },
 ];
 
 export const TABS_LIST = [

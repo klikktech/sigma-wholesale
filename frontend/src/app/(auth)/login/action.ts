@@ -49,5 +49,6 @@ export const signOutAction = async () => {
   console.log("inside signout")
   await axios.auth.signOut();
   deleteSession();
+  localStorage.clear();
   return redirect(LOGIN_PAGE_ROUTE);
 };

@@ -25,14 +25,15 @@ const Products = ({products, totalPages, currentPage, size}:ProductsProps) => {
       <p className="text-large font-bold text-red-500 py-10">ALL PRODUCTS</p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {products.map((product) => (
-          <div className="w-full" key={product.sku}>
+        {products.map((product,index) => (
+          <div className="w-full" key={index}>
             <Suspense fallback={<SkeletonProductCard />}>
               <ProductCard
                 img={product.displayImage}
                 title={product.name}
                 price={product.price ? ("$" + product.price) : ''}
                 details={product.details}
+                stockStatus={product.status}
               />
             </Suspense>
           </div>

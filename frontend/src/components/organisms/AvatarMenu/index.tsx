@@ -1,7 +1,8 @@
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, User } from "@nextui-org/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, User, Link } from "@nextui-org/react";
 import userIcon from '@/assets/user-icon.png'
 import { signOutAction } from "@/app/(auth)/login/action";
 import { IUser } from "@/utils/types";
+import { ORDERS_PAGE_ROUTE } from "@/utils/urls";
 
 
 export default function AvatarMenu({ user }: { user: IUser }) {
@@ -33,7 +34,7 @@ export default function AvatarMenu({ user }: { user: IUser }) {
                         My Addresses
                     </DropdownItem>
                     <DropdownItem key="orders">
-                        My Orders
+                    <Link href={ORDERS_PAGE_ROUTE}> My Orders</Link>
                     </DropdownItem>
 
                     <DropdownItem key="logout">

@@ -34,8 +34,15 @@
 }
 
 .embla-slide {
-  flex: 0 0 25%;
+  flex: 0 0 25%; /* Default: 4 product cards per slide */
 }
+
+@media (max-width: 768px) { /* Mobile screens */
+  .embla-slide {
+    flex: 0 0 100%; /* 1 product card per slide */
+  }
+}
+
 
 @media (min-width: 1550px) {
   .embla-slide {

@@ -3,17 +3,24 @@ import React, { useEffect, useState } from "react";
 import "./style.css";
 import Link from "next/link";
 import { Message, ProdDetails } from "@/utils/types";
-import { Button, Spacer } from "@nextui-org/react";
+import { Button, ScrollShadow, Spacer } from "@nextui-org/react";
 import { axios } from "@/lib/axios";
 import { getUser } from "@/lib/axios/session";
 import { addCartAction } from "../../../app/(public)/products/[productId]/action";
 import { useFormState, useFormStatus } from "react-dom";
 import FormMessage from "@/components/molecules/FormMessage";
+import { useCartStore } from '@/store/cartStore';
 
 const ProductView = ({ productDetails }: { productDetails: ProdDetails }) => {
-  const [state, formAction] = useFormState((state:undefined | Message, formData:FormData) =>
-    addCartAction(state, formData, productDetails), undefined
-  );
+  const setCartCount = useCartStore((state) => state.setCartCount);
+
+  const [state, formAction] = useFormState(async (state: undefined | Message, formData: FormData) => {
+    const result = await addCartAction(state, formData, productDetails);
+    if (result?.success) {
+      setCartCount(result.totalCount);
+    }
+    return result;
+  }, undefined);
 
   const [quantities, setQuantities] = useState<number[]>(
     new Array(productDetails.variations.length).fill(0)

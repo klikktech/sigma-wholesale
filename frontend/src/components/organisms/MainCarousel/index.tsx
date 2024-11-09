@@ -19,34 +19,26 @@ const MainCarousel = ({ elements }: Props) => {
     if (emblaApi) emblaApi.scrollNext()
   }, [emblaApi])
 
-  return (
-    <div className='embla mx-auto mt-12'>
-      <div className='embla__viewport' ref={emblaRef}>
-        <div className='embla__container h-full'>
-        {elements.map((element, index) => (
-            <div key={index} className='embla__slide flex items-center justify-center'>
-              {element}
-            </div>
-          ))}
-        </div>
-      </div>
 
-      <div className='flex justify-between'>
-      <span
-          className="material-symbols-rounded prev"
-          onClick={scrollPrev}
-        >
-          chevron_left
-        </span>
-        <span
-          className="material-symbols-rounded next"
-          style={{ zIndex: 2 }}
-          onClick={scrollNext}
-        >
-          chevron_right
-        </span>
+  return (
+    <div className="embla-container">
+    <div className="embla embla-content">
+      <div className="embla__viewport" ref={emblaRef}>
+        <div className="embla__container embla-inner-container">
+        {elements.map((element, index) => (
+              <div key={index} className='embla__slide flex items-center justify-center'>
+                {element}
+              </div>
+            ))}      </div>
       </div>
     </div>
+    <span className="material-symbols-rounded prev" onClick={scrollPrev}>
+      chevron_left
+    </span>
+    <span className="material-symbols-rounded next" onClick={scrollNext}>
+      chevron_right
+    </span>
+  </div>
   )
 }
 export default MainCarousel

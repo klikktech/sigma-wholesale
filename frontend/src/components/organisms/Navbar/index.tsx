@@ -16,7 +16,8 @@ import Image from "next/image";
 import React, { useState } from "react";
 import logo from "../../../assets/sigma-logo.png"
 import AvatarMenu from "../AvatarMenu";
-import { LOGIN_PAGE_ROUTE } from "@/utils/urls";
+import { CART_LIST_PAGE_ROUTE, HOME_PAGE_ROUTE, LOGIN_PAGE_ROUTE } from "@/utils/urls";
+import { useCartStore } from '@/store/cartStore';
 
 type Props = {
   user: any
@@ -24,6 +25,7 @@ type Props = {
 
 const Navbar = ({ user }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const cartCount = useCartStore((state) => state.cartCount);
 
   return (
     <>
@@ -34,7 +36,9 @@ const Navbar = ({ user }: Props) => {
             className="sm:hidden"
           />
           <NavbarBrand>
-            <Image width={250} src={logo} alt={"logo"} />
+          <Link href={HOME_PAGE_ROUTE}>
+            <Image width={250} src={logo} alt={"logo"}/>
+            </Link>
           </NavbarBrand>
         </NavbarContent>
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
@@ -61,12 +65,14 @@ const Navbar = ({ user }: Props) => {
           </NavbarItem>
           {user ? <>
                     <NavbarItem className="hidden lg:flex">
-                      <Badge color="danger" size="sm" content={10} shape="circle">
+                      <Badge color="danger" size="sm" content={cartCount} shape="circle">
+                      <Link href={CART_LIST_PAGE_ROUTE}>
                         <span
                           className="material-symbols-rounded text-3xl"
                         >
                           shopping_cart
                         </span>
+                      </Link>
                       </Badge>
                     </NavbarItem>
                     <NavbarItem className="hidden lg:flex">

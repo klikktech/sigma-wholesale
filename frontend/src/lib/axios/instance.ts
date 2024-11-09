@@ -61,6 +61,7 @@ const refreshToken = async (): Promise<string | null> => {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const handleAxiosError = (error: any): AxiosErrorResponse => {
+  console.log(error.response.status,"error")
   if (error.response) {
     const status = error.response.status as number;
     switch (status) {
