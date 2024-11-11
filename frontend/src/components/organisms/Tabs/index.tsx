@@ -1,14 +1,19 @@
 'use client'
 import { TABS_LIST } from "@/utils/constants";
-import { Tabs as NextUITabs, Tab } from "@nextui-org/react";
+import { Button, Tabs as NextUITabs, Tab } from "@nextui-org/react";
 import React from "react";
-import Button from "@/components/atoms/Button";
 import Tabview from "../Tabview";
+import { useRouter } from "next/navigation";
 
 const Tabs = () => {
+  const router = useRouter();
+  const [selectedTab, setSelectedTab] = React.useState(TABS_LIST[0].key);
+
   return (
     <div className="my-3">
       <NextUITabs
+        selectedKey={selectedTab}
+        onSelectionChange={(key) => setSelectedTab(key.toString())}
         className="flex justify-evenly"
         key="underlined"
         variant="underlined"
@@ -25,6 +30,7 @@ const Tabs = () => {
         <Button
           color="primary"
           className="mt-4 text-black py-2 rounded-lg hover:bg-primary-300"
+          onClick={() => router.push(`/categories/${selectedTab}/products?page=1&size=16`)}
         >
           view more
         </Button>

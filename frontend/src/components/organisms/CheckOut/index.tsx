@@ -19,6 +19,7 @@ import { checkOutAction } from "@/app/(public)/check-out/action";
 import FormMessage from "@/components/molecules/FormMessage";
 import Button from "@/components/atoms/Button";
 import { CartItem, Message } from "@/utils/types";
+import ShippingInfoCard from "@/components/molecules/ShippingInfocard";
 
 interface CartListProps {
     cartItemsList: CartItem[];
@@ -45,102 +46,7 @@ const CheckOut = ({ cartItemsList, totalCost, discount, tax }: CartListProps) =>
             <form action={formAction}>
                 <div className="flex flex-row justify-center gap-5">
                     <div className="flex flex-col" style={{ width: "100%", maxWidth: "600px" }}>
-                        <Card>
-                            <CardBody>
-                                <p className="text-lg">Shipping Information</p>
-                                <Spacer y={3} />
-                                <Input
-                                    label="Email address*"
-                                    placeholder="Enter your email"
-                                    name="email"
-                                    labelPlacement="outside"
-                                    required
-                                />
-                                <Spacer y={2} />
-
-                                <div className="flex gap-1">
-                                    <Input
-                                        label="First Name*"
-                                        placeholder="Enter your first name"
-                                        name="firstName"
-                                        labelPlacement="outside"
-                                        required
-                                    />
-                                    <Input
-                                        label="Last Name*"
-                                        placeholder="Enter your last name"
-                                        name="lastName"
-                                        labelPlacement="outside"
-                                        required
-                                    />
-                                </div>
-                                <Spacer y={2} />
-
-                                <Input
-                                    label="Address*"
-                                    placeholder="123 Main St"
-                                    name="address"
-                                    labelPlacement="outside"
-                                    required
-                                />
-                                <Spacer y={2} />
-
-                                <div className="flex gap-1">
-                                    <Input
-                                        label="State*"
-                                        placeholder="Enter your state"
-                                        name="state"
-                                        labelPlacement="outside"
-                                        required
-                                    />
-                                    <Input
-                                        label="Country*"
-                                        placeholder="Enter your country"
-                                        name="country"
-                                        labelPlacement="outside"
-                                        required
-                                    />
-                                </div>
-                                <Spacer y={2} />
-
-                                <div className="flex gap-1">
-                                    <Input
-                                        label="City*"
-                                        placeholder="Enter your city"
-                                        name="city"
-                                        labelPlacement="outside"
-                                        required
-                                    />
-                                    <Input
-                                        label="Postal code*"
-                                        placeholder="12345"
-                                        name="postalCode"
-                                        labelPlacement="outside"
-                                        required
-                                    />
-                                </div>
-                                <Spacer y={2} />
-
-                                <Input
-                                    label="Phone number*"
-                                    placeholder="+1 (555) 555-5555"
-                                    name="phone"
-                                    labelPlacement="outside"
-                                    required
-                                />
-                                <Spacer y={2} />
-                                <h4>Address type</h4>
-                                <Spacer y={1} />
-                                <RadioGroup
-                                    orientation="horizontal"
-                                >
-                                    <Radio size="sm" value="Home">Home (All Day Delivery)</Radio>
-                                    <Radio size="sm" value="Office">Office (Delivery Between 9AM - 6PM)</Radio>
-                                </RadioGroup>
-                                <Spacer y={2} />
-                                <Checkbox size="sm">Same as shipping address</Checkbox>
-                            </CardBody>
-                        </Card>
+                        <ShippingInfoCard />
                     </div>
 
                     <div className="flex flex-col" style={{ width: "100%", maxWidth: "400px" }}>

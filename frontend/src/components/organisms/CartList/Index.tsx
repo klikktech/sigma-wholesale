@@ -1,11 +1,11 @@
 'use client';
-import Button from '@/components/atoms/Button';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { useFormState } from 'react-dom';
 import { updateCartAction } from '../../../app/(public)/cart-list/action';
 import { Message } from '@/utils/types';
 import { useCartStore } from '@/store/cartStore';
+import { Button } from '@nextui-org/react';
 
 interface CartItem {
   variation: variation

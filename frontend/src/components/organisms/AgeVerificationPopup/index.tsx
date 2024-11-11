@@ -2,7 +2,7 @@ import logo from "../../../assets/sigma-logo.png"
 import Image from "next/image";
 import React from "react";
 import { setAgeVerification } from "@/lib/axios/session";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
+import { Modal, ModalContent, ModalBody, ModalFooter, Button } from "@nextui-org/react";
 
 
 const handleVerification = async () => {

@@ -11,7 +11,7 @@ const Tabview = ({ category }: { category: string }) => {
       .then((res) => res.json())
       .then((data) => {
         console.log('Received data:', data)
-        setProducts(data)
+        setProducts(data.content)
       })
       .catch((error) => {
         console.error('Error fetching products:', error)

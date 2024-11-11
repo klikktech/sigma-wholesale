@@ -5,6 +5,8 @@ import { axios } from "@/lib/axios";
 // import { createSession, deleteSession } from "@/lib/axios/session";
 // import { SIGNIN_PAGE_ROUTE, USERS_PAGE_ROUTE } from "@/utils/routes";
 import { Message } from "@/utils/types";
+import { HOME_PAGE_ROUTE } from "@/utils/urls";
+import { redirect } from "next/navigation";
 // import { redirect } from "next/navigation";
 
 export const checkOutAction = async (
@@ -63,7 +65,8 @@ export const checkOutAction = async (
       return { error: error.message };
     }
     if (data && status === 200) {
-      // redirect(USERS_PAGE_ROUTE);
+      localStorage.removeItem('cartCount')
+      redirect(HOME_PAGE_ROUTE);
     }
 //   }
 

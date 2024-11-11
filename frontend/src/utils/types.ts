@@ -111,3 +111,15 @@ export interface cartvariation {
   variationName: string;
   price: number;
 }
+export interface orderDetails{
+  paymentMethod: string;
+  orderTotal: number;
+  id: string;
+  orderCreatedAt: string;
+  itemsList:orderItemsDetails[];
+  totalCount:number;
+}
+export interface orderItemsDetails{
+  variation: variation,
+  quantity: number
+}

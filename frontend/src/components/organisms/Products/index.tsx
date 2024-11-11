@@ -11,18 +11,26 @@ interface ProductsProps {
   totalPages: number;
   currentPage: number;
   size: number;
+  category?: string;
+  searchkey?:string;
 }
 
-const Products = ({products, totalPages, currentPage, size}:ProductsProps) => {
+const Products = ({products, totalPages, currentPage, size, category, searchkey}: ProductsProps) => {
   const router = useRouter();
   
   const handlePageChange = (page: number) => {
-    router.push(`/products?page=${page}&size=${size}`);
+    const baseUrl = category 
+      ? `/categories/${category}/products`
+      : '/products';
+    
+    router.push(`${baseUrl}?page=${page}&size=${size}`);
   };
 
   return (
     <div className="flex flex-col items-center">
-      <p className="text-large font-bold text-red-500 py-10">ALL PRODUCTS</p>
+      <p className="text-large font-bold text-red-500 py-10">
+        {searchkey ? searchkey.toUpperCase() : (category ? category.toUpperCase() : 'ALL PRODUCTS')}
+      </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((product,index) => (

@@ -112,7 +112,7 @@ const ProductView = ({ productDetails }: { productDetails: ProdDetails }) => {
               ))}
             </div>
           </ScrollShadow> */}
-            <Button className="w-full mt-3" color="primary" type='submit'>
+            <Button className="w-full mt-3 px-3" color="primary" type='submit'>
               <span>Add to cart</span>
               <span className="material-symbols-rounded">shopping_cart</span>
             </Button>

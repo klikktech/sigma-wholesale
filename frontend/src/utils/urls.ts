@@ -6,6 +6,7 @@ export const PRODUCT_VIEW_PAGE_ROUTE = (id: string) =>  `/products/${id}`;
 export const PRODUCTS_PAGE_ROUTE = "/products";
 export const CART_LIST_PAGE_ROUTE = "/cart-list";
 export const ORDERS_PAGE_ROUTE = "/orders";
+export const ADDRESSES_PAGE_ROUTE ='/addresses'
 
 
 
@@ -24,5 +25,9 @@ export const NEW_ARRIVALS_URL = '/products/new-arrivals';
 export const PRODUCT_BY_ID_URL = (id: string) => `/products/${id}`;
 export const CART_URL = '/cart';
 export const CHECK_OUT_URL = '/checkout';
+export const ORDERS_URL = '/orders/userOrders';
+export const ORDER_ITEMS_URL = (id: string) => `/orderItems/${id}`;
+export const SEARCH_ITEMS_URL = (keyword: string) => `/products/search/${keyword}`
+
 
 

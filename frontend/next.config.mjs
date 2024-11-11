@@ -2,7 +2,13 @@
 const nextConfig = {
     reactStrictMode: false,
     images: {
-      domains: ['sigmawholesaleimages.s3.us-east-2.amazonaws.com'],
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'sigmawholesaleimages.s3.us-east-2.amazonaws.com',
+          pathname: '**',
+        },
+      ],
     },
 };
 
