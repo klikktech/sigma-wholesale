@@ -1,14 +1,12 @@
 package com.klikk.sigma.service.impl;
 
 import com.klikk.sigma.aws.AwsS3Properties;
-import com.klikk.sigma.dto.ProductDto;
+import com.klikk.sigma.dto.request.ProductRequestDto;
 import com.klikk.sigma.dto.response.ProductResponseDto;
-import com.klikk.sigma.dto.response.VariationResponseDto;
-import com.klikk.sigma.entity.Attachment;
 import com.klikk.sigma.dto.response.ProductsResponse;
-import com.klikk.sigma.entity.Category;
+import com.klikk.sigma.dto.response.VariationResponseDto;
 import com.klikk.sigma.entity.Product;
-import com.klikk.sigma.entity.ProductRequestDto;
+import com.klikk.sigma.exception.NotFoundException;
 import com.klikk.sigma.mapper.ProductMapper;
 import com.klikk.sigma.mapper.VariationMapper;
 import com.klikk.sigma.repository.CategoryRepository;
@@ -19,15 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -61,9 +58,14 @@ public class ProductServiceImpl implements ProductService {
     private VariationMapper variationMapper;
 
     @Override
-    public ProductResponseDto saveProduct(ProductRequestDto productRequest, String displayImage) throws IOException {
+    public ProductResponseDto saveProduct(ProductRequestDto productRequest,MultipartFile displayImage, List<MultipartFile> images) throws IOException {
+        String imageUrl=uploadFileToAws(displayImage);
+        List<String> productImages= images.stream().map(image->{
+            return uploadFileToAws(image);
+        }).toList();
         Product newProduct=productMapper.productRequestToProduct(productRequest);
-        newProduct.setDisplayImage(displayImage);
+        newProduct.setDisplayImage(imageUrl);
+        newProduct.setImages(productImages);
         return productMapper.productToProductResponseDto(productRepository.save(newProduct));
     }
 
@@ -91,14 +93,24 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-    @Transactional(readOnly = true)
+    //    @Transactional(readOnly = true)
     @Override
     public List<ProductsResponse> getAllProductsForAdmin() {
         List<Product> products = productRepository.findAll();
         return products.stream()
                 .sorted(Comparator.comparing(Product::getCreatedAt).reversed())
-                .map(product -> productMapper.productToProductsResponse(product))
+                .map(product -> productMapper.adminAllProductsResponse(product))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ProductsResponse getProductForAdmin(String details) {
+        Optional<Product> product = productRepository.findByDetails(details);
+        if (product.isPresent()) {
+            return productMapper.adminProductsResponse(product.get());
+        } else {
+            throw new NotFoundException("Product not found with details : " + details + ".");
+        }
     }
 
     @Override
@@ -150,4 +162,27 @@ public class ProductServiceImpl implements ProductService {
         }
         return file;
     }
+
+    private String generateUniqueDetails(Product product) {
+        String baseDetails = product.getName().toLowerCase().replace(" ", "-");
+        String uniqueDetails = baseDetails;
+        int counter = 1;
+        while (productRepository.existsByDetails(uniqueDetails)) {
+            uniqueDetails = baseDetails + "-" + counter;
+            counter++;
+        }
+        return uniqueDetails;
+    }
+
+//    private Attachment saveImage(MultipartFile file) {
+//        Attachment attachment = new Attachment();
+//        try {
+//            attachment.setFileName(file.getOriginalFilename());
+//            attachment.setFileType(file.getContentType());
+//            attachment.setData(file.getBytes());  // Store image as byte array
+//        } catch (IOException e) {
+//            throw new RuntimeException("Failed to store image", e);
+//        }
+//        return attachmentRepository.save(attachment);
+//    }
 }

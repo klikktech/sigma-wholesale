@@ -96,4 +96,6 @@ public class Product {
 
     @Column(name = "display_image")
     private String displayImage;
+
+    private List<String> images;
 }
