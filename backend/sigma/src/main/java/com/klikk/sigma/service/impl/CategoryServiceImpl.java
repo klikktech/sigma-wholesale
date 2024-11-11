@@ -8,9 +8,13 @@ import com.klikk.sigma.mapper.ProductMapper;
 import com.klikk.sigma.repository.CategoryRepository;
 import com.klikk.sigma.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -27,11 +31,19 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryProductsDto> getProductsOfCategory(String name) {
+    public Page<CategoryProductsDto> getProductsOfCategory(String name, Pageable pageable) {
         Category category=categoryRepository.findBySlugAndType(name,"product_cat");
         List<Product> products=category.getProducts();
-        return products.stream().map(product -> {
-            return productMapper.productToCategoryProductsDto(product);
-        }).toList();
+
+        // Calculate the start and end indices for pagination
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), products.size());
+
+        // Get the paginated list
+        List<CategoryProductsDto> paginatedProducts = products.subList(start, end).stream()
+                .map(productMapper::productToCategoryProductsDto)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(paginatedProducts, pageable, products.size());
     }
 }
