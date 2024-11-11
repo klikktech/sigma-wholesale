@@ -1,6 +1,9 @@
 package com.klikk.sigma.service.impl;
 
+import com.klikk.sigma.dto.response.OrderItemResponseDto;
+import com.klikk.sigma.dto.response.VariationResponseDto;
 import com.klikk.sigma.entity.*;
+import com.klikk.sigma.mapper.VariationMapper;
 import com.klikk.sigma.repository.*;
 import com.klikk.sigma.service.CartService;
 import com.klikk.sigma.service.OrderItemService;
@@ -28,6 +31,9 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private VariationMapper variationMapper;
+
     @Override
     public void addOrderItems(String userEmail, Order order) {
         Optional<User> user=userRepository.findByEmail(userEmail);
@@ -49,8 +55,10 @@ public class OrderItemServiceImpl implements OrderItemService {
     }
 
     @Override
-    public List<OrderItem> getOrderItems(String orderid) {
-        Optional<Order> order= orderRepository.findById(orderid);
-        return orderItemRepository.findByOrder(order.get());
+    public List<OrderItemResponseDto> getOrderItems(String orderId) {
+        Optional<Order> order= orderRepository.findById(orderId);
+        return orderItemRepository.findByOrder(order.get()).stream().map(orderItem -> {
+            return OrderItemResponseDto.builder().variation(variationMapper.variationToVariationResponseDto(orderItem.getVariation())).quantity(orderItem.getQuantity()).build();
+        }).toList();
     }
 }

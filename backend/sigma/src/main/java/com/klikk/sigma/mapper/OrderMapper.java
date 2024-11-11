@@ -19,4 +19,6 @@ public interface OrderMapper {
     @Mapping(target = "orderModifiedAt", ignore = true)
     @Mapping(target = "buyer", ignore = true)
     public Order orderDtoToOrder(OrderDto orderDto);
+
+    public OrderDto orderToOrderDto(Order order);
 }

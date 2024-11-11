@@ -8,9 +8,9 @@ import java.util.List;
 
 
 public interface OrderService {
-    public List<Order> findAll();
+    public List<OrderDto> findAll();
 
-    List<Order> findUserOrders(HttpServletRequest request);
+    List<OrderDto> findUserOrders(HttpServletRequest request);
 
     public void saveOrder(double orderTotal , String customerIp, String paymentMethod, HttpServletRequest request);
 

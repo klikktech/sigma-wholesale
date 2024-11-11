@@ -1,6 +1,7 @@
 package com.klikk.sigma.controller;
 
 import com.klikk.sigma.dto.response.ProductResponseDto;
+import com.klikk.sigma.dto.response.ProductsResponse;
 import com.klikk.sigma.dto.response.VariationResponseDto;
 import com.klikk.sigma.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,11 @@ public class ProductController {
     @GetMapping("/{details}")
     public ResponseEntity<ProductResponseDto> getProduct(@PathVariable String details){
         return ResponseEntity.ok().body((productService.getProduct(details)));
+    }
+
+    @GetMapping("/search/{keyword}")
+    public ResponseEntity<List<ProductResponseDto>> getProductsFromSearch(@PathVariable String keyword, Pageable pageable) {
+        return ResponseEntity.ok().body((productService.getProductsFromSearch(keyword, pageable)));
     }
 
     @GetMapping({"/{details}/variations"})

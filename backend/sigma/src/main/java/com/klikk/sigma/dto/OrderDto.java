@@ -18,8 +18,10 @@ public class OrderDto {
 
     private String paymentMethod;
 
-    private String customerIp;
-
     private Double orderTotal;
+
+    private String id;
+
+    private LocalDateTime orderCreatedAt;
 
 }

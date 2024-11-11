@@ -1,5 +1,6 @@
 package com.klikk.sigma.controller;
 
+import com.klikk.sigma.dto.response.OrderItemResponseDto;
 import com.klikk.sigma.entity.OrderItem;
 import com.klikk.sigma.service.OrderItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class OrderItemController {
     private OrderItemService orderItemService;
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<List<OrderItem>> getOrderItems(@PathVariable String orderId){
+    public ResponseEntity<List<OrderItemResponseDto>> getOrderItems(@PathVariable String orderId){
         return ResponseEntity.ok(orderItemService.getOrderItems(orderId));
     }
 

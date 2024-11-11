@@ -30,4 +30,6 @@ public interface ProductService {
     String uploadFileToAws(MultipartFile image);
 
     ProductsResponse getProductForAdmin(String details);
+
+    List<ProductResponseDto> getProductsFromSearch(String keyword, Pageable pageable);
 }

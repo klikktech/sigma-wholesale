@@ -36,15 +36,19 @@ public class OrderServiceImpl implements OrderService {
     private OrderItemService orderItemService;
 
     @Override
-    public List<Order> findAll() {
-        return orderRepository.findAll();
+    public List<OrderDto> findAll() {
+        return orderRepository.findAll().stream().map(order -> {
+            return orderMapper.orderToOrderDto(order);
+        }).toList();
     }
 
     @Override
-    public List<Order> findUserOrders(HttpServletRequest request){
+    public List<OrderDto> findUserOrders(HttpServletRequest request){
         String userEmail= jwtService.extractUsername(request.getHeader("Authorization").split(" ")[1]);
         Optional<User> user=userRepository.findByEmail(userEmail);
-        return user.map(value -> orderRepository.findByBuyer(value)).orElse(null);
+        return user.map(value -> orderRepository.findByBuyer(value).stream().map(order -> {
+            return orderMapper.orderToOrderDto(order);
+        }).toList()).orElse(null);
     }
 
 
