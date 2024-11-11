@@ -41,6 +41,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> findUserOrders(HttpServletRequest request){
+        String userEmail= jwtService.extractUsername(request.getHeader("Authorization").split(" ")[1]);
+        Optional<User> user=userRepository.findByEmail(userEmail);
+        return user.map(value -> orderRepository.findByBuyer(value)).orElse(null);
+    }
+
+
+
+    @Override
     public void saveOrder(double orderTotal ,String customerIp, String paymentMethod, HttpServletRequest request) {
 
         Order order=Order.builder().paymentMethod(paymentMethod).customerIp(customerIp).orderTotal(orderTotal).build();

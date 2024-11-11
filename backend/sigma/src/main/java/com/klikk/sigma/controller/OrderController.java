@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/orders")
 public class OrderController {
 
     @Autowired
@@ -25,6 +25,11 @@ public class OrderController {
     @GetMapping()
     public List<Order> getAllOrders() {
         return orderService.findAll();
+    }
+
+    @GetMapping("/userOrders")
+    public List<Order> getUserOrders(HttpServletRequest request){
+        return orderService.findUserOrders(request);
     }
 
     @PostMapping()
