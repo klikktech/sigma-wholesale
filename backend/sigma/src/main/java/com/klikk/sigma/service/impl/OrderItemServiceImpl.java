@@ -1,10 +1,7 @@
 package com.klikk.sigma.service.impl;
 
 import com.klikk.sigma.entity.*;
-import com.klikk.sigma.repository.CartItemsRepository;
-import com.klikk.sigma.repository.CartRepository;
-import com.klikk.sigma.repository.OrderItemRepository;
-import com.klikk.sigma.repository.UserRepository;
+import com.klikk.sigma.repository.*;
 import com.klikk.sigma.service.CartService;
 import com.klikk.sigma.service.OrderItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +25,9 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
+    @Autowired
+    private OrderRepository orderRepository;
+
     @Override
     public void addOrderItems(String userEmail, Order order) {
         Optional<User> user=userRepository.findByEmail(userEmail);
@@ -46,5 +46,11 @@ public class OrderItemServiceImpl implements OrderItemService {
             return orderItem;
         }).toList();
 
+    }
+
+    @Override
+    public List<OrderItem> getOrderItems(String orderid) {
+        Optional<Order> order= orderRepository.findById(orderid);
+        return orderItemRepository.findByOrder(order.get());
     }
 }
