@@ -31,5 +31,5 @@ public interface ProductService {
 
     ProductsResponse getProductForAdmin(String details);
 
-    List<ProductResponseDto> getProductsFromSearch(String keyword, Pageable pageable);
+    Page<ProductResponseDto> getProductsFromSearch(String keyword, Pageable pageable);
 }

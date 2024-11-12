@@ -39,7 +39,7 @@ public class ProductController {
     }
 
     @GetMapping("/search/{keyword}")
-    public ResponseEntity<List<ProductResponseDto>> getProductsFromSearch(@PathVariable String keyword, Pageable pageable) {
+    public ResponseEntity<Page<ProductResponseDto>> getProductsFromSearch(@PathVariable String keyword, Pageable pageable) {
         return ResponseEntity.ok().body((productService.getProductsFromSearch(keyword, pageable)));
     }
 

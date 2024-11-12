@@ -1,6 +1,7 @@
 package com.klikk.sigma.repository;
 
 import com.klikk.sigma.entity.Product;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -22,5 +23,5 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     boolean existsByDetails(String details);
 
     @Query("SELECT p FROM Product p WHERE p.name LIKE %:keyword%")
-    List<Product> findByKeyword(@Param("keyword") String keyword, Pageable pageable);
+    Page<Product> findByKeyword(@Param("keyword") String keyword, Pageable pageable);
 }

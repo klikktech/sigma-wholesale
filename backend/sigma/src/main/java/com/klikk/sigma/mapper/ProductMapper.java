@@ -25,8 +25,6 @@ public abstract class ProductMapper {
     public abstract Product productRequestToProduct(ProductRequestDto productRequestDto);
 
     @Mapping(source = "maxPrice", target = "price")
-    @Mapping(target = "displayImage", ignore = true)
-    @Mapping(target = "images", ignore = true)
     public abstract ProductsResponse adminAllProductsResponse(Product product);
 
     @Mapping(source = "maxPrice", target = "price")

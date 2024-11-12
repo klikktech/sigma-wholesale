@@ -114,11 +114,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponseDto> getProductsFromSearch(String keyword, Pageable pageable) {
-        return productRepository.findByKeyword(keyword,pageable).stream().map(product -> {
-            return productMapper.productToProductResponseDto(product);
-        }).toList();
+    public Page<ProductResponseDto> getProductsFromSearch(String keyword, Pageable pageable) {
+        Page<Product> productsPage = productRepository.findByKeyword(keyword, pageable);
+        return productsPage.map(product -> productMapper.productToProductResponseDto(product));
     }
+
 
     @Override
     public List<VariationResponseDto> getProductVariations(String details) {

@@ -34,7 +34,7 @@ public class ProductAdminController {
 
     @PostMapping()
     @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
-    public ResponseEntity<SuccessResponse> addProduct(@RequestBody() ProductRequestDto productRequest, MultipartFile displayImage, List<MultipartFile> images) throws IOException {
+    public ResponseEntity<SuccessResponse> addProduct(@RequestBody ProductRequestDto productRequest,@RequestPart MultipartFile displayImage,@RequestPart List<MultipartFile> images) throws IOException {
         productService.saveProduct(productRequest,displayImage,images);
         return ResponseEntity.ok(new SuccessResponse(LocalDateTime.now(), "Product Added Successfully"));
     }
