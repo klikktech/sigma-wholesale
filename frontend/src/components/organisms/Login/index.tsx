@@ -13,7 +13,7 @@ const Login = () => {
 
   return (
     <div className="flex justify-center items-center">
-        <form action={formAction} className="flex flex-col w-full" style={{ maxWidth: '500rem' }}>
+        <form action={formAction} className="flex flex-col w-full max-w-md" style={{ maxWidth: '500rem' }}>
         
         <Input
           label="Email *"

@@ -50,11 +50,10 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex justify-center items-center p-2">
+    <div className="flex justify-center items-center p-4">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col w-full"
-        style={{ maxWidth: "500rem" }}
+        className="flex flex-col w-full max-w-md"
       >
 
         <Input

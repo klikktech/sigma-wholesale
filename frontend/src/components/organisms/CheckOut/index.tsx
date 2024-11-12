@@ -2,8 +2,6 @@
 import {
     Card,
     Input,
-    Radio,
-    Checkbox,
     Spacer,
     Table,
     TableHeader,
@@ -44,12 +42,12 @@ const CheckOut = ({ cartItemsList, totalCost, discount, tax }: CartListProps) =>
     return (
         <div className="container my-3">
             <form action={formAction}>
-                <div className="flex flex-row justify-center gap-5">
-                    <div className="flex flex-col" style={{ width: "100%", maxWidth: "600px" }}>
+                <div className="flex flex-col md:flex-row justify-center gap-5">
+                    <div className="flex flex-col w-full max-w-screen-sm">
                         <ShippingInfoCard />
                     </div>
 
-                    <div className="flex flex-col" style={{ width: "100%", maxWidth: "400px" }}>
+                    <div className="flex flex-col w-full max-w-md">
                         <Card>
                             <CardBody>
                                 <p className="text-lg">Your Order</p>
@@ -78,20 +76,24 @@ const CheckOut = ({ cartItemsList, totalCost, discount, tax }: CartListProps) =>
                                     labelPlacement="outside"
                                 />
                                 <Spacer y={2} />
-                                <Button >Apply</Button>
+                                <Button>Apply</Button>
                                 <Spacer y={2} />
                                 <div className="flex justify-between">
                                     <p>Subtotal</p>
                                     <p>${totalCost.toFixed(2)}</p>
                                 </div>
-                                {tax > 0 ? <div className="flex justify-between">
-                                    <p>Tax</p>
-                                    <p>${tax.toFixed(2)}</p>
-                                </div> : <></>}
-                                {discount > 0 ? <div className="flex justify-between">
-                                    <p>Discount</p>
-                                    <p>-${discount.toFixed(2)}</p>
-                                </div> : <></>}
+                                {tax > 0 && (
+                                    <div className="flex justify-between">
+                                        <p>Tax</p>
+                                        <p>${tax.toFixed(2)}</p>
+                                    </div>
+                                )}
+                                {discount > 0 && (
+                                    <div className="flex justify-between">
+                                        <p>Discount</p>
+                                        <p>-${discount.toFixed(2)}</p>
+                                    </div>
+                                )}
                                 <div className="flex justify-between">
                                     <p>Total</p>
                                     <p>${total.toFixed(2)}</p>
@@ -114,4 +116,5 @@ const CheckOut = ({ cartItemsList, totalCost, discount, tax }: CartListProps) =>
         </div>
     );
 }
+
 export default CheckOut;

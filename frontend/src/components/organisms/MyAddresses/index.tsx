@@ -26,9 +26,9 @@ const MyAddressList = () => {
   ];
 
   return (
-    <div className=" p-6">
+    <div className="p-6">
       <h1 className="text-2xl font-bold mb-6">My Address List</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
       <div className="space-y-4">
         {addressList.map((address, index) => (
           <AddressCard key={index} {...address} />

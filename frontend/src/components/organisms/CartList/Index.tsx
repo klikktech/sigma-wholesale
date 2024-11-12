@@ -6,12 +6,13 @@ import { updateCartAction } from '../../../app/(public)/cart-list/action';
 import { Message } from '@/utils/types';
 import { useCartStore } from '@/store/cartStore';
 import { Button } from '@nextui-org/react';
+import { CHECKOUT_PAGE_ROUTE, HOME_PAGE_ROUTE } from '@/utils/urls';
 
 interface CartItem {
   variation: variation
   quantity: number;
-  // imageUrl: string;
 }
+
 interface variation {
   variationName: string;
   price: number;
@@ -21,9 +22,8 @@ interface CartListProps {
   cartItemsList: CartItem[];
 }
 
-const CartList = ({ cartItemsList }:CartListProps) => {
+const CartList = ({ cartItemsList }: CartListProps) => {
   const setCartCount = useCartStore((state) => state.setCartCount);
-
   const [cartItems, setCartItems] = useState<CartItem[]>(cartItemsList || []);
 
   const [state, formAction] = useFormState(async (state: undefined | Message, formData: FormData) => {
@@ -52,8 +52,8 @@ const CartList = ({ cartItemsList }:CartListProps) => {
   return (
     <div className="flex justify-center py-10">
       <div className="w-full max-w-5xl">
-        <div className="grid grid-cols-3 gap-4">
-          <div className="col-span-2 bg-white shadow-md rounded-lg p-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="col-span-1 md:col-span-2 bg-white shadow-md rounded-lg p-8">
             <form action={formAction}>
               <h2 className="text-xl font-bold mb-6">Shopping Cart</h2>
               <div className="grid grid-cols-6 gap-4 text-center font-semibold text-gray-600 pb-4 border-b">
@@ -68,7 +68,6 @@ const CartList = ({ cartItemsList }:CartListProps) => {
                   className="grid grid-cols-6 gap-4 items-center text-center py-4 border-b"
                 >
                   <div className="col-span-3 flex items-center space-x-4 text-left">
-                    {/* <img src={''} alt={item.variation.name} className="w-16 h-16 object-cover" /> */}
                     <div>
                       <p className="font-semibold">{item.variation.variationName}</p>
                       <button
@@ -99,9 +98,9 @@ const CartList = ({ cartItemsList }:CartListProps) => {
                 </div>
               ))}
               <div className="flex items-center justify-between">
-                <a href="#" className="text-blue-500 mt-4 inline-block">
+                <Link href={HOME_PAGE_ROUTE} className="text-blue-500 mt-4 inline-block">
                   Continue Shopping
-                </a>
+                </Link>
                 <Button className="mt-3" color="primary" type='submit'>
                   <span>Update cart</span>
                   <span className="material-symbols-rounded">shopping_cart</span>
@@ -132,7 +131,7 @@ const CartList = ({ cartItemsList }:CartListProps) => {
               <p>${(totalCost).toFixed(2)}</p>
             </div>
             <Button type='button' className="w-full py-3 mt-4" color="primary">
-              <Link href="/check-out">Checkout</Link>
+              <Link href={CHECKOUT_PAGE_ROUTE}>Checkout</Link>
             </Button>
           </div>
         </div>

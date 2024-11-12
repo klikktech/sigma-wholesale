@@ -5,6 +5,7 @@ export const HOME_PAGE_ROUTE = "/home";
 export const PRODUCT_VIEW_PAGE_ROUTE = (id: string) =>  `/products/${id}`;
 export const PRODUCTS_PAGE_ROUTE = "/products";
 export const CART_LIST_PAGE_ROUTE = "/cart-list";
+export const CHECKOUT_PAGE_ROUTE = "/check-out";
 export const ORDERS_PAGE_ROUTE = "/orders";
 export const ADDRESSES_PAGE_ROUTE ='/addresses'
 

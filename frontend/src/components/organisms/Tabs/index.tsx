@@ -14,7 +14,7 @@ const Tabs = () => {
       <NextUITabs
         selectedKey={selectedTab}
         onSelectionChange={(key) => setSelectedTab(key.toString())}
-        className="flex justify-evenly"
+        className="flex flex-col sm:flex-row justify-evenly"
         key="underlined"
         variant="underlined"
         aria-label="Tabs variants"
