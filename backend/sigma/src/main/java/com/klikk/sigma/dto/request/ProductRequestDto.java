@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class ProductRequestDto {
 
     private double minPrice;
 
-    private double price;
+//    private double price;
 
     private String sku;
 
@@ -29,19 +30,19 @@ public class ProductRequestDto {
 
     private String displayStatus;
 
-    private int stockQuantity;
+//    private int stockQuantity;
 
-    private int totalSales;
+//    private int totalSales;
 
     private String commentStatus;
 
-    private String category;
+//    private String category;
 
-//    private String displayImage;
-//
-//    private List<String> images;
+    private MultipartFile displayImage;
 
-    private int ratingCount;
+    private List<MultipartFile> images;
 
-    private double averageRating;
+//    private int ratingCount;
+
+//    private double averageRating;
 }

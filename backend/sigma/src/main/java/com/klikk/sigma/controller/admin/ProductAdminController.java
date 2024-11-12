@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -34,8 +33,8 @@ public class ProductAdminController {
 
     @PostMapping()
     @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
-    public ResponseEntity<SuccessResponse> addProduct(@RequestBody ProductRequestDto productRequest,@RequestPart MultipartFile displayImage,@RequestPart List<MultipartFile> images) throws IOException {
-        productService.saveProduct(productRequest,displayImage,images);
+    public ResponseEntity<SuccessResponse> addProduct(@RequestBody() ProductRequestDto productRequest) throws IOException {
+        productService.saveProduct(productRequest,productRequest.getDisplayImage(),productRequest.getImages());
         return ResponseEntity.ok(new SuccessResponse(LocalDateTime.now(), "Product Added Successfully"));
     }
 }
