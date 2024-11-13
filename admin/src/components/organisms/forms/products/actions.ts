@@ -63,12 +63,15 @@ export const addProductAction = async (
       status: validatedFormFields.data.status as "instock" | "outofstock",
       displayStatus: "draft",
       commentStatus: validatedFormFields.data.commentStatus,
-      displayImage: displayImageBase64,
-      images: imagesBase64,
     };
-    const { data, status, error } = await axios.products.addProduct(payload);
+    const formData = new FormData();
+    formData.append("product", JSON.stringify(payload));
+    if (validatedImages.data.displayImage) formData.append("displayImage", validatedImages.data.displayImage);
+    validatedImages.data.images.forEach((image, index) => {
+      formData.append("images", image);
+    });
+    const { data, status, error } = await axios.products.addProduct(formData);
 
-    // console.log(data, error, "after upload")
     if (error) {
       return { error: error.message };
     }

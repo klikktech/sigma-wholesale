@@ -90,13 +90,16 @@ export const axios = {
         return error as AxiosErrorResponse;
       }
     },
-    addProduct: async (
-      productDetails: ProductDetails
-    ): Promise<AxiosResponse> => {
+    addProduct: async (formData: FormData): Promise<AxiosResponse> => {
       try {
         const { data, status } = await api.post(
           ADD_PRODUCT_ENDPOINT,
-          productDetails
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
         );
         return { data, status };
       } catch (error) {
