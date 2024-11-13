@@ -5,17 +5,19 @@ import React from "react";
 const MyAddressList = () => {
   const addressList = [
     {
-      name: "Ainsley Aiken",
+      firstname: "Ainsley",
+      lastname:"Aiken",
       street: "936 Kiehn Route, West Ned",
       city: "Tennessee",
-      state: "",
+      state: "Tennessee",
       country: "France",
       postalCode: "11230",
       phone: "9743857881",
       isDefault: true,
     },
     {
-      name: "John Doe",
+      firstname: "John",
+      lastname:"Doe",
       street: "123 Main Street",
       city: "New York",
       state: "NY",

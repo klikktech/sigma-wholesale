@@ -1,5 +1,5 @@
 import { PRODUCT_VIEW_PAGE_ROUTE } from "@/utils/urls";
-import { Button } from "@nextui-org/react";
+import { Button, Chip } from "@nextui-org/react";
 import Image from "next/image";
 
 import Link from "next/link";
@@ -12,10 +12,15 @@ interface Props {
   stockStatus: string
 }
 
+const stockChipColorMap = {
+  instock: "success",
+  outofstock: "danger",
+};
+
 const ProductCard = (props: Props) => {
   return (
     <>
-      <div className="max-w-60 bg-gray-200 text-black rounded-xl shadow-lg">
+      <div className="max-w-60 bg-gray-100 text-black rounded-xl shadow-lg">
         <div className="relative">
           <Image
             className="w-full rounded-lg h-[250px] object-fill"
@@ -24,15 +29,18 @@ const ProductCard = (props: Props) => {
             src={props.img}
             alt={props.title}
           />
-          {props.stockStatus == 'instock' ? (
-            <div className="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-              IN STOCK
-            </div>
-          ) : (
-            <div className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-              OUT OF STOCK
-            </div>
-          )}
+          <Chip
+            className="capitalize absolute top-2 right-2"
+            color={
+              stockChipColorMap[props.stockStatus as "instock" | "outofstock"] as
+              | "success"
+              | "danger"
+            }
+            size="sm"
+            variant="flat"
+          >
+            {props.stockStatus === 'instock' ? 'IN STOCK' : 'OUT OF STOCK'}
+          </Chip>
         </div>
 
         <div className="mt-2 p-4">

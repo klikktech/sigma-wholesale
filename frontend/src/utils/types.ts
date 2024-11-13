@@ -66,6 +66,7 @@ export interface ProdDetails {
   displayImage: any;
   variations:variation[];
   details:string;
+  images:[]
 }
 
 export interface ProductResponse {
@@ -123,3 +124,14 @@ export interface orderItemsDetails{
   variation: variation,
   quantity: number
 }
+export interface AddressProps {
+  firstname: string;
+  lastname: string;
+  street: string;
+  city: string;
+  state: string;
+  country: string;
+  postalCode: string;
+  phone: string;
+  isDefault?: boolean;
+} 

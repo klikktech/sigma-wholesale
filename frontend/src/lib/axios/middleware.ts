@@ -1,9 +1,9 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { getUser } from "./session";
-import { CART_LIST_PAGE_ROUTE, HOME_PAGE_ROUTE, LOGIN_PAGE_ROUTE, PRODUCTS_PAGE_ROUTE, SIGNUP_PAGE_ROUTE } from "@/utils/urls";
+import { ADDRESSES_PAGE_ROUTE, CART_LIST_PAGE_ROUTE, HOME_PAGE_ROUTE, LOGIN_PAGE_ROUTE, PRODUCTS_PAGE_ROUTE, SIGNUP_PAGE_ROUTE } from "@/utils/urls";
 
 const authRoutes = [LOGIN_PAGE_ROUTE,SIGNUP_PAGE_ROUTE];
-const publicRoutes = ['/',HOME_PAGE_ROUTE, PRODUCTS_PAGE_ROUTE]
+const publicRoutes = ['/',HOME_PAGE_ROUTE, PRODUCTS_PAGE_ROUTE, ADDRESSES_PAGE_ROUTE]
 
 export const verifyClient = (request: NextRequest) => {
   try {
