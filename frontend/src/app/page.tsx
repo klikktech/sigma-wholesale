@@ -6,12 +6,12 @@ import AgeVerification from "@/components/organisms/AgeVerificationPopup";
 import { getAgeVerification, getUser } from "@/lib/axios/session";
 
 const App = async () => {
-  const isVerified = getAgeVerification()
+  const isVerified = getAgeVerification();
   return (
     <>
-    {isVerified !== 'true' && <AgeVerification/>}
+      {isVerified !== "true" && <AgeVerification />}
       <Navbar user={getUser()} />
-      <div className="px-32 min-h-[57vh]">
+      <div className="px-4 md:px-16 lg:px-32 min-h-[57vh] w-screen">
         <HomePage />
       </div>
       <Footer />

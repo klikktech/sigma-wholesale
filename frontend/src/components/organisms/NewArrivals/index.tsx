@@ -9,11 +9,11 @@ import { Button } from "@nextui-org/react";
 
 // Async function in the component for server-side data fetching
 const NewArrivals = async () => {
-  let products:any = [];
-  
+  let products: any = [];
+
   try {
     const { data, error } = await axios.products.getNewArrivals();
-    console.log(data,error, "new arrivals")
+    console.log(data, error, "new arrivals");
     if (data) {
       products = data;
     } else {
@@ -24,17 +24,20 @@ const NewArrivals = async () => {
     return <div>Error fetching products</div>;
   }
 
-  const productElements = products.map((item: any, index:any) => (
-    <div className="embla__slide flex embla-slide w-full" key={index}>
-        <Suspense fallback={<SkeletonProductCard />}>
-          <ProductCard
-            img={item.displayImage}
-            title={item.name}
-            price={item.price ? ("$" + item.price) : ''}
-            details = {item.details}
-            stockStatus={item.status}
-          />
-        </Suspense>
+  const productElements = products.map((item: any, index: any) => (
+    <div
+      className="embla__slide flex embla-slide w-full justify-center"
+      key={index}
+    >
+      <Suspense fallback={<SkeletonProductCard />}>
+        <ProductCard
+          img={item.displayImage}
+          title={item.name}
+          price={item.price ? "$" + item.price : ""}
+          details={item.details}
+          stockStatus={item.status}
+        />
+      </Suspense>
     </div>
   ));
 
@@ -43,11 +46,13 @@ const NewArrivals = async () => {
       <h1 className="my-2 text-xl">New Arrivals</h1>
       <ProductsCarousel>{productElements}</ProductsCarousel>
       <div className="text-center">
-      <Button color="primary" className="mt-4 text-black py-2 rounded-lg hover:bg-primary-300">
-      <Link href={PRODUCTS_PAGE_ROUTE}>view more</Link>
-      </Button>
+        <Button
+          color="primary"
+          className="mt-4 text-black py-2 rounded-lg hover:bg-primary-300"
+        >
+          <Link href={PRODUCTS_PAGE_ROUTE}>view more</Link>
+        </Button>
       </div>
-
     </div>
   );
 };

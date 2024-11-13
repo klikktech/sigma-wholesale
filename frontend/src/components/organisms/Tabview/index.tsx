@@ -4,25 +4,28 @@ import React, { Suspense, useEffect, useState } from "react";
 import ProductsCarousel from "../ProductsCarousel";
 
 const Tabview = ({ category }: { category: string }) => {
-  const [products, setProducts] = useState<any[]>([])
+  const [products, setProducts] = useState<any[]>([]);
 
   useEffect(() => {
     fetch(`/api/products?category=${category}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log('Received data:', data)
-        setProducts(data.content)
+        console.log("Received data:", data);
+        setProducts(data.content);
       })
       .catch((error) => {
-        console.error('Error fetching products:', error)
-      })
-  }, [category])
+        console.error("Error fetching products:", error);
+      });
+  }, [category]);
 
   return (
     <div className="container mx-auto">
       <ProductsCarousel>
         {products.map((item: any, index: any) => (
-          <div className="embla__slide flex embla-slide w-full" key={item.id}>
+          <div
+            className="embla__slide flex embla-slide w-full justify-center"
+            key={item.id}
+          >
             <Suspense fallback={<SkeletonProductCard />}>
               <ProductCard
                 img={item.displayImage}
