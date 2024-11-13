@@ -5,12 +5,14 @@ import com.klikk.sigma.dto.request.ProductRequestDto;
 import com.klikk.sigma.dto.response.ProductResponseDto;
 import com.klikk.sigma.dto.response.ProductsResponse;
 import com.klikk.sigma.dto.response.VariationResponseDto;
+import com.klikk.sigma.entity.Attachment;
 import com.klikk.sigma.entity.Product;
 import com.klikk.sigma.exception.NotFoundException;
 import com.klikk.sigma.mapper.ProductMapper;
 import com.klikk.sigma.mapper.VariationMapper;
 import com.klikk.sigma.repository.CategoryRepository;
 import com.klikk.sigma.repository.ProductRepository;
+import com.klikk.sigma.service.AttachmentService;
 import com.klikk.sigma.service.ProductService;
 import com.klikk.sigma.type.AttachmentType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,7 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -58,17 +61,31 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private VariationMapper variationMapper;
 
+    @Autowired
+    private AttachmentService attachmentService;
+
     @Override
-    public ProductResponseDto saveProduct(ProductRequestDto productRequest,MultipartFile displayImage, List<MultipartFile> images) throws IOException {
-        String imageUrl=uploadFileToAws(displayImage);
-        List<String> productImages= images.stream().map(image->{
-            return uploadFileToAws(image);
-        }).toList();
-        Product newProduct=productMapper.productRequestToProduct(productRequest);
-        newProduct.setDisplayImage(imageUrl);
-        newProduct.setImages(productImages);
-        return productMapper.productToProductResponseDto(productRepository.save(newProduct));
+    public ProductResponseDto saveProduct(ProductRequestDto productRequest, MultipartFile displayImage, List<MultipartFile> images) throws IOException {
+        // Map the request DTO to a Product entity
+        Product newProduct = productMapper.productRequestToProduct(productRequest);
+        newProduct.setCreatedAt(LocalDateTime.now());
+        final Product savedProduct = productRepository.save(newProduct);
+
+        if (displayImage != null) {
+            String imageUrl = uploadFileToAws(displayImage);
+            // Save the display image as an attachment
+            attachmentService.saveAttachment(AttachmentType.IMAGE, imageUrl, savedProduct);
+        }
+
+        images.forEach(image -> {
+            String imageUrl = uploadFileToAws(image);
+            attachmentService.saveAttachment(AttachmentType.IMAGE, imageUrl, savedProduct);
+        });
+
+        // Return the response DTO
+        return productMapper.productToProductResponseDto(savedProduct);
     }
+
 
     @Override
     public ProductResponseDto getProduct(String details) {

@@ -1,6 +1,7 @@
 package com.klikk.sigma.dto.response;
 
 
+import com.klikk.sigma.entity.Attachment;
 import com.klikk.sigma.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +19,7 @@ public class CategoryProductsDto {
 
     private String status;
 
-    private String displayImage;
+    private Attachment displayImage;
 
     private String sku;
 

@@ -94,8 +94,10 @@ public class Product {
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "parent")
     private List<Variation> variations;
 
-    @Column(name = "display_image")
-    private String displayImage;
+    @OneToOne
+    @JoinColumn(name = "display_image")
+    private Attachment displayImage;
 
-    private List<String> images;
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "product")
+    private List<Attachment> images;
 }
