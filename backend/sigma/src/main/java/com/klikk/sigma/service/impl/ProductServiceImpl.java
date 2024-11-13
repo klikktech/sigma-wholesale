@@ -15,6 +15,7 @@ import com.klikk.sigma.service.ProductService;
 import com.klikk.sigma.type.AttachmentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -80,9 +81,17 @@ public class ProductServiceImpl implements ProductService {
         // Fetch products in a paginated way from the repository
         Page<Product> products = productRepository.findAll(pageable);
 
-        // Map each product entity to a ProductResponseDto
-        return products.map(product -> productMapper.productToProductResponseDto(product));
+        // Map and sort by status (instock first)
+        List<ProductResponseDto> sortedDtos = products
+                .stream()
+                .map(productMapper::productToProductResponseDto)
+                .sorted(Comparator.comparing(product -> "instock".equalsIgnoreCase(product.getStatus()) ? 0 : 1))
+                .toList();
+
+        // Return as a page
+        return new PageImpl<>(sortedDtos, pageable, products.getTotalElements());
     }
+
 
     @Override
     public List<ProductResponseDto> getNewArrivals() {
