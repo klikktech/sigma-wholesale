@@ -19,7 +19,9 @@ public class CategoryProductsDto {
 
     private String status;
 
-    private Attachment displayImage;
+    private AttachmentResponse displayImage;
+
+    private List<AttachmentResponse> images;
 
     private String sku;
 

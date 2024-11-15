@@ -97,8 +97,28 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponseDto getProduct(String details) {
         Optional<Product> product=productRepository.findByDetails(details);
-        List<Attachment> attachments=attachmentRepository.findByProduct(product.get());
-        ProductResponseDto responseDto=productMapper.productToProductResponseDto(product.get());
+        return buildProductResponse(product.get());
+    }
+
+    @Override
+    public Page<ProductResponseDto> getAllProducts(Pageable pageable) {
+        // Fetch products in a paginated way from the repository
+        Page<Product> products = productRepository.findAll(pageable);
+
+        // Map and sort by status (instock first)
+        List<ProductResponseDto> sortedDtos = products
+                .stream()
+                .map(this::buildProductResponse)
+                .sorted(Comparator.comparing(product -> "instock".equalsIgnoreCase(product.getStatus()) ? 0 : 1))
+                .toList();
+
+        // Return as a page
+        return new PageImpl<>(sortedDtos, pageable, products.getTotalElements());
+    }
+
+    public ProductResponseDto buildProductResponse(Product product){
+        List<Attachment> attachments=attachmentRepository.findByProduct(product);
+        ProductResponseDto responseDto=productMapper.productToProductResponseDto(product);
         AttachmentResponse primaryImage = attachments.stream()
                 .filter(Attachment::isPrimary)
                 .map(attachment -> {
@@ -117,48 +137,32 @@ public class ProductServiceImpl implements ProductService {
         return responseDto;
     }
 
-    @Override
-    public Page<ProductResponseDto> getAllProducts(Pageable pageable) {
-        // Fetch products in a paginated way from the repository
-        Page<Product> products = productRepository.findAll(pageable);
-
-        // Map and sort by status (instock first)
-        List<ProductResponseDto> sortedDtos = products
-                .stream()
-                .map(product -> {
-                    List<Attachment> attachments=attachmentRepository.findByProduct(product);
-                    ProductResponseDto responseDto=productMapper.productToProductResponseDto(product);
-                    AttachmentResponse primaryImage = attachments.stream()
-                            .filter(Attachment::isPrimary)
-                            .map(attachment -> {
-                                return  attachmentMapper.attachmentToAttachmentResponse(attachment);
-                            })
-                            .findFirst()
-                            .orElse(null);
-                    List<AttachmentResponse> nonPrimaryImages = attachments.stream()
-                            .filter(attachment -> !attachment.isPrimary())
-                            .map(attachment -> {
-                                return attachmentMapper.attachmentToAttachmentResponse(attachment);
-                            })
-                            .toList();
-                    responseDto.setImages(nonPrimaryImages);
-                    responseDto.setDisplayImage(primaryImage);
-                    return responseDto;
+    public ProductsResponse buildAdminProductResponse(Product product){
+        List<Attachment> attachments=attachmentRepository.findByProduct(product);
+        ProductsResponse responseDto=productMapper.adminAllProductsResponse(product);
+        AttachmentResponse primaryImage = attachments.stream()
+                .filter(Attachment::isPrimary)
+                .map(attachment -> {
+                    return  attachmentMapper.attachmentToAttachmentResponse(attachment);
                 })
-                .sorted(Comparator.comparing(product -> "instock".equalsIgnoreCase(product.getStatus()) ? 0 : 1))
+                .findFirst()
+                .orElse(null);
+        List<AttachmentResponse> nonPrimaryImages = attachments.stream()
+                .filter(attachment -> !attachment.isPrimary())
+                .map(attachment -> {
+                    return attachmentMapper.attachmentToAttachmentResponse(attachment);
+                })
                 .toList();
-
-        // Return as a page
-        return new PageImpl<>(sortedDtos, pageable, products.getTotalElements());
+        responseDto.setImages(nonPrimaryImages);
+        responseDto.setDisplayImage(primaryImage);
+        return responseDto;
     }
 
 
     @Override
     public List<ProductResponseDto> getNewArrivals() {
         List<Product> products=productRepository.findTop6ByStatusOrderByCreatedAtDesc("instock");
-        return products.stream().map(product -> {
-            return productMapper.productToProductResponseDto(product);
-        }).toList();
+        return products.stream().map(this::buildProductResponse).toList();
     }
 
 
@@ -168,7 +172,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products = productRepository.findAll();
         return products.stream()
                 .sorted(Comparator.comparing(Product::getCreatedAt).reversed())
-                .map(product -> productMapper.adminAllProductsResponse(product))
+                .map(this::buildAdminProductResponse)
                 .collect(Collectors.toList());
     }
 
@@ -176,7 +180,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductsResponse getProductForAdmin(String details) {
         Optional<Product> product = productRepository.findByDetails(details);
         if (product.isPresent()) {
-            return productMapper.adminProductsResponse(product.get());
+            return buildAdminProductResponse(product.get());
         } else {
             throw new NotFoundException("Product not found with details : " + details + ".");
         }
@@ -185,7 +189,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<ProductResponseDto> getProductsFromSearch(String keyword, Pageable pageable) {
         Page<Product> productsPage = productRepository.findByKeyword(keyword, pageable);
-        return productsPage.map(product -> productMapper.productToProductResponseDto(product));
+        return productsPage.map(this::buildProductResponse);
     }
 
 
