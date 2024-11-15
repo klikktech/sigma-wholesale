@@ -74,15 +74,13 @@ public class ProductServiceImpl implements ProductService {
         if (displayImage != null) {
             String imageUrl = uploadFileToAws(displayImage);
             // Save the display image as an attachment
-            attachmentService.saveAttachment(AttachmentType.IMAGE, imageUrl, savedProduct);
+            attachmentService.saveAttachment(AttachmentType.IMAGE, imageUrl, savedProduct, true);
         }
 
         images.forEach(image -> {
             String imageUrl = uploadFileToAws(image);
-            attachmentService.saveAttachment(AttachmentType.IMAGE, imageUrl, savedProduct);
+            attachmentService.saveAttachment(AttachmentType.IMAGE, imageUrl, savedProduct,false);
         });
-
-        // Return the response DTO
         return productMapper.productToProductResponseDto(savedProduct);
     }
 

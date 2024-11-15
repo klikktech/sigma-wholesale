@@ -14,8 +14,8 @@ public class AttachmentServiceImpl implements AttachmentService {
     @Autowired
     private AttachmentRepository attachmentRepository;
     @Override
-    public Attachment saveAttachment(AttachmentType attachmentType, String imageUrl, Product newProduct) {
-        Attachment newAttachment= Attachment.builder().imageUrl(imageUrl).type(attachmentType).build();
+    public Attachment saveAttachment(AttachmentType attachmentType, String imageUrl, Product newProduct, boolean isPrimary) {
+        Attachment newAttachment= Attachment.builder().imageUrl(imageUrl).type(attachmentType).isPrimary(isPrimary).build();
         newAttachment.setProduct(newProduct);
         return attachmentRepository.save(newAttachment);
     }

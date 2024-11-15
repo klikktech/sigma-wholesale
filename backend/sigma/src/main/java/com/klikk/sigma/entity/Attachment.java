@@ -40,4 +40,7 @@ public class Attachment {
     @ManyToOne
     @JoinColumn(name = "product_id",referencedColumnName = "id")
     private Product product;
+
+    @Column(name = "primary_img")
+    private boolean isPrimary;
 }
