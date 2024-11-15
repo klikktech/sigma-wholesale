@@ -1,6 +1,7 @@
 package com.klikk.sigma.service.impl;
 
 import com.klikk.sigma.entity.Address;
+import com.klikk.sigma.entity.User;
 import com.klikk.sigma.repository.AddressRepository;
 import com.klikk.sigma.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +15,13 @@ public class AddressServiceImpl implements AddressService {
     @Autowired
     private AddressRepository addressRepository;
     @Override
-    public Address saveAddress(String address, String city, String state, String zipcode) {
+    public Address saveAddress(String address, String city, String state, String zipcode, User user) {
         Address newAddress=new Address();
         newAddress.setAddress(address);
         newAddress.setCity(city);
         newAddress.setState(state);
         newAddress.setZipcode(zipcode);
+
         return addressRepository.save(newAddress);
     }
 
