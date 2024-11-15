@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -59,9 +60,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = authenticationMapper.registerRequestToUser(request);
         user.setCreatedAt(LocalDateTime.now());
         user.setRole(RoleType.PENDING);
-        Address storeAddress = null;
-        if (request.getStoreAddress() != null) {
-            storeAddress = addressService.saveAddress(
+
+        Optional<Address> storeAddress= addressService.getAddress(request.getStoreAddress());
+        if(storeAddress.isPresent()){
+            if(user.getStoreAddress()==null){
+                user.setStoreAddress(new ArrayList<>());
+            }
+            user.getStoreAddress().add(storeAddress.get());
+        }
+
+        Optional<Address> shippingAddress= addressService.getAddress(request.getStoreAddress());
+        if(shippingAddress.isPresent()){
+            if(user.getShippingAddress()==null){
+                user.setShippingAddress(new ArrayList<>());
+            }
+            user.getShippingAddress().add(shippingAddress.get());
+        }
+
+        if (storeAddress.isEmpty() && request.getStoreAddress() != null) {
+            Address newStoreAddress = null;
+            newStoreAddress = addressService.saveAddress(
                     request.getStoreAddress(),
                     request.getStoreCity(),
                     request.getStoreState(),
@@ -72,14 +90,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             if (user.getStoreAddress() == null) {
                 user.setStoreAddress(new ArrayList<>());
             }
-            user.getStoreAddress().add(storeAddress);
+            user.getStoreAddress().add(newStoreAddress);
 
         }
 
         // Save shipping address
-        Address shippingAddress = null;
-        if (request.getShippingAddress() != null) {
-            shippingAddress = addressService.saveAddress(
+        if (shippingAddress.isEmpty() && request.getShippingAddress() != null) {
+            Address newShippingAddress = null;
+            newShippingAddress = addressService.saveAddress(
                     request.getShippingAddress(),
                     request.getShippingCity(),
                     request.getShippingState(),
@@ -89,8 +107,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             if (user.getShippingAddress() == null) {
                 user.setShippingAddress(new ArrayList<>());
             }
-            user.getShippingAddress().add(shippingAddress);
+            user.getShippingAddress().add(newShippingAddress);
         }
+
         User savedUser = userRepository.save(user);
         String jwtToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
