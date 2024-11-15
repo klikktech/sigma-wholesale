@@ -25,6 +25,8 @@ public abstract class AuthenticationMapper {
     @Mapping(target = "role", ignore = true)
     public abstract User registerRequestToUser(RegisterRequest request);
 
+
+
     @Mapping(source = "jwtToken", target = "accessToken")
     @Mapping(source = "refreshToken", target = "refreshToken")
     public abstract AuthenticationResponse jwtTokenToAuthenticationResponse(String jwtToken, String refreshToken);

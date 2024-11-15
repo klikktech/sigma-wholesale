@@ -15,7 +15,7 @@ public class AddressServiceImpl implements AddressService {
     @Autowired
     private AddressRepository addressRepository;
     @Override
-    public Address saveAddress(String address, String city, String state, String zipcode, User user) {
+    public Address saveAddress(String address, String city, String state, Long zipcode, User user) {
         Address newAddress=new Address();
         newAddress.setAddress(address);
         newAddress.setCity(city);

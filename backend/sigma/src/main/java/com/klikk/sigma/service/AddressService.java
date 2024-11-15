@@ -5,5 +5,5 @@ import com.klikk.sigma.entity.User;
 
 public interface AddressService {
 
-    public Address saveAddress(String address, String city, String state, String zipcode, User user);
+    public Address saveAddress(String address, String city, String state, Long zipcode, User user);
 }

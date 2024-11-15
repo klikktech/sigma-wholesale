@@ -29,7 +29,7 @@ public class RegisterRequest {
 
     private String storeState;
 
-    private String storeZip;
+    private Long storeZip;
 
     private String shippingAddress;
 
@@ -37,5 +37,5 @@ public class RegisterRequest {
 
     private String shippingState;
 
-    private String shippingZip;
+    private Long shippingZip;
 }

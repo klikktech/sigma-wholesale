@@ -21,6 +21,6 @@ public class CheckoutController {
     @PostMapping("")
     public ResponseEntity<String> checkout(@RequestBody Checkout checkoutDetails, HttpServletRequest request){
         checkoutService.addCheckoutDetails(checkoutDetails,request);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Billing details added successfully");
+        return ResponseEntity.ok("Billing details added successfully");
     }
 }

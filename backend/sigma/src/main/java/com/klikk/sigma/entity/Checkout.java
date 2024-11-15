@@ -46,7 +46,7 @@ public class Checkout {
     private String billingState;
 
     @Column(name = "postcode")
-    private Integer postcode;
+    private Long postcode;
 
     @Column(name = "country")
     private String billingCountry;
