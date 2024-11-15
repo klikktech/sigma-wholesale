@@ -125,13 +125,13 @@ export interface orderItemsDetails{
   quantity: number
 }
 export interface AddressProps {
-  firstname: string;
-  lastname: string;
-  street: string;
+  firstName: string;
+  lastName: string;
+  address: string;
   city: string;
   state: string;
-  country: string;
-  postalCode: string;
+  // country: string;
+  zipcode: number;
   phone: string;
   isDefault?: boolean;
 } 

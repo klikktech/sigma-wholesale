@@ -31,7 +31,7 @@ const NewArrivals = async () => {
     >
       <Suspense fallback={<SkeletonProductCard />}>
         <ProductCard
-          img={item.displayImage}
+          img={item.displayImage?.imageUrl}
           title={item.name}
           price={item.price ? "$" + item.price : ""}
           details={item.details}

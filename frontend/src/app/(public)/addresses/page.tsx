@@ -1,16 +1,23 @@
 import MyAddressList from "@/components/organisms/MyAddresses";
 import { axios } from "@/lib/axios";
 
-const CheckOutPage = async () => {
-    // const { data, error } = await axios.products.getCartList();
-    // if(error){
-    //   throw new Error(error.message)
-    // }  
-  return (
-    <div>
-      <MyAddressList/>
-    </div>
-  );
+const fetchAddresses = async (type: string) => {
+    const { data, error } = await axios.users.getAddresses(type);
+    if (error) {
+        throw new Error(error.message);
+    }
+    return data;
 };
 
-export default CheckOutPage;
+const MyAddressPage = async () => {
+    const storeAddresses = await fetchAddresses('store');
+    const shippingAddresses = await fetchAddresses('shipping');
+    console.log(storeAddresses, shippingAddresses);
+    return (
+        <div>
+            {/* <MyAddressList storeAddresses={storeAddresses} shippingAddresses={shippingAddresses}/> */}
+        </div>
+    );
+};
+
+export default MyAddressPage;

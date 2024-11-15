@@ -18,33 +18,64 @@ import FormMessage from "@/components/molecules/FormMessage";
 import Button from "@/components/atoms/Button";
 import { CartItem, Message } from "@/utils/types";
 import ShippingInfoCard from "@/components/molecules/ShippingInfocard";
+import MyAddressList from "../MyAddresses";
+import { useState } from 'react';
 
 interface CartListProps {
     cartItemsList: CartItem[];
     totalCost: number;
     discount: number;
     tax: number;
+    shippingAddresses: any
 }
 
-const CheckOut = ({ cartItemsList, totalCost, discount, tax }: CartListProps) => {
+const CheckOut = ({ cartItemsList, totalCost, discount, tax, shippingAddresses }: CartListProps) => {
     const [state, formAction] = useFormState((state: undefined | Message, formData: FormData) =>
         checkOutAction(state, formData, totalCost), undefined);
     const { pending } = useFormStatus();
+    const [selectedAddress, setSelectedAddress] = useState<string>('new');
 
-    // const items: Item[] = [
-    //     { name: "Training shoes", color: "Black", size: 42, price: 49.99, quantity: 1 },
-    //     { name: "Sneakers", color: "Red", size: 42, price: 29.99, quantity: 1 },
-    //     { name: "Running shoes", color: "Blue", size: 42, price: 39.99, quantity: 2 },
-    // ];
+    const handleSubmit = (formData: FormData) => {
+        if (selectedAddress !== 'new') {
+            console.log(shippingAddresses,selectedAddress,"ship and select")
+            const address = shippingAddresses.find(
+                (addr:any) => addr.id.toString() === selectedAddress
+            );
+
+            console.log(address,"address details")
+            if (address) {
+                formData.set('firstName', address.firstName);
+                formData.set('lastName', address.lastName);
+                formData.set('address', address.address);
+                formData.set('city', address.city);
+                formData.set('state', address.state);
+                formData.set('postalCode', address.zipcode);
+                formData.set('phone', address.phone);
+                formData.set('email', address.email);
+            }
+        }
+        console.log(formData.entries(),"formdata")
+        formAction(formData);
+    };
 
     const total = totalCost - discount + tax;
 
     return (
         <div className="container my-3">
-            <form action={formAction}>
+            <form action={handleSubmit}>
                 <div className="flex flex-col md:flex-row justify-center gap-5">
                     <div className="flex flex-col w-full max-w-screen-sm">
-                        <ShippingInfoCard />
+                        <RadioGroup
+                            value={selectedAddress}
+                            onValueChange={setSelectedAddress}
+                            className="mb-4"
+                        >
+                            <MyAddressList
+                                addresses={shippingAddresses}
+                                onSelect={setSelectedAddress}
+                            />
+                            {selectedAddress === 'new' && <ShippingInfoCard />}
+                        </RadioGroup>
                     </div>
 
                     <div className="flex flex-col w-full max-w-md">

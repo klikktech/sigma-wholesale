@@ -20,31 +20,31 @@ const stockChipColorMap = {
 const ProductCard = (props: Props) => {
   return (
     <>
-      <div className="max-w-60 bg-gray-100 text-black rounded-xl shadow-lg">
-        <div className="relative">
+      <div className="max-w-xs bg-gray-100 text-black rounded-xl shadow-lg overflow-hidden h-full">
+        <div className="relative h-48">
           <Image
-            className="w-full rounded-lg h-[250px] object-fill"
-            width={100}
-            height={100}
+            className="w-full h-full object-cover"
+            fill
+            sizes="100"
             src={props.img}
             alt={props.title}
           />
           <Chip
-            className="capitalize absolute top-2 right-2"
+            className="capitalize text-white absolute top-2 right-2"
             color={
               stockChipColorMap[props.stockStatus as "instock" | "outofstock"] as
               | "success"
               | "danger"
             }
             size="sm"
-            variant="flat"
+            variant="solid"
           >
             {props.stockStatus === 'instock' ? 'IN STOCK' : 'OUT OF STOCK'}
           </Chip>
         </div>
 
         <div className="mt-2 p-4">
-          <div className="flex justify-between">
+          <div className="flex justify-between h-full">
             <h3 className="text-sm font-semibold h-10 overflow-hidden line-clamp-2">{props.title}</h3>
             <p className="text-gray-400">{props.price}</p>
           </div>

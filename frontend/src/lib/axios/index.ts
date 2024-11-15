@@ -44,18 +44,19 @@ export const axios = {
         return error as AxiosErrorResponse;
       }
     },
+    
   },
-  // users: {
-  //   getAllUsers: async (): Promise<AxiosResponse> => {
-  //     try {
-  //       const { data, status } = await api.get(GET_ALL_USERS_ENDPOINT);
-  //       return { data, status };
-  //     } catch (error) {
-  //       return error as AxiosErrorResponse;
-  //     }
-  //   },
-
-  // },
+  users: {
+    getAddresses: async (type: string): Promise<AxiosResponse> => {
+      console.log("get addresses", type)
+      try {
+        const { data, status } = await api.get(`/users/addresses?type=${type}`);
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+  },
   products: {
     getNewArrivals: async (): Promise<AxiosResponse> => {
       console.log("get new arraivalss")

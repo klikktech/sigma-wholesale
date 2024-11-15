@@ -36,40 +36,35 @@ export const EditAddressModal = ({ isOpen, onClose, address, onUpdate }: EditAdd
           <div className="grid grid-cols-2 gap-4">
             <Input
               label="First Name"
-              value={formData.firstname}
-              onChange={handleInputChange('firstname')}
+              value={formData.firstName}
+              onChange={handleInputChange('firstName')}
             />
-                        <Input
+            <Input
               label="Last Name"
-              value={formData.lastname}
-              onChange={handleInputChange('lastname')}
+              value={formData.lastName}
+              onChange={handleInputChange('lastName')}
             />
-                        <Input
+            <Input
               label="Street"
-              value={formData.street}
-              onChange={handleInputChange('street')}
+              value={formData.address}
+              onChange={handleInputChange('address')}
             />
-                        <Input
+            <Input
               label="City"
               value={formData.city}
               onChange={handleInputChange('city')}
             />
-                        <Input
+            <Input
               label="State"
               value={formData.state}
               onChange={handleInputChange('state')}
             />
-                        <Input
-              label="Country"
-              value={formData.country}
-              onChange={handleInputChange('country')}
-            />
-                        <Input
+            <Input
               label="Postal Code"
-              value={formData.postalCode}
-              onChange={handleInputChange('postalCode')}
+              value={formData.zipcode.toString()}
+              onChange={handleInputChange('zipcode')}
             />
-                        <Input
+            <Input
               label="Phone"
               value={formData.phone}
               onChange={handleInputChange('phone')}

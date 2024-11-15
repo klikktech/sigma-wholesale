@@ -1,15 +1,15 @@
-.images-list{
-    /* overflow-x: auto; */
+.images-list {
     cursor: pointer;
     padding-bottom: 0.5rem;
-    /* scroll-behavior: smooth; */
+    scroll-behavior: smooth;
 }
+
 .quantity-btn {
     background-color: #f0ecec;
     border: none;
     border-radius: 50%;
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -17,7 +17,24 @@
     color: #333;
     cursor: pointer;
     transition: background-color 0.2s;
-  }
-  .quantity-btn:hover {
+}
+
+.quantity-btn:hover {
     background-color: #e0dada;
-  }
+}
+
+@media (max-width: 768px) {
+    .quantity-btn {
+        width: 25px;
+        height: 25px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .quantity-btn {
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+    }
+}

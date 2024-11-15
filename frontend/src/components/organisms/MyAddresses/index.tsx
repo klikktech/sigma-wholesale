@@ -1,47 +1,28 @@
 import AddressCard from "@/components/molecules/Addresscard";
-import ShippingInfoCard from "@/components/molecules/ShippingInfocard";
+import { Card, Radio } from "@nextui-org/react";
 import React from "react";
 
-const MyAddressList = () => {
-  const addressList = [
-    {
-      firstname: "Ainsley",
-      lastname:"Aiken",
-      street: "936 Kiehn Route, West Ned",
-      city: "Tennessee",
-      state: "Tennessee",
-      country: "France",
-      postalCode: "11230",
-      phone: "9743857881",
-      isDefault: true,
-    },
-    {
-      firstname: "John",
-      lastname:"Doe",
-      street: "123 Main Street",
-      city: "New York",
-      state: "NY",
-      country: "USA",
-      postalCode: "10001",
-      phone: "1234567890",
-    },
-  ];
+interface MyAddressListProps {
+  addresses: any[];
+  onSelect: (addressId: string) => void;
+}
 
-  return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">My Address List</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
-      <div className="space-y-4">
-        {addressList.map((address, index) => (
-          <AddressCard key={index} {...address} />
-        ))}
-      </div>
-      <div className="">
-        <ShippingInfoCard />
-      </div>
-      </div>
-    </div>
-  );
+const MyAddressList = ({ addresses, onSelect }: MyAddressListProps) => {
+    return (
+        <div className="flex flex-col gap-3">
+          <Radio value="new">Add New Address</Radio>
+            {addresses.length > 0 && (
+                <>
+                    <h3 className="text-lg font-semibold">Shipping Addresses</h3>
+                    {addresses.map((address) => (
+                        <Radio key={address.id} value={address.id.toString()}>
+                            <AddressCard key={address.id} {...address} />
+                        </Radio>
+                    ))}
+                </>
+            )}
+        </div>
+    );
 };
 
 export default MyAddressList;

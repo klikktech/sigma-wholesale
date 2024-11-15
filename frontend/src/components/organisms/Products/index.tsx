@@ -35,9 +35,9 @@ const Products = ({products, totalPages, currentPage, size, category, searchkey}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((product,index) => (
           <div className="w-full" key={index}>
-            <Suspense fallback={<SkeletonProductCard />}>
+            <Suspense fallback={<SkeletonProductCard />} key={index}>
               <ProductCard
-                img={product.displayImage}
+                img={product.displayImage?.imageUrl}
                 title={product.name}
                 price={product.price ? ("$" + product.price) : ''}
                 details={product.details}

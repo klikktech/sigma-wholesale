@@ -2,12 +2,12 @@ import { Card, CardBody, Input, Spacer } from "@nextui-org/react";
 
 const ShippingInfoCard = () => {
     return (
-        <Card>
+        <Card className="p-2">
             <CardBody>
-                <p className="text-lg flex items-center">
-                    <span className="material-symbols-rounded text-blue-500">distance</span>
+                <p className="text-2xl font-bold flex items-center">
+                    <span className="material-symbols-rounded text-3xl text-blue-500">distance</span>
                     Add Address</p>
-                <Spacer y={3} />
+                <Spacer y={4} />
                 <Input
                     label="Email address*"
                     placeholder="Enter your email"
@@ -15,7 +15,7 @@ const ShippingInfoCard = () => {
                     labelPlacement="outside"
                     required
                 />
-                <Spacer y={2} />
+                <Spacer y={4} />
                 <div className="flex gap-1">
                     <Input
                         label="First Name*"
@@ -32,7 +32,7 @@ const ShippingInfoCard = () => {
                         required
                     />
                 </div>
-                <Spacer y={2} />
+                <Spacer y={4} />
                 <Input
                     label="Address*"
                     placeholder="123 Main St"
@@ -40,7 +40,7 @@ const ShippingInfoCard = () => {
                     labelPlacement="outside"
                     required
                 />
-                <Spacer y={2} />
+                <Spacer y={4} />
                 <div className="flex gap-1">
                     <Input
                         label="State*"
@@ -50,38 +50,31 @@ const ShippingInfoCard = () => {
                         required
                     />
                     <Input
-                        label="Country*"
-                        placeholder="Enter your country"
-                        name="country"
-                        labelPlacement="outside"
-                        required
-                    />
-                </div>
-                <Spacer y={2} />
-                <div className="flex gap-1">
-                    <Input
                         label="City*"
                         placeholder="Enter your city"
                         name="city"
                         labelPlacement="outside"
                         required
                     />
+                </div>
+                <Spacer y={4} />
+                <div className="flex gap-1">
                     <Input
-                        label="Postal code*"
+                        label="Zipcode*"
                         placeholder="12345"
-                        name="postalCode"
+                        name="zipcode"
+                        labelPlacement="outside"
+                        required
+                    />
+                    <Input
+                        label="Phone number*"
+                        placeholder="+1 (555) 555-5555"
+                        name="phone"
                         labelPlacement="outside"
                         required
                     />
                 </div>
-                <Spacer y={2} />
-                <Input
-                    label="Phone number*"
-                    placeholder="+1 (555) 555-5555"
-                    name="phone"
-                    labelPlacement="outside"
-                    required
-                />
+
             </CardBody>
         </Card>
     );

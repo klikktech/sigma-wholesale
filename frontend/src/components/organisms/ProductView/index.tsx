@@ -11,10 +11,11 @@ import { useFormState, useFormStatus } from "react-dom";
 import FormMessage from "@/components/molecules/FormMessage";
 import { useCartStore } from '@/store/cartStore';
 import Image from "next/image";
+import Video from "@/components/atoms/video";
 
 const ProductView = ({ productDetails }: { productDetails: ProdDetails }) => {
   const setCartCount = useCartStore((state) => state.setCartCount);
-  const [selectedImage, setSelectedImage] = useState(productDetails.displayImage);
+  const [selectedImage, setSelectedImage] = useState(productDetails.displayImage?.imageUrl);
 
   const [state, formAction] = useFormState(async (state: undefined | Message, formData: FormData) => {
     const result = await addCartAction(state, formData, productDetails);
@@ -46,27 +47,28 @@ const ProductView = ({ productDetails }: { productDetails: ProdDetails }) => {
 
   return (
     <>
-      <div className="">
-        <div className="flex justify-between">
-          <div className="">
+      <div className="p-8 md:p-10 lg:p-12">
+        <div className="flex flex-col md:flex-row justify-between">
+          <div className="flex-1">
             <p className="text-2xl font-bold mb-1">
               {productDetails.name}
             </p>
           </div>
           <p className="text-3xl text-red-500 font-bold">${productDetails.price}</p>
         </div>
-        <div className="flex gap-x-10">
-          <form action={formAction}>
+        <form action={formAction}>
+          <div className="flex flex-col md:flex-row gap-6">
             <div className="w-full md:w-1/2">
               <p className="text-2xl font-bold mb-5">Available Options</p>
               {productDetails.variations.map((item, index) => (
-                <div key={index} className="flex justify-between items-center mb-3">
+                <div key={index} className="flex flex-col md:flex-row justify-between items-center mb-3">
                   <div className="md:w-2/3">
-                    <div className="flex gap-x-3 ">
-                      <img
+                    <div className="flex gap-x-3">
+                      <Image
                         className="rounded-md"
-                        width="20%"
-                        src={productDetails.displayImage}
+                        width={100}
+                        height={100}
+                        src={productDetails.displayImage?.imageUrl}
                         alt=""
                       />
                       <div>
@@ -99,19 +101,36 @@ const ProductView = ({ productDetails }: { productDetails: ProdDetails }) => {
               ))}
             </div>
             <div className="md:w-1/2 w-full flex flex-col gap-4">
-              <Image className="rounded-2xl w-full" src={selectedImage} alt="" />
+              <Image
+                className="rounded-2xl w-full"
+                src={selectedImage}
+                alt=""
+                layout="responsive"
+                width={100}
+                height={100}
+              />
               <ScrollShadow>
-                <div className="images-list flex gap-4">
-                  {productDetails.images.map((item, index) => (
-                    <Image
-                      className="rounded-xl"
-                      width={25}
-                      key={index}
-                      src={item}
-                      alt=""
-                      onClick={() => setSelectedImage(item)}
-                    />
-                  ))}
+                <div className="images-list flex gap-4 overflow-x-auto">
+                  {productDetails.images.map((item: { type: string; imageUrl: string }, index: number) => {
+                    switch (item.type) {
+                      case "IMAGE":
+                        return (
+                          <Image
+                            className="rounded-xl"
+                            width={100}
+                            height={100}
+                            key={index}
+                            src={item.imageUrl}
+                            alt=""
+                            onClick={() => setSelectedImage(item.imageUrl)}
+                          />
+                        );
+                      case "VIDEO":
+                        return <Video key={index} src={item.imageUrl} />;
+                      default:
+                        return null;
+                    }
+                  })}
                 </div>
               </ScrollShadow>
               <Button className="w-full mt-3 px-3" color="primary" type='submit'>
@@ -119,8 +138,9 @@ const ProductView = ({ productDetails }: { productDetails: ProdDetails }) => {
                 <span className="material-symbols-rounded">shopping_cart</span>
               </Button>
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
+
         <p className="text-red-500 text-left">{state && <FormMessage message={state} />}</p>
         <Spacer y={3} />
       </div>

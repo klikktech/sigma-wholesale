@@ -24,11 +24,11 @@ const Tabview = ({ category }: { category: string }) => {
         {products.map((item: any, index: any) => (
           <div
             className="embla__slide flex embla-slide w-full justify-center"
-            key={item.id}
+            key={index}
           >
             <Suspense fallback={<SkeletonProductCard />}>
               <ProductCard
-                img={item.displayImage}
+                img={item.displayImage?.imageUrl}
                 title={item.name}
                 price={"$" + item.price}
                 details={item.details}

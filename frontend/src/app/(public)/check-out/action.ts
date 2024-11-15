@@ -24,7 +24,6 @@ export const checkOutAction = async (
   const  billingAddress = formData.get("address");
   const  billingState = formData.get("state");
   const  billingCity = formData.get("city");
-  const  billingCountry = formData.get("country");
   const  postcode = formData.get("postalCode");
   const  phone = formData.get("phone");
   const customerIp = ipAddress;
@@ -38,7 +37,6 @@ export const checkOutAction = async (
     billingAddress,
     billingState,
     billingCity,
-    billingCountry,
     postcode,
     phone,
     customerIp,
