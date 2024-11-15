@@ -6,7 +6,9 @@ import com.klikk.sigma.dto.ProductRequestDto;
 import com.klikk.sigma.mapper.ProductMapper;
 import com.klikk.sigma.repository.CategoryRepository;
 import com.klikk.sigma.repository.ProductRepository;
+import com.klikk.sigma.service.AttachmentService;
 import com.klikk.sigma.service.ProductService;
+import com.klikk.sigma.utils.AttachmentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +23,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -35,16 +38,28 @@ public class ProductServiceImpl implements ProductService {
     private CategoryRepository categoryRepository;
 
     @Autowired
+    private AttachmentService attachmentService;
+
+    @Autowired
     private S3Client s3Client;
 
     @Autowired
     private AwsS3Properties awsS3Properties;
 
     @Override
-    public void saveProduct(ProductRequestDto productRequest, String displayImage) throws IOException {
+    public void saveProduct(ProductRequestDto productRequest, MultipartFile displayImage, List<MultipartFile> images) throws IOException {
         Product newProduct = productMapper.ProductRequestToProduct(productRequest);
-        newProduct.setDisplayImage(displayImage);
-        productRepository.save(newProduct);
+        Product savedProduct=productRepository.save(newProduct);
+        if (displayImage != null) {
+            String imageUrl = uploadFileToAws(displayImage);
+            // Save the display image as an attachment
+            attachmentService.saveAttachment(AttachmentType.IMAGE, imageUrl, savedProduct, true);
+        }
+
+        images.forEach(image -> {
+            String imageUrl = uploadFileToAws(image);
+            attachmentService.saveAttachment(AttachmentType.IMAGE, imageUrl, savedProduct,false);
+        });
     }
 
     @Override

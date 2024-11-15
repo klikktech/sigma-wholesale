@@ -93,5 +93,4 @@ public class Product {
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "parent")
     private List<Variation> variations;
 
-    private String displayImage;
 }

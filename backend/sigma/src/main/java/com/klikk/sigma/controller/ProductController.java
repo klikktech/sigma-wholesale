@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/products")
@@ -26,11 +29,15 @@ public class ProductController {
     @PostMapping("/")
     @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
     public ResponseEntity<String> addProduct(@RequestPart("product") ProductRequestDto productRequest,
-    @RequestPart(value = "displayImage")MultipartFile displayImage
+    @RequestPart(value = "displayImage")MultipartFile displayImage,
+                                             @RequestParam Map<String, MultipartFile> fileParams
     ){
         try {
-            String imageUrl=productService.uploadFileToAws(displayImage);
-            productService.saveProduct(productRequest,imageUrl);
+            List<MultipartFile> images = fileParams.entrySet().stream()
+                    .filter(entry -> entry.getKey().startsWith("images["))
+                    .map(Map.Entry::getValue)
+                    .collect(Collectors.toList());
+            productService.saveProduct(productRequest,displayImage,images);
             return ResponseEntity.ok("Product Added Successfully");
         }
         catch (Exception exception){
