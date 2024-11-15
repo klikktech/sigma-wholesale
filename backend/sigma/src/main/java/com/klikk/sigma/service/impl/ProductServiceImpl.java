@@ -2,14 +2,17 @@ package com.klikk.sigma.service.impl;
 
 import com.klikk.sigma.aws.AwsS3Properties;
 import com.klikk.sigma.dto.request.ProductRequestDto;
+import com.klikk.sigma.dto.response.AttachmentResponse;
 import com.klikk.sigma.dto.response.ProductResponseDto;
 import com.klikk.sigma.dto.response.ProductsResponse;
 import com.klikk.sigma.dto.response.VariationResponseDto;
 import com.klikk.sigma.entity.Attachment;
 import com.klikk.sigma.entity.Product;
 import com.klikk.sigma.exception.NotFoundException;
+import com.klikk.sigma.mapper.AttachmentMapper;
 import com.klikk.sigma.mapper.ProductMapper;
 import com.klikk.sigma.mapper.VariationMapper;
+import com.klikk.sigma.repository.AttachmentRepository;
 import com.klikk.sigma.repository.CategoryRepository;
 import com.klikk.sigma.repository.ProductRepository;
 import com.klikk.sigma.service.AttachmentService;
@@ -44,6 +47,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     public ProductRepository productRepository;
+
+    @Autowired
+    private AttachmentRepository attachmentRepository;
+
+    @Autowired
+    private AttachmentMapper attachmentMapper;
 
     @Autowired
     public ProductMapper productMapper;
@@ -88,7 +97,24 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponseDto getProduct(String details) {
         Optional<Product> product=productRepository.findByDetails(details);
-        return productMapper.productToProductResponseDto(product.get());
+        List<Attachment> attachments=attachmentRepository.findByProduct(product.get());
+        ProductResponseDto responseDto=productMapper.productToProductResponseDto(product.get());
+        AttachmentResponse primaryImage = attachments.stream()
+                .filter(Attachment::isPrimary)
+                .map(attachment -> {
+                    return  attachmentMapper.attachmentToAttachmentResponse(attachment);
+                })
+                .findFirst()
+                .orElse(null);
+        List<AttachmentResponse> nonPrimaryImages = attachments.stream()
+                .filter(attachment -> !attachment.isPrimary())
+                .map(attachment -> {
+                    return attachmentMapper.attachmentToAttachmentResponse(attachment);
+                })
+                .toList();
+        responseDto.setImages(nonPrimaryImages);
+        responseDto.setDisplayImage(primaryImage);
+        return responseDto;
     }
 
     @Override
@@ -99,7 +125,26 @@ public class ProductServiceImpl implements ProductService {
         // Map and sort by status (instock first)
         List<ProductResponseDto> sortedDtos = products
                 .stream()
-                .map(productMapper::productToProductResponseDto)
+                .map(product -> {
+                    List<Attachment> attachments=attachmentRepository.findByProduct(product);
+                    ProductResponseDto responseDto=productMapper.productToProductResponseDto(product);
+                    AttachmentResponse primaryImage = attachments.stream()
+                            .filter(Attachment::isPrimary)
+                            .map(attachment -> {
+                                return  attachmentMapper.attachmentToAttachmentResponse(attachment);
+                            })
+                            .findFirst()
+                            .orElse(null);
+                    List<AttachmentResponse> nonPrimaryImages = attachments.stream()
+                            .filter(attachment -> !attachment.isPrimary())
+                            .map(attachment -> {
+                                return attachmentMapper.attachmentToAttachmentResponse(attachment);
+                            })
+                            .toList();
+                    responseDto.setImages(nonPrimaryImages);
+                    responseDto.setDisplayImage(primaryImage);
+                    return responseDto;
+                })
                 .sorted(Comparator.comparing(product -> "instock".equalsIgnoreCase(product.getStatus()) ? 0 : 1))
                 .toList();
 

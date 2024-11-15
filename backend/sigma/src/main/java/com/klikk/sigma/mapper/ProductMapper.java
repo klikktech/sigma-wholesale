@@ -26,18 +26,16 @@ public abstract class ProductMapper {
     @Mapping(target = "averageRating",ignore = true)
     @Mapping(target = "stockQuantity",ignore = true)
     @Mapping(target = "totalSales",ignore = true)
-    @Mapping(target = "displayImage", ignore = true)
-    @Mapping(target = "images", ignore = true)
     public abstract Product productRequestToProduct(ProductRequestDto productRequestDto);
 
     @Mapping(source = "maxPrice", target = "price")
-    @Mapping(source = "displayImage", target = "displayImage", qualifiedByName = "mapDisplayImage")
+//    @Mapping(source = "displayImage", target = "displayImage", qualifiedByName = "mapDisplayImage")
 //    @Mapping(target = "images", ignore = true)
     public abstract ProductsResponse adminAllProductsResponse(Product product);
 
     @Mapping(source = "maxPrice", target = "price")
-    @Mapping(target = "displayImage", ignore = true)
-    @Mapping(target = "images", ignore = true)
+//    @Mapping(target = "displayImage", ignore = true)
+//    @Mapping(target = "images", ignore = true)
     public abstract ProductsResponse adminProductsResponse(Product product);
 
     public abstract CategoryProductsDto productToCategoryProductsDto(Product product);
