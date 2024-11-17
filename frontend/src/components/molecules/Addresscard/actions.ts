@@ -1,14 +1,19 @@
 'use server';
 
-import { AddressProps } from '@/utils/types';
-import { revalidatePath } from 'next/cache';
+import { axios } from "@/lib/axios";
 
-export async function updateAddress(address: AddressProps) {
-  try {
-    revalidatePath('/addresses');
-    return { success: true };
-  } catch (error) {
-    console.error('Error updating address:', error);
-    throw error;
-  }
-} 
+export const deleteAddressAction = async (formData: FormData) => {
+    try {
+      console.log("delete address action",formData);
+        const address = formData.get("address");
+        console.log("action received address:", address);
+        if (!address) {
+            throw new Error("Address is required");
+        }
+        const { data, status } = await axios.users.deleteAddress(address as string);
+        return { success: true };
+    } catch (error) {
+        console.error("Error deleting address:", error);
+        return { success: false, error };
+    }
+};

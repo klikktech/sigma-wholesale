@@ -58,6 +58,15 @@ export const axios = {
         return error as AxiosErrorResponse;
       }
     },
+    deleteAddress: async (address: string): Promise<AxiosResponse> => {
+      console.log("delete address", address)
+      try {
+        const { data, status } = await api.delete(`/address?address=${address}`);
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
     getUserDetails: async (): Promise<AxiosResponse> => {
       console.log("get user details")
       try {
