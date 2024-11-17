@@ -6,6 +6,7 @@ import { axios } from "@/lib/axios";
 // import { SIGNIN_PAGE_ROUTE, USERS_PAGE_ROUTE } from "@/utils/routes";
 import { Message } from "@/utils/types";
 import { HOME_PAGE_ROUTE } from "@/utils/urls";
+import { CheckOutFormValidator } from "@/utils/validators";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 // import { redirect } from "next/navigation";
@@ -46,15 +47,12 @@ export const checkOutAction = async (
   };
   console.log(formDetails,"formdetails")
 
-//   const parsedCredentials = checkOutFormValidator.safeParse({
-//     email,
-//     password,
-//   });
-//   if (parsedCredentials.error) {
-//     return { error: parsedCredentials.error.errors[0].message as string };
-//   }
+  const parsedCredentials = CheckOutFormValidator.safeParse(formDetails);
+  if (parsedCredentials.error) {
+    return { error: parsedCredentials.error.errors[0].message as string };
+  }
 
-//   if (parsedCredentials.success) {
+  if (parsedCredentials.success) {
     const { data, status, error } = await axios.products.checkOut(
       formDetails
     );
@@ -65,9 +63,9 @@ export const checkOutAction = async (
     }
     if (data && status === 200) {
       cookies().delete('cartCount')
-      redirect(HOME_PAGE_ROUTE);
+      return { success: "Order placed successfully!" };
     }
-//   }
+  }
 
   return { error: "Something went wrong, please try again" };
 };

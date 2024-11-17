@@ -12,8 +12,11 @@ import FormMessage from "@/components/molecules/FormMessage";
 import { useCartStore } from '@/store/cartStore';
 import Image from "next/image";
 import Video from "@/components/atoms/video";
+import { toast } from "react-toastify";
+import { HOME_PAGE_ROUTE } from "@/utils/urls";
 
 const ProductView = ({ productDetails }: { productDetails: ProdDetails }) => {
+
   const setCartCount = useCartStore((state) => state.setCartCount);
   const [selectedImage, setSelectedImage] = useState(productDetails.displayImage?.imageUrl);
 
@@ -24,6 +27,16 @@ const ProductView = ({ productDetails }: { productDetails: ProdDetails }) => {
     }
     return result;
   }, undefined);
+
+  useEffect(() => {
+    if (state?.error) {
+      toast.error(state.error);
+    }
+    if (state?.success) {
+      toast.success("Added to cart successfully!");
+      window.location.href = HOME_PAGE_ROUTE;
+    }
+  }, [state]);
 
   const [quantities, setQuantities] = useState<number[]>(
     new Array(productDetails.variations.length).fill(0)

@@ -3,7 +3,9 @@ import { useFormState } from "react-dom";
 import { Input, Spacer, Tab, Tabs } from "@nextui-org/react";
 import { createNewUser } from "@/app/(auth)/register/action";
 import Button from "@/components/atoms/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { LOGIN_PAGE_ROUTE } from "@/utils/urls";
 
 interface FormErrorProps {
   errors?: string[];
@@ -31,7 +33,16 @@ const SignUp = () => {
     storeZip: '',
   });
 
-  // Handle input changes
+  useEffect(() => {
+    if (state?.error) {
+      toast.error(state.error);
+    }
+    if (state?.success) {
+      toast.success("Registration successful!");
+      window.location.href = LOGIN_PAGE_ROUTE;
+    }
+  }, [state?.error, state?.success]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({

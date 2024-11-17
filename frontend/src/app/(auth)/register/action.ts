@@ -62,7 +62,7 @@ export const createNewUser = async (
       return { error: error.message };
     }
     if (data && status === 200) {
-      redirect(LOGIN_PAGE_ROUTE);
+      return { success: "Registration successful!" };
     }
   }
 };

@@ -78,6 +78,20 @@ export const RegisterFormValidator = z.object({
     .regex(/[0-9]/, { message: "Please enter vaild zipcode." }),
 });
 
+export const CheckOutFormValidator = z.object({
+  email: z.string().email({ message: "Please enter a valid email." }).trim(),
+  firstname: z.string().min(2, { message: "First name must be at least 2 characters long." }).trim(),
+  lastname: z.string().min(2, { message: "Last name must be at least 2 characters long." }).trim(),
+  billingAddress: z.string().min(2, { message: "Billing Address must be at least 2 characters long." }).trim(),
+  billingState: z.string().min(2, { message: "Billing State must be at least 2 characters long." }).trim(),
+  billingCity: z.string().min(2, { message: "Billing City must be at least 2 characters long." }).trim(),
+  postcode: z.string().min(5, { message: "Postcode must be 5 characters long" }).regex(/[0-9]/, { message: "Please enter vaild postcode." }).trim(),
+  phone: z.string().min(10, { message: "Phone must be 10 characters long" }).regex(/[0-9]/, { message: "Please enter vaild phone number." }).trim(),
+  customerIp: z.string().trim(),
+  orderTotal: z.number().positive({ message: "Order total must be a positive number." }),
+  paymentMethod: z.string().trim()   
+});
+
 export const UserDetailsValidator = z.object({
   phone: z
     .string()

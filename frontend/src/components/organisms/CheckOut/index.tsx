@@ -19,7 +19,8 @@ import Button from "@/components/atoms/Button";
 import { CartItem, Message } from "@/utils/types";
 import ShippingInfoCard from "@/components/molecules/ShippingInfocard";
 import MyAddressList from "../MyAddresses";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { toast } from "react-toastify";
 
 interface CartListProps {
     cartItemsList: CartItem[];
@@ -57,6 +58,15 @@ const CheckOut = ({ cartItemsList, totalCost, discount, tax, shippingAddresses }
         console.log(formData.entries(),"formdata")
         formAction(formData);
     };
+
+    useEffect(() => {
+        if (state?.error) {
+            toast.error(state.error);
+        }
+        if (state?.success) {
+            toast.success("Order placed successfully!");
+        }
+    }, [state?.error, state?.success]);
 
     const total = totalCost - discount + tax;
 
@@ -107,7 +117,7 @@ const CheckOut = ({ cartItemsList, totalCost, discount, tax, shippingAddresses }
                                     labelPlacement="outside"
                                 />
                                 <Spacer y={2} />
-                                <Button>Apply</Button>
+                                <Button type='button' className='bg-red-500 text-white px-4 py-2'>Apply</Button>
                                 <Spacer y={2} />
                                 <div className="flex justify-between">
                                     <p>Subtotal</p>

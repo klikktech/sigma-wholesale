@@ -10,7 +10,7 @@ const Tabs = () => {
   const [selectedTab, setSelectedTab] = React.useState(TABS_LIST[0].key);
 
   return (
-    <div className="my-3">
+    <div className="my-3" id="tabs-section">
       <NextUITabs
         selectedKey={selectedTab}
         onSelectionChange={(key) => setSelectedTab(key.toString())}

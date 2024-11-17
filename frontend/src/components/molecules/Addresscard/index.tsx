@@ -1,7 +1,6 @@
-import { Button, Card } from "@nextui-org/react";
-import { EditAddressButton } from "./EditAddressButton";
 import { AddressProps } from "@/utils/types";
 import { deleteAddressAction } from "./actions";
+import { Card } from "@nextui-org/react";
 
 const AddressCard = (props: AddressProps) => {
   const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>, address: string) => {
@@ -13,16 +12,16 @@ const AddressCard = (props: AddressProps) => {
     await deleteAddressAction(formData);
   }
   return (
-    <Card className="p-4 min-h-44 min-w-72">
+    <Card className="p-4 min-h-44 min-w-72 max-w-fit">
       <div className="flex justify-between items-center mb-4">
         <h3 className="font-bold text-lg">{props.firstName} {props.lastName}</h3>
-          <Button
+          <button
             onClick={(e) => handleDelete(e, props.address)}
           >
             <span className="material-symbols-rounded text-red-500 cursor-pointer">
               delete
             </span>
-          </Button>
+          </button>
 
       </div>
       <p className="text-gray-600">

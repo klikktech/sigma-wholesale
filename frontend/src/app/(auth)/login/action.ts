@@ -6,7 +6,6 @@ import { Message } from "@/utils/types";
 import { HOME_PAGE_ROUTE, LOGIN_PAGE_ROUTE } from "@/utils/urls";
 import { LoginFormValidator } from "@/utils/validators";
 import { redirect } from "next/navigation";
-import { toast } from "react-toastify";
 
 export const signInAction = async (
   state: undefined | Message,
@@ -19,9 +18,9 @@ export const signInAction = async (
     email,
     password,
   });
-  console.log(parsedCredentials,"parsedCredentials")
+  console.log(parsedCredentials, "parsedCredentials")
   if (parsedCredentials.error) {
-    console.log(parsedCredentials.error,"parsedCredentials error")
+    console.log(parsedCredentials.error, "parsedCredentials error")
 
     return { error: parsedCredentials.error.errors[0].message as string };
   }
@@ -31,17 +30,15 @@ export const signInAction = async (
     const { data, status, error } = await axios.auth.signInWithEmail(
       parsedCredentials.data
     );
-    console.log(data,status,error,"data status error")
+    console.log(data, status, error, "data status error")
     if (error) {
       console.log("error", error);
-      toast.error(error.message);
       return { error: error.message };
     }
     if (data && status === 200) {
       console.log("success", status, data)
       createSession(data);
-      // toast.success("Login successful!");
-      redirect(HOME_PAGE_ROUTE);
+      return { success: "Login successful!" };
     }
   }
 

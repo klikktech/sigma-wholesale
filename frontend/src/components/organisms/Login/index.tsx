@@ -4,12 +4,27 @@ import { Input, Link, Spacer } from "@nextui-org/react";
 import { useFormState, useFormStatus } from "react-dom";
 import Button from "@/components/atoms/Button";
 import { signInAction } from "@/app/(auth)/login/action";
-import { SIGNUP_PAGE_ROUTE } from "@/utils/urls";
+import { HOME_PAGE_ROUTE, SIGNUP_PAGE_ROUTE } from "@/utils/urls";
 import FormMessage from "@/components/molecules/FormMessage";
+import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 const Login = () => {
   const [state, formAction] = useFormState(signInAction, undefined);
   const { pending } = useFormStatus();
+
+  useEffect(() => {
+    console.log("state", state)
+    if (state?.error) {
+      console.log("state.error", state.error)
+      toast.error(state.error);
+    }
+    if (state?.success) {
+      console.log("state.success", state.success)
+      toast.success(state.success);
+      window.location.href = HOME_PAGE_ROUTE;
+    }
+  }, [state?.error, state?.success]);
 
   return (
     <div className="flex justify-center items-center">

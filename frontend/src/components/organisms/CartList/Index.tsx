@@ -1,12 +1,13 @@
 'use client';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormState } from 'react-dom';
 import { updateCartAction } from '../../../app/(public)/cart-list/action';
 import { Message } from '@/utils/types';
 import { useCartStore } from '@/store/cartStore';
-import { Button } from '@nextui-org/react';
+import { Button, Card, Input, Spacer } from '@nextui-org/react';
 import { CHECKOUT_PAGE_ROUTE, HOME_PAGE_ROUTE } from '@/utils/urls';
+import { toast } from 'react-toastify';
 
 interface CartItem {
   variation: variation
@@ -49,11 +50,19 @@ const CartList = ({ cartItemsList }: CartListProps) => {
   const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
   const totalCost = cartItems.reduce((acc, item) => acc + item.variation.price * item.quantity, 0);
 
+  useEffect(() => {
+    if (state?.error) {
+      toast.error(state.error);
+    }
+    if (state?.success) {
+      toast.success("Cart updated successfully!");
+    }
+  }, [state?.error, state?.success]);
   return (
     <div className="flex justify-center py-10">
       <div className="w-full max-w-5xl">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="col-span-1 md:col-span-2 bg-white shadow-md rounded-lg p-8">
+          <Card className="col-span-1 md:col-span-2 bg-white shadow-md rounded-lg p-8">
             <form action={formAction}>
               <h2 className="text-xl font-bold mb-6">Shopping Cart</h2>
               <div className="grid grid-cols-6 gap-4 text-center font-semibold text-gray-600 pb-4 border-b">
@@ -107,9 +116,9 @@ const CartList = ({ cartItemsList }: CartListProps) => {
                 </Button>
               </div>
             </form>
-          </div>
+          </Card>
 
-          <div className="bg-white shadow-md rounded-lg p-8">
+          <Card className="bg-white shadow-md rounded-lg p-8">
             <h2 className="text-xl font-bold mb-6">Order Summary</h2>
             <div className="flex justify-between mb-4">
               <p>Items {totalItems}</p>
@@ -118,12 +127,12 @@ const CartList = ({ cartItemsList }: CartListProps) => {
             <div className="mb-4">
               <p>Promo Code</p>
               <div className="flex space-x-2 w-full justify-between">
-                <input
-                  type="text"
-                  className="border px-4 py-2 w-full"
-                  placeholder="Enter your code"
+                <Input
+                  placeholder="Enter coupon code"
+                  name="coupon"
+                  labelPlacement="outside"
                 />
-                <Button type='button' className="bg-red-500 text-white px-4 py-2">Apply</Button>
+                <Button type='button' className='bg-red-500 text-white px-4 py-2'>Apply</Button>
               </div>
             </div>
             <div className="flex justify-between mb-4">
@@ -133,7 +142,7 @@ const CartList = ({ cartItemsList }: CartListProps) => {
             <Button type='button' className="w-full py-3 mt-4" color="primary">
               <Link href={CHECKOUT_PAGE_ROUTE}>Checkout</Link>
             </Button>
-          </div>
+          </Card>
         </div>
       </div>
     </div>
