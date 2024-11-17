@@ -130,8 +130,20 @@ export interface AddressProps {
   address: string;
   city: string;
   state: string;
-  // country: string;
   zipcode: number;
   phone: string;
   isDefault?: boolean;
-} 
+}
+
+export interface UserDetails {
+  currentPassword: string;
+  newPassword: string;
+  phone: string;
+}
+
+export interface UserDetailsResponse {
+  name: string;
+  email: string;
+  phone: string;
+  role: string;
+}

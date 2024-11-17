@@ -21,7 +21,9 @@ const ProductsCarousel = ({ children }: Props) => {
         '(min-width: 1620px)': { slidesToScroll: 5 },
       }
     },
-    [Autoplay()]
+    [Autoplay({
+      delay: 10000
+    })]
   );
 
   const scrollPrev = useCallback(() => {

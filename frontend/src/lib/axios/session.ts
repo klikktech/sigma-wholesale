@@ -21,6 +21,8 @@ export const createSession = (session: {
 export const deleteSession = () => {
   cookies().delete("accessToken");
   cookies().delete("refreshToken");
+  cookies().delete("cartCount");
+  cookies().delete("isVerified");
 };
 
 export const getUser = () => {

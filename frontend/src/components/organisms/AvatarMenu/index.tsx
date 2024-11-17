@@ -2,7 +2,7 @@ import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, User, Link } fro
 import userIcon from '@/assets/user-icon.png'
 import { signOutAction } from "@/app/(auth)/login/action";
 import { IUser } from "@/utils/types";
-import { ADDRESSES_PAGE_ROUTE, ORDERS_PAGE_ROUTE } from "@/utils/urls";
+import { ACCOUNT_PAGE_ROUTE, ORDERS_PAGE_ROUTE } from "@/utils/urls";
 
 
 export default function AvatarMenu({ user }: { user: IUser }) {
@@ -28,10 +28,7 @@ export default function AvatarMenu({ user }: { user: IUser }) {
                         <p className="font-bold">{user.email}</p>
                     </DropdownItem>
                     <DropdownItem key="account">
-                        <Link className="w-full text-black" href='#'>My Account</Link>
-                    </DropdownItem>
-                    <DropdownItem key="addresses">
-                        <Link className="w-full text-black" href={ADDRESSES_PAGE_ROUTE}>My Addresses</Link>
+                        <Link className="w-full text-black" href={ACCOUNT_PAGE_ROUTE}>My Account</Link>
                     </DropdownItem>
                     <DropdownItem key="orders">
                         <Link className="w-full text-black" href={ORDERS_PAGE_ROUTE}>My Orders</Link>
@@ -42,7 +39,6 @@ export default function AvatarMenu({ user }: { user: IUser }) {
                             <button
                                 type="submit"
                                 className="w-full text-left"
-                            // formAction={signOutAction}
                             >   Log Out
                             </button>
                         </form>

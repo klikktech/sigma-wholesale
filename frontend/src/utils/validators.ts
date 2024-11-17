@@ -77,3 +77,29 @@ export const RegisterFormValidator = z.object({
     .min(5, { message: "Store Zip must be 5 characters long" })
     .regex(/[0-9]/, { message: "Please enter vaild zipcode." }),
 });
+
+export const UserDetailsValidator = z.object({
+  phone: z
+    .string()
+    .min(10, { message: "Phone must be 10 characters long" })
+    .regex(/^\d+$/, { message: "Please enter a valid phone number." })
+    .optional(),
+  currentPassword: z
+    .string()
+    .min(8, { message: "Current password must be at least 8 characters long" })
+    .regex(/[a-zA-Z]/, { message: "Must contain at least one letter." })
+    .regex(/[0-9]/, { message: "Must contain at least one number." })
+    .regex(/[^a-zA-Z0-9]/, { message: "Must contain at least one special character." })
+    .optional(),
+  newPassword: z
+    .string()
+    .min(8, { message: "New password must be at least 8 characters long" })
+    .regex(/[a-zA-Z]/, { message: "Must contain at least one letter." })
+    .regex(/[0-9]/, { message: "Must contain at least one number." })
+    .regex(/[^a-zA-Z0-9]/, { message: "Must contain at least one special character." })
+    .optional(),
+  confirmNewPassword: z.string().optional(),
+}).refine(data => data.newPassword === data.confirmNewPassword, {
+  message: "New password and confirm new password must match.",
+  path: ["confirmNewPassword"],
+});

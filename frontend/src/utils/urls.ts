@@ -8,7 +8,7 @@ export const CART_LIST_PAGE_ROUTE = "/cart-list";
 export const CHECKOUT_PAGE_ROUTE = "/check-out";
 export const ORDERS_PAGE_ROUTE = "/orders";
 export const ADDRESSES_PAGE_ROUTE ='/addresses'
-
+export const ACCOUNT_PAGE_ROUTE = '/account'
 
 
 // API Endpoints
@@ -19,7 +19,7 @@ export const SIGNUP_URL = `/api/auth/register`;
 export const LOGIN_URL = `/api/auth/authenticate`;
 export const LOGOUT_URL = `/api/auth/logout`;
 export const REFRESH_TOKEN_URL = `/api/auth/refresh-token`;
-export const USERS_URL = `/users`;
+export const USERS_DETAILS_URL = `/users/details`;
 export const USER_BY_ID_URL = (id: string) => `/users/${id}`;
 export const PRODUCTS_URL = '/products';
 export const NEW_ARRIVALS_URL = '/products/new-arrivals';
@@ -29,6 +29,6 @@ export const CHECK_OUT_URL = '/checkout';
 export const ORDERS_URL = '/orders/userOrders';
 export const ORDER_ITEMS_URL = (id: string) => `/orderItems/${id}`;
 export const SEARCH_ITEMS_URL = (keyword: string) => `/products/search/${keyword}`
-
+export const USER_UPDATE_URL = '/users/update'
 
 

@@ -6,6 +6,7 @@ import { axios } from "@/lib/axios";
 // import { SIGNIN_PAGE_ROUTE, USERS_PAGE_ROUTE } from "@/utils/routes";
 import { Message } from "@/utils/types";
 import { HOME_PAGE_ROUTE } from "@/utils/urls";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 // import { redirect } from "next/navigation";
 
@@ -63,7 +64,7 @@ export const checkOutAction = async (
       return { error: error.message };
     }
     if (data && status === 200) {
-      localStorage.removeItem('cartCount')
+      cookies().delete('cartCount')
       redirect(HOME_PAGE_ROUTE);
     }
 //   }

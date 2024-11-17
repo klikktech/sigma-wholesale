@@ -6,6 +6,7 @@ import { Message } from "@/utils/types";
 import { HOME_PAGE_ROUTE, LOGIN_PAGE_ROUTE } from "@/utils/urls";
 import { LoginFormValidator } from "@/utils/validators";
 import { redirect } from "next/navigation";
+import { toast } from "react-toastify";
 
 export const signInAction = async (
   state: undefined | Message,
@@ -32,12 +33,14 @@ export const signInAction = async (
     );
     console.log(data,status,error,"data status error")
     if (error) {
-      console.log("error", error)
+      console.log("error", error);
+      toast.error(error.message);
       return { error: error.message };
     }
     if (data && status === 200) {
       console.log("success", status, data)
       createSession(data);
+      // toast.success("Login successful!");
       redirect(HOME_PAGE_ROUTE);
     }
   }
@@ -49,6 +52,5 @@ export const signOutAction = async () => {
   console.log("inside signout")
   await axios.auth.signOut();
   deleteSession();
-  localStorage.clear();
   return redirect(LOGIN_PAGE_ROUTE);
 };

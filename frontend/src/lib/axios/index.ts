@@ -9,9 +9,11 @@ import {
   ORDERS_URL,
   ORDER_ITEMS_URL,
   SEARCH_ITEMS_URL,
+  USERS_DETAILS_URL,
+  USER_UPDATE_URL,
 } from "@/utils/urls";
 import api from "./instance";
-import { AxiosErrorResponse, AxiosResponse, RegisterDetails } from "@/utils/types";
+import { AxiosErrorResponse, AxiosResponse, RegisterDetails, UserDetails } from "@/utils/types";
 
 export const axios = {
   auth: {
@@ -56,6 +58,24 @@ export const axios = {
         return error as AxiosErrorResponse;
       }
     },
+    getUserDetails: async (): Promise<AxiosResponse> => {
+      console.log("get user details")
+      try {
+        const { data, status } = await api.get(USERS_DETAILS_URL);
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    updateUserDetails: async (userDetails: UserDetails): Promise<AxiosResponse> => {
+      console.log("update user details", userDetails)
+      try {
+        const { data, status } = await api.put(USER_UPDATE_URL, userDetails);
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    } 
   },
   products: {
     getNewArrivals: async (): Promise<AxiosResponse> => {
