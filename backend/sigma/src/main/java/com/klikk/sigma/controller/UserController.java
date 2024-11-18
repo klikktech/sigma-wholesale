@@ -39,7 +39,7 @@ public class UserController {
 //        }
 //    }
 
-    @GetMapping("/")
+    @GetMapping()
     @PreAuthorize("hasAuthority('admin:read')")
     public ResponseEntity<List<UsersResponse>> getUsers() {
         return ResponseEntity.ok(userService.findAll());

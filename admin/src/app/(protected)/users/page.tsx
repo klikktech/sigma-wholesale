@@ -7,8 +7,10 @@ import Button from "@/components/atoms/Button";
 import { ADD_USER_PAGE_ROUTE } from "@/utils/routes";
 
 const UsersPage = async () => {
-  const { data } = await axios.users.getAllUsers();
-  // if(error) signOutAction()
+  const { data, error } = await axios.users.getAllUsers();
+  if (error) {
+    throw new Error(error.message);
+  }
 
   return (
     <>

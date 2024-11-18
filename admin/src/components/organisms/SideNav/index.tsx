@@ -1,9 +1,10 @@
-import { Link, Tooltip, User } from "@nextui-org/react";
+import { Tooltip, User } from "@nextui-org/react";
 import logo from "@/assets/sigma-logo-removebg-preview.png";
 import Image from "next/image";
 import { INavItem, IUser } from "@/utils/types";
 import Button from "@/components/atoms/Button";
 import { signOutAction } from "@/app/(auth-pages)/actions";
+import NavItem from "@/components/organisms/SideNav/NavItem";
 
 interface Props {
   items: INavItem[];
@@ -19,14 +20,7 @@ const SideNav = ({ items, user }: Props) => {
         </p>
         <div className="flex flex-col gap-2">
           {items.map((item) => (
-            <Link key={`navitem-${item.path}`} href={item.path}>
-              <div className="w-full hover:bg-shadow rounded-lg p-2 flex gap-3 text-black">
-                <span className="material-symbols-rounded w-[24px]">
-                  {item.icon}
-                </span>
-                <span>{item.label}</span>
-              </div>
-            </Link>
+            <NavItem item={item} key={`navitem-${item.path}`} />
           ))}
         </div>
       </div>

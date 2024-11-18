@@ -26,7 +26,7 @@ public class Variation {
             type = com.klikk.sigma.util.StringPrefixedSequenceGenerator.class,
             parameters = {
                     @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.INCREMENT_PARAM, value = "1"),
-                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.PREFIX_VALUE_PARAM, value = "ATT_"),
+                    @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.PREFIX_VALUE_PARAM, value = "VAR_"),
                     @org.hibernate.annotations.Parameter(name = StringPrefixedSequenceGenerator.NUMBER_FORMAT_PARAM,value = "%d")
             }
     )
@@ -63,7 +63,7 @@ public class Variation {
     private LocalDateTime modifiedAt;
 
     @Column(name = "order_count")
-    private int orderCount;
+    private Long orderCount;
 
     @ManyToOne
     @JoinColumn(name = "parent_id", referencedColumnName = "id")

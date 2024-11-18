@@ -18,7 +18,7 @@ public class VariationController {
     @Autowired
     private VariationService variationService;
 
-    @PostMapping("/")
+    @PostMapping()
     @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
     public ResponseEntity<String> addVariation(@RequestBody VariationDto variation) {
         try {

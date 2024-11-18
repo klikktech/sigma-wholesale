@@ -68,9 +68,13 @@ public class Product {
     @Column(name = "product_id", unique = true)
     private Long productId;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id",referencedColumnName = "id")
-    private Category category;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "product_categories",
+            joinColumns = @JoinColumn(name = "product_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id",referencedColumnName = "id")
+    )
+    private List<Category> categories;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -87,7 +91,11 @@ public class Product {
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "parent")
     private List<Variation> variations;
 
-    @ManyToOne
-    @JoinColumn(name = "attachment_id",referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "attachment_id")
     private Attachment displayImage;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private List<Attachment> images;
 }

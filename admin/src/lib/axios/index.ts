@@ -1,11 +1,19 @@
 import {
+  ADD_PRODUCT_ENDPOINT,
   GET_ALL_PRODUCTS_ENDPOINT,
   GET_ALL_USERS_ENDPOINT,
+  GET_PRODUCT_ENDPOINT,
+  REFRESH_TOKEN_URL,
   SIGNIN_ENDPOINT,
   SIGNOUT_ENDPOINT,
 } from "@/utils/urls";
-import api from "./instance";
-import { AxiosErrorResponse, AxiosResponse, UserDetails } from "@/utils/types";
+import api, { authInstance } from "./instance";
+import {
+  AxiosErrorResponse,
+  AxiosResponse,
+  ProductDetails,
+  UserDetails,
+} from "@/utils/types";
 
 export const axios = {
   auth: {
@@ -14,7 +22,22 @@ export const axios = {
       password: string;
     }): Promise<AxiosResponse> => {
       try {
-        const { data, status } = await api.post(SIGNIN_ENDPOINT, credentials);
+        const { data, status } = await authInstance.post(
+          SIGNIN_ENDPOINT,
+          credentials
+        );
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    refreshToken: async (refreshToken: string): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await authInstance.post(
+          REFRESH_TOKEN_URL,
+          {},
+          { headers: { Authorization: `Bearer ${refreshToken}` } }
+        );
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;
@@ -40,7 +63,10 @@ export const axios = {
     },
     addUser: async (userDetails: UserDetails): Promise<AxiosResponse> => {
       try {
-        const { data, status } = await api.post(GET_ALL_USERS_ENDPOINT, userDetails);
+        const { data, status } = await api.post(
+          GET_ALL_USERS_ENDPOINT,
+          userDetails
+        );
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;
@@ -56,5 +82,29 @@ export const axios = {
         return error as AxiosErrorResponse;
       }
     },
-  }
+    getProductForDetails: async (details: string): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.get(GET_PRODUCT_ENDPOINT(details));
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    addProduct: async (formData: FormData): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.post(
+          ADD_PRODUCT_ENDPOINT,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+  },
 };

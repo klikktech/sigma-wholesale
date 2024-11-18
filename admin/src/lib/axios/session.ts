@@ -59,7 +59,7 @@ const setAccessToken = (token: string) => {
 
 const setRefreshToken = (token: string) => {
   const refreshExpiresAt = new Date(
-    Date.now() + Number(process.env.SESSION_REFRESH_TOKEN_EXPIRATION)
+    Date.now() + Number(process.env.SESSION_TOKEN_EXPIRATION)
   );
   cookies().set("refreshToken", token, {
     httpOnly: true,

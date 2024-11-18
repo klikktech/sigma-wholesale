@@ -34,7 +34,7 @@ public class Category {
     @Column(name = "slug")
     private String slug;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "category")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Product> products;
 
     @ManyToOne

@@ -1,11 +1,14 @@
 package com.klikk.sigma.dto.response;
 
 import com.klikk.sigma.entity.Attachment;
+import com.klikk.sigma.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -19,4 +22,10 @@ public class ProductResponseDto {
     private Attachment displayImage;
 
     private String sku;
+
+    private String details;
+
+    private List<VariationResponseDto> variations;
+
+    private List<Category> categories;
 }
