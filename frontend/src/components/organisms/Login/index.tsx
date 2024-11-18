@@ -2,7 +2,7 @@
 
 import { Input, Link, Spacer } from "@nextui-org/react";
 import { useFormState, useFormStatus } from "react-dom";
-import Button from "@/components/atoms/Button";
+import Button from "@/components/atoms/ScrollButton";
 import { signInAction } from "@/app/(auth)/login/action";
 import { HOME_PAGE_ROUTE, SIGNUP_PAGE_ROUTE } from "@/utils/urls";
 import FormMessage from "@/components/molecules/FormMessage";

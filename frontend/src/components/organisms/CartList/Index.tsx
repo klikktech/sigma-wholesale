@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useFormState } from 'react-dom';
-import { updateCartAction } from '../../../app/(public)/cart-list/action';
+import { updateCartAction } from '../../../app/(protected)/cart-list/action';
 import { Message } from '@/utils/types';
 import { useCartStore } from '@/store/cartStore';
 import { Button, Card, Input, Spacer } from '@nextui-org/react';

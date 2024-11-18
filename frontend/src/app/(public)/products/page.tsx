@@ -9,19 +9,28 @@ const ProductsPage = async ({ searchParams }: { searchParams: { page?: string, k
     const size = 16;
     const keyword = searchParams.keyword || '';
 
+    if (isNaN(page) || page < 1) {
+      return <ErrorComponent message="Invalid page number" />;
+    }
+
     const response = keyword 
       ? await axios.products.getSearchProductsList(keyword, page, size)
       : await axios.products.getAllProducts(page, size);
     
     const { data, error } = response;
 
-    if (!data || error) {
+    if (error) {
+      console.error("API Error:", error);
+      return <ErrorComponent message="Error fetching products" />;
+    }
+
+    if (!data || !data.content) {
       return <ErrorComponent message="No products available" />;
     }
 
     const productProps = {
       products: data.content,
-      totalPages: data.totalPages,
+      totalPages: data.totalPages || 1,
       currentPage: page,
       size,
       ...(keyword && { searchkey: keyword })

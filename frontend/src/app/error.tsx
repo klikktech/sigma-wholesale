@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/components/atoms/Button";
+import Button from "@/components/atoms/ScrollButton";
 import React from "react";
 
 interface ErrorProps {

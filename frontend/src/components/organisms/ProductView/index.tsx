@@ -11,7 +11,7 @@ import { useFormState, useFormStatus } from "react-dom";
 import FormMessage from "@/components/molecules/FormMessage";
 import { useCartStore } from '@/store/cartStore';
 import Image from "next/image";
-import Video from "@/components/atoms/video";
+import Video from "@/components/atoms/Video";
 import { toast } from "react-toastify";
 import { HOME_PAGE_ROUTE } from "@/utils/urls";
 import { useRouter } from "next/navigation";

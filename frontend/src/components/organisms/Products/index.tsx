@@ -19,11 +19,17 @@ const Products = ({products, totalPages, currentPage, size, category, searchkey}
   const router = useRouter();
   
   const handlePageChange = (page: number) => {
+    const queryParams = new URLSearchParams();
+    queryParams.set('page', page.toString());
+    queryParams.set('size', size.toString());
+    if (searchkey) queryParams.set('keyword', searchkey);
+    
     const baseUrl = category 
       ? `/categories/${category}/products`
       : '/products';
     
-    router.push(`${baseUrl}?page=${page}&size=${size}`);
+    const url = `${baseUrl}?${queryParams.toString()}`;
+    router.push(url);
   };
 
   return (

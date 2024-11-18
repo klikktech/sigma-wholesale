@@ -2,7 +2,7 @@
 import { useFormState } from "react-dom";
 import { Input, Spacer, Tab, Tabs } from "@nextui-org/react";
 import { createNewUser } from "@/app/(auth)/register/action";
-import Button from "@/components/atoms/Button";
+import Button from "@/components/atoms/ScrollButton";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { LOGIN_PAGE_ROUTE } from "@/utils/urls";

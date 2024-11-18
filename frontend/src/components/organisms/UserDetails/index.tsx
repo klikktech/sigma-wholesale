@@ -1,9 +1,9 @@
 "use client";
 
 import { Card, Input, Spacer } from "@nextui-org/react";
-import Button from "@/components/atoms/Button";
+import Button from "@/components/atoms/ScrollButton";
 import { useFormState, useFormStatus } from "react-dom";
-import { updateUserDetailsAction } from "@/app/(public)/account/action";
+import { updateUserDetailsAction } from "@/app/(protected)/account/action";
 import FormMessage from "@/components/molecules/FormMessage";
 import { UserDetailsResponse } from "@/utils/types";
 

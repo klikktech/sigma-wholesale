@@ -68,6 +68,7 @@ const ShippingInfoCard = () => {
                     <Input
                         label="Zipcode*"
                         placeholder="12345"
+                        maxLength={5}
                         name="zipcode"
                         labelPlacement="outside"
                         required
@@ -76,6 +77,7 @@ const ShippingInfoCard = () => {
                     <Input
                         label="Phone number*"
                         placeholder="+1 (555) 555-5555"
+                        maxLength={10}
                         name="phone"
                         labelPlacement="outside"
                         required

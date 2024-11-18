@@ -1,11 +1,11 @@
 "use client"; 
-import { ButtonProps, Button as NextUIButton } from "@nextui-org/react";
+import { ButtonProps, Button } from "@nextui-org/react";
 import React from "react";
 
 interface Props extends ButtonProps {
   scrollTargetId?: string;
 }
-const Button = (props: Props) => {
+const ScrollButton = (props: Props) => {
   const handleClick = () => {
     if (props.scrollTargetId) {
       const section = document.getElementById(props.scrollTargetId);
@@ -15,7 +15,7 @@ const Button = (props: Props) => {
     }
   };
 
-  return <NextUIButton {...props} className={`text-black ${props.className}`} onClick={handleClick}>{props.children}</NextUIButton>;
+  return <Button {...props} className={`text-black ${props.className}`} onClick={handleClick}>{props.children}</Button>;
 };
 
-export default Button;
+export default ScrollButton;

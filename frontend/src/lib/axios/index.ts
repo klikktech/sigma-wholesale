@@ -14,8 +14,9 @@ import {
   PRODUCT_BY_CATEGORY_URL,
   SEARCH_PRODUCTS_URL,
   ORDER_PRODUCTS_URL,
+  REFRESH_TOKEN_URL,
 } from "@/utils/urls";
-import api from "./instance";
+import api, { authInstance } from "./instance";
 import { AxiosErrorResponse, AxiosResponse, RegisterDetails, UserDetails } from "@/utils/types";
 
 export const axios = {
@@ -28,6 +29,18 @@ export const axios = {
       try {
         const { data, status } = await api.post(LOGIN_URL, credentials);
         console.log(data, status, "inside index login")
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    refreshToken: async (refreshToken: string): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await authInstance.post(
+          REFRESH_TOKEN_URL,
+          {},
+          { headers: { Authorization: `Bearer ${refreshToken}` } }
+        );
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;

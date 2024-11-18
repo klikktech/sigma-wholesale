@@ -13,9 +13,9 @@ import {
     TableBody,
 } from "@nextui-org/react";
 import { useFormState, useFormStatus } from "react-dom";
-import { checkOutAction } from "@/app/(public)/check-out/action";
+import { checkOutAction } from "@/app/(protected)/check-out/action";
 import FormMessage from "@/components/molecules/FormMessage";
-import Button from "@/components/atoms/Button";
+import Button from "@/components/atoms/ScrollButton";
 import { CartItem, Message } from "@/utils/types";
 import ShippingInfoCard from "@/components/molecules/ShippingInfocard";
 import MyAddressList from "../MyAddresses";

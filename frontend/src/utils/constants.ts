@@ -82,27 +82,3 @@ export const TABS_LIST = [
     key: "cbd",
   },
 ];
-
-export const reviewList = [
-  {
-    name: "Alice",
-    timeStamp: "10 Jan, 2024",
-    avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-    comments:
-      "Love the quality of the bong I purchased. Smooth transaction and fast shipping.",
-  },
-  {
-    name: "Bob",
-    timeStamp: "15 May, 2024",
-    avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d",
-    comments:
-      "Great selection of pipes, found exactly what I was looking for.",
-  },
-  {
-    name: "Charlie",
-    timeStamp: "21 Aug, 2024",
-    avatar: "https://i.pravatar.cc/150?u=a04258114e29026702d",
-    comments:
-      "Amazing customer service and the vaporizer works like a charm.",
-  },
-];
