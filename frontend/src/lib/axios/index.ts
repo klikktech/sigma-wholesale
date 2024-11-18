@@ -7,10 +7,13 @@ import {
   CHECK_OUT_URL,
   NEW_ARRIVALS_URL,
   ORDERS_URL,
-  ORDER_ITEMS_URL,
-  SEARCH_ITEMS_URL,
   USERS_DETAILS_URL,
   USER_UPDATE_URL,
+  DELETE_ADDRESS_URL,
+  ADDRESS_URL,
+  PRODUCT_BY_CATEGORY_URL,
+  SEARCH_PRODUCTS_URL,
+  ORDER_PRODUCTS_URL,
 } from "@/utils/urls";
 import api from "./instance";
 import { AxiosErrorResponse, AxiosResponse, RegisterDetails, UserDetails } from "@/utils/types";
@@ -52,7 +55,7 @@ export const axios = {
     getAddresses: async (type: string): Promise<AxiosResponse> => {
       console.log("get addresses", type)
       try {
-        const { data, status } = await api.get(`/users/addresses?type=${type}`);
+        const { data, status } = await api.get(ADDRESS_URL(type));
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;
@@ -61,7 +64,7 @@ export const axios = {
     deleteAddress: async (address: string): Promise<AxiosResponse> => {
       console.log("delete address", address)
       try {
-        const { data, status } = await api.delete(`/address?address=${address}`);
+        const { data, status } = await api.delete(DELETE_ADDRESS_URL(address));
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;
@@ -99,7 +102,9 @@ export const axios = {
     getAllProducts: async (page: number, size: number): Promise<AxiosResponse> => {
       console.log("get all prods products", page, size)
       try {
-        const { data, status } = await api.get(`${PRODUCTS_URL}?page=${page}&size=${size}`);
+        const { data, status } = await api.get(PRODUCTS_URL,{
+          params: { page, size }
+        });
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;
@@ -116,12 +121,12 @@ export const axios = {
     },
     getCategoryProducts: async (category: string, page: number, size: number) => {
       try {
-        const response = await api.get(`/categories/${category}/products`, {
+        const { data, status } = await api.get(PRODUCT_BY_CATEGORY_URL(category), {
           params: { page, size }
         });
-        return { data: response.data, error: null };
+        return { data, status };
       } catch (error) {
-        return { data: null, error };
+        return error as AxiosErrorResponse;
       }
     },
     addToCart: async (payload: any): Promise<AxiosResponse> => {
@@ -161,7 +166,7 @@ export const axios = {
     getOrderItemsList: async (orderId: string): Promise<AxiosResponse> => {
       console.log("get orders list")
       try {
-        const { data, status } = await api.get(ORDER_ITEMS_URL(orderId));
+        const { data, status } = await api.get(ORDER_PRODUCTS_URL(orderId));
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;
@@ -170,7 +175,7 @@ export const axios = {
     getSearchProductsList: async (keyword: string, page: number, size: number): Promise<AxiosResponse> => {
       console.log("get search list")
       try {
-        const { data, status } = await api.get(SEARCH_ITEMS_URL(keyword), {
+        const { data, status } = await api.get(SEARCH_PRODUCTS_URL(keyword), {
           params: { page, size }
         });
         return { data, status };
