@@ -21,6 +21,7 @@ import ShippingInfoCard from "@/components/molecules/ShippingInfocard";
 import MyAddressList from "../MyAddresses";
 import { useEffect, useState } from 'react';
 import { toast } from "react-toastify";
+import { HOME_PAGE_ROUTE } from "@/utils/urls";
 
 interface CartListProps {
     cartItemsList: CartItem[];
@@ -50,7 +51,7 @@ const CheckOut = ({ cartItemsList, totalCost, discount, tax, shippingAddresses }
                 formData.set('address', address.address);
                 formData.set('city', address.city);
                 formData.set('state', address.state);
-                formData.set('postalCode', address.zipcode);
+                formData.set('zipcode', address.zipcode);
                 formData.set('phone', address.phone);
                 formData.set('email', address.email);
             }
@@ -64,7 +65,9 @@ const CheckOut = ({ cartItemsList, totalCost, discount, tax, shippingAddresses }
             toast.error(state.error);
         }
         if (state?.success) {
+            localStorage.removeItem('cartCount');
             toast.success("Order placed successfully!");
+            window.location.href = HOME_PAGE_ROUTE;
         }
     }, [state?.error, state?.success]);
 
@@ -73,8 +76,8 @@ const CheckOut = ({ cartItemsList, totalCost, discount, tax, shippingAddresses }
     return (
         <div className="container my-3">
             <form action={handleSubmit}>
-                <div className="flex flex-col md:flex-row justify-center gap-5">
-                    <div className="flex flex-col w-full max-w-screen-sm">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5 w-full">
+                    <div className="col-span-2 w-full">
                         <RadioGroup
                             value={selectedAddress}
                             onValueChange={setSelectedAddress}
@@ -88,7 +91,7 @@ const CheckOut = ({ cartItemsList, totalCost, discount, tax, shippingAddresses }
                         </RadioGroup>
                     </div>
 
-                    <div className="flex flex-col w-full max-w-md">
+                    <div className="col-span-1 w-full">
                         <Card>
                             <CardBody>
                                 <p className="text-lg">Your Order</p>

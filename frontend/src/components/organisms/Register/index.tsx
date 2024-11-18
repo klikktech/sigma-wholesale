@@ -6,6 +6,7 @@ import Button from "@/components/atoms/Button";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { LOGIN_PAGE_ROUTE } from "@/utils/urls";
+import { useRouter } from "next/navigation";
 
 interface FormErrorProps {
   errors?: string[];
@@ -13,7 +14,7 @@ interface FormErrorProps {
 
 const SignUp = () => {
   const [state, formAction] = useFormState(createNewUser, undefined);
-
+  const router = useRouter();
   // State to hold input values
   const [formData, setFormData] = useState({
     firstName: '',
@@ -39,7 +40,7 @@ const SignUp = () => {
     }
     if (state?.success) {
       toast.success("Registration successful!");
-      window.location.href = LOGIN_PAGE_ROUTE;
+      router.push(LOGIN_PAGE_ROUTE);
     }
   }, [state?.error, state?.success]);
 

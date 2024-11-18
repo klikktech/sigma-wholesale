@@ -7,7 +7,6 @@ import { axios } from "@/lib/axios";
 import { Message } from "@/utils/types";
 import { HOME_PAGE_ROUTE } from "@/utils/urls";
 import { CheckOutFormValidator } from "@/utils/validators";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 // import { redirect } from "next/navigation";
 
@@ -26,7 +25,7 @@ export const checkOutAction = async (
   const  billingAddress = formData.get("address");
   const  billingState = formData.get("state");
   const  billingCity = formData.get("city");
-  const  postcode = formData.get("postalCode");
+  const  postcode = formData.get("zipcode");
   const  phone = formData.get("phone");
   const customerIp = ipAddress;
   const orderTotal = totalCost;
@@ -62,7 +61,6 @@ export const checkOutAction = async (
       return { error: error.message };
     }
     if (data && status === 200) {
-      cookies().delete('cartCount')
       return { success: "Order placed successfully!" };
     }
   }

@@ -14,6 +14,7 @@ import Image from "next/image";
 import Video from "@/components/atoms/video";
 import { toast } from "react-toastify";
 import { HOME_PAGE_ROUTE } from "@/utils/urls";
+import { useRouter } from "next/navigation";
 
 const ProductView = ({ productDetails }: { productDetails: ProdDetails }) => {
 
@@ -27,6 +28,7 @@ const ProductView = ({ productDetails }: { productDetails: ProdDetails }) => {
     }
     return result;
   }, undefined);
+  const router = useRouter();
 
   useEffect(() => {
     if (state?.error) {
@@ -34,7 +36,7 @@ const ProductView = ({ productDetails }: { productDetails: ProdDetails }) => {
     }
     if (state?.success) {
       toast.success("Added to cart successfully!");
-      window.location.href = HOME_PAGE_ROUTE;
+      router.push(HOME_PAGE_ROUTE);
     }
   }, [state]);
 

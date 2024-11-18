@@ -8,10 +8,13 @@ import { HOME_PAGE_ROUTE, SIGNUP_PAGE_ROUTE } from "@/utils/urls";
 import FormMessage from "@/components/molecules/FormMessage";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
 
 const Login = () => {
   const [state, formAction] = useFormState(signInAction, undefined);
   const { pending } = useFormStatus();
+  const router = useRouter();
 
   useEffect(() => {
     console.log("state", state)
@@ -22,7 +25,7 @@ const Login = () => {
     if (state?.success) {
       console.log("state.success", state.success)
       toast.success(state.success);
-      window.location.href = HOME_PAGE_ROUTE;
+      router.push(HOME_PAGE_ROUTE);
     }
   }, [state?.error, state?.success]);
 

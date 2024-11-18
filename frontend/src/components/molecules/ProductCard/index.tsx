@@ -20,7 +20,7 @@ const stockChipColorMap = {
 const ProductCard = (props: Props) => {
   return (
     <>
-      <div className="max-w-xs bg-gray-100 text-black rounded-xl shadow-lg overflow-hidden h-full">
+      <div className="max-w-xs min-w-60 bg-gray-100 text-black rounded-xl shadow-lg overflow-hidden h-full">
         <div className="relative h-48">
           <Image
             className="w-full h-full object-cover"

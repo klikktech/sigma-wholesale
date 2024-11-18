@@ -12,7 +12,7 @@ const AddressCard = (props: AddressProps) => {
     await deleteAddressAction(formData);
   }
   return (
-    <Card className="p-4 min-h-44 min-w-72 max-w-fit">
+    <Card className="p-4 min-h-44 w-56">
       <div className="flex justify-between items-center mb-4">
         <h3 className="font-bold text-lg">{props.firstName} {props.lastName}</h3>
           <button
