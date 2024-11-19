@@ -74,24 +74,41 @@ public class ProductServiceImpl implements ProductService {
     private AttachmentService attachmentService;
 
     @Override
-    public ProductResponseDto saveProduct(ProductRequestDto productRequest, MultipartFile displayImage, List<MultipartFile> images) throws IOException {
+    public ProductResponseDto saveProduct(ProductRequestDto productRequest, MultipartFile displayFile, List<MultipartFile> otherFiles) throws IOException {
         // Map the request DTO to a Product entity
         Product newProduct = productMapper.productRequestToProduct(productRequest);
         newProduct.setCreatedAt(LocalDateTime.now());
+        newProduct.setDetails(generateUniqueDetails(newProduct));
         final Product savedProduct = productRepository.save(newProduct);
 
-        if (displayImage != null) {
-            String imageUrl = uploadFileToAws(displayImage);
-            // Save the display image as an attachment
-            attachmentService.saveAttachment(AttachmentType.IMAGE, imageUrl, savedProduct, true);
+        if (displayFile != null) {
+            String fileUrl = uploadFileToAws(displayFile);
+            AttachmentType attachmentType = determineAttachmentType(displayFile);
+            // Save the display file as an attachment
+            attachmentService.saveAttachment(attachmentType, fileUrl, savedProduct, true);
         }
 
-        images.forEach(image -> {
-            String imageUrl = uploadFileToAws(image);
-            attachmentService.saveAttachment(AttachmentType.IMAGE, imageUrl, savedProduct,false);
-        });
+        for (MultipartFile file : otherFiles) {
+            String fileUrl = uploadFileToAws(file);
+            AttachmentType attachmentType = determineAttachmentType(file);
+            attachmentService.saveAttachment(attachmentType, fileUrl, savedProduct, false);
+        }
+
         return productMapper.productToProductResponseDto(savedProduct);
     }
+
+    private AttachmentType determineAttachmentType(MultipartFile file) {
+        String contentType = file.getContentType();
+        if (contentType != null) {
+            if (contentType.startsWith("image/")) {
+                return AttachmentType.IMAGE;
+            } else if (contentType.startsWith("video/")) {  
+                return AttachmentType.VIDEO;
+            }
+        }
+        throw new IllegalArgumentException("Unsupported file type: " + contentType);
+    }
+
 
 
     @Override

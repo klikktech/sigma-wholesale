@@ -41,18 +41,22 @@ public class UserController {
     @Autowired
     private AddressMapper addressMapper;
 
-//    @GetMapping("/{id}")
+    @GetMapping("/details")
 //    @PreAuthorize("hasAuthority('admin:read')")
-//    public ResponseEntity<UserResponseDto> getUserById(@PathVariable("id") int id) {
-//        try {
-//            var result = userService.findById(id);
-//            return ResponseEntity.of(Optional.of(result));
-//        } catch (NotFoundException exception) {
-//            return new ResponseEntity(exception.getMessage(), HttpStatus.NOT_FOUND);
-//        } catch (Exception exception) {
-//            return new ResponseEntity(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+    public ResponseEntity<UsersResponse> getUserById(HttpServletRequest request) {
+        try {
+
+            String token=request.getHeader("Authorization").split(" ")[1];
+            String email=jwtService.extractUsername(token);
+
+            var result = userService.findUserByEmail(email);
+            return ResponseEntity.of(Optional.of(result));
+        } catch (NotFoundException exception) {
+            return new ResponseEntity(exception.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception exception) {
+            return new ResponseEntity(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @GetMapping()
     @PreAuthorize("hasAuthority('admin:read')")
