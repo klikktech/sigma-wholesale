@@ -59,7 +59,7 @@ export interface Product {
 
 export interface ProdDetails {
   name: string;
-  price:number;
+  price:string;
   status:string;
   category: string[];
   sku:string;

@@ -8,7 +8,7 @@ import { CartItem, Message } from "@/utils/types";
 export const updateCartAction = async (
     state: undefined | Message,
     formData: FormData,
-    cartItems: CartItem[]
+    cartItems: CartItem[],
 ) => {
     const transformedArray = cartItems.map((item: any) => ({
         variation: item.variation.details,
@@ -34,6 +34,6 @@ export const updateCartAction = async (
     }
     if (data && status === 200) {
         console.log("success", status, data)
-        return { error:'',success: true, totalQuantity };
+        return { error:'',success: true, totalQuantity, totalPrice };
     }
 };

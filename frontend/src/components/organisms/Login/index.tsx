@@ -25,7 +25,7 @@ const Login = () => {
     if (state?.success) {
       console.log("state.success", state.success)
       toast.success(state.success);
-      router.push(HOME_PAGE_ROUTE);
+      window.location.href = HOME_PAGE_ROUTE;
     }
   }, [state?.error, state?.success]);
 

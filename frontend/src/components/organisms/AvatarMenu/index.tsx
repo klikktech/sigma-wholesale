@@ -13,9 +13,8 @@ export default function AvatarMenu({ user }: { user: IUser }) {
                     <User
                         as="button"
                         avatarProps={{
-                            // isBordered: true,
                             showFallback: true,
-                            src: `${userIcon}`
+                            src: typeof userIcon === 'string' ? userIcon : undefined
                         }}
                         className="transition-transform"
                         description={user.email}

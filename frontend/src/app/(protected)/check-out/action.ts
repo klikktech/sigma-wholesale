@@ -19,7 +19,7 @@ export const checkOutAction = async (
   const ipData = await response.json();
   const ipAddress = ipData.ip
 
-  const email = formData.get("email");
+  // const email = formData.get("email");
   const  firstname = formData.get("firstName");
   const  lastname = formData.get("lastName");
   const  billingAddress = formData.get("address");
@@ -32,7 +32,7 @@ export const checkOutAction = async (
   const paymentMethod ='COD';
 
   const formDetails = {
-    email,
+    // email,
     firstname,
     lastname,
     billingAddress,

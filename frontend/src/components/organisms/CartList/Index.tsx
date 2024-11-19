@@ -30,7 +30,7 @@ const CartList = ({ cartItemsList }: CartListProps) => {
   const [state, formAction] = useFormState(async (state: undefined | Message, formData: FormData) => {
     const result = await updateCartAction(state, formData, cartItems);
     if (result?.success) {
-      setCartCount(result.totalQuantity);
+      setCartCount(result.totalQuantity,result.totalPrice);
     }
     return result;
   }, undefined);

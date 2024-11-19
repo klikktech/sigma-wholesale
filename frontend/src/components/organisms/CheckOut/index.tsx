@@ -53,7 +53,7 @@ const CheckOut = ({ cartItemsList, totalCost, discount, tax, shippingAddresses }
                 formData.set('state', address.state);
                 formData.set('zipcode', address.zipcode);
                 formData.set('phone', address.phone);
-                formData.set('email', address.email);
+                // formData.set('email', address.email);
             }
         }
         console.log(formData.entries(),"formdata")
