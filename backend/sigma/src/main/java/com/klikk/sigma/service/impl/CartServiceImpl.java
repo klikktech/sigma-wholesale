@@ -12,13 +12,16 @@ import com.klikk.sigma.mapper.ProductMapper;
 import com.klikk.sigma.mapper.VariationMapper;
 import com.klikk.sigma.repository.*;
 import com.klikk.sigma.service.CartService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -59,7 +62,7 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public void addOrUpdateCart(CartRequest cartRequestDto, String bearerToken) {
-        // Find the user by email
+        // Extract user email from JWT token
         String email = jwtService.extractUsername(bearerToken.split(" ")[1]);
         Optional<User> user = userRepository.findByEmail(email);
 
@@ -69,53 +72,43 @@ public class CartServiceImpl implements CartService {
 
         // Find or create the cart for the user
         Cart cart = cartRepository.findByUser(user.get())
-                .orElse(Cart.builder()
-                        .user(user.get())
-                        .quantity(cartRequestDto.getQuantity())
-                        .createdAt(LocalDateTime.now())
-                        .build());
+                .orElseGet(() -> cartRepository.save(
+                        Cart.builder()
+                                .user(user.get())
+                                .quantity(cartRequestDto.getQuantity())
+                                .createdAt(LocalDateTime.now())
+                                .price(cartRequestDto.getPrice())
+                                .build()
+                ));
 
-        // Update the cart's fields
+        // Update cart metadata
         cart.setUpdatedAt(LocalDateTime.now());
         cart.setPrice(cartRequestDto.getPrice());
         cart.setQuantity(cartRequestDto.getQuantity());
 
-        // Save the cart
-        cart = cartRepository.save(cart);
-
-        // Update cart items
         List<CartItemRequest> requestedItems = cartRequestDto.getCartItemsList();
         List<CartItem> existingItems = cartItemRepository.findByCart(cart);
 
-        // Prepare a list for items to remove from the cart
-        List<CartItem> itemsToRemove = new ArrayList<>();
+        Map<String, CartItemRequest> requestItemMap = requestedItems.stream()
+                .collect(Collectors.toMap(CartItemRequest::getVariation, item -> item));
 
         for (CartItem existingItem : existingItems) {
-            Optional<CartItemRequest> matchingRequestItem = requestedItems.stream()
-                    .filter(reqItem -> reqItem.getVariation().equals(existingItem.getVariation().getDetails()))
-                    .findFirst();
+            String variationDetails = existingItem.getVariation().getDetails();
 
-            if (matchingRequestItem.isPresent()) {
-                // Update quantity if item is found in the request
-                existingItem.setQuantity(matchingRequestItem.get().getQuantity());
+            if (requestItemMap.containsKey(variationDetails)) {
+                // Update existing item if it's in the request
+                CartItemRequest matchingRequest = requestItemMap.get(variationDetails);
+                existingItem.setQuantity(matchingRequest.getQuantity());
                 existingItem.setAddedAt(LocalDateTime.now());
                 cartItemRepository.save(existingItem);
 
-                // Remove from the request list to mark it as processed
-                requestedItems.remove(matchingRequestItem.get());
-            } else {
-                // If not in the request list, mark it for deletion
-                itemsToRemove.add(existingItem);
+                // Remove from the request map since it's processed
+                requestItemMap.remove(variationDetails);
             }
         }
 
-        // Delete items that are no longer in the request
-        for (CartItem itemToRemove : itemsToRemove) {
-            cartItemRepository.delete(itemToRemove);
-        }
-
-        // Add new items that were not in the existing items
-        for (CartItemRequest newItemRequest : requestedItems) {
+        // Add new items from the request that are not in the existing cart items
+        for (CartItemRequest newItemRequest : requestItemMap.values()) {
             Variation variation = variationRepository.findByDetails(newItemRequest.getVariation())
                     .orElseThrow(() -> new NotFoundException("Variation not found for details: " + newItemRequest.getVariation()));
 
@@ -129,6 +122,7 @@ public class CartServiceImpl implements CartService {
             cartItemRepository.save(newCartItem);
         }
     }
+
 
 
 
@@ -147,5 +141,22 @@ public class CartServiceImpl implements CartService {
          cartResponseDto.setCartItems(cartItemResponseDtos);
          return cartResponseDto;
 
+    }
+
+    @Override
+    public void deleteCartItem(String variationToDelete, HttpServletRequest request) {
+        Optional<User> user=userRepository.findByEmail(jwtService.extractUsername(request.getHeader("Authorization").split(" ")[1]));
+        Optional<Cart> cart=cartRepository.findByUser(user.get());
+        Optional<Variation> variation= variationRepository.findByDetails(variationToDelete);
+        if(variation.isEmpty()){
+            throw new IllegalArgumentException("No variation present");
+        }
+        CartItem existingItem=cartItemRepository.findByVariation(variation.get());
+        Double price= existingItem.getVariation().getPrice();
+        Long quant= existingItem.getQuantity();
+        cartItemRepository.delete(existingItem);
+        cart.get().setQuantity(cart.get().getQuantity()-quant);
+        cart.get().setPrice(cart.get().getPrice()-(price*quant));
+        cartRepository.save(cart.get());
     }
 }

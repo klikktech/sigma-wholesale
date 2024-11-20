@@ -15,6 +15,7 @@ import com.klikk.sigma.service.CartService;
 import com.klikk.sigma.service.impl.JwtServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,6 +56,14 @@ public class CartController {
 //        System.out.println();
     }
 
-
-
+    @DeleteMapping("/{variationDetails}")
+    public ResponseEntity<String> deleteCartItem(@PathVariable  String variationDetails,HttpServletRequest request){
+        try {
+            cartService.deleteCartItem(variationDetails,request);
+            return ResponseEntity.ok("Cart Item deleted successfully!");
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
 }

@@ -8,6 +8,7 @@ RUN mvn clean install -DskipTests
 # Stage 2: Run the application
 FROM amazoncorretto:17-alpine AS runtime
 WORKDIR /app
-COPY --from=build /app/target/*.jar ./demo-aws.jar
+COPY --from=build /app/target/sigma-0.0.1-SNAPSHOT.jar ./demo-aws.jar
 EXPOSE 8080
 CMD ["java", "-jar", "demo-aws.jar"]
+
