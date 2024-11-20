@@ -15,6 +15,7 @@ import {
   SEARCH_PRODUCTS_URL,
   ORDER_PRODUCTS_URL,
   REFRESH_TOKEN_URL,
+  DELETE_CART_ITEM_URL,
 } from "@/utils/urls";
 import api, { authInstance } from "./instance";
 import { AxiosErrorResponse, AxiosResponse, RegisterDetails, UserDetails } from "@/utils/types";
@@ -154,6 +155,15 @@ export const axios = {
       console.log("get cart list")
       try {
         const { data, status } = await api.get(CART_URL);
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    deleteCartItem: async (variation: any): Promise<AxiosResponse> => {
+      console.log("delete address", variation)
+      try {
+        const { data, status } = await api.delete(DELETE_CART_ITEM_URL(variation));
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;

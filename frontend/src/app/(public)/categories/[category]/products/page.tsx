@@ -1,3 +1,4 @@
+import ErrorComponent from '@/components/atoms/ErrorComponent';
 import Products from '@/components/organisms/Products';
 import { axios } from '@/lib/axios';
 import React from 'react';
@@ -15,13 +16,14 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
   const { category } = params;
 
   try {
-    const { data, error } = await axios.products.getCategoryProducts(category, page, size);
-    
-    if (data) {
+    const response = await axios.products.getCategoryProducts(category, page, size);
+    if ('data' in response) {
+      const { data } = response;
       products = data.content;
       totalPages = data.totalPages;
     } else {
-      return <div>No products available</div>;
+      console.error("API Error:", response.error);
+      return <ErrorComponent message="Error fetching products" />;
     }
   } catch (error) {
     console.error("Error fetching products:", error);

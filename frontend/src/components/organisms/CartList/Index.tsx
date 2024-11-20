@@ -2,11 +2,11 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useFormState } from 'react-dom';
-import { updateCartAction } from '../../../app/(protected)/cart-list/action';
+import { handleRemoveItemAction, updateCartAction } from '../../../app/(protected)/cart-list/action';
 import { Message } from '@/utils/types';
 import { useCartStore } from '@/store/cartStore';
-import { Button, Card, Input, Spacer } from '@nextui-org/react';
-import { CHECKOUT_PAGE_ROUTE, HOME_PAGE_ROUTE } from '@/utils/urls';
+import { Button, Card, Input } from '@nextui-org/react';
+import { CART_LIST_PAGE_ROUTE, CHECKOUT_PAGE_ROUTE, HOME_PAGE_ROUTE } from '@/utils/urls';
 import { toast } from 'react-toastify';
 
 interface CartItem {
@@ -17,6 +17,7 @@ interface CartItem {
 interface variation {
   variationName: string;
   price: number;
+  details:string;
 }
 
 interface CartListProps {
@@ -43,10 +44,6 @@ const CartList = ({ cartItemsList }: CartListProps) => {
     );
   };
 
-  const removeItem = (name: string) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.variation.variationName !== name));
-  };
-
   const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
   const totalCost = cartItems.reduce((acc, item) => acc + item.variation.price * item.quantity, 0);
 
@@ -58,6 +55,17 @@ const CartList = ({ cartItemsList }: CartListProps) => {
       toast.success("Cart updated successfully!");
     }
   }, [state?.error, state?.success]);
+
+  const handleRemoveItem = async (e: React.MouseEvent<HTMLButtonElement>, variation: any) => {
+    e.preventDefault();
+    const result = await handleRemoveItemAction(variation, totalItems, totalCost);
+    if (result?.success) {
+      setCartCount(result.updatedQuantity as number,result.updatedPrice as number);
+      toast.success("Deleted product successfully!");
+      window.location.href = CART_LIST_PAGE_ROUTE;
+    }
+    return result;
+  }
   return (
     <div className="flex justify-center py-10">
       <div className="w-full max-w-5xl">
@@ -80,9 +88,9 @@ const CartList = ({ cartItemsList }: CartListProps) => {
                     <div>
                       <p className="font-semibold">{item.variation.variationName}</p>
                       <button
-                        type='submit'
+                        type='button'
                         className="text-red-500 text-sm"
-                        onClick={() => removeItem(item.variation.variationName)}
+                        onClick={(e) => handleRemoveItem(e, item)}
                       >
                         Remove
                       </button>

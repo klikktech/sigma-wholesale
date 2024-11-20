@@ -42,7 +42,7 @@ const SignUp = () => {
       toast.success("Registration successful!");
       router.push(LOGIN_PAGE_ROUTE);
     }
-  }, [state?.error, state?.success]);
+  }, [state, router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

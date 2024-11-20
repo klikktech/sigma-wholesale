@@ -7,13 +7,11 @@ import Link from "next/link";
 import { PRODUCTS_PAGE_ROUTE } from "@/utils/urls";
 import { Button } from "@nextui-org/react";
 
-// Async function in the component for server-side data fetching
 const NewArrivals = async () => {
   let products: any = [];
 
   try {
     const { data, error } = await axios.products.getNewArrivals();
-    console.log(data, error, "new arrivals");
     if (data) {
       products = data;
     } else {

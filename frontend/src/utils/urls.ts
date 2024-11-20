@@ -24,6 +24,7 @@ export const PRODUCTS_URL = '/products';
 export const NEW_ARRIVALS_URL = '/products/new-arrivals';
 export const PRODUCT_BY_ID_URL = (id: string) => `/products/${id}`;
 export const CART_URL = '/cart';
+export const DELETE_CART_ITEM_URL = (variation:string) => `/cart/${variation}`;
 export const CHECK_OUT_URL = '/checkout';
 export const ORDERS_URL = '/orders/userOrders';
 export const ORDER_PRODUCTS_URL = (id: string) => `/orderItems/${id}`;

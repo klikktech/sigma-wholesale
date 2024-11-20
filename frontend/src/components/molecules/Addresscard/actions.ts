@@ -11,7 +11,10 @@ export const deleteAddressAction = async (formData: FormData) => {
             throw new Error("Address is required");
         }
         const { data, status } = await axios.users.deleteAddress(address as string);
-        return { success: true };
+        if (data && status === 200) {
+            console.log("success", status, data)
+            return { success: true };
+        }
     } catch (error) {
         console.error("Error deleting address:", error);
         return { success: false, error };

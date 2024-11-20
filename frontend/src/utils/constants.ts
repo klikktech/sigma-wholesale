@@ -25,28 +25,6 @@ export const CarouselInfo =  [
         "https://thumbs.dreamstime.com/b/bottle-cbd-oil-surrounded-fresh-high-quality-marijuana-buds-ai-generated-medical-cannabis-buds-surrounding-container-325567028.jpg",
     },
   ];
-export const NAV_MENU_ITEMS: INavbarMenuItem[] = [
-  // {
-  //   label: "Products",
-  //   path: PRODUCTS_PAGE_ROUTE,
-  // },
-  // {
-  //   label: "New Arrivals",
-  //   path: PRODUCTS_PAGE_ROUTE,
-  // },
-  // {
-  //   label: "Categories",
-  //   path: PRODUCTS_PAGE_ROUTE,
-  // },
-  // {
-  //   label: "Brands",
-  //   path: PRODUCTS_PAGE_ROUTE,
-  // },
-  // {
-  //   label: "contact",
-  //   path: PRODUCTS_PAGE_ROUTE,
-  // },
-];
 
 export const TABS_LIST = [
   {

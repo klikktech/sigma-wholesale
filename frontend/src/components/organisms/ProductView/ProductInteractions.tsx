@@ -41,7 +41,7 @@ const ProductInteractions = ({ productDetails }: ProductInteractionsProps) => {
       toast.success("Added to cart successfully!");
       router.push(HOME_PAGE_ROUTE);
     }
-  }, [state]);
+  }, [state,router]);
 
   const handleIncrement = (index: number) => {
     setQuantities((prevQuantities) => {

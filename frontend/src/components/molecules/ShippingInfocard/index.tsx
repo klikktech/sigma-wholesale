@@ -8,15 +8,6 @@ const ShippingInfoCard = () => {
                     <span className="material-symbols-rounded text-3xl text-blue-500">distance</span>
                     Add Address</p>
                 <Spacer y={4} />
-                {/* <Input
-                    label="Email address*"
-                    placeholder="Enter your email"
-                    name="email"
-                    labelPlacement="outside"
-                    required
-                    className="w-full"
-                />
-                <Spacer y={4} /> */}
                 <div className="flex flex-col md:flex-row gap-1">
                     <Input
                         label="First Name*"

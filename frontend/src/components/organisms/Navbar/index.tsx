@@ -1,6 +1,4 @@
 "use client";
-import { NAV_MENU_ITEMS } from "@/utils/constants";
-import { Input } from "@nextui-org/input";
 import {
   Link,
   Navbar as NextUINavbar,
@@ -8,8 +6,6 @@ import {
   NavbarContent,
   NavbarItem,
   NavbarMenuToggle,
-  NavbarMenu,
-  NavbarMenuItem,
   Badge,
   Button,
 } from "@nextui-org/react";
@@ -46,33 +42,9 @@ const Navbar = ({ user }: Props) => {
             </Link>
           </NavbarBrand>
         </NavbarContent>
-        <NavbarContent className="hidden sm:flex gap-4" justify="center">
-          {NAV_MENU_ITEMS.map((item, index) => (
-            <NavbarItem key={`${item}-${index}`}>
-              <Link
-                color="foreground"
-                className="w-full text-sm"
-                href={item.path}
-                size="lg"
-              >
-                {item.label}
-              </Link>
-            </NavbarItem>
-          ))}
-        </NavbarContent>
+
         <NavbarContent justify="end">
           <NavbarItem className="hidden lg:flex">
-            {/* <form action={formAction}>
-            <Input
-              className="w-48 text-sm"
-              name="keyword"
-              type="text"
-              placeholder="Search"
-            />
-            <Button className="w-full mt-3 px-3" color="primary" type='submit'>
-              <span className="material-symbols-rounded text-3xl">search</span>
-            </Button>
-            </form> */}
             <form action={formAction} className="flex items-center">
               <div className="relative w-48">
                 <input
@@ -117,20 +89,6 @@ const Navbar = ({ user }: Props) => {
 
 
         </NavbarContent>
-        <NavbarMenu>
-          {NAV_MENU_ITEMS.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
-              <Link
-                color="foreground"
-                className="w-full"
-                href={item.path}
-                size="lg"
-              >
-                {item.label}
-              </Link>
-            </NavbarMenuItem>
-          ))}
-        </NavbarMenu>
       </NextUINavbar>
     </>
   );

@@ -2,7 +2,6 @@ import React from "react";
 import "./style.css";
 import { ProdDetails } from "@/utils/types";
 import { Spacer } from "@nextui-org/react";
-import FormMessage from "@/components/molecules/FormMessage";
 import ProductInteractions from "./ProductInteractions";
 import ImageGallery from "./ImageGallery";
 

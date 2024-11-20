@@ -73,7 +73,6 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const handleAxiosError = (error: any): AxiosErrorResponse => {
   console.log(error.response.status,"error")
   if (error.response) {

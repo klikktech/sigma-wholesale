@@ -1,6 +1,6 @@
 'use client'
 import { Suspense } from 'react';
-import { Card, CardBody, Pagination } from '@nextui-org/react';
+import { Pagination } from '@nextui-org/react';
 import { Product } from '@/utils/types';
 import ProductCard from '@/components/molecules/ProductCard';
 import SkeletonProductCard from '@/components/molecules/ProductCard/SkeletonCard';
