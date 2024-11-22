@@ -2,6 +2,7 @@ package com.klikk.sigma.service.impl;
 
 import com.klikk.sigma.dto.UserResponseDto;
 import com.klikk.sigma.dto.request.RegisterRequest;
+import com.klikk.sigma.dto.request.UpdateUserAdminRequest;
 import com.klikk.sigma.dto.request.UpdateUserRequest;
 import com.klikk.sigma.dto.response.SuccessResponse;
 import com.klikk.sigma.dto.response.UsersResponse;
@@ -12,6 +13,7 @@ import com.klikk.sigma.mapper.UserMapper;
 import com.klikk.sigma.repository.UserRepository;
 import com.klikk.sigma.service.JwtService;
 import com.klikk.sigma.service.UserService;
+import com.klikk.sigma.type.RoleType;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -119,5 +121,49 @@ public class UserServiceImpl implements UserService {
         user.get().setPhone(updateRequest.getPhone());
         userRepository.save(user.get());
         return new SuccessResponse(LocalDateTime.now(), "User details updated successfully");
+    }
+
+    @Override
+    public SuccessResponse updateUserAdmin(UpdateUserAdminRequest updateUserAdminRequest, HttpServletRequest request) {
+        String token=request.getHeader("Authorization").split(" ")[1];
+        String userEmail=jwtService.extractUsername(token);
+        Optional<User> user=userRepository.findByEmail(userEmail);
+        if (user.isEmpty()) {
+            throw new IllegalArgumentException("User doesn't exist");
+        }
+        if (updateUserAdminRequest.getFirstname() != null) {
+            user.get().setFirstname(updateUserAdminRequest.getFirstname());
+        }
+        if (updateUserAdminRequest.getLastname() != null) {
+            user.get().setLastname(updateUserAdminRequest.getLastname());
+        }
+        if (updateUserAdminRequest.getNickname() != null) {
+            user.get().setNickname(updateUserAdminRequest.getNickname());
+        }
+        if (updateUserAdminRequest.getNewPassword() != null) {
+            user.get().setPasswordHash(passwordEncoder.encode(updateUserAdminRequest.getNewPassword()));
+        }
+        if (updateUserAdminRequest.getPhone() != null) {
+            user.get().setPhone(updateUserAdminRequest.getPhone());
+        }
+        if (updateUserAdminRequest.getRole() != null) {
+            user.get().setRole(getRoleType(updateUserAdminRequest.getRole()));
+        }
+
+        userRepository.save(user.get());
+
+        return new SuccessResponse(LocalDateTime.now(), "User details updated successfully");
+
+    }
+
+    public RoleType getRoleType(String role){
+        role=role.toLowerCase();
+        if(role.equals("admin")){
+            return RoleType.ADMIN;
+        }
+        else if(role.equals("customer")){
+            return RoleType.CUSTOMER;
+        }
+        return RoleType.PENDING;
     }
 }

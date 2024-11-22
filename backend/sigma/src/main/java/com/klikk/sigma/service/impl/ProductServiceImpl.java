@@ -2,10 +2,8 @@ package com.klikk.sigma.service.impl;
 
 import com.klikk.sigma.aws.AwsS3Properties;
 import com.klikk.sigma.dto.request.ProductRequestDto;
-import com.klikk.sigma.dto.response.AttachmentResponse;
-import com.klikk.sigma.dto.response.ProductResponseDto;
-import com.klikk.sigma.dto.response.ProductsResponse;
-import com.klikk.sigma.dto.response.VariationResponseDto;
+import com.klikk.sigma.dto.request.UpdateProductAdminRequest;
+import com.klikk.sigma.dto.response.*;
 import com.klikk.sigma.entity.Attachment;
 import com.klikk.sigma.entity.Product;
 import com.klikk.sigma.exception.NotFoundException;
@@ -207,6 +205,42 @@ public class ProductServiceImpl implements ProductService {
     public Page<ProductResponseDto> getProductsFromSearch(String keyword, Pageable pageable) {
         Page<Product> productsPage = productRepository.findByKeyword(keyword, pageable);
         return productsPage.map(this::buildProductResponse);
+    }
+
+    @Override
+    public SuccessResponse updateProduct(UpdateProductAdminRequest request) {
+        Optional<Product> product=productRepository.findByDetails(request.getDetails());
+
+        if(product.isEmpty()){
+            throw new IllegalArgumentException("Product not present");
+        }
+
+        // Check and update fields only if provided
+        if (request.getName() != null) {
+            product.get().setName(request.getName());
+        }
+        if (request.getMaxPrice() > 0) { // Ensure valid price
+            product.get().setMaxPrice(request.getMaxPrice());
+        }
+        if (request.getMinPrice() > 0) { // Ensure valid price
+            product.get().setMinPrice(request.getMinPrice());
+        }
+        if (request.getPrice() > 0) { // Ensure valid price
+            product.get().setPrice(request.getPrice());
+        }
+        // Check for `isOnSale` explicitly as it's a boolean (default is false)
+        product.get().setOnSale(request.isOnSale());
+
+        if (request.getStatus() != null) {
+            product.get().setStatus(request.getStatus());
+        }
+        if (request.getDetails() != null) {
+            product.get().setDetails(request.getDetails());
+        }
+
+        productRepository.save(product.get());
+
+        return new SuccessResponse(LocalDateTime.now(),"Product updated successfully");
     }
 
 

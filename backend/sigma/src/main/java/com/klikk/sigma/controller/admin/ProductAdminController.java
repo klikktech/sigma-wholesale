@@ -2,10 +2,12 @@ package com.klikk.sigma.controller.admin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.klikk.sigma.dto.request.ProductRequestDto;
+import com.klikk.sigma.dto.request.UpdateProductAdminRequest;
 import com.klikk.sigma.dto.response.ProductsResponse;
 import com.klikk.sigma.dto.response.SuccessResponse;
 import com.klikk.sigma.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -43,5 +45,17 @@ public class ProductAdminController {
         ProductRequestDto productRequest = objectMapper.readValue(productString, ProductRequestDto.class);
         productService.saveProduct(productRequest,displayImage,images);
         return ResponseEntity.ok(new SuccessResponse(LocalDateTime.now(), "Product Added Successfully"));
+    }
+
+    @PutMapping()
+    @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
+    public ResponseEntity<SuccessResponse> updateProduct(UpdateProductAdminRequest request){
+        try{
+            return ResponseEntity.ok(productService.updateProduct(request));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(SuccessResponse.builder().message(e.getMessage()).build());
+        }
+
     }
 }
