@@ -4,6 +4,7 @@ import React from "react";
 
 const EditProductPage = async ({ params }: { params: { details: string } }) => {
   const { data, error } = await axios.products.getProductForDetails(params.details);
+  console.log(data,"edit product")
   if (error) {
     throw new Error(error.message);
   }

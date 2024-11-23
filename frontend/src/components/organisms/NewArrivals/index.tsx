@@ -41,14 +41,14 @@ const NewArrivals = async () => {
 
   return (
     <div className="container mx-auto">
-      <h1 className="my-2 text-xl">New Arrivals</h1>
+      <h1 className="my-2 text-xl">NEW ARRIVALS</h1>
       <ProductsCarousel>{productElements}</ProductsCarousel>
       <div className="text-center">
         <Button
           color="primary"
           className="mt-4 text-black py-2 rounded-lg hover:bg-primary-300"
         >
-          <Link href={PRODUCTS_PAGE_ROUTE}>view more</Link>
+          <Link href={PRODUCTS_PAGE_ROUTE}>View More</Link>
         </Button>
       </div>
     </div>

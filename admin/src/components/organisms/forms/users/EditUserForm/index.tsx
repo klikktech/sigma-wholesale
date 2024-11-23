@@ -3,14 +3,14 @@ import Button from "@/components/atoms/Button";
 import Input from "@/components/atoms/Input";
 import { Select, SelectItem, Textarea } from "@nextui-org/react";
 import React from "react";
-import { addUserAction } from "../actions";
+import { editUserAction } from "./actions";
 import { useFormState, useFormStatus } from "react-dom";
 import FormMessage from "@/components/molecules/FormMessage";
 import Link from "next/link";
 import { USERS_PAGE_ROUTE } from "@/utils/routes";
 
-const AddUserForm = () => {
-  const [state, formAction] = useFormState(addUserAction, undefined);
+const EditUserForm = ({user}:any) => {
+  const [state, formAction] = useFormState(editUserAction, undefined);
   const { pending } = useFormStatus();
   return (
     <form
@@ -29,6 +29,7 @@ const AddUserForm = () => {
               type="text"
               id="firstName"
               name="firstName"
+              defaultValue={user.firstname}
               required
             />
           </div>
@@ -43,6 +44,8 @@ const AddUserForm = () => {
               type="text"
               id="lastName"
               name="lastName"
+              defaultValue={user.lastname}
+
             />
           </div>
           <div className="w-full">
@@ -56,6 +59,8 @@ const AddUserForm = () => {
               type="text"
               id="username"
               name="username"
+              defaultValue={user.username}
+              readOnly
               required
             />
           </div>
@@ -69,10 +74,12 @@ const AddUserForm = () => {
               type="email"
               id="email"
               name="email"
+              defaultValue={user.email}
+              readOnly
               required
             />
           </div>
-          <div className="w-full">
+          {/* <div className="w-full">
             <label
               className="block text-sm font-medium mb-1"
               htmlFor="password"
@@ -85,7 +92,7 @@ const AddUserForm = () => {
               name="password"
               required
             />
-          </div>
+          </div> */}
         </div>
         <div className="w-full flex gap-2">
           <div className="w-full">
@@ -95,7 +102,7 @@ const AddUserForm = () => {
             <Select
               id="role"
               name="role"
-              defaultSelectedKeys={["PENDING"]}
+              defaultSelectedKeys={[user.role]}
               required
             >
               <SelectItem key="CUSTOMER">Customer</SelectItem>
@@ -111,6 +118,7 @@ const AddUserForm = () => {
               type="tel"
               id="phone"
               name="phone"
+              defaultValue={user.phone}
             />
           </div>
         </div>
@@ -122,7 +130,43 @@ const AddUserForm = () => {
           <Textarea
             id="address"
             name="address"
+            defaultValue={user.storeAddress[0].address}
           ></Textarea>
+        </div>
+        <div className="w-full flex gap-2">
+          <div className="w-full">
+            <label className="block text-sm font-medium mb-1" htmlFor="state">
+              State
+            </label>
+            <Input
+              type="text"
+              id="state"
+              name="state"
+              defaultValue={user.storeAddress[0].state}
+            />
+          </div>
+          <div className="w-full">
+            <label className="block text-sm font-medium mb-1" htmlFor="city">
+              City
+            </label>
+            <Input
+              type="text"
+              id="city"
+              name="city"
+              defaultValue={user.storeAddress[0].city}
+            />
+          </div>
+          <div className="w-full">
+            <label className="block text-sm font-medium mb-1" htmlFor="zipcode">
+              Zipcode
+            </label>
+            <Input
+              type="text"
+              id="zipcode"
+              name="zipcode"
+              defaultValue={user.storeAddress[0].zipcode}
+            />
+          </div>
         </div>
         <div className="flex gap-2 w-full">
           <Button
@@ -131,7 +175,7 @@ const AddUserForm = () => {
             disabled={pending}
             aria-disabled={pending}
           >
-            {pending ? "Adding new user" : "Add User"}
+            {pending ? "Updating user" : "Update User"}
           </Button>
           <Link className="w-full" href={USERS_PAGE_ROUTE}>
             <Button className="w-full" color="default">
@@ -145,4 +189,4 @@ const AddUserForm = () => {
   );
 };
 
-export default AddUserForm;
+export default EditUserForm;

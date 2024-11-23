@@ -1,9 +1,10 @@
 "use client";
-import { User, Tooltip } from "@nextui-org/react";
+import { User, Tooltip, Link } from "@nextui-org/react";
 import { DeleteIcon, EditIcon, EyeIcon } from "@/utils/icons";
 import Modal from "@/components/molecules/Modal";
 import React from "react";
 import { ITableColumn } from "@/utils/types";
+import { EDIT_USER_PAGE_ROUTE } from "@/utils/routes";
 
 interface User {
   id: string;
@@ -74,9 +75,12 @@ export const renderUserTableCell = (user: User, columnKey: React.Key) => {
             </span>
           </Tooltip>
           <Tooltip content="Edit user">
+          <Link href={EDIT_USER_PAGE_ROUTE(user.email)}>
+
             <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
               <EditIcon />
             </span>
+            </Link>
           </Tooltip>
           <Tooltip color="danger" content="Delete user">
             <span className="cursor-pointer text-lg text-danger active:opacity-50">

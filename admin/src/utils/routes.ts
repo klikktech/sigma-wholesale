@@ -3,6 +3,8 @@ export const BASE_FRONTEND_URL = process.env.BASE_FRONTEND_URL
 export const SIGNIN_PAGE_ROUTE = "/sign-in";
 export const USERS_PAGE_ROUTE = "/users";
 export const ADD_USER_PAGE_ROUTE = USERS_PAGE_ROUTE + "/add-user";
+export const EDIT_USER_PAGE_ROUTE = (email: string) =>
+  USERS_PAGE_ROUTE + "/edit-user/" + email;
 export const PRODUCTS_PAGE_ROUTE = "/products";
 export const ADD_PRODUCT_PAGE_ROUTE = PRODUCTS_PAGE_ROUTE + "/add-product";
 export const EDIT_PRODUCT_PAGE_ROUTE = (details: string) =>

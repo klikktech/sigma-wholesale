@@ -4,14 +4,17 @@ export type Message =
   | { message: string };
 
 export interface UserDetails {
-  firstName?: string;
-  lastName?: string;
+  firstname?: string;
+  lastname?: string;
   username: string;
   phone: string;
   role: string;
   email: string;
-  password: string;
-  address?: string;
+  password?: string;
+  storeAddress?: string;
+  StoreState?:string;
+  StoreCity?:string;
+  storeZipcode?:string;
 }
 
 export interface ProductDetails {
@@ -23,10 +26,11 @@ export interface ProductDetails {
   isOnSale: boolean;
   status: "instock" | "outofstock";
   displayStatus: string;
+  details?:string;
   // stockQuantity: number;
   // totalSales: string;
-  commentStatus: string;
-  displayImage?: string;
+  // commentStatus: string;
+  displayImage?: any;
   images?: string[]
   // category: string;
 }

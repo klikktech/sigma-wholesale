@@ -7,7 +7,7 @@ import { useFormState } from "react-dom";
 import FormMessage from "@/components/molecules/FormMessage";
 import Link from "next/link";
 import { PRODUCTS_PAGE_ROUTE } from "@/utils/routes";
-import { addProductAction } from "../actions";
+import { editProductAction } from "./actions";
 import Image from "next/image";
 import FormSubmitButton from "@/components/molecules/FormSubmitButtton";
 import { ProductDetails } from "@/utils/types";
@@ -51,7 +51,7 @@ const generateDataUrlForImages = (
 const VideoPreview = ({ dataUrl }: { readonly dataUrl: string }) => {
   return (
     <Video
-      src={`data:video/mp4;base64,${dataUrl}`}
+      src={dataUrl}
       // alt="preview"
       // className="rounded-lg w-full h-full object-cover"
     />
@@ -61,7 +61,7 @@ const VideoPreview = ({ dataUrl }: { readonly dataUrl: string }) => {
 const ImagePreview = ({ dataUrl }: { readonly dataUrl: string }) => {
   return (
     <Image
-      src={`data:image/png;base64,${dataUrl}`}
+      src={dataUrl}
       alt="preview"
       height={200}
       width={200}
@@ -101,12 +101,12 @@ const DisplayImageCard = ({
 };
 
 const EditProductForm = ({ product }: Props) => {
-  const [state, formAction] = useFormState(addProductAction, undefined);
+  const [state, formAction] = useFormState(editProductAction, undefined);
 
   const displayImageFileInput = useRef<HTMLInputElement>(null);
   const imagesFileInput = useRef<HTMLInputElement>(null);
   const [dataUrl, setDataUrl] = useState<string | null>(
-    product.displayImage || null
+    product.displayImage?.imageUrl || null
   );
   const [imagesDataUrl, setImagesDataUrl] = useState<string[] | null>(
     product.images || null
@@ -139,7 +139,7 @@ const EditProductForm = ({ product }: Props) => {
                 type="text"
                 id="name"
                 name="name"
-                value={product.name}
+                defaultValue={product.name}
                 required
               />
             </div>
@@ -155,7 +155,7 @@ const EditProductForm = ({ product }: Props) => {
               <Input
                 type="text"
                 id="maxPrice"
-                value={product.maxPrice?.toString() || ""}
+                defaultValue={product.maxPrice?.toString() || ""}
                 name="maxPrice"
               />
             </div>
@@ -170,7 +170,7 @@ const EditProductForm = ({ product }: Props) => {
                 type="text"
                 id="minPrice"
                 name="minPrice"
-                value={product.minPrice?.toString() || ""}
+                defaultValue={product.minPrice?.toString() || ""}
                 required
               />
             </div>
@@ -182,7 +182,7 @@ const EditProductForm = ({ product }: Props) => {
                 type="text"
                 id="sku"
                 name="sku"
-                value={product.sku}
+                defaultValue={product.sku}
                 required
               />
             </div>
@@ -205,7 +205,7 @@ const EditProductForm = ({ product }: Props) => {
                 <SelectItem key="outofstock">Out of stock</SelectItem>
               </Select>
             </div>
-            <div className="w-full">
+            {/* <div className="w-full">
               <label
                 className="block text-sm font-medium mb-1"
                 htmlFor="status"
@@ -221,6 +221,18 @@ const EditProductForm = ({ product }: Props) => {
                 <SelectItem key="open">Open</SelectItem>
                 <SelectItem key="closed">Closed</SelectItem>
               </Select>
+            </div> */}
+                        <div className="w-full">
+              <label className="block text-sm font-medium mb-1" htmlFor="details">
+                Details
+              </label>
+              <Input
+                type="text"
+                id="details"
+                name="details"
+                defaultValue={product.details}
+                required
+              />
             </div>
           </div>
           <div className="w-full">
@@ -237,8 +249,8 @@ const EditProductForm = ({ product }: Props) => {
           <div className="flex gap-2 w-full">
             <div className="w-full">
               <FormSubmitButton
-                pendingText="Adding new product"
-                buttonText="Add Product"
+                pendingText="Updating product"
+                buttonText="Update Product"
                 className="w-full"
               />
             </div>
@@ -258,7 +270,7 @@ const EditProductForm = ({ product }: Props) => {
             id="displayImage"
             onChange={handleDisplayImageFileChange}
             ref={displayImageFileInput}
-            accept="image/*"
+            accept="image/*,video/*"
           />
           <input
             className="hidden"
@@ -266,7 +278,7 @@ const EditProductForm = ({ product }: Props) => {
             type="file"
             name="images"
             id="images"
-            accept="image/*"
+            accept="image/*,video/*"
             onChange={handleImagesFileChange}
             ref={imagesFileInput}
           />

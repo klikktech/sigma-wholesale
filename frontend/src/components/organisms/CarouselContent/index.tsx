@@ -28,7 +28,7 @@ const CarouselContent = () => {
             color="primary"
             className="rounded-lg hover:bg-primary-300"
           >
-            <Link className="text-black" href={PRODUCTS_PAGE_ROUTE}>Shop now</Link>
+            <Link className="text-black" href={PRODUCTS_PAGE_ROUTE}>Shop Now</Link>
           </Button>
           <ScrollButton color="primary" scrollTargetId="tabs-section">
             Learn More

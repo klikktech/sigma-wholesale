@@ -7,10 +7,10 @@ import { useFormState } from "react-dom";
 import FormMessage from "@/components/molecules/FormMessage";
 import Link from "next/link";
 import { PRODUCTS_PAGE_ROUTE } from "@/utils/routes";
-import { addProductAction } from "../actions";
 import Image from "next/image";
 import FormSubmitButton from "@/components/molecules/FormSubmitButtton";
 import Video from "@/components/atoms/Video";
+import { addProductAction } from "./action";
 
 const generateDataUrlForDisplayImage = (
   file: File,
@@ -46,7 +46,7 @@ const generateDataUrlForImages = (
 const VideoPreview = ({ dataUrl }: { readonly dataUrl: string }) => {
   return (
     <Video
-      src={`${dataUrl}`}
+      src={dataUrl}
       // alt="preview"
       // className="rounded-lg w-full h-full object-cover"
     />
@@ -222,15 +222,14 @@ const AddProductForm = () => {
             id="displayImage"
             onChange={handleDisplayImageFileChange}
             ref={displayImageFileInput}
-            accept="image/*"
-          />
+            accept="image/*,video/*"          />
           <input
             className="hidden"
             multiple
             type="file"
             name="images"
             id="images"
-            accept="image/*"
+            accept="image/*,video/*"
             onChange={handleImagesFileChange}
             ref={imagesFileInput}
           />

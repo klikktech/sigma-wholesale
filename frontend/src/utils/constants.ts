@@ -28,35 +28,27 @@ export const CarouselInfo =  [
 
 export const TABS_LIST = [
   {
-    title: "Kratom",
+    title: "SMOKE SHOP",
+    key: "smoke-shop",
+  },
+  {
+    title: "VAPE SHOP",
+    key: "vape-shop",
+  },
+  {
+    title: "KRATOM",
     key: "kratom",
-  },
-  {
-    title: "Coils/Pods",
-    key: "coils",
-  },
-  {
-    title: "Detox",
-    key: "detox",
-  },
-  {
-    title: "E Juice",
-    key: "ejuice",
-  },
-  {
-    title: "Papers/Wraps",
-    key: "papers",
-  },
-  {
-    title: "THC",
-    key: "thc",
-  },
-  {
-    title: "Necotine Disposables",
-    key: "necotine",
   },
   {
     title: "CBD",
     key: "cbd",
+  },
+  {
+    title: "NOVELTY",
+    key: "novelty",
+  },
+  {
+    title: "ADULT NOVELTIES",
+    key: "adult-novelties",
   },
 ];

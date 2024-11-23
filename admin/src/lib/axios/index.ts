@@ -6,6 +6,9 @@ import {
   REFRESH_TOKEN_URL,
   SIGNIN_ENDPOINT,
   SIGNOUT_ENDPOINT,
+  GET_USER_ENDPOINT,
+  EDIT_USERS_ENDPOINT,
+  ADD_USER_ENDPOINT
 } from "@/utils/urls";
 import api, { authInstance } from "./instance";
 import {
@@ -64,7 +67,26 @@ export const axios = {
     addUser: async (userDetails: UserDetails): Promise<AxiosResponse> => {
       try {
         const { data, status } = await api.post(
-          GET_ALL_USERS_ENDPOINT,
+          ADD_USER_ENDPOINT,
+          userDetails
+        );
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    getUserDetails: async (email: string): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.get(GET_USER_ENDPOINT(email));
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    editUser: async (userDetails: UserDetails): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.put(
+          EDIT_USERS_ENDPOINT,
           userDetails
         );
         return { data, status };
@@ -93,6 +115,22 @@ export const axios = {
     addProduct: async (formData: FormData): Promise<AxiosResponse> => {
       try {
         const { data, status } = await api.post(
+          ADD_PRODUCT_ENDPOINT,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    updateProduct: async (formData: FormData): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.put(
           ADD_PRODUCT_ENDPOINT,
           formData,
           {

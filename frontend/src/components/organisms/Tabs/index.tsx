@@ -11,6 +11,8 @@ const Tabs = () => {
 
   return (
     <div className="my-3" id="tabs-section">
+            <h1 className="my-2 text-xl">OUR CATEGORIES</h1>
+
       <NextUITabs
         selectedKey={selectedTab}
         onSelectionChange={(key) => setSelectedTab(key.toString())}
@@ -32,7 +34,7 @@ const Tabs = () => {
           className="mt-4 text-black py-2 rounded-lg hover:bg-primary-300"
           onClick={() => router.push(`/categories/${selectedTab}/products?page=1&size=16`)}
         >
-          view more
+          View More
         </Button>
       </div>
     </div>

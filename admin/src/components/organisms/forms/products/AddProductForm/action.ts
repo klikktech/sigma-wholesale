@@ -20,14 +20,14 @@ const handleFileToBase64 = async (file: {
 
 export const addProductAction = async (
   state: undefined | Message,
-  formData: FormData
+  formData: FormData,
 ) => {
   const displayImage = formData.get("displayImage");
   const images = formData.getAll("images");
   const validatedFormFields = ProductFormValidator.safeParse(
     Object.fromEntries(formData)
   );
-
+console.log(displayImage,images,validatedFormFields,"edit prod")
   if (validatedFormFields.error) {
     return { error: validatedFormFields.error.errors[0].message as string };
   }
@@ -62,7 +62,7 @@ export const addProductAction = async (
       isOnSale: validatedFormFields.data.isOnSale as boolean,
       status: validatedFormFields.data.status as "instock" | "outofstock",
       displayStatus: "draft",
-      commentStatus: validatedFormFields.data.commentStatus,
+      // commentStatus: validatedFormFields.data.commentStatus,
     };
     const formData = new FormData();
     formData.append("product", JSON.stringify(payload));

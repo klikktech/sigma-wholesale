@@ -103,14 +103,14 @@ export const renderCell = (product: Product, columnKey: React.Key) => {
               <EyeIcon />
             </span>
           </Tooltip>
-          <Tooltip content="Edit user">
+          <Tooltip content="Edit Product">
             <Link href={EDIT_PRODUCT_PAGE_ROUTE(product.details)}>
               <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
                 <EditIcon />
               </span>
             </Link>
           </Tooltip>
-          <Tooltip color="danger" content="Delete user">
+          <Tooltip color="danger" content="Delete Product">
             <span className="cursor-pointer text-lg text-danger active:opacity-50">
               <Modal
                 body={<>Are you sure you want to delete it</>}

@@ -7,27 +7,33 @@ import { UserFormValidator } from "@/utils/validators";
 import { redirect } from "next/navigation";
 
 export const addUserAction = async (
-  state: undefined | Message,
+  State: undefined | Message,
   formData: FormData
 ) => {
-  const firstName = formData.get("firstName");
-  const lastName = formData.get("lastName");
+  const firstname = formData.get("firstname");
+  const lastname = formData.get("lastname");
   const username = formData.get("username");
   const email = formData.get("email");
   const password = formData.get("password");
   const role = formData.get("role");
   const phone = formData.get("phone");
-  const address = formData.get("address");
+  const storeAddress = formData.get("address");
+  const storeState = formData.get("state");
+  const storeCity = formData.get("city");
+  const storeZip = formData.get("zipcode");
 
   const parsedFields = UserFormValidator.safeParse({
-    firstName,
-    lastName,
+    firstname,
+    lastname,
     username,
     phone,
     role,
-    address,
     email,
     password,
+    storeAddress,
+    storeState,
+    storeCity,
+    storeZip
   });
   if (parsedFields.error) {
     return { error: parsedFields.error.errors[0].message as string };
