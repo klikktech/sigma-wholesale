@@ -41,6 +41,42 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public Page<CategoryProductsDto> getProductsOfTag(String name, Pageable pageable) {
+        Category category=categoryRepository.findBySlugAndType(name,"product_tag");
+        List<Product> products=category.getProducts();
+
+        // Calculate the start and end indices for pagination
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), products.size());
+
+        // Get the paginated list
+        List<CategoryProductsDto> paginatedProducts = products.subList(start, end).stream()
+                .map(product -> {
+                    List<Attachment> attachments=attachmentRepository.findByProduct(product);
+                    CategoryProductsDto responseDto=productMapper.productToCategoryProductsDto(product);
+                    AttachmentResponse primaryImage = attachments.stream()
+                            .filter(Attachment::isPrimary)
+                            .map(attachment -> {
+                                return  attachmentMapper.attachmentToAttachmentResponse(attachment);
+                            })
+                            .findFirst()
+                            .orElse(null);
+                    List<AttachmentResponse> nonPrimaryImages = attachments.stream()
+                            .filter(attachment -> !attachment.isPrimary())
+                            .map(attachment -> {
+                                return attachmentMapper.attachmentToAttachmentResponse(attachment);
+                            })
+                            .toList();
+                    responseDto.setImages(nonPrimaryImages);
+                    responseDto.setDisplayImage(primaryImage);
+                    return responseDto;
+                })
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(paginatedProducts, pageable, products.size());
+    }
+
+    @Override
     public Page<CategoryProductsDto> getProductsOfCategory(String name, Pageable pageable) {
         Category category=categoryRepository.findBySlugAndType(name,"product_cat");
         List<Product> products=category.getProducts();

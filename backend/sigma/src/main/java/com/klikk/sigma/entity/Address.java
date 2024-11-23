@@ -38,5 +38,5 @@ public class Address {
     private String state;
 
     @Column(name = "store_zip")
-    private Long zipcode;
+    private String zipcode;
 }

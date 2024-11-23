@@ -15,6 +15,8 @@ public interface CategoryService {
     public void saveCategory(Category category);
 
     Page<CategoryProductsDto> getProductsOfCategory(String name, Pageable pageable);
+
+    Page<CategoryProductsDto> getProductsOfTag(String name, Pageable pageable);
 }
 
 
