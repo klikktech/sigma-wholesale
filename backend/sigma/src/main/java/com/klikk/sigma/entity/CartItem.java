@@ -41,6 +41,10 @@ public class CartItem {
     @JoinColumn(name = "variation_id",referencedColumnName = "id")
     private Variation variation;
 
+    @OneToOne
+    @JoinColumn(name = "product_id",referencedColumnName = "id")
+    private Product product;
+
     @Column(name = "quantity")
     private Long quantity;
 

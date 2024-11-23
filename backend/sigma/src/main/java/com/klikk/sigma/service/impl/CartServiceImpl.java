@@ -93,6 +93,7 @@ public class CartServiceImpl implements CartService {
                 .collect(Collectors.toMap(CartItemRequest::getVariation, item -> item));
 
         for (CartItem existingItem : existingItems) {
+
             String variationDetails = existingItem.getVariation().getDetails();
 
             if (requestItemMap.containsKey(variationDetails)) {
@@ -109,12 +110,23 @@ public class CartServiceImpl implements CartService {
 
         // Add new items from the request that are not in the existing cart items
         for (CartItemRequest newItemRequest : requestItemMap.values()) {
-            Variation variation = variationRepository.findByDetails(newItemRequest.getVariation())
-                    .orElseThrow(() -> new NotFoundException("Variation not found for details: " + newItemRequest.getVariation()));
+            Optional<Product> product=Optional.empty();
+            Optional<Variation> variation=Optional.empty();
+            if(newItemRequest.isOnlyProduct()){
+                 product= productRepository.findByDetails(newItemRequest.getVariation());
+            }
+            else{
+                 variation = variationRepository.findByDetails(newItemRequest.getVariation());
+            }
+
+            if(product.isEmpty() && variation.isEmpty()){
+                throw new NotFoundException("Variation not found for details: " + newItemRequest.getVariation());
+            }
 
             CartItem newCartItem = CartItem.builder()
                     .cart(cart)
-                    .variation(variation)
+                    .variation(variation.get())
+                    .product(product.get())
                     .quantity(newItemRequest.getQuantity())
                     .addedAt(LocalDateTime.now())
                     .build();

@@ -28,10 +28,9 @@ public class UserAdminController {
     @PutMapping("/update")
     @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
     public ResponseEntity<SuccessResponse> updateUser(
-            @RequestBody UpdateUserAdminRequest updateUserRequest,
-            HttpServletRequest request) {
+            @RequestBody UpdateUserAdminRequest updateUserRequest) {
         try {
-            SuccessResponse response = userService.updateUserAdmin(updateUserRequest, request);
+            SuccessResponse response = userService.updateUserAdmin(updateUserRequest);
             return ResponseEntity.ok(response);
         } catch (NotFoundException | IllegalArgumentException exception) {
             return new ResponseEntity<>(new SuccessResponse(LocalDateTime.now(), exception.getMessage()), HttpStatus.NOT_FOUND);

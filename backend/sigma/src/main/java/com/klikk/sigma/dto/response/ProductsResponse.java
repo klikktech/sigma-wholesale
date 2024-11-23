@@ -31,5 +31,11 @@ public class ProductsResponse {
 
     private String price;
 
+    private double maxPrice;
+
+    private double minPrice;
+
+    private boolean isOnSale;
+
     private LocalDateTime createdAt;
 }

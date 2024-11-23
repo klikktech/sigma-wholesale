@@ -46,7 +46,7 @@ public class OrderItemServiceImpl implements OrderItemService {
         }
         List<CartItem> cartItems=cartItemsRepository.findByCart(cart.get());
         List<OrderItem> orderItems= cartItems.stream().map(cartItem -> {
-            OrderItem orderItem=OrderItem.builder().order(order).variation(cartItem.getVariation()).quantity(cartItem.getQuantity()).build();
+            OrderItem orderItem=OrderItem.builder().order(order).product(cartItem.getProduct()).variation(cartItem.getVariation()).quantity(cartItem.getQuantity()).build();
             orderItemRepository.save(orderItem);
             cartItemsRepository.delete(cartItem);
             return orderItem;

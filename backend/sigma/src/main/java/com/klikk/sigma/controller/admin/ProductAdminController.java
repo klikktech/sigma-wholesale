@@ -49,9 +49,10 @@ public class ProductAdminController {
 
     @PutMapping()
     @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
-    public ResponseEntity<SuccessResponse> updateProduct(UpdateProductAdminRequest request){
+    public ResponseEntity<SuccessResponse> updateProduct(@RequestPart("product") String request){
         try{
-            return ResponseEntity.ok(productService.updateProduct(request));
+            UpdateProductAdminRequest updateRequest = objectMapper.readValue(request, UpdateProductAdminRequest.class);
+            return ResponseEntity.ok(productService.updateProduct(updateRequest));
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(SuccessResponse.builder().message(e.getMessage()).build());

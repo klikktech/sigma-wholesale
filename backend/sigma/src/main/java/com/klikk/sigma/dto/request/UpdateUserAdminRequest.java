@@ -18,6 +18,8 @@ public class UpdateUserAdminRequest {
 
     private String newPassword;
 
+    private String email;
+
     private String phone;
 
     private String role;

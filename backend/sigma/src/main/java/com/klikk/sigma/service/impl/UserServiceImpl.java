@@ -124,10 +124,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public SuccessResponse updateUserAdmin(UpdateUserAdminRequest updateUserAdminRequest, HttpServletRequest request) {
-        String token=request.getHeader("Authorization").split(" ")[1];
-        String userEmail=jwtService.extractUsername(token);
-        Optional<User> user=userRepository.findByEmail(userEmail);
+    public SuccessResponse updateUserAdmin(UpdateUserAdminRequest updateUserAdminRequest ) {
+        Optional<User> user=userRepository.findByEmail(updateUserAdminRequest.getEmail());
         if (user.isEmpty()) {
             throw new IllegalArgumentException("User doesn't exist");
         }

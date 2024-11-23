@@ -27,5 +27,5 @@ public interface UserService {
 
     SuccessResponse updateUser(UpdateUserRequest updateRequest, HttpServletRequest request);
 
-    SuccessResponse updateUserAdmin(UpdateUserAdminRequest updateUserAdminRequest,HttpServletRequest request);
+    SuccessResponse updateUserAdmin(UpdateUserAdminRequest updateUserAdminRequest);
 }

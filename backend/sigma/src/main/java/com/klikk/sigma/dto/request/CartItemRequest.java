@@ -16,5 +16,7 @@ public class CartItemRequest {
 
     private Long quantity;
 
+    private boolean isOnlyProduct;
+
     private double price;
 }
