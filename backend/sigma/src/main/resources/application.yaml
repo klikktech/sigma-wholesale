@@ -1,6 +1,11 @@
 server:
   port: 6754
-
+aws:
+  s3:
+    bucketName: "sigmawholesaleimages"
+    productImagesPath: "products"
+    accessKeyId: "AKIAYM7POCIYGBSQHBFN"
+    secretKey: "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"
 spring:
   servlet:
     multipart:
@@ -11,10 +16,11 @@ spring:
     serialization:
       fail_on_empty_beans: false
   datasource:
-    username: root
+    username: admin
     password: password
     #    url: jdbc:mysql://localhost:3306/sigmawholesale
-    url: jdbc:mysql://localhost:3306/sigmawholesalebackup
+#    url: jdbc:mysql://localhost:3306/sigmawholesalebackup
+    url: jdbc:mysql://database-1.cvkeg884elyz.us-east-2.rds.amazonaws.com:3306/sigmawholesalebackup
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true

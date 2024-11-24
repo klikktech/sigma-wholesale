@@ -1,0 +1,67 @@
+package com.klikk.sigma.controller.admin;
+
+import com.klikk.sigma.dto.request.RegisterRequest;
+import com.klikk.sigma.dto.request.UpdateUserAdminRequest;
+import com.klikk.sigma.dto.request.UpdateUserRequest;
+import com.klikk.sigma.dto.response.AuthenticationResponse;
+import com.klikk.sigma.dto.response.SuccessResponse;
+import com.klikk.sigma.dto.response.UsersResponse;
+import com.klikk.sigma.exception.NotFoundException;
+import com.klikk.sigma.service.AuthenticationService;
+import com.klikk.sigma.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/admin/users")
+public class UserAdminController {
+
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private AuthenticationService authenticationService;
+
+    @PutMapping("/update")
+    @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
+    public ResponseEntity<SuccessResponse> updateUser(
+            @RequestBody UpdateUserAdminRequest updateUserRequest) {
+        try {
+            SuccessResponse response = userService.updateUserAdmin(updateUserRequest);
+            return ResponseEntity.ok(response);
+        } catch (NotFoundException | IllegalArgumentException exception) {
+            return new ResponseEntity<>(new SuccessResponse(LocalDateTime.now(), exception.getMessage()), HttpStatus.NOT_FOUND);
+        }
+        catch (Exception exception) {
+            return new ResponseEntity<>(new SuccessResponse(LocalDateTime.now(), "Failed to update user"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{email}")
+    @PreAuthorize("hasAuthority('admin:read')")
+    public ResponseEntity<UsersResponse> getUserById(@PathVariable String email) {
+        try {
+            var result = userService.findUserByEmail(email);
+            return ResponseEntity.of(Optional.of(result));
+        } catch (NotFoundException exception) {
+            return new ResponseEntity(exception.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception exception) {
+            return new ResponseEntity(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
+        return ResponseEntity.ok(authenticationService.register(request));
+    }
+
+
+}

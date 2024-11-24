@@ -1,8 +1,10 @@
 package com.klikk.sigma.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.klikk.sigma.util.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -11,7 +13,8 @@ import org.hibernate.annotations.GenericGenerator;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Table(name = "billing_details")
+@Builder
+@Table(name = "billing")
 public class Billing {
 
     @Id
@@ -28,10 +31,10 @@ public class Billing {
     private String id;
 
     @Column(name = "first_name")
-    private String firstName;
+    private String firstname;
 
     @Column(name = "last_name")
-    private String lastName;
+    private String lastname;
 
     @Column(name = "address")
     private  String address;

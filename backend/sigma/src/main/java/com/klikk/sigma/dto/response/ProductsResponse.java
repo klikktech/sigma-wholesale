@@ -1,5 +1,6 @@
 package com.klikk.sigma.dto.response;
 
+import com.klikk.sigma.entity.Attachment;
 import com.klikk.sigma.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,9 +19,9 @@ public class ProductsResponse {
 
     private String status;
 
-    private String displayImage;
+    private AttachmentResponse displayImage;
 
-    private List<String> images;
+    private List<AttachmentResponse> images;
 
     private String sku;
 
@@ -29,6 +30,12 @@ public class ProductsResponse {
     private Category category;
 
     private String price;
+
+    private double maxPrice;
+
+    private double minPrice;
+
+    private boolean isOnSale;
 
     private LocalDateTime createdAt;
 }

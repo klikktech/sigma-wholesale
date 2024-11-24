@@ -10,13 +10,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserResponseDto {
 
-    private String id;
+//    private String id;
 
     private String email;
 
     private String firstname;
 
     private String lastname;
+
+    private String phone;
 
     private RoleType role;
 }

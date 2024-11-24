@@ -13,18 +13,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Mapper(componentModel = "spring")
-public abstract class OrderMapper {
+public interface OrderMapper {
 
-    @Autowired
-    private UserRepository userRepository;
+    @Mapping(target = "orderCreatedAt", ignore = true)
+    @Mapping(target = "orderModifiedAt", ignore = true)
+    @Mapping(target = "buyer", ignore = true)
+    public Order orderDtoToOrder(OrderDto orderDto);
 
-    @Mapping(target = "orderCreatedAt", qualifiedByName = "convertStringDateToDate")
-    @Mapping(target = "orderModifiedAt", qualifiedByName = "convertStringDateToDate")
-    public abstract Order orderDtoToOrder(OrderDto orderDto);
-
-    @Named("convertStringDateToDate")
-    public LocalDateTime convertStringDateToDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"); // Adjust this if the format is different
-        return LocalDateTime.parse(date, formatter);
-    }
+    public OrderDto orderToOrderDto(Order order);
 }

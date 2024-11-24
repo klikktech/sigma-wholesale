@@ -30,16 +30,16 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "order_id",referencedColumnName = "id")
-    private Order orderId;
-
-    @ManyToOne
-    @JoinColumn(name = "product_id",referencedColumnName = "id")
-    private Product productId;
+    private Order order;
 
     @ManyToOne
     @JoinColumn(name = "variation_id",referencedColumnName = "id")
-    private Variation variationId;
+    private Variation variation;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id",referencedColumnName = "id")
+    private Product product;
 
     @Column(name = "quantity")
-    private int quantity;
+    private Long quantity;
 }

@@ -41,6 +41,9 @@ public class Product {
     @Column(name = "min_price")
     private double minPrice;
 
+    @Column(name = "price")
+    private double price;
+
     @Column(name = "sku",unique = true)
     private String sku;
 
@@ -91,11 +94,4 @@ public class Product {
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "parent")
     private List<Variation> variations;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "attachment_id")
-    private Attachment displayImage;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private List<Attachment> images;
 }

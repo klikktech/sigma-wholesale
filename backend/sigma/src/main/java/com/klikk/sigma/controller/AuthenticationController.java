@@ -46,4 +46,10 @@ public class AuthenticationController {
 //        PasswordEncoder passPasswordEncoder = new PhpPassPasswordEncoder();
         return passwordEncoder.matches(pass, hash);
     }
+
+    @GetMapping("/greet")
+    public ResponseEntity<String> greeting(){
+
+        return ResponseEntity.ok(String.format("<h1>Hello Guys, The deployment is working!!!</h1>"));
+    }
 }

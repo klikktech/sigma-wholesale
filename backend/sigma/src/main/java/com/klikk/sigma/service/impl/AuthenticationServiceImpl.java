@@ -3,6 +3,7 @@ package com.klikk.sigma.service.impl;
 import com.klikk.sigma.dto.request.AuthenticationRequest;
 import com.klikk.sigma.dto.response.AuthenticationResponse;
 import com.klikk.sigma.dto.request.RegisterRequest;
+import com.klikk.sigma.entity.Address;
 import com.klikk.sigma.entity.Token;
 import com.klikk.sigma.entity.User;
 import com.klikk.sigma.exception.UnauthorisedException;
@@ -23,7 +24,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -46,6 +49,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private AddressServiceImpl addressService;
+
     @Override
     public AuthenticationResponse register(RegisterRequest request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
@@ -54,6 +60,56 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = authenticationMapper.registerRequestToUser(request);
         user.setCreatedAt(LocalDateTime.now());
         user.setRole(RoleType.PENDING);
+
+        Optional<Address> storeAddress= addressService.getAddress(request.getStoreAddress());
+        if(storeAddress.isPresent()){
+            if(user.getStoreAddress()==null){
+                user.setStoreAddress(new ArrayList<>());
+            }
+            user.getStoreAddress().add(storeAddress.get());
+        }
+
+        Optional<Address> shippingAddress= addressService.getAddress(request.getStoreAddress());
+        if(shippingAddress.isPresent()){
+            if(user.getShippingAddress()==null){
+                user.setShippingAddress(new ArrayList<>());
+            }
+            user.getShippingAddress().add(shippingAddress.get());
+        }
+
+        if (storeAddress.isEmpty() && request.getStoreAddress() != null) {
+            Address newStoreAddress = null;
+            newStoreAddress = addressService.saveAddress(
+                    request.getStoreAddress(),
+                    request.getStoreCity(),
+                    request.getStoreState(),
+                    request.getStoreZip(),
+                    user
+            );
+
+            if (user.getStoreAddress() == null) {
+                user.setStoreAddress(new ArrayList<>());
+            }
+            user.getStoreAddress().add(newStoreAddress);
+
+        }
+
+        // Save shipping address
+        if (shippingAddress.isEmpty() && request.getShippingAddress() != null) {
+            Address newShippingAddress = null;
+            newShippingAddress = addressService.saveAddress(
+                    request.getShippingAddress(),
+                    request.getShippingCity(),
+                    request.getShippingState(),
+                    request.getShippingZip(),
+                    user
+            );
+            if (user.getShippingAddress() == null) {
+                user.setShippingAddress(new ArrayList<>());
+            }
+            user.getShippingAddress().add(newShippingAddress);
+        }
+
         User savedUser = userRepository.save(user);
         String jwtToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);

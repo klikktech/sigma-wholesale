@@ -14,9 +14,9 @@ public class VariationResponseDto {
 
     private String sku;
 
-    private double minPrice;
+    private double price;
 
-    private double maxPrice;
+    private String details;
 
     private String stockStatus;
 }

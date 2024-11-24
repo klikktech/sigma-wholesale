@@ -5,6 +5,7 @@ import com.klikk.sigma.type.AttachmentType;
 import com.klikk.sigma.util.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -13,6 +14,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "attachments")
 public class Attachment {
 
@@ -32,7 +34,13 @@ public class Attachment {
     @Enumerated(EnumType.STRING)
     private AttachmentType type;
 
-    @Lob
-    @Column(name = "file_content", nullable = false,columnDefinition = "LONGBLOB")
-    private byte[] fileContent;
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id",referencedColumnName = "id")
+    private Product product;
+
+    @Column(name = "primary_img")
+    private boolean isPrimary;
 }
