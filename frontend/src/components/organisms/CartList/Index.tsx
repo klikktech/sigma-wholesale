@@ -8,6 +8,7 @@ import { useCartStore } from '@/store/cartStore';
 import { Button, Card, Input } from '@nextui-org/react';
 import { CART_LIST_PAGE_ROUTE, CHECKOUT_PAGE_ROUTE, HOME_PAGE_ROUTE } from '@/utils/urls';
 import { toast } from 'react-toastify';
+import FormSubmitButton from '@/components/molecules/FormSubmitButton';
 
 interface CartItem {
   variation: variation
@@ -118,10 +119,10 @@ const CartList = ({ cartItemsList }: CartListProps) => {
                 <Link href={HOME_PAGE_ROUTE} className="text-blue-500 mt-4 inline-block">
                   Continue Shopping
                 </Link>
-                <Button className="mt-3" color="primary" type='submit'>
+                <FormSubmitButton className="mt-3" color="primary" type='submit' pendingText='Updating the cart...'>
                   <span>Update cart</span>
                   <span className="material-symbols-rounded">shopping_cart</span>
-                </Button>
+                </FormSubmitButton>
               </div>
             </form>
           </Card>
@@ -147,9 +148,9 @@ const CartList = ({ cartItemsList }: CartListProps) => {
               <p>Total Cost</p>
               <p>${(totalCost).toFixed(2)}</p>
             </div>
-            <Button type='button' className="w-full py-3 mt-4" color="primary">
+            <FormSubmitButton type='submit' className="w-full py-3 mt-4" color="primary" pendingText='Checking out..'>
               <Link href={CHECKOUT_PAGE_ROUTE}>Checkout</Link>
-            </Button>
+            </FormSubmitButton>
           </Card>
         </div>
       </div>

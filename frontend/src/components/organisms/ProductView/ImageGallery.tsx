@@ -11,6 +11,7 @@ interface ImageGalleryProps {
 
 const ImageGallery = ({ images, initialImage }: ImageGalleryProps) => {
   const [selectedImage, setSelectedImage] = useState(initialImage);
+  const imagesList = [initialImage, ...images]
 
   return (
     <div className="md:w-1/2 w-full flex flex-col gap-4">
@@ -28,7 +29,7 @@ const ImageGallery = ({ images, initialImage }: ImageGalleryProps) => {
       )}
       <ScrollShadow>
         <div className="images-list flex gap-4 overflow-x-auto">
-          {images.map((item, index) => {
+          {imagesList.map((item, index) => {
             switch (item.type) {
               case "IMAGE":
                 return (

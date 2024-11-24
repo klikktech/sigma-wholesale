@@ -3,7 +3,7 @@
 import { axios } from "@/lib/axios";
 import { createSession, deleteSession } from "@/lib/axios/session";
 import { Message } from "@/utils/types";
-import { HOME_PAGE_ROUTE, LOGIN_PAGE_ROUTE } from "@/utils/urls";
+import { LOGIN_PAGE_ROUTE } from "@/utils/urls";
 import { LoginFormValidator } from "@/utils/validators";
 import { redirect } from "next/navigation";
 

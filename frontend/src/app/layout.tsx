@@ -4,7 +4,6 @@ import "./globals.css";
 import { DESCRIPTION, SIGMA_WHOLESALE } from "@/utils/constants";
 import { Providers } from "./providers";
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import AgeVerification from "@/components/organisms/AgeVerificationPopup";
 import { getAgeVerification } from "@/lib/axios/session";
 

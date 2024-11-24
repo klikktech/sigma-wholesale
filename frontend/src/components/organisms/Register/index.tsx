@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { LOGIN_PAGE_ROUTE } from "@/utils/urls";
 import { useRouter } from "next/navigation";
+import FormSubmitButton from "@/components/molecules/FormSubmitButton";
 
 interface FormErrorProps {
   errors?: string[];
@@ -247,9 +248,9 @@ const SignUp = () => {
 
         <Spacer y={3} />
         {state?.error && <p style={{ color: "red" }}>{state?.error}</p>}
-        <Button type="submit" color="primary" size="lg">
+        <FormSubmitButton type="submit" color="primary" size="lg" pendingText="Registering...">
           Register
-        </Button>
+        </FormSubmitButton>
       </form>
     </div>
   );

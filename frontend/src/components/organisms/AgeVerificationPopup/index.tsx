@@ -12,7 +12,6 @@ const handleVerification = async () => {
 };
 
 const AgeVerification = () => {
-
     return (
         <>
             <Modal
@@ -36,7 +35,6 @@ const AgeVerification = () => {
                                 <Button color="primary" type="submit" formAction={handleVerification}>
                                     Yes
                                 </Button>
-
                             </form>
                         </ModalFooter>
                     </>

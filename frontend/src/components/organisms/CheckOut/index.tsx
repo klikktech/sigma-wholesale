@@ -22,6 +22,7 @@ import MyAddressList from "../MyAddresses";
 import { useEffect, useState } from 'react';
 import { toast } from "react-toastify";
 import { HOME_PAGE_ROUTE } from "@/utils/urls";
+import FormSubmitButton from "@/components/molecules/FormSubmitButton";
 
 interface CartListProps {
     cartItemsList: CartItem[];
@@ -142,14 +143,15 @@ const CheckOut = ({ cartItemsList, totalCost, discount, tax, shippingAddresses }
                                     <p>${total.toFixed(2)}</p>
                                 </div>
                                 <Spacer y={2} />
-                                <Button
+                                <FormSubmitButton
                                     type="submit"
                                     color="primary"
                                     disabled={pending}
                                     aria-disabled={pending}
+                                    pendingText="Placing order..."
                                 >
-                                    {pending ? "Placing Order..." : "Place Order"}
-                                </Button>
+                                    Place Order
+                                </FormSubmitButton>
                                 {state && <FormMessage message={state} />}
                             </CardBody>
                         </Card>

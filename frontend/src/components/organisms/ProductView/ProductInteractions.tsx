@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { HOME_PAGE_ROUTE } from "@/utils/urls";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import FormSubmitButton from "@/components/molecules/FormSubmitButton";
 
 interface ProductInteractionsProps {
   productDetails: ProdDetails;
@@ -105,10 +106,10 @@ const ProductInteractions = ({ productDetails }: ProductInteractionsProps) => {
               ))}
         </div>
       </div>}
-      <Button className="w-full mt-3 px-3" color="primary" type='submit'>
+      <FormSubmitButton className="w-full mt-3 px-3" color="primary" type='submit' pendingText="Adding to the cart...">
         <span>Add to cart</span>
         <span className="material-symbols-rounded">shopping_cart</span>
-      </Button>
+      </FormSubmitButton>
     </form>
   );
 };

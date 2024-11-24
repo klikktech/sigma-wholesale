@@ -8,6 +8,7 @@ import { HOME_PAGE_ROUTE, SIGNUP_PAGE_ROUTE } from "@/utils/urls";
 import FormMessage from "@/components/molecules/FormMessage";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
+import FormSubmitButton from "@/components/molecules/FormSubmitButton";
 
 
 const Login = () => {
@@ -71,9 +72,9 @@ const Login = () => {
         <Spacer y={3} />
         <p className="text-red-500 text-left">{state && <FormMessage message={state} />}</p>
         <Spacer y={3} />
-        <Button className="mb-10" disabled={pending} type="submit" color="primary" size="lg">
+        <FormSubmitButton className="mb-10" disabled={pending} type="submit" color="primary" size="lg" pendingText="Logging in...">
           Login
-        </Button>
+        </FormSubmitButton>
       </form>
     </div>
   );
