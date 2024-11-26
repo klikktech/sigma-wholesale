@@ -63,8 +63,8 @@ export const renderCell = (product: Product, columnKey: React.Key) => {
         <User
           avatarProps={{
             radius: "lg",
-            src: `data:image/png;base64,${product.displayImage}`,
-            alt: product.displayImage?.id,
+            src: product.displayImage?.imageUrl,
+            alt: product.displayImage?.details,
             className: "w-10 h-10",
             showFallback: true,
             fallback: (
@@ -75,7 +75,6 @@ export const renderCell = (product: Product, columnKey: React.Key) => {
           }}
           name={<span className="capitalize">{product.name}</span>}
         >
-          {/* {product.name} */}
         </User>
       );
     case "status":

@@ -8,6 +8,11 @@ const nextConfig = {
           hostname: 'sigmawholesaleimages.s3.us-east-2.amazonaws.com',
           pathname: '**',
         },
+        {
+          protocol: 'https',
+          hostname: 'via.placeholder.com',
+          pathname: '**',
+        },
       ],
     },
     compiler: {

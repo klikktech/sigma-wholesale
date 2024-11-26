@@ -8,13 +8,14 @@ import {
   SIGNOUT_ENDPOINT,
   GET_USER_ENDPOINT,
   EDIT_USERS_ENDPOINT,
-  ADD_USER_ENDPOINT
+  ADD_USER_ENDPOINT,
+  GET_ALL_ORDERS_ENDPOINT,
+  GET_ORDER_DETAILS_ENDPOINT
 } from "@/utils/urls";
 import api, { authInstance } from "./instance";
 import {
   AxiosErrorResponse,
   AxiosResponse,
-  ProductDetails,
   UserDetails,
 } from "@/utils/types";
 
@@ -145,4 +146,22 @@ export const axios = {
       }
     },
   },
+  orders: {
+    getAllOrders: async (): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.get(GET_ALL_ORDERS_ENDPOINT);
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    getOrderDetails: async (orderId: string): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.get(GET_ORDER_DETAILS_ENDPOINT(orderId));
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    }
+  }
 };

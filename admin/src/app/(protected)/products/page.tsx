@@ -1,10 +1,11 @@
-import Breadcrumb from "@/components/molecules/BreadCrumb";
 import Table from "@/components/organisms/Table";
 import { PRODUCT_COLUMNS, renderCell } from "./columns";
 import Link from "next/link";
 import Button from "@/components/atoms/Button";
 import { axios } from "@/lib/axios";
 import { ADD_PRODUCT_PAGE_ROUTE } from "@/utils/routes";
+
+export const dynamic = 'force-dynamic';
 
 const ProductsPage = async () => {
   const { data, error } = await axios.products.getAllProducts();
@@ -14,7 +15,6 @@ const ProductsPage = async () => {
 
   return (
     <>
-      <Breadcrumb />
       <section className="py-2">
         <div className="container">
           <Table

@@ -79,7 +79,6 @@ export const RegisterFormValidator = z.object({
 });
 
 export const CheckOutFormValidator = z.object({
-  email: z.string().email({ message: "Please enter a valid email." }).trim(),
   firstname: z.string().min(2, { message: "First name must be at least 2 characters long." }).trim(),
   lastname: z.string().min(2, { message: "Last name must be at least 2 characters long." }).trim(),
   billingAddress: z.string().min(2, { message: "Billing Address must be at least 2 characters long." }).trim(),

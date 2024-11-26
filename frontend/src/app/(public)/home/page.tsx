@@ -1,3 +1,4 @@
+import Brands from '@/components/organisms/Brands';
 import CarouselContent from '@/components/organisms/CarouselContent';
 import NewArrivals from '@/components/organisms/NewArrivals';
 import Tabs from '@/components/organisms/Tabs';
@@ -9,6 +10,7 @@ const HomePage = () => {
       <CarouselContent />
       <NewArrivals />
       <Tabs />
+      <Brands/>
     </div>
   )
 };

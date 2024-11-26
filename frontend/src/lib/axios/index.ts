@@ -16,6 +16,7 @@ import {
   ORDER_PRODUCTS_URL,
   REFRESH_TOKEN_URL,
   DELETE_CART_ITEM_URL,
+  PRODUCT_BY_BRAND_URL,
 } from "@/utils/urls";
 import api, { authInstance } from "./instance";
 import { AxiosErrorResponse, AxiosResponse, RegisterDetails, UserDetails } from "@/utils/types";
@@ -136,6 +137,16 @@ export const axios = {
     getCategoryProducts: async (category: string, page: number, size: number) => {
       try {
         const { data, status } = await api.get(PRODUCT_BY_CATEGORY_URL(category), {
+          params: { page, size }
+        });
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    getBrandProducts:async (brand: string, page: number, size: number) => {
+      try {
+        const { data, status } = await api.get(PRODUCT_BY_BRAND_URL(brand), {
           params: { page, size }
         });
         return { data, status };

@@ -10,7 +10,7 @@ export const addCartAction = async (
   currentCartCount: number,
   currentCartPrice: number
 ) => {
-  let variationArray: { variation: string; quantity: number; price: number; }[] = [];
+  let variationArray: { variation: string; quantity: number; price: number; isOnlyProduct:boolean }[] = [];
   let totalPrice = currentCartPrice;
   let totalCount = currentCartCount;
 
@@ -29,6 +29,7 @@ export const addCartAction = async (
             variation: matchedVariation.details,
             quantity: quantityNum,
             price: price,
+            isOnlyProduct:false
           });
           totalCount += quantityNum;
           totalPrice += quantityNum * price;
@@ -42,6 +43,7 @@ export const addCartAction = async (
       variation: productDetails.details,
       quantity: 1,
       price: parseFloat(productDetails.price),
+      isOnlyProduct:true
     });
     totalCount += 1;
     totalPrice += parseFloat(productDetails.price);

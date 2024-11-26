@@ -13,3 +13,7 @@ export const GET_PRODUCT_ENDPOINT = (details: string) =>
   `admin/products/${details}`;
 export const ADD_PRODUCT_ENDPOINT = `admin/products`;
 export const REFRESH_TOKEN_URL = `api/auth/refresh-token`;
+export const GET_ALL_ORDERS_ENDPOINT = `admin/orders`;
+export const GET_ORDER_DETAILS_ENDPOINT = (orderId: string) =>
+  `admin/orders/${orderId}`;
+

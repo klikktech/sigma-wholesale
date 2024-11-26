@@ -12,22 +12,27 @@ interface ProductsProps {
   currentPage: number;
   size: number;
   category?: string;
-  searchkey?:string;
+  brand?: string;
+  searchkey?: string;
 }
 
-const Products = ({products, totalPages, currentPage, size, category, searchkey}: ProductsProps) => {
+const Products = ({ products, totalPages, currentPage, size, category, brand, searchkey }: ProductsProps) => {
   const router = useRouter();
-  
+  console.log(brand, "brand");
   const handlePageChange = (page: number) => {
     const queryParams = new URLSearchParams();
     queryParams.set('page', page.toString());
     queryParams.set('size', size.toString());
     if (searchkey) queryParams.set('keyword', searchkey);
-    
-    const baseUrl = category 
-      ? `/categories/${category}/products`
-      : '/products';
-    
+
+    const baseUrl = brand
+      ? `/categories/tag/${brand}/products`
+      : category
+        ? `/categories/${category}/products`
+        : '/products';
+
+    console.log(brand, category, baseUrl, "baseUrl");
+
     const url = `${baseUrl}?${queryParams.toString()}`;
     router.push(url);
   };
@@ -35,11 +40,11 @@ const Products = ({products, totalPages, currentPage, size, category, searchkey}
   return (
     <div className="flex flex-col items-center">
       <p className="text-large font-bold text-red-500 py-10">
-        {searchkey ? searchkey.toUpperCase() : (category ? category.toUpperCase() : 'ALL PRODUCTS')}
+        {searchkey ? searchkey.toUpperCase() : brand ? brand.toUpperCase() : category ? category.toUpperCase() : 'ALL PRODUCTS'}
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {products.map((product,index) => (
+        {products.map((product, index) => (
           <div className="w-full" key={index}>
             <Suspense fallback={<SkeletonProductCard />} key={index}>
               <ProductCard
@@ -55,7 +60,7 @@ const Products = ({products, totalPages, currentPage, size, category, searchkey}
       </div>
 
       <Pagination
-        showControls 
+        showControls
         total={totalPages}
         initialPage={currentPage}
         page={currentPage}
