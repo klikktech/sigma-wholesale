@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -152,6 +151,17 @@ public class UserServiceImpl implements UserService {
 
         return new SuccessResponse(LocalDateTime.now(), "User details updated successfully");
 
+    }
+
+    @Override
+    public SuccessResponse deleteUser(String email) {
+        Optional<User> user=userRepository.findByEmail(email);
+
+        if(user.isEmpty()){
+            throw new IllegalArgumentException("User not present");
+        }
+        userRepository.delete(user.get());
+        return new SuccessResponse(LocalDateTime.now(),"User deleted successfully");
     }
 
     public RoleType getRoleType(String role){

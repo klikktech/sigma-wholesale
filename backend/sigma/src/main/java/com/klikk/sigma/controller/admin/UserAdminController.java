@@ -63,5 +63,11 @@ public class UserAdminController {
         return ResponseEntity.ok(authenticationService.register(request));
     }
 
+    @DeleteMapping("/{email}")
+    @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
+    public ResponseEntity<SuccessResponse> deleteProduct(@PathVariable String email){
+        return ResponseEntity.ok().body((userService.deleteUser(email)));
+    }
+
 
 }
