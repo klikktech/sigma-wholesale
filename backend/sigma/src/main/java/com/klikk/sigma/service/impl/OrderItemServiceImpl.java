@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderItemServiceImpl implements OrderItemService {
@@ -44,13 +45,29 @@ public class OrderItemServiceImpl implements OrderItemService {
         if(cart.isEmpty()){
             return;
         }
-        List<CartItem> cartItems=cartItemsRepository.findByCart(cart.get());
-        List<OrderItem> orderItems= cartItems.stream().map(cartItem -> {
-            OrderItem orderItem=OrderItem.builder().order(order).product(cartItem.getProduct()).variation(cartItem.getVariation()).quantity(cartItem.getQuantity()).build();
-            orderItemRepository.save(orderItem);
-            cartItemsRepository.delete(cartItem);
-            return orderItem;
-        }).toList();
+        List<CartItem> cartItems = cartItemsRepository.findByCart(cart.get());
+        List<OrderItem> orderItems = cartItems.stream()
+                .map(cartItem -> {
+                    // Ensure at least one (product or variation) is present
+                    if (cartItem.getProduct() == null && cartItem.getVariation() == null) {
+                        throw new IllegalArgumentException("Either product or variation must be present in CartItem");
+                    }
+
+                    // Build OrderItem using the available product or variation
+                    OrderItem orderItem = OrderItem.builder()
+                            .order(order)
+                            .product(cartItem.getProduct())  // Will be null if product is not present
+                            .variation(cartItem.getVariation())  // Will be null if variation is not present
+                            .quantity(cartItem.getQuantity())
+                            .build();
+
+                    // Save the order item
+                    orderItemRepository.save(orderItem);
+                    cartItemsRepository.delete(cartItem);
+                    return orderItem;
+                })
+                .collect(Collectors.toList());
+        cartRepository.delete(cart.get());
 
     }
 

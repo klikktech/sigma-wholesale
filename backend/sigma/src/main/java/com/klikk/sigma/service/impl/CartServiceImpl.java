@@ -125,11 +125,17 @@ public class CartServiceImpl implements CartService {
 
             CartItem newCartItem = CartItem.builder()
                     .cart(cart)
-                    .variation(variation.get())
-                    .product(product.get())
+                    .variation(variation.orElse(null))  // If variation is empty, set it to null
+                    .product(product.orElse(null))     // If product is empty, set it to null
                     .quantity(newItemRequest.getQuantity())
                     .addedAt(LocalDateTime.now())
                     .build();
+
+            // Validate that at least one (variation or product) is not null
+            if (newCartItem.getVariation() == null && newCartItem.getProduct() == null) {
+                throw new IllegalStateException("Either variation or product must be present");
+            }
+
 
             cartItemRepository.save(newCartItem);
         }

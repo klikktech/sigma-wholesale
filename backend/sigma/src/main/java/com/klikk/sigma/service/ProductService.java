@@ -36,4 +36,6 @@ public interface ProductService {
     Page<ProductResponseDto> getProductsFromSearch(String keyword, Pageable pageable);
 
     SuccessResponse updateProduct(UpdateProductAdminRequest request);
+
+    SuccessResponse deleteProduct(String details);
 }

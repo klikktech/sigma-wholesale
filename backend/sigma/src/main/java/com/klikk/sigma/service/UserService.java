@@ -28,4 +28,6 @@ public interface UserService {
     SuccessResponse updateUser(UpdateUserRequest updateRequest, HttpServletRequest request);
 
     SuccessResponse updateUserAdmin(UpdateUserAdminRequest updateUserAdminRequest);
+
+    SuccessResponse deleteUser(String email);
 }

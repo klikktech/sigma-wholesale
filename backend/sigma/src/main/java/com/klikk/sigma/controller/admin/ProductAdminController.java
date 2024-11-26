@@ -59,4 +59,11 @@ public class ProductAdminController {
         }
 
     }
+
+    @DeleteMapping("/{details}")
+    @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
+    public ResponseEntity<SuccessResponse> deleteProduct(@PathVariable String details){
+        return ResponseEntity.ok().body((productService.deleteProduct(details)));
+    }
+
 }

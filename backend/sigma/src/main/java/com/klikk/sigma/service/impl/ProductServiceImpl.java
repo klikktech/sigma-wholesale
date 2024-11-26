@@ -243,6 +243,17 @@ public class ProductServiceImpl implements ProductService {
         return new SuccessResponse(LocalDateTime.now(),"Product updated successfully");
     }
 
+    @Override
+    public SuccessResponse deleteProduct(String details) {
+        Optional<Product> product=productRepository.findByDetails(details);
+
+        if(product.isEmpty()){
+            throw new IllegalArgumentException("Product not present");
+        }
+        productRepository.delete(product.get());
+        return new SuccessResponse(LocalDateTime.now(),"Product deleted successfully");
+    }
+
 
     @Override
     public List<VariationResponseDto> getProductVariations(String details) {

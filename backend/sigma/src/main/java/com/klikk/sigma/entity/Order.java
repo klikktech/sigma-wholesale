@@ -1,6 +1,7 @@
 package com.klikk.sigma.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.klikk.sigma.type.OrderStatus;
 import com.klikk.sigma.util.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -51,5 +52,8 @@ public class Order {
 
     @Column(name = "order_total")
     private Double orderTotal;
+
+    @Column(name = "order_status")
+    private OrderStatus orderStatus;
 
 }
