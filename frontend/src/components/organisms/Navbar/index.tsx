@@ -124,8 +124,9 @@ import {
   ORDERS_PAGE_ROUTE
 } from "@/utils/urls";
 import { useCartStore } from '@/store/cartStore';
-import { useFormState } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
 import { searchAction } from "./action";
+import FormSubmitButton from "@/components/molecules/FormSubmitButton";
 
 type Props = {
   user: any
@@ -136,6 +137,8 @@ const Navbar = ({ user }: Props) => {
   const cartCount = useCartStore((state) => state.cartCount);
   const [state, formAction] = useFormState(searchAction, undefined);
   const pathname = usePathname();
+  const { pending } = useFormStatus();
+
 
   // Navigation menu items
   const menuItems = [
@@ -183,13 +186,15 @@ const Navbar = ({ user }: Props) => {
               placeholder="Search products..."
               className="w-[300px]"
             />
-            <Button 
+            <FormSubmitButton 
               type="submit" 
               color="primary" 
               className="ml-2 text-black"
+              pendingText="Searching..."
+              disabled={pending}
             >
               Search
-            </Button>
+            </FormSubmitButton>
           </form>
         </NavbarItem>
       </NavbarContent>
