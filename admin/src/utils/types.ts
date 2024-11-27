@@ -18,21 +18,28 @@ export interface UserDetails {
 }
 
 export interface ProductDetails {
+  id?:number
   name: string;
-  maxPrice: number;
-  minPrice: number;
-  // price: number;
+  // maxPrice: number;
+  // minPrice: number;
+  price: number;
   sku: string;
   isOnSale: boolean;
-  status: "instock" | "outofstock";
+  stockStatus: "instock" | "outofstock";
   displayStatus: string;
   details?:string;
-  // stockQuantity: number;
+  stockQuantity: number;
   // totalSales: string;
   // commentStatus: string;
   displayImage?: any;
   images?: string[]
-  // category: string;
+  category: string;
+  brand:string;
+  productType:string;
+  boxQuantity:number;
+  caseQuantity:number;
+  description:string;
+  variations:Variation[]
 }
 
 export interface ITableColumn {
@@ -69,3 +76,15 @@ export type AxiosResponse = {
     message: string;
   };
 };
+
+export interface Variation {
+  id: string;
+  name: string;
+  price: string;
+  salePrice: string;
+  sku: string;
+  stockStatus: string;
+  displayStatus: string;
+  stockQuantity: string;
+  isSelected?: boolean;
+}

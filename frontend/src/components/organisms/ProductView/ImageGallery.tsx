@@ -14,7 +14,7 @@ const ImageGallery = ({ images, initialImage }: ImageGalleryProps) => {
   const imagesList = [initialImage, ...images]
 
   return (
-    <div className="md:w-1/2 w-full flex flex-col gap-4">
+    <div className="w-full flex flex-col gap-4">
       {selectedImage?.type === "IMAGE" ? (
         <Image
           className="rounded-xl"

@@ -60,6 +60,11 @@ const ProductInteractions = ({ productDetails }: ProductInteractionsProps) => {
     });
   };
 
+  const getFlavor = (str: string): string => {
+    const parts = str.split(" - ");
+    return parts.length > 1 ? parts[1] : "";
+  };
+
   return (
     <form action={formAction}>
       {productDetails.variations.length > 0 && <div className="flex flex-col md:flex-row gap-6">
@@ -67,8 +72,8 @@ const ProductInteractions = ({ productDetails }: ProductInteractionsProps) => {
           <p className="text-2xl font-bold mb-5">Available Options</p>
           {productDetails.variations.map((item, index) => (
                 <div key={index} className="flex flex-col md:flex-row justify-between items-center mb-3">
-                  <div className="md:w-2/3">
-                    <div className="flex gap-x-3">
+                  <div className="md:w-2/3 w-full">
+                    <div className="flex gap-x-3 md:items-center lg:items-center">
                       <Image
                         className="rounded-md"
                         width={100}
@@ -77,13 +82,13 @@ const ProductInteractions = ({ productDetails }: ProductInteractionsProps) => {
                         alt=""
                       />
                       <div>
-                        <p className="text-sm">{item.variationName}</p>
+                        <p className="text-sm">{getFlavor(item.variationName)}</p>
                         <p className="font-semibold text-sm">${item.price}</p>
                       </div>
                     </div>
                   </div>
                   <div className="w-full md:w-1/3">
-                    <div className="flex justify-center items-center gap-x-3">
+                    <div className="flex justify-center items-start md:items-center gap-x-3">
                       <button
                         className="quantity-btn"
                         type="button"

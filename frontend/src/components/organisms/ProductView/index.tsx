@@ -19,14 +19,18 @@ const ProductView = ({ productDetails }: { productDetails: ProdDetails }) => {
       </div>
       
       <div className="flex flex-col md:flex-row gap-6">
-        <ProductInteractions productDetails={productDetails} />
-        <ImageGallery 
-          images={productDetails.images} 
-          initialImage={{
-            type: 'IMAGE',
-            imageUrl: productDetails.displayImage?.imageUrl
-          }}
-        />
+        <div className="flex-1">
+          <ProductInteractions productDetails={productDetails} />
+        </div>
+        <div className="flex-1">
+          <ImageGallery 
+            images={productDetails.images} 
+            initialImage={{
+              type: 'IMAGE',
+              imageUrl: productDetails.displayImage?.imageUrl
+            }}
+          />
+        </div>
       </div>
 
       <Spacer y={3} />

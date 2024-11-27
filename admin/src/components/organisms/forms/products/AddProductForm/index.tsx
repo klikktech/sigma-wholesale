@@ -1,7 +1,7 @@
 "use client";
 import Button from "@/components/atoms/Button";
 import Input from "@/components/atoms/Input";
-import { Select, SelectItem, Switch } from "@nextui-org/react";
+import { Select, SelectItem, Switch, Textarea } from "@nextui-org/react";
 import React, { useRef, useState } from "react";
 import { useFormState } from "react-dom";
 import FormMessage from "@/components/molecules/FormMessage";
@@ -11,6 +11,7 @@ import Image from "next/image";
 import FormSubmitButton from "@/components/molecules/FormSubmitButtton";
 import Video from "@/components/atoms/Video";
 import { addProductAction } from "./action";
+import ProductVariations from "./ProductVariations";
 
 const generateDataUrlForDisplayImage = (
   file: File,
@@ -47,8 +48,8 @@ const VideoPreview = ({ dataUrl }: { readonly dataUrl: string }) => {
   return (
     <Video
       src={dataUrl}
-      // alt="preview"
-      // className="rounded-lg w-full h-full object-cover"
+    // alt="preview"
+    // className="rounded-lg w-full h-full object-cover"
     />
   );
 };
@@ -102,6 +103,7 @@ const AddProductForm = () => {
   const imagesFileInput = useRef<HTMLInputElement>(null);
   const [dataUrl, setDataUrl] = useState<string | null>(null);
   const [imagesDataUrl, setImagesDataUrl] = useState<string[] | null>(null);
+  const [showVariations, setShowVariations] = useState(false);
 
   const handleDisplayImageFileChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -115,6 +117,10 @@ const AddProductForm = () => {
     if (files && files.length > 0) {
       generateDataUrlForImages(files, setImagesDataUrl);
     }
+  };
+
+  const handleProductTypeChange = (value: string) => {
+    setShowVariations(value === "variation");
   };
 
   return (
@@ -133,26 +139,51 @@ const AddProductForm = () => {
             <div className="w-full">
               <label
                 className="block text-sm font-medium mb-1"
-                htmlFor="maxPrice"
+                htmlFor="price"
               >
-                Max price
+                Price
               </label>
-              <Input type="text" id="maxPrice" name="maxPrice" />
-            </div>
-            <div className="w-full">
-              <label
-                className="block text-sm font-medium mb-1"
-                htmlFor="minPrice"
-              >
-                Min Price
-              </label>
-              <Input type="text" id="minPrice" name="minPrice" required />
+              <Input type="text" id="price" name="price" />
             </div>
             <div className="w-full">
               <label className="block text-sm font-medium mb-1" htmlFor="sku">
                 Sku
               </label>
               <Input type="text" id="sku" name="sku" required />
+            </div>
+          </div>
+          <div className="w-full flex gap-2">
+            <div className="w-full">
+              <label
+                className="block text-sm font-medium mb-1"
+                htmlFor="status"
+              >
+                Brand
+              </label>
+              <Select
+                id="brand"
+                name="brand"
+                required
+              >
+                <SelectItem key="brand1">Brand 1</SelectItem>
+                <SelectItem key="brand2">Brand 2</SelectItem>
+              </Select>
+            </div>
+            <div className="w-full">
+              <label
+                className="block text-sm font-medium mb-1"
+                htmlFor="category"
+              >
+                Category
+              </label>
+              <Select
+                id="productType"
+                name="category"
+                required
+              >
+                <SelectItem key="category1">Category 1</SelectItem>
+                <SelectItem key="category2">Category 2</SelectItem>
+              </Select>
             </div>
           </div>
           <div className="w-full flex gap-2">
@@ -178,26 +209,54 @@ const AddProductForm = () => {
                 className="block text-sm font-medium mb-1"
                 htmlFor="status"
               >
-                Comment Status
+                Product Type
               </label>
               <Select
-                id="commentStatus"
-                name="commentStatus"
-                defaultSelectedKeys={["open"]}
+                id="productType"
+                name="productType"
+                defaultSelectedKeys={["simple"]}
+                onChange={(e) => handleProductTypeChange(e.target.value)}
                 required
               >
-                <SelectItem key="open">Open</SelectItem>
-                <SelectItem key="closed">Closed</SelectItem>
+                <SelectItem key="simple">Simple</SelectItem>
+                <SelectItem key="variation">Variation</SelectItem>
               </Select>
             </div>
           </div>
-          <div className="w-full">
+          <div className="w-full flex gap-2">
             <div className="w-full">
-              <Switch defaultSelected name="isOnSale" id="isOnSale">
-                Is on sale
-              </Switch>
+              <label
+                className="block text-sm font-medium mb-1"
+                htmlFor="boxQuantity"
+              >
+                Box Quantity
+              </label>
+              <Input type="text" id="boxQuantity" name="boxQuantity" />
+            </div>
+            <div className="w-full">
+              <label className="block text-sm font-medium mb-1" htmlFor="sku">
+                Case Quantity
+              </label>
+              <Input type="text" id="caseQuantity" name="caseQuantity" />
             </div>
           </div>
+          <div className="w-full">
+            <label className="block text-sm font-medium mb-1" htmlFor="description">
+              Description
+            </label>
+            <Textarea
+              id="description"
+              name="description"
+              rows={4}
+              required
+            />
+          </div>
+          <div className="w-full">
+            <Switch defaultSelected name="isOnSale" id="isOnSale">
+              Add to Deals
+            </Switch>
+          </div>
+
           <div className="flex gap-2 w-full">
             <div className="w-full">
               <FormSubmitButton
@@ -222,7 +281,7 @@ const AddProductForm = () => {
             id="displayImage"
             onChange={handleDisplayImageFileChange}
             ref={displayImageFileInput}
-            accept="image/*,video/*"          />
+            accept="image/*,video/*" />
           <input
             className="hidden"
             multiple
@@ -265,6 +324,9 @@ const AddProductForm = () => {
             )}
           </div>
         </div>
+      </div>
+      <div className="mt-4">
+        {showVariations && <ProductVariations />}
       </div>
     </form>
   );

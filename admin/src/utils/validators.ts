@@ -93,24 +93,42 @@ export const ProductFormValidator = z.object({
     .string()
     .min(2, { message: "Product name must be at least 2 characters long." })
     .trim(),
-  minPrice: z.coerce
-    .number({ message: "Min price must be a number" })
-    .min(0, { message: "Min price can't be less than 0" }),
-  maxPrice: z.coerce
-    .number({ message: "Max price must be a number" })
-    .min(2, { message: "Max price can't be less than 0" }),
+  price: z.coerce
+    .number({ message: "Price must be a number" })
+    .min(2, { message: "Price can't be less than 0" }),
   sku: z
     .string()
     .min(2, { message: "SKU must be at least 2 characters long." })
     .trim(),
   details: z
     .string()
-    .min(2, { message: "details must be at least 2 characters long." })
+    .min(2, { message: "Details must be at least 2 characters long." })
     .trim(),
-  // commentStatus: z
-  //   .string()
-  //   .min(2, { message: "Address must be at least 2 characters long." })
-  //   .trim(),
+    brand: z
+    .string()
+    .min(2, { message: "Brand must be at least 2 characters long." })
+    .trim(),
+    category: z
+    .string()
+    .min(2, { message: "Category must be at least 2 characters long." })
+    .trim(),
+    productType: z
+    .string()
+    .min(2, { message: "Product type must be at least 2 characters long." })
+    .trim(),
+    stockQuantity: z.coerce
+    .number({ message: "Stock quantity must be a number" })
+    .min(2, { message: "Stock quantity can't be less than 0" }),
+    caseQuantity: z.coerce
+    .number({ message: "Case quantity must be a number" })
+    .min(2, { message: "Case quantity can't be less than 0" }),
+    boxQuantity: z.coerce
+    .number({ message: "Box quantity must be a number" })
+    .min(2, { message: "Box quantity can't be less than 0" }),
+  description: z
+    .string()
+    .min(2, { message: "Address must be at least 2 characters long." })
+    .trim(),
   isOnSale: z.coerce.boolean().optional(),
   status: z.string().optional(),
   // displayImage:  z
