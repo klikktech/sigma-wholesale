@@ -2,7 +2,6 @@ package com.klikk.sigma.service.impl;
 
 import com.klikk.sigma.dto.response.AttachmentResponse;
 import com.klikk.sigma.dto.response.CategoryProductsDto;
-import com.klikk.sigma.dto.response.ProductResponseDto;
 import com.klikk.sigma.entity.Attachment;
 import com.klikk.sigma.entity.Category;
 import com.klikk.sigma.entity.Product;
@@ -79,6 +78,42 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Page<CategoryProductsDto> getProductsOfCategory(String name, Pageable pageable) {
         Category category=categoryRepository.findBySlugAndType(name,"product_cat");
+        List<Product> products=category.getProducts();
+
+        // Calculate the start and end indices for pagination
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), products.size());
+
+        // Get the paginated list
+        List<CategoryProductsDto> paginatedProducts = products.subList(start, end).stream()
+                .map(product -> {
+                    List<Attachment> attachments=attachmentRepository.findByProduct(product);
+                    CategoryProductsDto responseDto=productMapper.productToCategoryProductsDto(product);
+                    AttachmentResponse primaryImage = attachments.stream()
+                            .filter(Attachment::isPrimary)
+                            .map(attachment -> {
+                                return  attachmentMapper.attachmentToAttachmentResponse(attachment);
+                            })
+                            .findFirst()
+                            .orElse(null);
+                    List<AttachmentResponse> nonPrimaryImages = attachments.stream()
+                            .filter(attachment -> !attachment.isPrimary())
+                            .map(attachment -> {
+                                return attachmentMapper.attachmentToAttachmentResponse(attachment);
+                            })
+                            .toList();
+                    responseDto.setImages(nonPrimaryImages);
+                    responseDto.setDisplayImage(primaryImage);
+                    return responseDto;
+                })
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(paginatedProducts, pageable, products.size());
+    }
+
+    @Override
+    public Page<CategoryProductsDto> getProductsOfMenu(String name, Pageable pageable) {
+        Category category=categoryRepository.findBySlugAndType(name,"nav_menu");
         List<Product> products=category.getProducts();
 
         // Calculate the start and end indices for pagination

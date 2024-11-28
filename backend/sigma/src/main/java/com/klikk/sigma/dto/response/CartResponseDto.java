@@ -14,6 +14,8 @@ import java.util.List;
 public class CartResponseDto {
     private double price;
     private Long quantity;
+    private double discount;
+    private double tax;
 //    private ProductResponseDto product;
     private List<CartItemResponseDto> cartItems;
 }

@@ -17,6 +17,8 @@ public interface CategoryService {
     Page<CategoryProductsDto> getProductsOfCategory(String name, Pageable pageable);
 
     Page<CategoryProductsDto> getProductsOfTag(String name, Pageable pageable);
+
+    Page<CategoryProductsDto> getProductsOfMenu(String name, Pageable pageable);
 }
 
 

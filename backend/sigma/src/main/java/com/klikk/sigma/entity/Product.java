@@ -71,6 +71,15 @@ public class Product {
     @Column(name = "product_id", unique = true)
     private Long productId;
 
+    @Column(name = "box_quantity")
+    private Long boxQuantity;
+
+    @Column(name = "case_quantity")
+    private Long caseQuantity;
+
+//    @Column
+//    private Brand brand;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "product_categories",

@@ -37,4 +37,9 @@ public class CategoryController {
     public ResponseEntity<Page<CategoryProductsDto>> getProductsOfTag(@PathVariable String name, Pageable pageable){
         return ResponseEntity.ok(categoryServiceImpl.getProductsOfTag(name, pageable));
     }
+
+    @GetMapping("/nav-menu/{name}/products")
+    public ResponseEntity<Page<CategoryProductsDto>> getProductsOfMenu(@PathVariable String name, Pageable pageable){
+        return ResponseEntity.ok(categoryServiceImpl.getProductsOfMenu(name, pageable));
+    }
 }

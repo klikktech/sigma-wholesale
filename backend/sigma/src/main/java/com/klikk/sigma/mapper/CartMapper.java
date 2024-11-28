@@ -9,5 +9,7 @@ import org.mapstruct.Mapping;
 public interface CartMapper {
 
     @Mapping(target = "cartItems",ignore = true)
+    @Mapping(target = "discount",ignore = true)
+    @Mapping(target = "tax",ignore = true)
     public CartResponseDto cartToCartResponseDto(Cart cart);
 }

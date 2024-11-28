@@ -34,4 +34,15 @@ public class VariationServiceImpl implements VariationService {
         variationRepository.save(variation);
 
     }
+
+    private String generateUniqueDetails(VariationDto variationDto) {
+        String baseDetails = variationDto.getVariationName().toLowerCase().replace(" ", "-");
+        String uniqueDetails = baseDetails;
+        int counter = 1;
+        while (productRepository.existsByDetails(uniqueDetails)) {
+            uniqueDetails = baseDetails + "-" + counter;
+            counter++;
+        }
+        return uniqueDetails;
+    }
 }
