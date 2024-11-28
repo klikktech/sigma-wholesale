@@ -25,7 +25,7 @@ public interface ProductService {
 
     List<ProductResponseDto> getNewArrivals();
 
-    List<ProductsResponse> getAllProductsForAdmin();
+    Page<ProductsResponse> getAllProductsForAdmin(Pageable pageable);
 
     List<VariationResponseDto> getProductVariations(String details);
 
@@ -35,7 +35,7 @@ public interface ProductService {
 
     Page<ProductResponseDto> getProductsFromSearch(String keyword, Pageable pageable);
 
-    SuccessResponse updateProduct(UpdateProductAdminRequest request);
+    SuccessResponse updateProduct(UpdateProductAdminRequest request, MultipartFile displayImage, List<MultipartFile> otherFiles);
 
     SuccessResponse deleteProduct(String details);
 }

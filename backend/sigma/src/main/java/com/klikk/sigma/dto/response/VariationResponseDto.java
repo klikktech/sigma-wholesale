@@ -8,15 +8,17 @@ import lombok.*;
 @NoArgsConstructor
 public class VariationResponseDto {
 
-    private String typeInfo;
-
     private String variationName;
 
     private String sku;
 
-    private double price;
-
-    private String details;
+    private String displayStatus;
 
     private String stockStatus;
+
+    private int stockQuantity;
+
+    private double price;
+
+    private double salePrice;
 }

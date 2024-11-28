@@ -32,20 +32,11 @@ public class Variation {
     )
     private String id;
 
-    @Column(name = "type_info")
-    private String typeInfo;
-
     @Column(name = "name")
     private String variationName;
 
     @Column(name = "sku",unique = true)
     private String sku;
-
-    @Column(name = "min_price")
-    private double minPrice;
-
-    @Column(name = "max_price")
-    private double maxPrice;
 
     @Column(name = "price")
     private double price;

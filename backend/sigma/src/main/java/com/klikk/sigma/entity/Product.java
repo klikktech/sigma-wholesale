@@ -1,6 +1,7 @@
 package com.klikk.sigma.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.klikk.sigma.type.ProductType;
 import com.klikk.sigma.util.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -35,12 +36,6 @@ public class Product {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "max_price")
-    private double maxPrice;
-
-    @Column(name = "min_price")
-    private double minPrice;
-
     @Column(name = "price")
     private double price;
 
@@ -60,13 +55,16 @@ public class Product {
     private String displayStatus;
 
     @Column(name = "stock_quantity")
-    private int stockQuantity;
+    private Long stockQuantity;
 
     @Column(name = "total_sales")
     private int totalSales;
 
-    @Column(name = "comment_status")
-    private String commentStatus;
+    @Column(name = "description")
+    private String description;
+
+    @Enumerated(EnumType.STRING)
+    private ProductType productType;
 
     @Column(name = "product_id", unique = true)
     private Long productId;
@@ -85,13 +83,13 @@ public class Product {
     @Column(name = "modified_at")
     private LocalDateTime modifiedAt;
 
-    @Column(name = "rating_count")
-    private int ratingCount;
-
-    @Column(name = "average_rating")
-    private double averageRating;
-
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "parent")
     private List<Variation> variations;
+
+    @Column(name = "case_quantity")
+    private Long caseQuantity;
+
+    @Column(name = "box_quantity")
+    private Long boxQuantity;
 
 }

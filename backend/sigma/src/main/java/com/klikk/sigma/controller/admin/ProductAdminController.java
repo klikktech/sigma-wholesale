@@ -7,6 +7,8 @@ import com.klikk.sigma.dto.response.ProductsResponse;
 import com.klikk.sigma.dto.response.SuccessResponse;
 import com.klikk.sigma.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,8 +31,8 @@ public class ProductAdminController {
 
     @GetMapping()
     @PreAuthorize("hasAnyAuthority('admin:read')")
-    public ResponseEntity<List<ProductsResponse>> getAllProductsForAdmin() {
-        return ResponseEntity.ok(productService.getAllProductsForAdmin());
+    public ResponseEntity<Page<ProductsResponse>> getAllProductsForAdmin(Pageable pageable) {
+        return ResponseEntity.ok(productService.getAllProductsForAdmin(pageable));
     }
 
     @GetMapping("/{details}")
@@ -49,10 +51,10 @@ public class ProductAdminController {
 
     @PutMapping()
     @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
-    public ResponseEntity<SuccessResponse> updateProduct(@RequestPart("product") String request){
+    public ResponseEntity<SuccessResponse> updateProduct(@RequestPart("product") String request,@RequestPart(value = "displayImage",required = false)MultipartFile displayImage, @RequestPart(value = "images",required = false) List<MultipartFile> images){
         try{
             UpdateProductAdminRequest updateRequest = objectMapper.readValue(request, UpdateProductAdminRequest.class);
-            return ResponseEntity.ok(productService.updateProduct(updateRequest));
+            return ResponseEntity.ok(productService.updateProduct(updateRequest,displayImage,images));
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(SuccessResponse.builder().message(e.getMessage()).build());

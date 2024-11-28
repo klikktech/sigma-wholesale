@@ -2,6 +2,7 @@ package com.klikk.sigma.dto.response;
 
 import com.klikk.sigma.entity.Attachment;
 import com.klikk.sigma.entity.Category;
+import com.klikk.sigma.type.ProductType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,11 +32,23 @@ public class ProductsResponse {
 
     private String price;
 
-    private double maxPrice;
-
-    private double minPrice;
-
     private boolean isOnSale;
 
     private LocalDateTime createdAt;
+
+    private Long caseQuantity;
+
+    private Long boxQuantity;
+
+    private String description;
+
+    private Long stockQuantity;
+
+    private String displayStatus;
+
+    private double salePrice;
+
+    private ProductType productType;
+
+    private List<VariationResponseDto> variations;
 }

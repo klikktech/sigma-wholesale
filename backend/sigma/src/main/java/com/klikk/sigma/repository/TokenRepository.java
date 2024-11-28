@@ -1,6 +1,7 @@
 package com.klikk.sigma.repository;
 
 import com.klikk.sigma.entity.Token;
+import com.klikk.sigma.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -11,6 +12,8 @@ public interface TokenRepository extends JpaRepository<Token, Integer> {
     @Query("select t from Token t inner join User u on t.user.id = u.id " +
             "where t.user.id = :userId and t.loggedOut = false")
     List<Token> findAllAccessTokensByUser(String userId);
+
+    List<Token> findAllByUser(User user);
 
     Optional<Token> findByAccessToken(String token);
 
