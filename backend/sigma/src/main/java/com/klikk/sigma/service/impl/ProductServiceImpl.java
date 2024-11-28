@@ -6,6 +6,7 @@ import com.klikk.sigma.dto.request.UpdateProductAdminRequest;
 import com.klikk.sigma.dto.response.*;
 import com.klikk.sigma.entity.Attachment;
 import com.klikk.sigma.entity.Product;
+import com.klikk.sigma.entity.Variation;
 import com.klikk.sigma.exception.NotFoundException;
 import com.klikk.sigma.mapper.AttachmentMapper;
 import com.klikk.sigma.mapper.ProductMapper;
@@ -13,9 +14,13 @@ import com.klikk.sigma.mapper.VariationMapper;
 import com.klikk.sigma.repository.AttachmentRepository;
 import com.klikk.sigma.repository.CategoryRepository;
 import com.klikk.sigma.repository.ProductRepository;
+import com.klikk.sigma.repository.VariationRepository;
 import com.klikk.sigma.service.AttachmentService;
 import com.klikk.sigma.service.ProductService;
+import com.klikk.sigma.service.VariationService;
 import com.klikk.sigma.type.AttachmentType;
+import com.klikk.sigma.type.ProductType;
+import io.jsonwebtoken.security.Jwks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -33,7 +38,7 @@ import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -66,10 +71,16 @@ public class ProductServiceImpl implements ProductService {
     private CategoryRepository categoryRepository;
 
     @Autowired
+    private VariationRepository variationRepository;
+
+    @Autowired
     private VariationMapper variationMapper;
 
     @Autowired
     private AttachmentService attachmentService;
+
+    @Autowired
+    private VariationService variationService;
 
     @Override
     public ProductResponseDto saveProduct(ProductRequestDto productRequest, MultipartFile displayFile, List<MultipartFile> otherFiles) throws IOException {
@@ -77,6 +88,8 @@ public class ProductServiceImpl implements ProductService {
         Product newProduct = productMapper.productRequestToProduct(productRequest);
         newProduct.setCreatedAt(LocalDateTime.now());
         newProduct.setDetails(generateUniqueDetails(newProduct));
+        ProductType newProductType= productRequest.getProductType().toLowerCase().equals("simple")?ProductType.SIMPLE:ProductType.VARIABLE;
+        newProduct.setProductType(newProductType);
         final Product savedProduct = productRepository.save(newProduct);
 
         if (displayFile != null) {
@@ -91,6 +104,12 @@ public class ProductServiceImpl implements ProductService {
             AttachmentType attachmentType = determineAttachmentType(file);
             attachmentService.saveAttachment(attachmentType, fileUrl, savedProduct, false);
         }
+
+        List<Variation> savedVariations = productRequest.getVariations().stream()
+                .map(variation -> variationService.saveVariation(variation, savedProduct.getDetails()))
+                .toList();
+
+
 
         return productMapper.productToProductResponseDto(savedProduct);
     }
@@ -183,13 +202,21 @@ public class ProductServiceImpl implements ProductService {
 
     //    @Transactional(readOnly = true)
     @Override
-    public List<ProductsResponse> getAllProductsForAdmin() {
-        List<Product> products = productRepository.findAll();
-        return products.stream()
-                .sorted(Comparator.comparing(Product::getCreatedAt).reversed())
+    public Page<ProductsResponse> getAllProductsForAdmin(Pageable pageable) {
+        // Fetch products in a paginated way
+        Page<Product> productsPage = productRepository.findAll(pageable);
+
+        // Map each product to ProductsResponse
+        List<ProductsResponse> productsResponses = productsPage.getContent()
+                .stream()
+                .sorted(Comparator.comparing(Product::getCreatedAt).reversed()) // Sorting by createdAt in reverse order
                 .map(this::buildAdminProductResponse)
                 .collect(Collectors.toList());
+
+        // Return as a paginated response
+        return new PageImpl<>(productsResponses, pageable, productsPage.getTotalElements());
     }
+
 
     @Override
     public ProductsResponse getProductForAdmin(String details) {
@@ -208,22 +235,23 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public SuccessResponse updateProduct(UpdateProductAdminRequest request) {
+    public SuccessResponse updateProduct(UpdateProductAdminRequest request,MultipartFile displayImage, List<MultipartFile> otherFiles) {
         Optional<Product> product=productRepository.findByDetails(request.getDetails());
 
         if(product.isEmpty()){
             throw new IllegalArgumentException("Product not present");
         }
 
+        List<Attachment> attachments=attachmentRepository.findByProduct(product.get());
+
+        attachments.forEach(attachment -> {
+            deleteFileFromS3ByUrl(attachment.getImageUrl());
+            attachmentRepository.delete(attachment);
+        });
+
         // Check and update fields only if provided
         if (request.getName() != null) {
             product.get().setName(request.getName());
-        }
-        if (request.getMaxPrice() > 0) { // Ensure valid price
-            product.get().setMaxPrice(request.getMaxPrice());
-        }
-        if (request.getMinPrice() > 0) { // Ensure valid price
-            product.get().setMinPrice(request.getMinPrice());
         }
         if (request.getPrice() > 0) { // Ensure valid price
             product.get().setPrice(request.getPrice());
@@ -238,18 +266,77 @@ public class ProductServiceImpl implements ProductService {
             product.get().setDetails(request.getDetails());
         }
 
-        productRepository.save(product.get());
+        Product updatedProduct=productRepository.save(product.get());
+
+
+        if (displayImage != null) {
+            String fileUrl = uploadFileToAws(displayImage);
+            AttachmentType attachmentType = determineAttachmentType(displayImage);
+            // Save the display file as an attachment
+            attachmentService.saveAttachment(attachmentType, fileUrl, updatedProduct, true);
+        }
+
+        for (MultipartFile file : otherFiles) {
+            String fileUrl = uploadFileToAws(file);
+            AttachmentType attachmentType = determineAttachmentType(file);
+            attachmentService.saveAttachment(attachmentType, fileUrl, updatedProduct, false);
+        }
 
         return new SuccessResponse(LocalDateTime.now(),"Product updated successfully");
     }
 
+
+    public void deleteFileFromS3ByUrl(String fileUrl) {
+        try {
+            // Extract the bucket name and file key from the URL
+            String bucketName = awsS3Properties.getBucketName();
+            String fileKey = extractFileKeyFromUrl(fileUrl, bucketName);
+            DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(fileKey)
+                    .build();
+
+            // Delete the file from the S3 bucket
+            s3Client.deleteObject(deleteObjectRequest);
+            System.out.println("File deleted successfully from S3: " + fileUrl);
+        } catch (AwsServiceException e) {
+            System.out.println("Error while deleting file from AWS S3: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Unexpected error: " + e.getMessage());
+        }
+    }
+
+    private String extractFileKeyFromUrl(String fileUrl, String bucketName) {
+        // Replace this with your bucket's specific region
+        String region = "us-east-2";
+        String bucketUrl = String.format("https://%s.s3.%s.amazonaws.com/", bucketName, region);
+        if (fileUrl.startsWith(bucketUrl)) {
+            return fileUrl.replace(bucketUrl, "");
+        } else {
+            throw new IllegalArgumentException("File URL does not match the expected bucket URL format.");
+        }
+    }
+
+
     @Override
     public SuccessResponse deleteProduct(String details) {
-        Optional<Product> product=productRepository.findByDetails(details);
 
+
+        Optional<Product> product=productRepository.findByDetails(details);
         if(product.isEmpty()){
-            throw new IllegalArgumentException("Product not present");
+            throw new NotFoundException("Product not found or already deleted");
         }
+        Optional<List<Variation>> variations=variationRepository.findByParent(product.get());
+        variations.ifPresent(variationList -> variationList.forEach(variation -> {
+            variationRepository.delete(variation);
+        }));
+
+        List<Attachment> attachments=attachmentRepository.findByProduct(product.get());
+        attachments.forEach(attachment -> {
+            deleteFileFromS3ByUrl(attachment.getImageUrl());
+            attachmentRepository.delete(attachment);
+        });
+
         productRepository.delete(product.get());
         return new SuccessResponse(LocalDateTime.now(),"Product deleted successfully");
     }

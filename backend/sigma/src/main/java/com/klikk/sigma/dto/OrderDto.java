@@ -1,6 +1,7 @@
 package com.klikk.sigma.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.klikk.sigma.type.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,5 +24,9 @@ public class OrderDto {
     private String id;
 
     private LocalDateTime orderCreatedAt;
+
+    private OrderStatus orderStatus;
+
+    private String buyer;
 
 }

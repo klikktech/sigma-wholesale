@@ -9,6 +9,7 @@ import com.klikk.sigma.repository.UserRepository;
 import com.klikk.sigma.service.JwtService;
 import com.klikk.sigma.service.OrderItemService;
 import com.klikk.sigma.service.OrderService;
+import com.klikk.sigma.type.OrderStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,6 +67,7 @@ public class OrderServiceImpl implements OrderService {
         order.setBuyer(user.get());
         order.setOrderCreatedAt(LocalDateTime.now());
         order.setOrderModifiedAt(LocalDateTime.now());
+        order.setOrderStatus(OrderStatus.PENDING);
         orderRepository.save(order);
         orderItemService.addOrderItems(userEmail,order);
     }

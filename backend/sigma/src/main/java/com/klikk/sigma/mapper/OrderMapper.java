@@ -20,5 +20,6 @@ public interface OrderMapper {
     @Mapping(target = "buyer", ignore = true)
     public Order orderDtoToOrder(OrderDto orderDto);
 
+    @Mapping(target = "buyer", source = "buyer.email")
     public OrderDto orderToOrderDto(Order order);
 }

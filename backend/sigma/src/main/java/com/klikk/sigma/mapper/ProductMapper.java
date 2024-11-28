@@ -22,18 +22,15 @@ public abstract class ProductMapper {
     @Mapping(target = "id",ignore = true)
     @Mapping(target = "createdAt",ignore = true)
     @Mapping(target = "modifiedAt",ignore = true)
-    @Mapping(target = "ratingCount",ignore = true)
-    @Mapping(target = "averageRating",ignore = true)
-    @Mapping(target = "stockQuantity",ignore = true)
     @Mapping(target = "totalSales",ignore = true)
+    @Mapping(target = "productType",ignore = true)
+    @Mapping(target = "variations",ignore = true)
     public abstract Product productRequestToProduct(ProductRequestDto productRequestDto);
 
-    @Mapping(source = "maxPrice", target = "price")
 //    @Mapping(source = "displayImage", target = "displayImage", qualifiedByName = "mapDisplayImage")
 //    @Mapping(target = "images", ignore = true)
     public abstract ProductsResponse adminAllProductsResponse(Product product);
 
-    @Mapping(source = "maxPrice", target = "price")
 //    @Mapping(target = "displayImage", ignore = true)
 //    @Mapping(target = "images", ignore = true)
     public abstract ProductsResponse adminProductsResponse(Product product);

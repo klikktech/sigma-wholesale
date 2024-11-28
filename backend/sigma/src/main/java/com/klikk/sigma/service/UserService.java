@@ -9,13 +9,15 @@ import com.klikk.sigma.dto.response.SuccessResponse;
 import com.klikk.sigma.dto.response.UsersResponse;
 import com.klikk.sigma.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 
 public interface UserService {
 
-    List<UsersResponse> findAll();
+    Page<UsersResponse> findAll(Pageable pageable);
 
     UserResponseDto findById(Integer id);
 

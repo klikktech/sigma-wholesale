@@ -1,5 +1,6 @@
 package com.klikk.sigma.dto.request;
 
+import com.klikk.sigma.dto.VariationDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,33 +17,28 @@ public class ProductRequestDto {
 
     private String name;
 
-    private double maxPrice;
+    private String productType;
 
-    private double minPrice;
-
-//    private double price;
+    private double price;
 
     private String sku;
 
     private boolean isOnSale;
 
+    private double salePrice;
+
     private String status;
 
     private String displayStatus;
 
-//    private int stockQuantity;
+    private Long caseQuantity;
 
-//    private int totalSales;
+    private Long boxQuantity;
 
-    private String commentStatus;
+    private String description;
 
-//    private String category;
+    private Long stockQuantity;
 
-    private MultipartFile displayImage;
+    private List<VariationDto> variations;
 
-    private List<MultipartFile> images;
-
-//    private int ratingCount;
-
-//    private double averageRating;
 }

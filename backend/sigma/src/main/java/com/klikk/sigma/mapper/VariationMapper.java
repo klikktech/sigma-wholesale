@@ -13,8 +13,7 @@ import java.time.format.DateTimeFormatter;
 @Mapper(componentModel = "spring")
 public abstract class VariationMapper {
 
-    @Mapping(target = "createdAt", qualifiedByName = "convertStringDateToDate")
-    @Mapping(target = "modifiedAt", qualifiedByName = "convertStringDateToDate")
+
     public abstract Variation variationDtoToVariation(VariationDto variationDto);
 
     @Named("convertStringDateToDate")

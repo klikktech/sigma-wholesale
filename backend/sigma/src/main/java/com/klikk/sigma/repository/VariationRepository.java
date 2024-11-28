@@ -5,10 +5,11 @@ import com.klikk.sigma.entity.Variation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 
 public interface VariationRepository extends JpaRepository<Variation, Integer> {
     Optional<Variation> findByDetails(String details);
-
+    Optional<List<Variation>> findByParent(Product product);
 }

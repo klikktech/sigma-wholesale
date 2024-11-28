@@ -53,7 +53,7 @@ public class Order {
     @Column(name = "order_total")
     private Double orderTotal;
 
-    @Column(name = "order_status")
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
 }

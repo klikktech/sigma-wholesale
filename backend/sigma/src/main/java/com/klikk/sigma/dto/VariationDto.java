@@ -12,17 +12,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class VariationDto {
 
-    private Long productId;
-
-    private String typeInfo;
-
     private String variationName;
 
     private String sku;
-
-    private double minPrice;
-
-    private double maxPrice;
 
     private String displayStatus;
 
@@ -30,13 +22,8 @@ public class VariationDto {
 
     private int stockQuantity;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createdAt;
+    private double price;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime modifiedAt;
+    private double salePrice;
 
-    private int orderCount;
-
-    private int parentId;
 }

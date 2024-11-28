@@ -19,12 +19,6 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @PreAuthorize("hasAuthority('admin:read')")
-    @GetMapping()
-    public List<OrderDto> getAllOrders() {
-        return orderService.findAll();
-    }
-
     @GetMapping("/userOrders")
     public List<OrderDto> getUserOrders(HttpServletRequest request){
         return orderService.findUserOrders(request);
