@@ -10,13 +10,16 @@ export const updateCartAction = async (
     cartItems: CartItem[],
 ) => {
     const transformedArray = cartItems.map((item: any) => ({
-        variation: item.variation.details,
+        product: item.product ? item.product.details : null,
+        variation: item.variation ? item.variation.details : null,
         quantity: item.quantity,
-        price: item.variation.price,
+        price: item.variation ? item.variation.price : (item.product ? item.product.price : 0),
     }));
 
+    console.log(cartItems, "cart Items List")
+
     const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-    const totalPrice = cartItems.reduce((sum, item) => sum + item.quantity * item.variation.price, 0);
+    const totalPrice = cartItems.reduce((sum, item) => sum + (item.variation ? (item.variation.price * item.quantity) : (parseInt(item.product.price) * item.quantity)), 0);
 
     const payload = {
         quantity: totalQuantity,
@@ -33,16 +36,16 @@ export const updateCartAction = async (
     }
     if (data && status === 200) {
         console.log("success", status, data)
-        return { error:'',success: true, totalQuantity, totalPrice };
+        return { error: '', success: true, totalQuantity, totalPrice };
     }
 };
 
-export const handleRemoveItemAction = async (item:any, totalQuantity:number, totalPrice:number) => {
+export const handleRemoveItemAction = async (item: any, totalQuantity: number, totalPrice: number) => {
     try {
-        console.log(item,totalQuantity,totalPrice)
+        console.log(item, totalQuantity, totalPrice)
 
         const { data, status, error } = await axios.products.deleteCartItem(item.variation.details as string);
-        if(error){
+        if (error) {
             console.log("error", error)
             return { error: error.message };
         }
@@ -50,7 +53,7 @@ export const handleRemoveItemAction = async (item:any, totalQuantity:number, tot
             const updatedQuantity = Math.max(0, totalQuantity - item.quantity);
             const updatedPrice = Math.max(0, totalPrice - (item.quantity * item.variation.price));
             console.log("success", status, data)
-            return { error:'', success: true, updatedQuantity, updatedPrice };
+            return { error: '', success: true, updatedQuantity, updatedPrice };
         }
     } catch (error) {
         console.error("Error deleting variation:", error);

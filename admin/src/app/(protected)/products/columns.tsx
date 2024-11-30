@@ -6,6 +6,7 @@ import React from "react";
 import { ITableColumn } from "@/utils/types";
 import Link from "next/link";
 import { EDIT_PRODUCT_PAGE_ROUTE } from "@/utils/routes";
+import { deleteProduct } from './actions';
 
 interface Product {
   id: string;
@@ -113,10 +114,8 @@ export const renderCell = (product: Product, columnKey: React.Key) => {
             <span className="cursor-pointer text-lg text-danger active:opacity-50">
               <Modal
                 body={<>Are you sure you want to delete it</>}
-                onSuccess={() => {
-                  console.log(
-                    "deleting user of id: " + product["name" as keyof object]
-                  );
+                onSuccess={async () => {
+                   await deleteProduct(product.details);
                 }}
                 successButton="Delete"
               >

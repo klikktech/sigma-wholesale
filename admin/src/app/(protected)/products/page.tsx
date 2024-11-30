@@ -7,10 +7,23 @@ import { ADD_PRODUCT_PAGE_ROUTE } from "@/utils/routes";
 
 export const dynamic = 'force-dynamic';
 
-const ProductsPage = async () => {
-  const { data, error } = await axios.products.getAllProducts();
+interface Props {
+  searchParams: { page?: string; keyword?: string };
+}
+
+
+const ProductsPage = async ({ searchParams }: Props) => {
+  const page = searchParams.page ? parseInt(searchParams.page) : 0;
+  const size = 20;
+  const keyword = searchParams.keyword || '';
+  const response = keyword
+    ? await axios.products.getSearchProductsList(keyword, page, size)
+    : await axios.products.getAllProducts(page, size);
+
+  const { data, error } = response;
+  console.log(data, "data")
   if (error) {
-    throw new Error(error.message);
+    console.error("API Error:", error);
   }
 
   return (
@@ -18,8 +31,7 @@ const ProductsPage = async () => {
       <section className="py-2">
         <div className="container">
           <Table
-            searchable
-            data={data || []}
+            data={data.content || []}
             columns={PRODUCT_COLUMNS}
             headerContent={
               <>
@@ -35,6 +47,12 @@ const ProductsPage = async () => {
               </>
             }
             itemsKey="sku"
+            searchPlaceholder="Search products..."
+            type="products"
+            totalPages={data.totalPages}
+            currentPage={page}
+            size={size}
+            searchkey={keyword}
             renderCell={renderCell}
           />
         </div>

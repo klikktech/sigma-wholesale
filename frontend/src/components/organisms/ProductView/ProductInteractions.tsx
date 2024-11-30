@@ -60,10 +60,10 @@ const ProductInteractions = ({ productDetails }: ProductInteractionsProps) => {
     });
   };
 
-  const getFlavor = (str: string): string => {
-    const parts = str.split(" - ");
-    return parts.length > 1 ? parts[1] : "";
-  };
+  // const getFlavor = (str: string): string => {
+  //   const parts = str.split(" - ");
+  //   return parts.length > 1 ? parts[1] : "";
+  // };
 
   return (
     <form action={formAction}>
@@ -82,7 +82,7 @@ const ProductInteractions = ({ productDetails }: ProductInteractionsProps) => {
                         alt=""
                       />
                       <div>
-                        <p className="text-sm">{getFlavor(item.variationName)}</p>
+                        <p className="text-sm">{item.variationName}</p>
                         <p className="font-semibold text-sm">${item.price}</p>
                       </div>
                     </div>

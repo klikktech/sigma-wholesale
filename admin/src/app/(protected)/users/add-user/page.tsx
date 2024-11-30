@@ -1,4 +1,4 @@
-import AddUserForm from "@/components/organisms/forms/users/AddUserForm";
+import AddUserForm from "@/components/organisms/forms/Users/AddUserForm";
 import React from "react";
 
 const AddUserPage = () => {

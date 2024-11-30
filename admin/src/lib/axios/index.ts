@@ -10,7 +10,12 @@ import {
   EDIT_USERS_ENDPOINT,
   ADD_USER_ENDPOINT,
   GET_ALL_ORDERS_ENDPOINT,
-  GET_ORDER_DETAILS_ENDPOINT
+  GET_ORDER_DETAILS_ENDPOINT,
+  DELETE_PRODUCT_ENDPOINT,
+  DELETE_USER_ENDPOINT,
+  SEARCH_PRODUCTS_URL,
+  EDIT_ORDER_ENDPOINT,
+  DELETE_ORDER_ENDPOINT
 } from "@/utils/urls";
 import api, { authInstance } from "./instance";
 import {
@@ -57,9 +62,11 @@ export const axios = {
     },
   },
   users: {
-    getAllUsers: async (): Promise<AxiosResponse> => {
+    getAllUsers: async (page:number,size:number): Promise<AxiosResponse> => {
       try {
-        const { data, status } = await api.get(GET_ALL_USERS_ENDPOINT);
+        const { data, status } = await api.get(GET_ALL_USERS_ENDPOINT,{
+          params: { page, size }
+        });
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;
@@ -95,11 +102,30 @@ export const axios = {
         return error as AxiosErrorResponse;
       }
     },
+    deleteUser: async (email: string): Promise<AxiosResponse> => {
+      console.log("delete user", email)
+      try {
+        const { data, status } = await api.delete(DELETE_USER_ENDPOINT(email));
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    getSearchUsersList: async (keyword: string): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.get(GET_USER_ENDPOINT(keyword));
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
   },
   products: {
-    getAllProducts: async (): Promise<AxiosResponse> => {
+    getAllProducts: async (page:number,size:number): Promise<AxiosResponse> => {
       try {
-        const { data, status } = await api.get(GET_ALL_PRODUCTS_ENDPOINT);
+        const { data, status } = await api.get(GET_ALL_PRODUCTS_ENDPOINT,{
+          params: { page, size }
+        });
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;
@@ -145,11 +171,33 @@ export const axios = {
         return error as AxiosErrorResponse;
       }
     },
+    deleteProduct: async (details: any): Promise<AxiosResponse> => {
+      console.log("delete product", details)
+      try {
+        const { data, status } = await api.delete(DELETE_PRODUCT_ENDPOINT(details));
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    getSearchProductsList: async (keyword: string, page: number, size: number): Promise<AxiosResponse> => {
+      console.log("get search list")
+      try {
+        const { data, status } = await api.get(SEARCH_PRODUCTS_URL(keyword), {
+          params: { page, size }
+        });
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
   },
   orders: {
-    getAllOrders: async (): Promise<AxiosResponse> => {
+    getAllOrders: async (page:number,size:number): Promise<AxiosResponse> => {
       try {
-        const { data, status } = await api.get(GET_ALL_ORDERS_ENDPOINT);
+        const { data, status } = await api.get(GET_ALL_ORDERS_ENDPOINT,{
+          params: { page, size }
+        });
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;
@@ -162,6 +210,33 @@ export const axios = {
       } catch (error) {
         return error as AxiosErrorResponse;
       }
-    }
+    },
+    editOrderStatus: async (payload: any): Promise<AxiosResponse> => {
+      console.log("edit order", payload)
+      try {
+        const { data, status } = await api.put(EDIT_ORDER_ENDPOINT,payload);
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    deleteOrder: async (orderId: any): Promise<AxiosResponse> => {
+      console.log("delete order", orderId)
+      try {
+        const { data, status } = await api.delete(DELETE_ORDER_ENDPOINT(orderId));
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    getSearchOrdersList: async (keyword: string): Promise<AxiosResponse> => {
+      console.log("get search list")
+      try {
+        const { data, status } = await api.get(GET_ORDER_DETAILS_ENDPOINT(keyword));
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
   }
 };

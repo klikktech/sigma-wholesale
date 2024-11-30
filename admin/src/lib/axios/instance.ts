@@ -88,6 +88,11 @@ const handleAxiosError = (error: any): AxiosErrorResponse => {
           "Access Denied - You don't have permission",
           status
         );
+      case 404:
+        return formatErrorResponse(
+          error.response.data.message || "Not found",
+          status
+        );
       case 500:
         return formatErrorResponse(
           "Internal Server Error - Please try again later",

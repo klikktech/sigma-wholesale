@@ -10,7 +10,7 @@ export const searchAction = async (
     formData: FormData
 ) => {
     const keyword = formData.get("keyword") as string;
-    const page = 1
+    const page = 0
     const size = 16
     const { data, status, error } = await axios.products.getSearchProductsList(keyword, page, size);
     console.log(data, status, error, "data status error")

@@ -20,12 +20,13 @@ export interface UserDetails {
 export interface ProductDetails {
   id?:number
   name: string;
+  salePrice?:number;
   // maxPrice: number;
   // minPrice: number;
   price: number;
   sku: string;
   isOnSale: boolean;
-  stockStatus: "instock" | "outofstock";
+  status: "instock" | "outofstock";
   displayStatus: string;
   details?:string;
   stockQuantity: number;
@@ -79,7 +80,7 @@ export type AxiosResponse = {
 
 export interface Variation {
   id: string;
-  name: string;
+  variationName: string;
   price: string;
   salePrice: string;
   sku: string;

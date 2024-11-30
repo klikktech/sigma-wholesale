@@ -1,4 +1,4 @@
-import ProductForm from "@/components/organisms/forms/products/AddProductForm";
+import ProductForm from "@/components/organisms/forms/Products/AddProductForm";
 import React from "react";
 
 const AddUserPage = () => {

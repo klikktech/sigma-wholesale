@@ -15,7 +15,13 @@ import {
 } from "@nextui-org/react";
 import { Variation } from "@/utils/types";
 
-const ProductVariations = () => {
+// First, define the props interface
+interface ProductVariationsProps {
+  onVariationsChange: (variations: any[]) => void;
+}
+
+// Then export the component with the props interface
+const ProductVariations: React.FC<ProductVariationsProps> = ({ onVariationsChange }) => {
     const [variations, setVariations] = useState<Variation[]>([]);
     const [bulkPrice, setBulkPrice] = useState("");
     const [bulkSalePrice, setBulkSalePrice] = useState("");
@@ -24,7 +30,7 @@ const ProductVariations = () => {
     // New state for form inputs
     const [newVariation, setNewVariation] = useState<Variation>({
         id: "",
-        name: "",
+        variationName: "",
         price: "",
         salePrice: "",
         sku: "",
@@ -39,17 +45,29 @@ const ProductVariations = () => {
     // Add new state for selected variations
     const [selectedVariations, setSelectedVariations] = useState<Set<string>>(new Set());
 
+    // Call onVariationsChange whenever variations change
+    React.useEffect(() => {
+        onVariationsChange(variations);
+    }, [variations, onVariationsChange]);
+
+    // Update the updateVariations function
+    const updateVariations = (newVariations: Variation[]) => {
+        setVariations(newVariations);
+        onVariationsChange(newVariations); // Immediately notify parent
+    };
+
     const addVariation = () => {
-        if (!newVariation.name) {
+        if (!newVariation.variationName) {
             alert("Variation name is required");
             return;
         }
 
         if (isEditing) {
             // Update existing variation
-            setVariations(variations.map(v => 
+            const updatedVariations = variations.map(v => 
                 v.id === newVariation.id ? newVariation : v
-            ));
+            );
+            updateVariations(updatedVariations);
             setIsEditing(false);
         } else {
             // Add new variation
@@ -57,13 +75,13 @@ const ProductVariations = () => {
                 ...newVariation,
                 id: Date.now().toString(),
             };
-            setVariations([...variations, variationToAdd]);
+            updateVariations([...variations, variationToAdd]);
         }
 
         // Reset form
         setNewVariation({
             id: "",
-            name: "",
+            variationName: "",
             price: "",
             salePrice: "",
             sku: "",
@@ -74,11 +92,11 @@ const ProductVariations = () => {
     };
 
     const deleteVariation = (id: string) => {
-        setVariations(variations.filter((v) => v.id !== id));
+        updateVariations(variations.filter((v) => v.id !== id));
     };
 
     const editVariation = (id: string, field: keyof Variation, value: string) => {
-        setVariations(
+        updateVariations(
             variations.map((v) => (v.id === id ? { ...v, [field]: value } : v))
         );
     };
@@ -138,10 +156,10 @@ const ProductVariations = () => {
                 <Input
                     label="Variation Name"
                     labelPlacement="outside"
-                    placeholder="Name"
-                    value={newVariation.name}
+                    placeholder="variationName"
+                    value={newVariation.variationName}
                     onChange={(e) =>
-                        setNewVariation({ ...newVariation, name: e.target.value })
+                        setNewVariation({ ...newVariation, variationName: e.target.value })
                     }
                 />
                 <Input
@@ -278,7 +296,7 @@ const ProductVariations = () => {
                                             }
                                         />
                                     </TableCell>
-                                    <TableCell>{variation.name}</TableCell>
+                                    <TableCell>{variation.variationName}</TableCell>
                                     <TableCell>{variation.price}</TableCell>
                                     <TableCell>{variation.salePrice}</TableCell>
                                     <TableCell>{variation.sku}</TableCell>

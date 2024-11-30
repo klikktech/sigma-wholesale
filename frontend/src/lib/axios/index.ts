@@ -17,6 +17,7 @@ import {
   REFRESH_TOKEN_URL,
   DELETE_CART_ITEM_URL,
   PRODUCT_BY_BRAND_URL,
+  GET_BRANDS_URL,
 } from "@/utils/urls";
 import api, { authInstance } from "./instance";
 import { AxiosErrorResponse, AxiosResponse, RegisterDetails, UserDetails } from "@/utils/types";
@@ -212,6 +213,14 @@ export const axios = {
         const { data, status } = await api.get(SEARCH_PRODUCTS_URL(keyword), {
           params: { page, size }
         });
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    getBrandsList: async (): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.get(GET_BRANDS_URL);
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;

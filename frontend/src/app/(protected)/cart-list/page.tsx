@@ -6,7 +6,7 @@ const OrdersPage = async () => {
   if (error) {
     throw new Error(error.message)
   }
-
+  console.log(data, "in page cartlist")
   return (
     <div>
       <CartList cartItemsList={data.cartItems} />

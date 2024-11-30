@@ -5,7 +5,7 @@ import React from 'react'
 
 const ProductsPage = async ({ searchParams }: { searchParams: { page?: string, keyword?: string } }) => {
   try {
-    const page = searchParams.page ? parseInt(searchParams.page) : 1;
+    const page = searchParams.page ? parseInt(searchParams.page) : 0;
     const size = 16;
     const keyword = searchParams.keyword || '';
 

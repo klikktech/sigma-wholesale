@@ -5,6 +5,7 @@ import Modal from "@/components/molecules/Modal";
 import React from "react";
 import { ITableColumn } from "@/utils/types";
 import { EDIT_USER_PAGE_ROUTE } from "@/utils/routes";
+import { deleteUser } from "./actions";
 
 interface User {
   id: string;
@@ -86,11 +87,9 @@ export const renderUserTableCell = (user: User, columnKey: React.Key) => {
             <span className="cursor-pointer text-lg text-danger active:opacity-50">
               <Modal
                 body={<>Are you sure you want to delete it</>}
-                onSuccess={() => {
-                  console.log(
-                    "deleting user of id: " + user["firstName" as keyof object]
-                  );
-                }}
+                onSuccess={async () => {
+                  await deleteUser(user.email);
+               }}
                 successButton="Delete"
               >
                 <DeleteIcon />

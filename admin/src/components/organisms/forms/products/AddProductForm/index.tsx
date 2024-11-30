@@ -10,6 +10,7 @@ import { PRODUCTS_PAGE_ROUTE } from "@/utils/routes";
 import Image from "next/image";
 import FormSubmitButton from "@/components/molecules/FormSubmitButtton";
 import Video from "@/components/atoms/Video";
+import { Variation } from "@/utils/types";
 import { addProductAction } from "./action";
 import ProductVariations from "./ProductVariations";
 
@@ -98,11 +99,13 @@ const DisplayImageCard = ({
 
 const AddProductForm = () => {
   const [state, formAction] = useFormState(addProductAction, undefined);
+  const [variations, setVariations] = useState<Variation[]>([]);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const displayImageFileInput = useRef<HTMLInputElement>(null);
   const imagesFileInput = useRef<HTMLInputElement>(null);
   const [dataUrl, setDataUrl] = useState<string | null>(null);
-  const [imagesDataUrl, setImagesDataUrl] = useState<string[] | null>(null);
+  const [imagesDataUrl, setImagesDataUrl] = useState<string[]>([]);
   const [showVariations, setShowVariations] = useState(false);
 
   const handleDisplayImageFileChange = (
@@ -115,16 +118,32 @@ const AddProductForm = () => {
   const handleImagesFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      generateDataUrlForImages(files, setImagesDataUrl);
+      generateDataUrlForImages(files, (newUrls) => {
+        setImagesDataUrl(prevUrls => [...prevUrls, ...newUrls]);
+      });
     }
   };
 
   const handleProductTypeChange = (value: string) => {
-    setShowVariations(value === "variation");
+    setShowVariations(value === "VARIABLE");
+  };
+
+  const handleVariationsChange = (newVariations: Variation[]) => {
+    setVariations(newVariations);
+    if (formRef.current) {
+      const hiddenInput = formRef.current.querySelector('input[name="variations"]') as HTMLInputElement;
+      if (hiddenInput) {
+        hiddenInput.value = JSON.stringify(newVariations);
+      }
+    }
+  };
+
+  const handleRemoveImage = (indexToRemove: number) => {
+    setImagesDataUrl(prevUrls => prevUrls.filter((_, index) => index !== indexToRemove));
   };
 
   return (
-    <form action={formAction}>
+    <form ref={formRef} action={formAction}>
       <div className="flex gap-4">
         <div className="flex flex-col w-full gap-4">
           <div className="flex w-full gap-2">
@@ -133,6 +152,12 @@ const AddProductForm = () => {
                 Product Name
               </label>
               <Input type="text" id="name" name="name" required />
+            </div>
+            <div className="w-full">
+              <label className="block text-sm font-medium mb-1" htmlFor="salePrice">
+                Sale Price
+              </label>
+              <Input type="text" id="salePrice" name="salePrice" />
             </div>
           </div>
           <div className="w-full flex gap-2">
@@ -214,13 +239,38 @@ const AddProductForm = () => {
               <Select
                 id="productType"
                 name="productType"
-                defaultSelectedKeys={["simple"]}
+                defaultSelectedKeys={["SIMPLE"]}
                 onChange={(e) => handleProductTypeChange(e.target.value)}
                 required
               >
-                <SelectItem key="simple">Simple</SelectItem>
-                <SelectItem key="variation">Variation</SelectItem>
+                <SelectItem key="SIMPLE">Simple</SelectItem>
+                <SelectItem key="VARIABLE">Variable</SelectItem>
               </Select>
+            </div>
+          </div>
+          <div className="w-full flex gap-2">
+            <div className="w-full">
+              <label
+                className="block text-sm font-medium mb-1"
+                htmlFor="displayStatus"
+              >
+                Display Status
+              </label>
+              <Select
+                id="displayStatus"
+                name="displayStatus"
+                defaultSelectedKeys={["simple"]}
+                required
+              >
+                <SelectItem key="publish">Publish</SelectItem>
+                <SelectItem key="trash">Trash</SelectItem>
+              </Select>
+            </div>
+            <div className="w-full">
+              <label className="block text-sm font-medium mb-1" htmlFor="stockQuantity">
+                Stock Quantity
+              </label>
+              <Input type="text" id="stockQuantity" name="stockQuantity" />
             </div>
           </div>
           <div className="w-full flex gap-2">
@@ -234,7 +284,7 @@ const AddProductForm = () => {
               <Input type="text" id="boxQuantity" name="boxQuantity" />
             </div>
             <div className="w-full">
-              <label className="block text-sm font-medium mb-1" htmlFor="sku">
+              <label className="block text-sm font-medium mb-1" htmlFor="caseQuantity">
                 Case Quantity
               </label>
               <Input type="text" id="caseQuantity" name="caseQuantity" />
@@ -299,14 +349,20 @@ const AddProductForm = () => {
             />
             {dataUrl && (
               <div className="flex justify-end gap-2">
-                {/* Render video and image based on requirement here */}
-                {imagesDataUrl?.length ? (
-                  imagesDataUrl?.map((imageUrl, index) => (
+                {imagesDataUrl.length > 0 ? (
+                  imagesDataUrl.map((imageUrl, index) => (
                     <div
                       key={`image-${index}`}
-                      className="w-16 h-16 flex items-center justify-center space-x-4 rounded-lg border p-1"
+                      className="w-16 h-16 relative flex items-center justify-center space-x-4 rounded-lg border p-1"
                     >
                       <VideoPreview dataUrl={imageUrl} />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveImage(index)}
+                        className="absolute -top-2 -right-2 bg-danger-500 text-white rounded-full w-5 h-5 flex items-center justify-center hover:bg-danger-600"
+                      >
+                        <span className="material-symbols-rounded text-sm">close</span>
+                      </button>
                     </div>
                   ))
                 ) : (
@@ -326,7 +382,19 @@ const AddProductForm = () => {
         </div>
       </div>
       <div className="mt-4">
-        {showVariations && <ProductVariations />}
+        {showVariations && (
+          <>
+            <ProductVariations
+              onVariationsChange={handleVariationsChange}
+            />
+            <input
+              type="hidden"
+              name="variations"
+              value={JSON.stringify(variations)}
+              readOnly
+            />
+          </>
+        )}
       </div>
     </form>
   );

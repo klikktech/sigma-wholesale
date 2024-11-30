@@ -104,6 +104,7 @@ export interface FormState {
 }
 
 export interface CartItem {
+  product:any
   variation: cartvariation
   quantity: number;
 }
@@ -145,4 +146,8 @@ export interface UserDetailsResponse {
   email: string;
   phone: string;
   role: string;
+}
+export interface Brand {
+  name: string;
+  image: string;
 }

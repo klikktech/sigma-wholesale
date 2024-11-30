@@ -11,7 +11,7 @@ interface Props {
 const CategoryProductsPage = async ({ params, searchParams }: Props) => {
   let products = [];
   let totalPages: number;
-  const page = searchParams.page ? parseInt(searchParams.page) : 1;
+  const page = searchParams.page ? parseInt(searchParams.page) : 0;
   const size = searchParams.size ? parseInt(searchParams.size) : 16;
   const { category } = params;
 

@@ -7,40 +7,59 @@ import { ADD_USER_PAGE_ROUTE } from "@/utils/routes";
 
 export const dynamic = 'force-dynamic';
 
+interface Props {
+  searchParams: { page?: string; keyword?: string };
+}
 
-const UsersPage = async () => {
-  const { data, error } = await axios.users.getAllUsers();
-  if (error) {
-    throw new Error(error.message);
+const UsersPage = async ({ searchParams }: Props) => {
+
+  const page = searchParams.page ? parseInt(searchParams.page) : 0;
+  const size = 20;
+  const keyword = searchParams.keyword || '';
+  const response = keyword 
+    ? await axios.users.getSearchUsersList(keyword)
+    : await axios.users.getAllUsers(page, size);
+    console.log(response,"response")
+  if ('data' in response) {
+    const { data } = response;
+
+    return (
+      <>
+        <section className="py-2">
+          <div className="container">
+            <Table
+              data={keyword? [data]|| []: data.content || []}
+              columns={USER_COLUMNS}
+              headerContent={
+                <>
+                  <Link href={ADD_USER_PAGE_ROUTE}>
+                    <Button
+                      endContent={
+                        <span className="material-symbols-rounded">add</span>
+                      }
+                    >
+                      Add User
+                    </Button>
+                  </Link>
+                </>
+              }
+              itemsKey="email"
+              type="users"
+              searchPlaceholder="Search userby email"
+              totalPages={data.totalPages}
+              currentPage={page}
+              size={size}
+              searchkey={keyword}
+              renderCell={renderUserTableCell}
+            />
+          </div>
+        </section>
+      </>
+    );
+  } else {
+    console.error("API Error:", response.error);
+    throw new Error(response.error?.message);
   }
-
-  return (
-    <>
-      <section className="py-2">
-        <div className="container">
-          <Table
-            searchable
-            data={data || []}
-            columns={USER_COLUMNS}
-            headerContent={
-              <>
-                <Link href={ADD_USER_PAGE_ROUTE}>
-                  <Button
-                    endContent={
-                      <span className="material-symbols-rounded">add</span>
-                    }
-                  >
-                    Add User
-                  </Button>
-                </Link>
-              </>
-            }
-            renderCell={renderUserTableCell}
-          />
-        </div>
-      </section>
-    </>
-  );
 };
 
 export default UsersPage;

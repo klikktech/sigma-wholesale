@@ -34,4 +34,5 @@ export const PRODUCT_BY_CATEGORY_URL = (category: string) => `/categories/${cate
 export const PRODUCT_BY_BRAND_URL = (brand:string) => `/categories/tag/${brand}/products`;
 export const ADDRESS_URL = (type: string) => `/users/addresses?type=${type}`;
 export const DELETE_ADDRESS_URL = (address: string) =>`/address?address=${address}`;
+export const GET_BRANDS_URL = `/brands`
 

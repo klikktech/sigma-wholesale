@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import FormSubmitButton from '@/components/molecules/FormSubmitButton';
 
 interface CartItem {
+  product:any
   variation: variation
   quantity: number;
 }
@@ -37,16 +38,24 @@ const CartList = ({ cartItemsList }: CartListProps) => {
     return result;
   }, undefined);
 
-  const updateQuantity = (name: string, amount: number) => {
+  const updateVariationQuantity = (name: string, amount: number) => {
     setCartItems((prevItems) =>
       prevItems.map((item) =>
-        item.variation.variationName === name ? { ...item, quantity: item.quantity + amount } : item
+        (item.variation && item.variation.variationName === name) ? { ...item, quantity: item.quantity + amount } : item
+      )
+    );
+  };
+
+  const updateProductQuantity = (name: string, amount: number) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
+        (item.product && item.product.name === name) ? { ...item, quantity: item.quantity + amount } : item
       )
     );
   };
 
   const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
-  const totalCost = cartItems.reduce((acc, item) => acc + item.variation.price * item.quantity, 0);
+  const totalCost = cartItems.reduce((acc, item) => acc + (item.variation?(item.variation.price * item.quantity):(parseInt(item.product.price)* item.quantity)) , 0);
 
   useEffect(() => {
     if (state?.error) {
@@ -81,7 +90,8 @@ const CartList = ({ cartItemsList }: CartListProps) => {
                 <div>Total</div>
               </div>
               {cartItems.map((item) => (
-                <div
+                item.variation ?
+                (<div
                   key={item.variation.variationName}
                   className="grid grid-cols-6 gap-4 items-center text-center py-4 border-b"
                 >
@@ -101,19 +111,51 @@ const CartList = ({ cartItemsList }: CartListProps) => {
                     <button
                       type='button'
                       className="border px-2 py-1"
-                      onClick={() => updateQuantity(item.variation.variationName, -1)}
+                      onClick={() => updateVariationQuantity(item.variation.variationName, -1)}
                       disabled={item.quantity === 1}
                     >
                       -
                     </button>
                     <span>{item.quantity}</span>
-                    <button className="border px-2 py-1" type='button' onClick={() => updateQuantity(item.variation.variationName, 1)}>
+                    <button className="border px-2 py-1" type='button' onClick={() => updateVariationQuantity(item.variation.variationName, 1)}>
                       +
                     </button>
                   </div>
                   <p>${item.variation.price.toFixed(2)}</p>
                   <p>${(item.variation.price * item.quantity).toFixed(2)}</p>
-                </div>
+                </div>):(<div
+                  key={item.product.name}
+                  className="grid grid-cols-6 gap-4 items-center text-center py-4 border-b"
+                >
+                  <div className="col-span-3 flex items-center space-x-4 text-left">
+                    <div>
+                      <p className="font-semibold">{item.product.name}</p>
+                      <button
+                        type='button'
+                        className="text-red-500 text-sm"
+                        onClick={(e) => handleRemoveItem(e, item)}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-center space-x-4">
+                    <button
+                      type='button'
+                      className="border px-2 py-1"
+                      onClick={() => updateProductQuantity(item.product.name, -1)}
+                      disabled={item.quantity === 1}
+                    >
+                      -
+                    </button>
+                    <span>{item.quantity}</span>
+                    <button className="border px-2 py-1" type='button' onClick={() => updateProductQuantity(item.product.name, 1)}>
+                      +
+                    </button>
+                  </div>
+                  <p>${parseInt(item.product.price).toFixed(2)}</p>
+                  <p>${(parseInt(item.product.price) * item.quantity).toFixed(2)}</p>
+                </div>)
               ))}
               <div className="flex items-center justify-between">
                 <Link href={HOME_PAGE_ROUTE} className="text-blue-500 mt-4 inline-block">
@@ -131,7 +173,7 @@ const CartList = ({ cartItemsList }: CartListProps) => {
             <h2 className="text-xl font-bold mb-6">Order Summary</h2>
             <div className="flex justify-between mb-4">
               <p>Items {totalItems}</p>
-              <p>${totalCost.toFixed(2)}</p>
+              <p>${totalCost}</p>
             </div>
             <div className="mb-4">
               <p>Promo Code</p>
@@ -146,7 +188,7 @@ const CartList = ({ cartItemsList }: CartListProps) => {
             </div>
             <div className="flex justify-between mb-4">
               <p>Total Cost</p>
-              <p>${(totalCost).toFixed(2)}</p>
+              <p>${(totalCost)}</p>
             </div>
             <FormSubmitButton type='submit' className="w-full py-3 mt-4" color="primary" pendingText='Checking out..'>
               <Link href={CHECKOUT_PAGE_ROUTE}>Checkout</Link>

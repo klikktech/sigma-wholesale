@@ -93,6 +93,9 @@ export const ProductFormValidator = z.object({
     .string()
     .min(2, { message: "Product name must be at least 2 characters long." })
     .trim(),
+  salePrice: z.coerce
+    .number({ message: "Sale price must be a number" })
+    .min(2, { message: "Sale price can't be less than 0" }),
   price: z.coerce
     .number({ message: "Price must be a number" })
     .min(2, { message: "Price can't be less than 0" }),
@@ -100,10 +103,10 @@ export const ProductFormValidator = z.object({
     .string()
     .min(2, { message: "SKU must be at least 2 characters long." })
     .trim(),
-  details: z
-    .string()
-    .min(2, { message: "Details must be at least 2 characters long." })
-    .trim(),
+  // details: z
+  //   .string()
+  //   .min(2, { message: "Details must be at least 2 characters long." })
+  //   .trim(),
     brand: z
     .string()
     .min(2, { message: "Brand must be at least 2 characters long." })
@@ -125,6 +128,10 @@ export const ProductFormValidator = z.object({
     boxQuantity: z.coerce
     .number({ message: "Box quantity must be a number" })
     .min(2, { message: "Box quantity can't be less than 0" }),
+    displayStatus: z
+    .string()
+    .min(2, { message: "Display Status must be at least 2 characters long." })
+    .trim(),
   description: z
     .string()
     .min(2, { message: "Address must be at least 2 characters long." })

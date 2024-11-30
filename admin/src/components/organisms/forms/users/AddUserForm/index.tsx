@@ -3,7 +3,7 @@ import Button from "@/components/atoms/Button";
 import Input from "@/components/atoms/Input";
 import { Select, SelectItem, Textarea } from "@nextui-org/react";
 import React from "react";
-import { addUserAction } from "./actions";
+import { addUserAction } from "./action";
 import { useFormState, useFormStatus } from "react-dom";
 import FormMessage from "@/components/molecules/FormMessage";
 import Link from "next/link";
