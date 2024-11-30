@@ -12,6 +12,7 @@ public interface CartItemMapper {
     @Mapping(target = "cart", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "addedAt", ignore = true)
+    @Mapping(target = "product", ignore = true)
     public CartItem CartItemRequestToCartItem(CartItemRequest cartItemRequest);
 
     @Mapping(target = "variation",ignore = true)
