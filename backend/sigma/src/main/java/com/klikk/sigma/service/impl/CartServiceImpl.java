@@ -90,9 +90,14 @@ public class CartServiceImpl implements CartService {
         List<CartItem> existingItems = cartItemRepository.findByCart(cart);
 
         // Map requested items by a unique identifier (e.g., variation or product details)
-        Map<String, CartItemRequest> requestItemMap = requestedItems.stream()
-                .collect(Collectors.toMap(CartItemRequest::getVariation, item -> item));
 
+        Map<String, CartItemRequest> requestItemMap = requestedItems.stream()
+                .collect(Collectors.toMap(
+                        item -> item.getVariation() != null ? item.getVariation() : item.getProduct(),
+                        item -> item
+                ));
+
+        System.out.println(requestItemMap);
         for (CartItem existingItem : existingItems) {
             String variationDetails = existingItem.getVariation() != null
                     ? existingItem.getVariation().getDetails()
@@ -112,9 +117,14 @@ public class CartServiceImpl implements CartService {
 
         // Add new items from the request that are not in the existing cart items
         for (CartItemRequest newItemRequest : requestItemMap.values()) {
-            Optional<Product> product = productRepository.findByDetails(newItemRequest.getVariation());
-            Optional<Variation> variation = variationRepository.findByDetails(newItemRequest.getVariation());
-
+            Optional<Product> product=Optional.empty();
+            Optional<Variation> variation=Optional.empty();
+            if(newItemRequest.getProduct()!=null){
+                 product = productRepository.findByDetails(newItemRequest.getProduct());
+            }
+            if(newItemRequest.getVariation()!=null) {
+                 variation= variationRepository.findByDetails(newItemRequest.getVariation());
+            }
             if (product.isEmpty() && variation.isEmpty()) {
                 throw new NotFoundException("Variation or Product not found for details: " + newItemRequest.getVariation());
             }

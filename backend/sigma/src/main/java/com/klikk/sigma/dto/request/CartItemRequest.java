@@ -16,6 +16,8 @@ public class CartItemRequest {
 
     private Long quantity;
 
+    private String product;
+
     private boolean isOnlyProduct;
 
     private double price;
