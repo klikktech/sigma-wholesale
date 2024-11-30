@@ -11,9 +11,12 @@ import com.klikk.sigma.service.AuthenticationService;
 import com.klikk.sigma.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -29,6 +32,12 @@ public class UserAdminController {
 
     @Autowired
     private AuthenticationService authenticationService;
+
+    @GetMapping()
+    @PreAuthorize("hasAuthority('admin:read')")
+    public ResponseEntity<Page<UsersResponse>> getUsers(Pageable pageable) {
+        return ResponseEntity.ok(userService.findAll(pageable));
+    }
 
     @PutMapping("/update")
     @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
@@ -47,16 +56,11 @@ public class UserAdminController {
 
     @GetMapping("/{email}")
     @PreAuthorize("hasAuthority('admin:read')")
-    public ResponseEntity<UsersResponse> getUserById(@PathVariable String email) {
-        try {
-            var result = userService.findUserByEmail(email);
-            return ResponseEntity.of(Optional.of(result));
-        } catch (NotFoundException exception) {
-            return new ResponseEntity(exception.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception exception) {
-            return new ResponseEntity(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<?> getUserById(@PathVariable String email) {
+        var result = userService.findUserByEmail(email);
+        return ResponseEntity.ok(result);
     }
+
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {

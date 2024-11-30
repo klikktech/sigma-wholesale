@@ -112,15 +112,13 @@ public class CartServiceImpl implements CartService {
         for (CartItemRequest newItemRequest : requestItemMap.values()) {
             Optional<Product> product=Optional.empty();
             Optional<Variation> variation=Optional.empty();
-            if(newItemRequest.isOnlyProduct()){
-                 product= productRepository.findByDetails(newItemRequest.getVariation());
-            }
-            else{
-                 variation = variationRepository.findByDetails(newItemRequest.getVariation());
-            }
+
+            product= productRepository.findByDetails(newItemRequest.getVariation());
+            variation = variationRepository.findByDetails(newItemRequest.getVariation());
+
 
             if(product.isEmpty() && variation.isEmpty()){
-                throw new NotFoundException("Variation not found for details: " + newItemRequest.getVariation());
+                throw new NotFoundException("Variation or Product not found for details: " + newItemRequest.getVariation());
             }
 
             CartItem newCartItem = CartItem.builder()

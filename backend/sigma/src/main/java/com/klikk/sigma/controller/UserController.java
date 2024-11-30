@@ -60,11 +60,7 @@ public class UserController {
         }
     }
 
-    @GetMapping()
-    @PreAuthorize("hasAuthority('admin:read')")
-    public ResponseEntity<Page<UsersResponse>> getUsers(Pageable pageable) {
-        return ResponseEntity.ok(userService.findAll(pageable));
-    }
+
 
     @GetMapping("/addresses")
     public ResponseEntity<List<AddressResponseDto>> getAddresses(
