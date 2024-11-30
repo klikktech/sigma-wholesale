@@ -24,7 +24,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private static final String[] WHITE_LIST_URL = {"/api/auth/**"};
+    private static final String[] WHITE_LIST_URL = {"/api/auth/**","/brands/**"};
 
     @Autowired
     private UserService userService;
