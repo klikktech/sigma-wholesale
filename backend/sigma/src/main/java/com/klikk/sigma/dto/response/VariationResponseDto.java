@@ -20,5 +20,7 @@ public class VariationResponseDto {
 
     private double price;
 
+    private String details;
+
     private double salePrice;
 }
