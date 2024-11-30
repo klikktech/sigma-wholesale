@@ -66,7 +66,7 @@ public class OrderItemServiceImpl implements OrderItemService {
                     cartItemsRepository.delete(cartItem);
                     return orderItem;
                 })
-                .collect(Collectors.toList());
+                .toList();
         cartRepository.delete(cart.get());
 
     }
