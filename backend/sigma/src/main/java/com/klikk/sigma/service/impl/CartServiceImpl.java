@@ -89,15 +89,17 @@ public class CartServiceImpl implements CartService {
         List<CartItemRequest> requestedItems = cartRequestDto.getCartItemsList();
         List<CartItem> existingItems = cartItemRepository.findByCart(cart);
 
+        // Map requested items by a unique identifier (e.g., variation or product details)
         Map<String, CartItemRequest> requestItemMap = requestedItems.stream()
                 .collect(Collectors.toMap(CartItemRequest::getVariation, item -> item));
 
         for (CartItem existingItem : existingItems) {
-
-            String variationDetails = existingItem.getVariation().getDetails();
+            String variationDetails = existingItem.getVariation() != null
+                    ? existingItem.getVariation().getDetails()
+                    : existingItem.getProduct().getDetails();
 
             if (requestItemMap.containsKey(variationDetails)) {
-                // Update existing item if it's in the request
+                // Update existing item
                 CartItemRequest matchingRequest = requestItemMap.get(variationDetails);
                 existingItem.setQuantity(matchingRequest.getQuantity());
                 existingItem.setAddedAt(LocalDateTime.now());
@@ -110,34 +112,30 @@ public class CartServiceImpl implements CartService {
 
         // Add new items from the request that are not in the existing cart items
         for (CartItemRequest newItemRequest : requestItemMap.values()) {
-            Optional<Product> product=Optional.empty();
-            Optional<Variation> variation=Optional.empty();
+            Optional<Product> product = productRepository.findByDetails(newItemRequest.getVariation());
+            Optional<Variation> variation = variationRepository.findByDetails(newItemRequest.getVariation());
 
-            product= productRepository.findByDetails(newItemRequest.getVariation());
-            variation = variationRepository.findByDetails(newItemRequest.getVariation());
-
-
-            if(product.isEmpty() && variation.isEmpty()){
+            if (product.isEmpty() && variation.isEmpty()) {
                 throw new NotFoundException("Variation or Product not found for details: " + newItemRequest.getVariation());
             }
 
             CartItem newCartItem = CartItem.builder()
                     .cart(cart)
-                    .variation(variation.orElse(null))  // If variation is empty, set it to null
+                    .variation(variation.orElse(null)) // If variation is empty, set it to null
                     .product(product.orElse(null))     // If product is empty, set it to null
                     .quantity(newItemRequest.getQuantity())
                     .addedAt(LocalDateTime.now())
                     .build();
 
-            // Validate that at least one (variation or product) is not null
+            // Ensure either a product or a variation is present
             if (newCartItem.getVariation() == null && newCartItem.getProduct() == null) {
                 throw new IllegalStateException("Either variation or product must be present");
             }
 
-
             cartItemRepository.save(newCartItem);
         }
     }
+
 
 
 
@@ -151,6 +149,7 @@ public class CartServiceImpl implements CartService {
          List<CartItemResponseDto> cartItemResponseDtos=cartItemsRepository.findByCart(cart.get()).stream().map(cartItem -> {
              CartItemResponseDto cartItemResponseDto=cartItemMapper.cartItemToCartItemResponseDto(cartItem);
              cartItemResponseDto.setVariation(variationMapper.variationToVariationResponseDto(cartItem.getVariation()));
+             cartItemResponseDto.setProduct(productMapper.productToProductResponseDto(cartItem.getProduct()));
              return cartItemResponseDto;
 
         }).toList();

@@ -13,5 +13,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CartItemResponseDto {
     private VariationResponseDto variation;
+    private ProductResponseDto product;
     private Long quantity;
 }
