@@ -11,7 +11,7 @@ import {
     Input,
     Select,
     SelectItem,
-    Checkbox,
+    // Checkbox,
 } from "@nextui-org/react";
 import { Variation } from "@/utils/types";
 
@@ -25,9 +25,9 @@ interface ProductVariationsProps {
 // Then export the component with the props interface
 const ProductVariations: React.FC<ProductVariationsProps> = ({ onVariationsChange, initialVariations = [] }) => {
     const [variations, setVariations] = useState<Variation[]>(initialVariations);
-    const [bulkPrice, setBulkPrice] = useState("");
-    const [bulkSalePrice, setBulkSalePrice] = useState("");
-    const [bulkStatus, setBulkStatus] = useState("");
+    // const [bulkPrice, setBulkPrice] = useState("");
+    // const [bulkSalePrice, setBulkSalePrice] = useState("");
+    // const [bulkStatus, setBulkStatus] = useState("");
 
     // New state for form inputs
     const [newVariation, setNewVariation] = useState<Variation>({
@@ -45,7 +45,7 @@ const ProductVariations: React.FC<ProductVariationsProps> = ({ onVariationsChang
     const [isEditing, setIsEditing] = useState(false);
 
     // Add new state for selected variations
-    const [selectedVariations, setSelectedVariations] = useState<Set<string>>(new Set());
+    // const [selectedVariations, setSelectedVariations] = useState<Set<string>>(new Set());
 
     // Call onVariationsChange whenever variations change
     React.useEffect(() => {
@@ -97,53 +97,47 @@ const ProductVariations: React.FC<ProductVariationsProps> = ({ onVariationsChang
         updateVariations(variations.filter((v) => v.id !== id));
     };
 
-    const editVariation = (id: string, field: keyof Variation, value: string) => {
-        updateVariations(
-            variations.map((v) => (v.id === id ? { ...v, [field]: value } : v))
-        );
-    };
-
     // Add select all handler
-    const handleSelectAll = (isSelected: boolean) => {
-        if (isSelected) {
-            setSelectedVariations(new Set(variations.map(v => v.id)));
-        } else {
-            setSelectedVariations(new Set());
-        }
-    };
+    // const handleSelectAll = (isSelected: boolean) => {
+    //     if (isSelected) {
+    //         setSelectedVariations(new Set(variations.map(v => v.id)));
+    //     } else {
+    //         setSelectedVariations(new Set());
+    //     }
+    // };
 
-    // Add individual select handler
-    const handleSelectVariation = (id: string, isSelected: boolean) => {
-        const newSelected = new Set(selectedVariations);
-        if (isSelected) {
-            newSelected.add(id);
-        } else {
-            newSelected.delete(id);
-        }
-        setSelectedVariations(newSelected);
-    };
+    // // Add individual select handler
+    // const handleSelectVariation = (id: string, isSelected: boolean) => {
+    //     const newSelected = new Set(selectedVariations);
+    //     if (isSelected) {
+    //         newSelected.add(id);
+    //     } else {
+    //         newSelected.delete(id);
+    //     }
+    //     setSelectedVariations(newSelected);
+    // };
 
     // Modify bulk action handlers to only affect selected items
-    const applyBulkPrice = () => {
-        setVariations(variations.map((v) => 
-            selectedVariations.has(v.id) ? { ...v, price: bulkPrice } : v
-        ));
-        setBulkPrice("");
-    };
+    // const applyBulkPrice = () => {
+    //     setVariations(variations.map((v) => 
+    //         selectedVariations.has(v.id) ? { ...v, price: bulkPrice } : v
+    //     ));
+    //     setBulkPrice("");
+    // };
 
-    const applyBulkSalePrice = () => {
-        setVariations(variations.map((v) => 
-            selectedVariations.has(v.id) ? { ...v, salePrice: bulkSalePrice } : v
-        ));
-        setBulkSalePrice("");
-    };
+    // const applyBulkSalePrice = () => {
+    //     setVariations(variations.map((v) => 
+    //         selectedVariations.has(v.id) ? { ...v, salePrice: bulkSalePrice } : v
+    //     ));
+    //     setBulkSalePrice("");
+    // };
 
-    const applyBulkStatus = () => {
-        setVariations(variations.map((v) => 
-            selectedVariations.has(v.id) ? { ...v, status: bulkStatus } : v
-        ));
-        setBulkStatus("");
-    };
+    // const applyBulkStatus = () => {
+    //     setVariations(variations.map((v) => 
+    //         selectedVariations.has(v.id) ? { ...v, stockStatus: bulkStatus } : v
+    //     ));
+    //     setBulkStatus("");
+    // };
 
     // Update the edit button click handler
     const handleEdit = (variation: Variation) => {
@@ -234,7 +228,7 @@ const ProductVariations: React.FC<ProductVariationsProps> = ({ onVariationsChang
             {variations.length > 0 && (
                 <>
                     {/* Bulk Actions */}
-                    <div className="flex gap-2 justify-end">
+                    {/* <div className="flex gap-2 justify-end">
                         <Input
                             placeholder="Bulk Price"
                             value={bulkPrice}
@@ -268,18 +262,18 @@ const ProductVariations: React.FC<ProductVariationsProps> = ({ onVariationsChang
                             <SelectItem key="instock">In stock</SelectItem>
                             <SelectItem key="outofstock">Out of stock</SelectItem>
                         </Select>
-                    </div>
+                    </div> */}
 
                     {/* Variations Table */}
                     <Table aria-label="Product Variations">
                         <TableHeader>
-                            <TableColumn>
+                            {/* <TableColumn>
                                 <Checkbox
                                     isSelected={selectedVariations.size === variations.length}
                                     isIndeterminate={selectedVariations.size > 0 && selectedVariations.size < variations.length}
                                     onValueChange={handleSelectAll}
                                 />
-                            </TableColumn>
+                            </TableColumn> */}
                             <TableColumn>Name</TableColumn>
                             <TableColumn>Price</TableColumn>
                             <TableColumn>Sale Price</TableColumn>
@@ -290,14 +284,14 @@ const ProductVariations: React.FC<ProductVariationsProps> = ({ onVariationsChang
                         <TableBody>
                             {variations.map((variation) => (
                                 <TableRow key={variation.id}>
-                                    <TableCell>
+                                    {/* <TableCell>
                                         <Checkbox
                                             isSelected={selectedVariations.has(variation.id)}
                                             onValueChange={(isSelected) => 
                                                 handleSelectVariation(variation.id, isSelected)
                                             }
                                         />
-                                    </TableCell>
+                                    </TableCell> */}
                                     <TableCell>{variation.variationName}</TableCell>
                                     <TableCell>{variation.price}</TableCell>
                                     <TableCell>{variation.salePrice}</TableCell>

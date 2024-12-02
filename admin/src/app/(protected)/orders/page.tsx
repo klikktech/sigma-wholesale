@@ -27,7 +27,7 @@ const OrdersPage = async ({ searchParams }: Props) => {
       <section className="py-2">
         <div className="container">
           <Table
-            data={keyword? [data]|| []: data.content || []}
+            data={keyword? [data]: data.content}
             columns={ORDER_COLUMNS}
             headerContent={
               <></>

@@ -105,9 +105,9 @@ const CheckOut = ({ cartItemsList, totalCost, discount, tax, shippingAddresses }
                                     <TableBody>
                                         {cartItemsList.map((item, index) => (
                                             <TableRow key={index}>
-                                                <TableCell>{item.variation.variationName}</TableCell>
+                                                <TableCell>{item.variation?item.variation.variationName:item.product.name}</TableCell>
                                                 <TableCell>{item.quantity}</TableCell>
-                                                <TableCell>${item.variation.price.toFixed(2)}</TableCell>
+                                                <TableCell>${item.variation?item.variation.price.toFixed(2):parseInt(item.product.price).toFixed(2)}</TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>

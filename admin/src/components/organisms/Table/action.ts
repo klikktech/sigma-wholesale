@@ -3,7 +3,6 @@
 
 import { axios } from "@/lib/axios";
 import { Message } from "@/utils/types";
-import { base } from "framer-motion/m";
 import { redirect } from "next/navigation";
 
 export const searchAction = async (

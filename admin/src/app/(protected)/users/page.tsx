@@ -28,7 +28,7 @@ const UsersPage = async ({ searchParams }: Props) => {
         <section className="py-2">
           <div className="container">
             <Table
-              data={keyword? [data]|| []: data.content || []}
+              data={keyword? [data]: data.content}
               columns={USER_COLUMNS}
               headerContent={
                 <>

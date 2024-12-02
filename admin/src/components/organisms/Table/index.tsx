@@ -1,7 +1,5 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
-
 import {
   Table as NextUiTable,
   TableHeader,
@@ -10,17 +8,15 @@ import {
   TableRow,
   TableCell,
   Pagination,
-  SortDescriptor,
   getKeyValue,
 } from "@nextui-org/react";
-import { SearchIcon } from "@/utils/icons";
 import Input from "@/components/atoms/Input";
 import { ITableColumn } from "@/utils/types";
 import { useRouter } from "next/navigation";
 import FormSubmitButton from "@/components/molecules/FormSubmitButtton";
 import { useFormState, useFormStatus } from "react-dom";
 import { searchAction } from "./action";
-import { div } from "framer-motion/m";
+import FormMessage from "@/components/molecules/FormMessage";
 
 interface Props {
   data: Record<string, any>[];
@@ -31,8 +27,6 @@ interface Props {
   searchPlaceholder?: string;
   searchkey?: string;
   type: string;
-  // searchable?:boolean
-  // initialRowsPerPage?: 10 | 20 | 50 | 100;
   headerContent?: JSX.Element;
   itemsKey?: string;
   renderCell?: (
@@ -78,27 +72,30 @@ const Table = ({
     <NextUiTable
       aria-label="Users table"
       topContent={
-        <div className="flex items-center justify-between">
-          <form action={dispatch} className="flex items-center">
-            <Input
-              name="keyword"
-              type="text"
-              placeholder={searchPlaceholder}
-              className="w-[300px]"
-            />
-            <FormSubmitButton
-              type="submit"
-              color="primary"
-              className="ml-2"
-              pendingText="Searching..."
-              buttonText='Search'
-              disabled={pending}
-            >
-              Search
-            </FormSubmitButton>
-          </form>
-          {props.headerContent}
-        </div>
+        <>
+          <div className="flex items-center justify-between">
+            <form action={dispatch} className="flex items-center">
+              <Input
+                name="keyword"
+                type="text"
+                placeholder={searchPlaceholder}
+                className="w-[300px]"
+              />
+              <FormSubmitButton
+                type="submit"
+                color="primary"
+                className="ml-2"
+                pendingText="Searching..."
+                buttonText='Search'
+                disabled={pending}
+              >
+                Search
+              </FormSubmitButton>
+            </form>
+            {props.headerContent}
+          </div>
+          {state && <FormMessage message={state} />}
+        </>
       }
       topContentPlacement="outside"
       bottomContent={

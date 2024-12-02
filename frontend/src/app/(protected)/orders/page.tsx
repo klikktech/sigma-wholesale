@@ -3,6 +3,7 @@ import { axios } from "@/lib/axios";
 
 const OrdersPage = async () => {
   const { data: ordersList, error: ordersError } = await axios.products.getOrdersList();
+  console.log(ordersList, "ordersList")
   if (ordersError) {
     throw new Error(ordersError.message);
   }
@@ -10,6 +11,7 @@ const OrdersPage = async () => {
   const ordersWithItems = await Promise.all(
     ordersList.map(async (order: any) => {
       const { data: itemsList, error: itemsError } = await axios.products.getOrderItemsList(order.id);
+      console.log(itemsList, "itemsList")
       if (itemsError) {
         throw new Error(itemsError.message);
       }

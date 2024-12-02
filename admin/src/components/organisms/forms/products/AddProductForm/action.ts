@@ -9,14 +9,6 @@ import {
 } from "@/utils/validators";
 import { redirect } from "next/navigation";
 
-interface ProductVariation {
-  name: string;
-  price: string;
-  salePrice: string;
-  sku: string;
-  status: string;
-}
-
 export const addProductAction = async (
   state: undefined | Message,
   formData: FormData,

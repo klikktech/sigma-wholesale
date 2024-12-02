@@ -44,7 +44,7 @@ export const handleRemoveItemAction = async (item: any, totalQuantity: number, t
     try {
         console.log(item, totalQuantity, totalPrice)
 
-        const { data, status, error } = await axios.products.deleteCartItem(item.variation.details as string);
+        const { data, status, error } = await axios.products.deleteCartItem(item.variation ? item.variation.details as string : item.product.details as string);
         if (error) {
             console.log("error", error)
             return { error: error.message };

@@ -32,10 +32,10 @@ const OrderCards = ({ orders }: { orders: orderDetails[] }) => {
                             {order.itemsList.map((item, index) => (
                                 <div key={index} className="flex justify-between items-center py-1 border-b border-gray-200">
                                     <div>
-                                        <p>{item.variation.variationName}</p>
+                                        <p>{item.variation ? item.variation?.variationName : item.product?.name}</p>
                                         <p className="text-sm text-gray-500">quantity: {item.quantity}</p>
                                     </div>
-                                    <p className="font-semibold">$ {item.variation.price.toLocaleString('en-US')}</p>
+                                    <p className="font-semibold">$ {item.variation ? item.variation?.price.toLocaleString('en-US') : item.product?.price.toLocaleString('en-US')}</p>
                                 </div>
                             ))}
                         </div>

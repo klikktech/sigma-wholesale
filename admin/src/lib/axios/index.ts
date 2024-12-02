@@ -15,7 +15,11 @@ import {
   DELETE_USER_ENDPOINT,
   SEARCH_PRODUCTS_URL,
   EDIT_ORDER_ENDPOINT,
-  DELETE_ORDER_ENDPOINT
+  DELETE_ORDER_ENDPOINT,
+  GET_BRANDS_URL,
+  DELETE_BRAND_URL,
+  ADD_OR_UPDATE_BRANDS_URL,
+  GET_CATEGORIES_URL
 } from "@/utils/urls";
 import api, { authInstance } from "./instance";
 import {
@@ -191,6 +195,14 @@ export const axios = {
         return error as AxiosErrorResponse;
       }
     },
+    getCategories: async (): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.get(GET_CATEGORIES_URL);
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
   },
   orders: {
     getAllOrders: async (page:number,size:number): Promise<AxiosResponse> => {
@@ -238,5 +250,51 @@ export const axios = {
         return error as AxiosErrorResponse;
       }
     },
+  },
+  brands:{
+    getBrandsList: async (): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.get(GET_BRANDS_URL);
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    updateBrand: async (formData: FormData): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.put(ADD_OR_UPDATE_BRANDS_URL, formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    createBrand: async (formData: FormData): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.post(ADD_OR_UPDATE_BRANDS_URL, formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    deleteBrand: async (name: string): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.delete(DELETE_BRAND_URL(name));
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    }
   }
 };

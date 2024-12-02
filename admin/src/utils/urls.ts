@@ -26,8 +26,12 @@ export const SEARCH_PRODUCTS_URL = (keyword: string) => `products/search/${keywo
 
 export const GET_ALL_ORDERS_ENDPOINT = `admin/orders`;
 export const GET_ORDER_DETAILS_ENDPOINT = (orderId: string) =>
-  `admin/orders/${orderId}`;
+  `orderItems/${orderId}`;
 export const EDIT_ORDER_ENDPOINT = `admin/orders/update`;
 export const DELETE_ORDER_ENDPOINT = (orderId: string) =>
   `admin/products/${orderId}`;
-// export const SEARCH_ORDERS_URL = (keyword: string) => `orders/search/${keyword}`
+export const GET_BRANDS_URL = `brands`
+export const ADD_OR_UPDATE_BRANDS_URL = `admin/brands`
+export const DELETE_BRAND_URL = (name: string) => `admin/brands/${name}`;
+
+export const GET_CATEGORIES_URL = `categories`

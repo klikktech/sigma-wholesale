@@ -22,7 +22,7 @@ const CheckOutPage = async () => {
     const shippingAddresses = await fetchAddresses('shipping');
   return (
     <div>
-      <CheckOut cartItemsList={data.cartItems} totalCost={data.price} discount={data.discount} tax={data.tax} shippingAddresses={shippingAddresses}/>
+      <CheckOut cartItemsList={data.cartItems} totalCost={data.price} discount={data.discount || 0} tax={data.tax || 0} shippingAddresses={shippingAddresses}/>
     </div>
   );
 };

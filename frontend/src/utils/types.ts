@@ -121,6 +121,7 @@ export interface orderDetails{
   totalCount:number;
 }
 export interface orderItemsDetails{
+  product:Product,
   variation: variation,
   quantity: number
 }

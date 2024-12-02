@@ -89,3 +89,8 @@ export interface Variation {
   stockQuantity: string;
   isSelected?: boolean;
 }
+export interface Brand {
+  id?: number;
+  name: string;
+  image: string;
+}

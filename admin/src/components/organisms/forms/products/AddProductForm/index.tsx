@@ -97,7 +97,7 @@ const DisplayImageCard = ({
   );
 };
 
-const AddProductForm = () => {
+const AddProductForm = ({ categories, brands }: { categories: any, brands: any }) => {
   const [state, formAction] = useFormState(addProductAction, undefined);
   const [variations, setVariations] = useState<Variation[]>([]);
   const formRef = useRef<HTMLFormElement>(null);
@@ -190,8 +190,9 @@ const AddProductForm = () => {
                 name="brand"
                 required
               >
-                <SelectItem key="brand1">Brand 1</SelectItem>
-                <SelectItem key="brand2">Brand 2</SelectItem>
+                {brands?.map((brand: any, index: number) => (
+                  <SelectItem key={index}>{brand.name}</SelectItem>
+                ))}
               </Select>
             </div>
             <div className="w-full">
@@ -206,8 +207,9 @@ const AddProductForm = () => {
                 name="category"
                 required
               >
-                <SelectItem key="category1">Category 1</SelectItem>
-                <SelectItem key="category2">Category 2</SelectItem>
+                {categories?.map((category: any, index: number) => (
+                  <SelectItem key={index}>{category.name}</SelectItem>
+                ))}
               </Select>
             </div>
           </div>

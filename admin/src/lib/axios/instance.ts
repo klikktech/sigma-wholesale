@@ -95,7 +95,7 @@ const handleAxiosError = (error: any): AxiosErrorResponse => {
         );
       case 500:
         return formatErrorResponse(
-          "Internal Server Error - Please try again later",
+          error.response.data.message || "Internal Server Error - Please try again later",
           status
         );
       default:

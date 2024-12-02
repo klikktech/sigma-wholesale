@@ -26,6 +26,7 @@ const Login = () => {
       console.log("state.success", state.success)
       toast.success(state.success);
       router.push(HOME_PAGE_ROUTE);
+      router.refresh();
     }
   }, [state, router]);
 
