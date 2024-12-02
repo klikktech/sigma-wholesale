@@ -2,10 +2,12 @@ package com.klikk.sigma.service.impl;
 
 import com.klikk.sigma.dto.response.AttachmentResponse;
 import com.klikk.sigma.dto.response.CategoryProductsDto;
+import com.klikk.sigma.dto.response.CategoryResponseDto;
 import com.klikk.sigma.entity.Attachment;
 import com.klikk.sigma.entity.Category;
 import com.klikk.sigma.entity.Product;
 import com.klikk.sigma.mapper.AttachmentMapper;
+import com.klikk.sigma.mapper.CategoryMapper;
 import com.klikk.sigma.mapper.ProductMapper;
 import com.klikk.sigma.repository.AttachmentRepository;
 import com.klikk.sigma.repository.CategoryRepository;
@@ -24,6 +26,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     @Autowired
     private AttachmentMapper attachmentMapper;
@@ -73,6 +78,14 @@ public class CategoryServiceImpl implements CategoryService {
                 .collect(Collectors.toList());
 
         return new PageImpl<>(paginatedProducts, pageable, products.size());
+    }
+
+    @Override
+    public List<CategoryResponseDto> getAllCategories() {
+        return categoryRepository.findByType("product_cat").stream().map(category -> {
+            return categoryMapper.categoryToCategoryResponseDto(category);
+        }).toList();
+
     }
 
     @Override
