@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -146,16 +145,11 @@ public class CartServiceImpl implements CartService {
         }
     }
 
-
-
-
-
     @Override
     public CartResponseDto getCart(String bearerToken) {
         Optional<User> user=userRepository.findByEmail(jwtService.extractUsername(bearerToken.split(" ")[1]));
         Optional<Cart> cart=cartRepository.findByUser(user.get());
         CartResponseDto cartResponseDto= cartMapper.cartToCartResponseDto(cart.get());
-//        cartResponseDto.setProduct(productMapper.productToProductResponseDto(cart.getProduct()));
          List<CartItemResponseDto> cartItemResponseDtos=cartItemsRepository.findByCart(cart.get()).stream().map(cartItem -> {
              CartItemResponseDto cartItemResponseDto=cartItemMapper.cartItemToCartItemResponseDto(cartItem);
              cartItemResponseDto.setVariation(variationMapper.variationToVariationResponseDto(cartItem.getVariation()));

@@ -25,7 +25,6 @@ public class BrandAdminController {
     @DeleteMapping("/{name}")
     public SuccessResponse deleteBrand(@PathVariable String name){
         brandService.deleteBrand(name);
-
         return new SuccessResponse(LocalDateTime.now(),"Brand deleted successfully!");
     }
 

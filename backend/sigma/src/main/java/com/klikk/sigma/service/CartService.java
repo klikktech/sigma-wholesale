@@ -1,9 +1,8 @@
 // CartService.java
 package com.klikk.sigma.service;
 
-import com.klikk.sigma.dto.request.CartItemRequest;
+
 import com.klikk.sigma.dto.request.CartRequest;
-import com.klikk.sigma.dto.response.CartItemResponseDto;
 import com.klikk.sigma.dto.response.CartResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 

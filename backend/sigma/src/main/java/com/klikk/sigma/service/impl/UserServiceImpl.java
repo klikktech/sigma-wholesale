@@ -55,9 +55,6 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private AddressRepository addressRepository;
-
-    @Autowired
     private TokenRepository tokenRepository;
 
 

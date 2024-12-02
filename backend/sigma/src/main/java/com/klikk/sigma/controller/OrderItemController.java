@@ -1,7 +1,6 @@
 package com.klikk.sigma.controller;
 
 import com.klikk.sigma.dto.response.OrderItemResponseDto;
-import com.klikk.sigma.entity.OrderItem;
 import com.klikk.sigma.service.OrderItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

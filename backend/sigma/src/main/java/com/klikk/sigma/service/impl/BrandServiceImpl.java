@@ -1,13 +1,12 @@
 package com.klikk.sigma.service.impl;
 
-import com.klikk.sigma.dto.request.BrandRequest;
 import com.klikk.sigma.dto.response.BrandResponse;
 import com.klikk.sigma.entity.Brand;
 import com.klikk.sigma.exception.NotFoundException;
 import com.klikk.sigma.mapper.BrandMapper;
 import com.klikk.sigma.repository.BrandRepository;
+import com.klikk.sigma.service.AwsService;
 import com.klikk.sigma.service.BrandService;
-import com.klikk.sigma.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,19 +21,20 @@ public class BrandServiceImpl implements BrandService {
     private BrandRepository brandRepository;
 
     @Autowired
-    private ProductServiceImpl productService;
+    private BrandMapper brandMapper;
 
     @Autowired
-    private BrandMapper brandMapper;
+    private AwsService awsService;
 
     @Override
     public List<Brand> getAllBrands() {
         return brandRepository.findAll();
     }
 
+
     @Override
     public void addBrand(String name, MultipartFile image) {
-        Brand newBrand=Brand.builder().name(name).image(productService.uploadFileToAws(image)).build();
+        Brand newBrand=Brand.builder().name(name).image(awsService.uploadFileToAws(image)).build();
         brandRepository.save(newBrand);
     }
 
@@ -64,9 +64,9 @@ public class BrandServiceImpl implements BrandService {
         if(brandToUpdate.isEmpty()){
             throw new NotFoundException("Brand not found");
         }
-        productService.deleteFileFromS3ByUrl(brandToUpdate.get().getImage());
+        awsService.deleteFileFromS3ByUrl(brandToUpdate.get().getImage());
         brandToUpdate.get().setName(name);
-        brandToUpdate.get().setImage(productService.uploadFileToAws(image));
+        brandToUpdate.get().setImage(awsService.uploadFileToAws(image));
         brandRepository.save(brandToUpdate.get());
     }
 }

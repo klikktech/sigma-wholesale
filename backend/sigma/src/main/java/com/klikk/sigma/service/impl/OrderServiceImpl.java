@@ -97,10 +97,6 @@ public class OrderServiceImpl implements OrderService {
         orderItemService.addOrderItems(userEmail,order);
     }
 
-    @Override
-    public void saveOrder(OrderDto orderDto, HttpServletRequest request) {
-        //Implementation Pending
-    }
 
     @Override
     public SuccessResponse updateOrderAdmin(String orderId, String orderStatus) {

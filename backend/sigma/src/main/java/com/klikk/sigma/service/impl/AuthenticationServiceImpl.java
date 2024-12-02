@@ -44,9 +44,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private JwtService jwtService;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired

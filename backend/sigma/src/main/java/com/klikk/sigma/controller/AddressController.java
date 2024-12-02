@@ -21,15 +21,7 @@ public class AddressController {
 
     @DeleteMapping()
     public ResponseEntity<String> deleteAddress(@RequestParam String address){
-        try {
-            addressService.deleteAddress(address);
-        }
-        catch (NotFoundException exception){
-            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-        catch (Exception exception){
-            return new ResponseEntity<>("Pass a valid address to delete", HttpStatus.BAD_REQUEST);
-        }
+        addressService.deleteAddress(address);
         return ResponseEntity.ok("Address Deleted successfully!");
     }
 }

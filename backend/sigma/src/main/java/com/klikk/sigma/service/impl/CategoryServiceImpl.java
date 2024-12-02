@@ -2,7 +2,6 @@ package com.klikk.sigma.service.impl;
 
 import com.klikk.sigma.dto.response.AttachmentResponse;
 import com.klikk.sigma.dto.response.CategoryProductsDto;
-import com.klikk.sigma.dto.response.ProductResponseDto;
 import com.klikk.sigma.entity.Attachment;
 import com.klikk.sigma.entity.Category;
 import com.klikk.sigma.entity.Product;

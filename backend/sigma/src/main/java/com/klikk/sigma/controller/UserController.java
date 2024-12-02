@@ -1,6 +1,5 @@
 package com.klikk.sigma.controller;
 
-import com.klikk.sigma.dto.UserResponseDto;
 import com.klikk.sigma.dto.request.RegisterRequest;
 import com.klikk.sigma.dto.request.UpdateUserRequest;
 import com.klikk.sigma.dto.response.AddressResponseDto;
@@ -14,13 +13,10 @@ import com.klikk.sigma.service.JwtService;
 import com.klikk.sigma.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
@@ -31,8 +27,6 @@ import java.util.Optional;
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
-    private RestTemplate restTemplate;
 
     @Autowired
     private UserService userService;
@@ -44,7 +38,6 @@ public class UserController {
     private AddressMapper addressMapper;
 
     @GetMapping("/details")
-//    @PreAuthorize("hasAuthority('admin:read')")
     public ResponseEntity<UsersResponse> getUserById(HttpServletRequest request) {
         try {
 

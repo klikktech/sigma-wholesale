@@ -21,9 +21,6 @@ public class CheckoutServiceImpl implements CheckoutService {
     private UserRepository userRepository;
 
     @Autowired
-    private CheckoutRepository checkoutRepository;
-
-    @Autowired
     private JwtService jwtService;
 
     @Autowired
@@ -38,8 +35,6 @@ public class CheckoutServiceImpl implements CheckoutService {
         String userEmail=jwtService.extractUsername(token);
         Optional<User> user=userRepository.findByEmail(userEmail);
         user.ifPresent(checkout::setUser);
-//        user.get().getShippingAddress().add();
-//        checkoutRepository.save(checkout);
         if(addressService.getAddress(checkout.getBillingAddress()).isEmpty() && user.isPresent()){
             Address newAddress= addressService.saveAddress(checkout.getBillingAddress(),checkout.getBillingCity(), checkout.getBillingState(), checkout.getPostcode(),user.get());
             user.get().getShippingAddress().add(newAddress);
