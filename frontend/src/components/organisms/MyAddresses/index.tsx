@@ -13,7 +13,7 @@ const MyAddressList = ({ addresses, onSelect }: MyAddressListProps) => {
             <Radio value="new">Add New Address</Radio>
             {addresses.length > 0 && (
                 <>
-                    <h3 className="text-lg font-semibold">Shipping Addresses</h3>
+                    <h3 className="text-lg font-semibold my-4">Shipping Addresses</h3>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
                         {addresses.map((address) => (
                             <Radio className="w-full" key={address.id} value={address.id.toString()}>

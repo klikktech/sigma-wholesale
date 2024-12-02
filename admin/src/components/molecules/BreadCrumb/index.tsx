@@ -16,6 +16,9 @@ const Breadcrumb = ({ path }: Props) => {
 
   return (
     <Breadcrumbs>
+      <BreadcrumbItem href="#" className="capitalize">
+        Home
+      </BreadcrumbItem>
       {breadcrumbItems.map((item, index) => {
         const href = "/" + breadcrumbItems.slice(0, index + 1).join("/");
         return (

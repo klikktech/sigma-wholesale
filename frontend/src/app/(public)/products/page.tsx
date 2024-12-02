@@ -9,7 +9,7 @@ const ProductsPage = async ({ searchParams }: { searchParams: { page?: string, k
     const size = 16;
     const keyword = searchParams.keyword || '';
 
-    if (isNaN(page) || page < 1) {
+    if (isNaN(page) || page < 0) {
       return <ErrorComponent message="Invalid page number" />;
     }
 

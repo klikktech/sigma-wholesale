@@ -85,7 +85,7 @@ const Brands = ({ brands }: { brands: Brand[] }) => {
                             width={100}
                             height={100}
                             alt={brand.name}
-                            className="w-full h-auto"
+                            className="w-full max-h-36 object-cover"
                         />
                         <div className="absolute inset-0 bg-black bg-opacity-50 text-white opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2 items-center justify-center">
                             <button
@@ -168,9 +168,10 @@ const Brands = ({ brands }: { brands: Brand[] }) => {
                                 </Button>
                                 <Button 
                                     color="primary"
+                                    isDisabled={!newImage}
                                     onPress={handleSubmit}
                                 >
-                                    {editingBrand ? 'Save' : 'Create'}
+                                    {editingBrand ? 'Update' : 'Create'}
                                 </Button>
                             </ModalFooter>
                         </>

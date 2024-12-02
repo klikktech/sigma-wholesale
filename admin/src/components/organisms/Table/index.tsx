@@ -119,7 +119,7 @@ const Table = ({
     >
       <TableHeader columns={columns}>
         {(column) => (
-          <TableColumn key={column.key} allowsSorting={column.isSortable}>
+          <TableColumn key={column.key}>
             {column.label}
           </TableColumn>
         )}

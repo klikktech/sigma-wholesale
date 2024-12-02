@@ -19,8 +19,6 @@ export const USER_COLUMNS: ITableColumn[] = [
   {
     key: "username",
     label: "Name",
-    isSortable: true,
-    isSearchable: true
   },
   {
     key: "name",
@@ -33,7 +31,6 @@ export const USER_COLUMNS: ITableColumn[] = [
   {
     key: "createdAt",
     label: "Joined us",
-    isSortable: true
   },
   {
     key: "actions",

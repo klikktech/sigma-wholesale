@@ -34,33 +34,27 @@ export const ORDER_COLUMNS: ITableColumn[] = [
   {
     key: "id",
     label: "Order ID",
-    isSortable: true,
     isSearchable: true,
   },
   {
     key: "buyer",
     label: "Customer",
-    isSearchable: true,
   },
   {
     key: "orderTotal",
     label: "Total",
-    isSortable: true,
   },
   {
     key: "orderStatus",
     label: "Order Status",
-    isSortable: true,
   },
   {
     key: "paymentMethod",
     label: "Payment",
-    isSortable: true,
   },
   {
     key: "orderCreatedAt",
     label: "Order Date",
-    isSortable: true,
   },
   {
     key: "actions",

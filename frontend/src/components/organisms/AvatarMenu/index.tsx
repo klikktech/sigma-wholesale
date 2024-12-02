@@ -27,17 +27,17 @@ export default function AvatarMenu({ user }: { user: IUser }) {
                         <p className="font-bold">{user.email}</p>
                     </DropdownItem>
                     <DropdownItem key="account">
-                        <Link className="w-full text-black" href={ACCOUNT_PAGE_ROUTE}>My Account</Link>
+                        <Link className="w-full text-black text-md" href={ACCOUNT_PAGE_ROUTE}>My Account</Link>
                     </DropdownItem>
                     <DropdownItem key="orders">
-                        <Link className="w-full text-black" href={ORDERS_PAGE_ROUTE}>My Orders</Link>
+                        <Link className="w-full text-black text-md" href={ORDERS_PAGE_ROUTE}>My Orders</Link>
                     </DropdownItem>
 
                     <DropdownItem key="logout" className="text-danger" color="danger">
                         <form action={signOutAction}>
                             <button
                                 type="submit"
-                                className="w-full text-left"
+                                className="w-full text-left text-md"
                             >   Log Out
                             </button>
                         </form>

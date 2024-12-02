@@ -45,7 +45,7 @@ const UsersPage = async ({ searchParams }: Props) => {
               }
               itemsKey="email"
               type="users"
-              searchPlaceholder="Search userby email"
+              searchPlaceholder="Search user by email"
               totalPages={data.totalPages}
               currentPage={page}
               size={size}

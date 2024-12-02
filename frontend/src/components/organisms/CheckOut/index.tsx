@@ -21,8 +21,8 @@ import ShippingInfoCard from "@/components/molecules/ShippingInfocard";
 import MyAddressList from "../MyAddresses";
 import { useEffect, useState } from 'react';
 import { toast } from "react-toastify";
-import { HOME_PAGE_ROUTE } from "@/utils/urls";
 import FormSubmitButton from "@/components/molecules/FormSubmitButton";
+import ThankYouModal from "@/components/organisms/ThankYouModel";
 
 interface CartListProps {
     cartItemsList: CartItem[];
@@ -36,16 +36,17 @@ const CheckOut = ({ cartItemsList, totalCost, discount, tax, shippingAddresses }
     const [state, formAction] = useFormState((state: undefined | Message, formData: FormData) =>
         checkOutAction(state, formData, totalCost), undefined);
     const { pending } = useFormStatus();
-    const [selectedAddress, setSelectedAddress] = useState<string>('new');
+    const [selectedAddress, setSelectedAddress] = useState<string>('1');
+    const [isModalVisible, setModalVisible] = useState(false);
 
     const handleSubmit = (formData: FormData) => {
         if (selectedAddress !== 'new') {
-            console.log(shippingAddresses,selectedAddress,"ship and select")
+            console.log(shippingAddresses, selectedAddress, "ship and select")
             const address = shippingAddresses.find(
-                (addr:any) => addr.id.toString() === selectedAddress
+                (addr: any) => addr.id.toString() === selectedAddress
             );
 
-            console.log(address,"address details")
+            console.log(address, "address details")
             if (address) {
                 formData.set('firstName', address.firstName);
                 formData.set('lastName', address.lastName);
@@ -56,7 +57,7 @@ const CheckOut = ({ cartItemsList, totalCost, discount, tax, shippingAddresses }
                 formData.set('phone', address.phone);
             }
         }
-        console.log(formData.entries(),"formdata")
+        console.log(formData.entries(), isModalVisible, "formdata")
         formAction(formData);
     };
 
@@ -66,8 +67,9 @@ const CheckOut = ({ cartItemsList, totalCost, discount, tax, shippingAddresses }
         }
         if (state?.success) {
             localStorage.removeItem('cartCount');
+            localStorage.removeItem('cartPrice');
+            setModalVisible(true);
             toast.success("Order placed successfully!");
-            window.location.href = HOME_PAGE_ROUTE;
         }
     }, [state?.error, state?.success]);
 
@@ -105,9 +107,9 @@ const CheckOut = ({ cartItemsList, totalCost, discount, tax, shippingAddresses }
                                     <TableBody>
                                         {cartItemsList.map((item, index) => (
                                             <TableRow key={index}>
-                                                <TableCell>{item.variation?item.variation.variationName:item.product.name}</TableCell>
+                                                <TableCell>{item.variation ? item.variation.variationName : item.product.name}</TableCell>
                                                 <TableCell>{item.quantity}</TableCell>
-                                                <TableCell>${item.variation?item.variation.price.toFixed(2):parseInt(item.product.price).toFixed(2)}</TableCell>
+                                                <TableCell>${item.variation ? item.variation.price.toFixed(2) : parseInt(item.product.price).toFixed(2)}</TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>
@@ -158,6 +160,12 @@ const CheckOut = ({ cartItemsList, totalCost, discount, tax, shippingAddresses }
                     </div>
                 </div>
             </form>
+            <ThankYouModal
+                visible={isModalVisible}
+                onClose={() => setModalVisible(false)}
+                orderedItems={cartItemsList}
+                totalCost={totalCost}
+            />
         </div>
     );
 }

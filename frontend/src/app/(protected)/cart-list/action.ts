@@ -51,7 +51,7 @@ export const handleRemoveItemAction = async (item: any, totalQuantity: number, t
         }
         if (data && status === 200) {
             const updatedQuantity = Math.max(0, totalQuantity - item.quantity);
-            const updatedPrice = Math.max(0, totalPrice - (item.quantity * item.variation.price));
+            const updatedPrice = Math.max(0, totalPrice - (item.quantity * (item.variation ? item.variation.price : parseInt(item.product.price))));
             console.log("success", status, data)
             return { error: '', success: true, updatedQuantity, updatedPrice };
         }

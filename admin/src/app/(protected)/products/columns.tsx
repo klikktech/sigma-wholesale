@@ -23,8 +23,6 @@ export const PRODUCT_COLUMNS: ITableColumn[] = [
   {
     key: "name",
     label: "Name",
-    isSortable: true,
-    isSearchable: true,
   },
   {
     key: "sku",
@@ -37,12 +35,10 @@ export const PRODUCT_COLUMNS: ITableColumn[] = [
   {
     key: "status",
     label: "Stock",
-    isSortable: true,
   },
   {
     key: "createdAt",
     label: "Joined us",
-    isSortable: true,
   },
   {
     key: "actions",

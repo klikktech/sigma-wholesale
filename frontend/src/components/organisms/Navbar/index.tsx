@@ -211,6 +211,7 @@ const Navbar = ({ user }: Props) => {
               >
                 <Link 
                   href={CART_LIST_PAGE_ROUTE} 
+                  isDisabled={cartCount < 1}
                   color={pathname === CART_LIST_PAGE_ROUTE ? "primary" : "foreground"}
                 >
                   <span className="material-symbols-rounded text-2xl">
@@ -264,7 +265,7 @@ const Navbar = ({ user }: Props) => {
               }
               href={item.href}
               size="lg"
-              className="w-full py-2"
+              className="w-full py-2 text-lg"
               onClick={() => setIsMenuOpen(false)}
             >
               {item.label}
