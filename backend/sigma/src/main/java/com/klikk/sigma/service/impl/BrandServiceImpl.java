@@ -59,7 +59,14 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public void editBrand(String name, MultipartFile image) {
-
+    public void updateBrand(String name, MultipartFile image) {
+        Optional<Brand> brandToUpdate=brandRepository.findByName(name);
+        if(brandToUpdate.isEmpty()){
+            throw new NotFoundException("Brand not found");
+        }
+        productService.deleteFileFromS3ByUrl(brandToUpdate.get().getImage());
+        brandToUpdate.get().setName(name);
+        brandToUpdate.get().setImage(productService.uploadFileToAws(image));
+        brandRepository.save(brandToUpdate.get());
     }
 }

@@ -3,11 +3,13 @@ package com.klikk.sigma.service.impl;
 import com.klikk.sigma.dto.response.OrderItemResponseDto;
 import com.klikk.sigma.dto.response.VariationResponseDto;
 import com.klikk.sigma.entity.*;
+import com.klikk.sigma.mapper.ProductMapper;
 import com.klikk.sigma.mapper.VariationMapper;
 import com.klikk.sigma.repository.*;
 import com.klikk.sigma.service.CartService;
 import com.klikk.sigma.service.OrderItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,6 +33,9 @@ public class OrderItemServiceImpl implements OrderItemService {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private ProductMapper productMapper;
 
     @Autowired
     private VariationMapper variationMapper;
@@ -75,7 +80,7 @@ public class OrderItemServiceImpl implements OrderItemService {
     public List<OrderItemResponseDto> getOrderItems(String orderId) {
         Optional<Order> order= orderRepository.findById(orderId);
         return orderItemRepository.findByOrder(order.get()).stream().map(orderItem -> {
-            return OrderItemResponseDto.builder().variation(variationMapper.variationToVariationResponseDto(orderItem.getVariation())).quantity(orderItem.getQuantity()).build();
+            return OrderItemResponseDto.builder().variation(variationMapper.variationToVariationResponseDto(orderItem.getVariation())).product(productMapper.productToProductResponseDto(orderItem.getProduct())).quantity(orderItem.getQuantity()).build();
         }).toList();
     }
 }

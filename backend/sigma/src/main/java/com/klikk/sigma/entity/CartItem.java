@@ -50,4 +50,15 @@ public class CartItem {
 
     @Column(name = "added_at")
     private LocalDateTime addedAt;
+
+    @Override
+    public String toString() {
+        return "CartItem{" +
+                "id=" + id +
+                ", quantity=" + quantity +
+                ", variation=" + (variation != null ? variation.getId() : null) +
+                ", product=" + (product != null ? product.getId() : null) +
+                '}';
+    }
+
 }

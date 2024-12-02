@@ -169,15 +169,30 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void deleteCartItem(String variationToDelete, HttpServletRequest request) {
+    public void deleteCartItem(String variationOrProductToDelete, HttpServletRequest request) {
         Optional<User> user=userRepository.findByEmail(jwtService.extractUsername(request.getHeader("Authorization").split(" ")[1]));
         Optional<Cart> cart=cartRepository.findByUser(user.get());
-        Optional<Variation> variation= variationRepository.findByDetails(variationToDelete);
-        if(variation.isEmpty()){
-            throw new IllegalArgumentException("No variation present");
+        Optional<Variation> variation= variationRepository.findByDetails(variationOrProductToDelete);
+        Optional<Product> product= productRepository.findByDetails(variationOrProductToDelete);
+        if(variation.isEmpty() && product.isEmpty()){
+            throw new IllegalArgumentException("No variation or product is present");
         }
-        CartItem existingItem=cartItemRepository.findByVariation(variation.get());
-        Double price= existingItem.getVariation().getPrice();
+        CartItem existingItem;
+        if(variation.isPresent()){
+            existingItem=cartItemRepository.findByVariation(variation.get());
+        }
+        else{
+            existingItem=cartItemRepository.findByProduct(product.get());
+        }
+
+        double price;
+        if(variation.isPresent()){
+            price= existingItem.getVariation().getPrice();
+        }
+        else{
+            price=existingItem.getProduct().getPrice();
+        }
+
         Long quant= existingItem.getQuantity();
         cartItemRepository.delete(existingItem);
         cart.get().setQuantity(cart.get().getQuantity()-quant);

@@ -17,7 +17,7 @@ public class BrandAdminController {
     private BrandService brandService;
 
     @PostMapping()
-    public ResponseEntity<String> addBrand(@RequestPart String name, @RequestPart(value = "image") MultipartFile image) {
+    public ResponseEntity<String> addBrand(@RequestPart("name") String name, @RequestPart(value = "image",required = false) MultipartFile image) {
         brandService.addBrand(name,image);
         return ResponseEntity.ok("Brand added successfully!");
     }
@@ -28,4 +28,13 @@ public class BrandAdminController {
 
         return new SuccessResponse(LocalDateTime.now(),"Brand deleted successfully!");
     }
+
+    @PutMapping()
+    public SuccessResponse updateBrand(@RequestPart("name") String name, @RequestPart(value = "image",required = false) MultipartFile image){
+        brandService.updateBrand(name,image);
+        return new SuccessResponse(LocalDateTime.now(),"Brand updated successfully!");
+    }
+
+
+
 }

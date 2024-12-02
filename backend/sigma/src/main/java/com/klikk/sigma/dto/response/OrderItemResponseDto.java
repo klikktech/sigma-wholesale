@@ -14,5 +14,7 @@ public class OrderItemResponseDto {
 
     private VariationResponseDto variation;
 
+    private ProductResponseDto product;
+
     private Long quantity;
 }

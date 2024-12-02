@@ -1,6 +1,5 @@
 package com.klikk.sigma.service;
 
-import com.klikk.sigma.dto.request.BrandRequest;
 import com.klikk.sigma.dto.response.BrandResponse;
 import com.klikk.sigma.entity.Brand;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,5 +15,5 @@ public interface BrandService {
 
     public void deleteBrand(String name);
 
-    public void editBrand(String name, MultipartFile image);
+    public void updateBrand(String name, MultipartFile image);
 }
