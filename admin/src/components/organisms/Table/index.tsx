@@ -1,7 +1,5 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
-
 import {
   Table as NextUiTable,
   TableHeader,
@@ -10,19 +8,25 @@ import {
   TableRow,
   TableCell,
   Pagination,
-  SortDescriptor,
   getKeyValue,
 } from "@nextui-org/react";
-import { SearchIcon } from "@/utils/icons";
 import Input from "@/components/atoms/Input";
 import { ITableColumn } from "@/utils/types";
+import { useRouter } from "next/navigation";
+import FormSubmitButton from "@/components/molecules/FormSubmitButtton";
+import { useFormState, useFormStatus } from "react-dom";
+import { searchAction } from "./action";
+import FormMessage from "@/components/molecules/FormMessage";
 
 interface Props {
   data: Record<string, any>[];
   columns: ITableColumn[];
-  searchable?: boolean;
+  totalPages: number;
+  currentPage: number;
+  size: number;
   searchPlaceholder?: string;
-  initialRowsPerPage?: 10 | 20 | 50 | 100;
+  searchkey?: string;
+  type: string;
   headerContent?: JSX.Element;
   itemsKey?: string;
   renderCell?: (
@@ -32,172 +36,95 @@ interface Props {
 }
 
 const Table = ({
-  searchable = false,
   searchPlaceholder = "Search by name",
   data,
   columns,
+  totalPages,
+  currentPage,
+  size,
+  type,
+  searchkey,
   itemsKey = "id",
-  initialRowsPerPage = 10,
   ...props
 }: Props) => {
-  const [filterValue, setFilterValue] = useState("");
-  const hasSearchFilter = Boolean(filterValue);
-  const searchableKeys = useMemo(
-    () =>
-      searchable
-        ? columns
-            .filter((column) => column.isSearchable)
-            .map((column) => column.key)
-        : [],
-    [columns, searchable]
-  );
+  const router = useRouter();
+  const handlePageChange = (page: number) => {
+    const queryParams = new URLSearchParams();
+    queryParams.set('page', page.toString());
+    queryParams.set('size', size.toString());
+    if (searchkey) queryParams.set('keyword', searchkey);
 
-  const filteredItems = useMemo(() => {
-    let filteredData = [...data];
+    const baseUrl = `${type}`
 
-    if (hasSearchFilter && searchable) {
-      filteredData = filteredData.filter((row: Record<string, any>) =>
-        searchableKeys.some((key) =>
-          row[key]?.toLowerCase().includes(filterValue.toLowerCase())
-        )
-      );
-    }
+    console.log(baseUrl, "baseUrl");
 
-    return filteredData;
-  }, [data, hasSearchFilter, searchable, searchableKeys, filterValue]);
+    const url = `${baseUrl}?${queryParams.toString()}`;
+    router.push(url);
+  };
+  const formAction = async (prevState: any, formData: FormData) => {
+    return searchAction(type, undefined, formData);
+  };
 
-  const [rowsPerPage, setRowsPerPage] = useState<number>(initialRowsPerPage);
-  const [page, setPage] = useState(1);
-  const pages = Math.ceil(filteredItems.length / rowsPerPage);
-
-  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-    // column: "firstName",
-    // direction: "ascending",
-  });
-
-  const sortedItems = useMemo(() => {
-    return [...filteredItems].sort((a, b) => {
-      const first = a[
-        sortDescriptor.column as keyof Record<string, any>
-      ] as string;
-      const second = b[
-        sortDescriptor.column as keyof Record<string, any>
-      ] as string;
-      const cmp = first < second ? -1 : first > second ? 1 : 0;
-
-      return sortDescriptor.direction === "descending" ? -cmp : cmp;
-    });
-  }, [sortDescriptor, filteredItems]);
-
-  const items = useMemo(() => {
-    const start = (page - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
-
-    return sortedItems.slice(start, end);
-  }, [page, rowsPerPage, sortedItems]);
-
-  const onRowsPerPageChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setRowsPerPage(Number(e.target.value));
-      setPage(1);
-    },
-    []
-  );
-
-  const onSearchChange = useCallback((value?: string) => {
-    if (value) {
-      setFilterValue(value);
-      setPage(1);
-    } else {
-      setFilterValue("");
-    }
-  }, []);
-
-  const onClear = useCallback(() => {
-    setFilterValue("");
-    setPage(1);
-  }, []);
-
-  const topContent = useMemo(() => {
-    return (
-      <div className="flex flex-col gap-4">
-        <div className="flex items-end justify-between gap-3">
-          {searchable && (
-            <Input
-              isClearable
-              className="w-full sm:max-w-[44%]"
-              placeholder={searchPlaceholder}
-              startContent={<SearchIcon />}
-              value={filterValue}
-              onClear={() => onClear()}
-              onValueChange={onSearchChange}
-            />
-          )}
-          {props.headerContent}
-        </div>
-      </div>
-    );
-  }, [
-    searchable,
-    searchPlaceholder,
-    filterValue,
-    onSearchChange,
-    props.headerContent,
-    onClear,
-  ]);
+  const [state, dispatch] = useFormState(formAction, undefined);
+  const { pending } = useFormStatus();
 
   return (
     <NextUiTable
       aria-label="Users table"
-      topContent={topContent}
+      topContent={
+        <>
+          <div className="flex items-center justify-between">
+            <form action={dispatch} className="flex items-center">
+              <Input
+                name="keyword"
+                type="text"
+                placeholder={searchPlaceholder}
+                className="w-[300px]"
+              />
+              <FormSubmitButton
+                type="submit"
+                color="primary"
+                className="ml-2"
+                pendingText="Searching..."
+                buttonText='Search'
+                disabled={pending}
+              >
+                Search
+              </FormSubmitButton>
+            </form>
+            {props.headerContent}
+          </div>
+          {state && <FormMessage message={state} />}
+        </>
+      }
       topContentPlacement="outside"
       bottomContent={
-        pages > 0 ? (
-          <div className="flex w-full justify-between items-center">
-            <span className="text-default-400 text-small">
-              Total {data.length} entries
-            </span>
+        totalPages > 0 ? (
+          <div className="flex w-full justify-center items-center">
             <Pagination
-              isCompact
               showControls
-              showShadow
-              color="primary"
-              page={page}
-              total={pages}
-              onChange={(page) => setPage(page)}
+              total={totalPages}
+              initialPage={currentPage}
+              page={currentPage}
+              onChange={handlePageChange}
+              className="my-8"
             />
-            <label className="flex items-center text-default-400 text-small">
-              Rows per page:
-              <select
-                className="bg-transparent outline-none text-default-400 text-small"
-                onChange={onRowsPerPageChange}
-                value={rowsPerPage}
-              >
-                {[10, 20, 50, 100].map((item) => (
-                  <option value={item} key={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-            </label>
           </div>
         ) : null
       }
       bottomContentPlacement="outside"
-      sortDescriptor={sortDescriptor}
-      onSortChange={setSortDescriptor}
       classNames={{
         wrapper: "min-h-[222px]",
       }}
     >
       <TableHeader columns={columns}>
         {(column) => (
-          <TableColumn key={column.key} allowsSorting={column.isSortable}>
+          <TableColumn key={column.key}>
             {column.label}
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody items={items} emptyContent={"No items to display."}>
+      <TableBody items={data} emptyContent={"No items to display."}>
         {(item) => (
           <TableRow key={item[itemsKey]}>
             {(columnKey) => (

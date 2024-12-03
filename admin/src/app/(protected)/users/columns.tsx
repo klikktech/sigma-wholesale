@@ -1,9 +1,11 @@
 "use client";
-import { User, Tooltip } from "@nextui-org/react";
+import { User, Tooltip, Link } from "@nextui-org/react";
 import { DeleteIcon, EditIcon, EyeIcon } from "@/utils/icons";
 import Modal from "@/components/molecules/Modal";
 import React from "react";
 import { ITableColumn } from "@/utils/types";
+import { EDIT_USER_PAGE_ROUTE } from "@/utils/routes";
+import { deleteUser } from "./actions";
 
 interface User {
   id: string;
@@ -17,8 +19,6 @@ export const USER_COLUMNS: ITableColumn[] = [
   {
     key: "username",
     label: "Name",
-    isSortable: true,
-    isSearchable: true
   },
   {
     key: "name",
@@ -31,7 +31,6 @@ export const USER_COLUMNS: ITableColumn[] = [
   {
     key: "createdAt",
     label: "Joined us",
-    isSortable: true
   },
   {
     key: "actions",
@@ -74,19 +73,20 @@ export const renderUserTableCell = (user: User, columnKey: React.Key) => {
             </span>
           </Tooltip>
           <Tooltip content="Edit user">
+          <Link href={EDIT_USER_PAGE_ROUTE(user.email)}>
+
             <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
               <EditIcon />
             </span>
+            </Link>
           </Tooltip>
           <Tooltip color="danger" content="Delete user">
             <span className="cursor-pointer text-lg text-danger active:opacity-50">
               <Modal
                 body={<>Are you sure you want to delete it</>}
-                onSuccess={() => {
-                  console.log(
-                    "deleting user of id: " + user["firstName" as keyof object]
-                  );
-                }}
+                onSuccess={async () => {
+                  await deleteUser(user.email);
+               }}
                 successButton="Delete"
               >
                 <DeleteIcon />

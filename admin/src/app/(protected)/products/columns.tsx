@@ -6,6 +6,7 @@ import React from "react";
 import { ITableColumn } from "@/utils/types";
 import Link from "next/link";
 import { EDIT_PRODUCT_PAGE_ROUTE } from "@/utils/routes";
+import { deleteProduct } from './actions';
 
 interface Product {
   id: string;
@@ -22,8 +23,6 @@ export const PRODUCT_COLUMNS: ITableColumn[] = [
   {
     key: "name",
     label: "Name",
-    isSortable: true,
-    isSearchable: true,
   },
   {
     key: "sku",
@@ -36,12 +35,10 @@ export const PRODUCT_COLUMNS: ITableColumn[] = [
   {
     key: "status",
     label: "Stock",
-    isSortable: true,
   },
   {
     key: "createdAt",
     label: "Joined us",
-    isSortable: true,
   },
   {
     key: "actions",
@@ -63,8 +60,8 @@ export const renderCell = (product: Product, columnKey: React.Key) => {
         <User
           avatarProps={{
             radius: "lg",
-            src: `data:image/png;base64,${product.displayImage}`,
-            alt: product.displayImage?.id,
+            src: product.displayImage?.imageUrl,
+            alt: product.displayImage?.details,
             className: "w-10 h-10",
             showFallback: true,
             fallback: (
@@ -75,7 +72,6 @@ export const renderCell = (product: Product, columnKey: React.Key) => {
           }}
           name={<span className="capitalize">{product.name}</span>}
         >
-          {/* {product.name} */}
         </User>
       );
     case "status":
@@ -103,21 +99,19 @@ export const renderCell = (product: Product, columnKey: React.Key) => {
               <EyeIcon />
             </span>
           </Tooltip>
-          <Tooltip content="Edit user">
+          <Tooltip content="Edit Product">
             <Link href={EDIT_PRODUCT_PAGE_ROUTE(product.details)}>
               <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
                 <EditIcon />
               </span>
             </Link>
           </Tooltip>
-          <Tooltip color="danger" content="Delete user">
+          <Tooltip color="danger" content="Delete Product">
             <span className="cursor-pointer text-lg text-danger active:opacity-50">
               <Modal
                 body={<>Are you sure you want to delete it</>}
-                onSuccess={() => {
-                  console.log(
-                    "deleting user of id: " + product["name" as keyof object]
-                  );
+                onSuccess={async () => {
+                   await deleteProduct(product.details);
                 }}
                 successButton="Delete"
               >

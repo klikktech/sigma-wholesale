@@ -1,16 +1,18 @@
 "use client";
 import Button from "@/components/atoms/Button";
 import Input from "@/components/atoms/Input";
-import { Select, SelectItem, Switch } from "@nextui-org/react";
+import { Select, SelectItem, Switch, Textarea } from "@nextui-org/react";
 import React, { useRef, useState } from "react";
 import { useFormState } from "react-dom";
 import FormMessage from "@/components/molecules/FormMessage";
 import Link from "next/link";
 import { PRODUCTS_PAGE_ROUTE } from "@/utils/routes";
-import { addProductAction } from "../actions";
 import Image from "next/image";
 import FormSubmitButton from "@/components/molecules/FormSubmitButtton";
 import Video from "@/components/atoms/Video";
+import { Variation } from "@/utils/types";
+import { addProductAction } from "./action";
+import ProductVariations from "./ProductVariations";
 
 const generateDataUrlForDisplayImage = (
   file: File,
@@ -46,9 +48,9 @@ const generateDataUrlForImages = (
 const VideoPreview = ({ dataUrl }: { readonly dataUrl: string }) => {
   return (
     <Video
-      src={`${dataUrl}`}
-      // alt="preview"
-      // className="rounded-lg w-full h-full object-cover"
+      src={dataUrl}
+    // alt="preview"
+    // className="rounded-lg w-full h-full object-cover"
     />
   );
 };
@@ -95,13 +97,16 @@ const DisplayImageCard = ({
   );
 };
 
-const AddProductForm = () => {
+const AddProductForm = ({ categories, brands }: { categories: any, brands: any }) => {
   const [state, formAction] = useFormState(addProductAction, undefined);
+  const [variations, setVariations] = useState<Variation[]>([]);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const displayImageFileInput = useRef<HTMLInputElement>(null);
   const imagesFileInput = useRef<HTMLInputElement>(null);
   const [dataUrl, setDataUrl] = useState<string | null>(null);
-  const [imagesDataUrl, setImagesDataUrl] = useState<string[] | null>(null);
+  const [imagesDataUrl, setImagesDataUrl] = useState<string[]>([]);
+  const [showVariations, setShowVariations] = useState(false);
 
   const handleDisplayImageFileChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -113,12 +118,32 @@ const AddProductForm = () => {
   const handleImagesFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      generateDataUrlForImages(files, setImagesDataUrl);
+      generateDataUrlForImages(files, (newUrls) => {
+        setImagesDataUrl(prevUrls => [...prevUrls, ...newUrls]);
+      });
     }
   };
 
+  const handleProductTypeChange = (value: string) => {
+    setShowVariations(value === "VARIABLE");
+  };
+
+  const handleVariationsChange = (newVariations: Variation[]) => {
+    setVariations(newVariations);
+    if (formRef.current) {
+      const hiddenInput = formRef.current.querySelector('input[name="variations"]') as HTMLInputElement;
+      if (hiddenInput) {
+        hiddenInput.value = JSON.stringify(newVariations);
+      }
+    }
+  };
+
+  const handleRemoveImage = (indexToRemove: number) => {
+    setImagesDataUrl(prevUrls => prevUrls.filter((_, index) => index !== indexToRemove));
+  };
+
   return (
-    <form action={formAction}>
+    <form ref={formRef} action={formAction}>
       <div className="flex gap-4">
         <div className="flex flex-col w-full gap-4">
           <div className="flex w-full gap-2">
@@ -128,31 +153,64 @@ const AddProductForm = () => {
               </label>
               <Input type="text" id="name" name="name" required />
             </div>
+            <div className="w-full">
+              <label className="block text-sm font-medium mb-1" htmlFor="salePrice">
+                Sale Price
+              </label>
+              <Input type="text" id="salePrice" name="salePrice" />
+            </div>
           </div>
           <div className="w-full flex gap-2">
             <div className="w-full">
               <label
                 className="block text-sm font-medium mb-1"
-                htmlFor="maxPrice"
+                htmlFor="price"
               >
-                Max price
+                Price
               </label>
-              <Input type="text" id="maxPrice" name="maxPrice" />
-            </div>
-            <div className="w-full">
-              <label
-                className="block text-sm font-medium mb-1"
-                htmlFor="minPrice"
-              >
-                Min Price
-              </label>
-              <Input type="text" id="minPrice" name="minPrice" required />
+              <Input type="text" id="price" name="price" />
             </div>
             <div className="w-full">
               <label className="block text-sm font-medium mb-1" htmlFor="sku">
                 Sku
               </label>
               <Input type="text" id="sku" name="sku" required />
+            </div>
+          </div>
+          <div className="w-full flex gap-2">
+            <div className="w-full">
+              <label
+                className="block text-sm font-medium mb-1"
+                htmlFor="status"
+              >
+                Brand
+              </label>
+              <Select
+                id="brand"
+                name="brand"
+                required
+              >
+                {brands?.map((brand: any, index: number) => (
+                  <SelectItem key={index}>{brand.name}</SelectItem>
+                ))}
+              </Select>
+            </div>
+            <div className="w-full">
+              <label
+                className="block text-sm font-medium mb-1"
+                htmlFor="category"
+              >
+                Category
+              </label>
+              <Select
+                id="productType"
+                name="category"
+                required
+              >
+                {categories?.map((category: any, index: number) => (
+                  <SelectItem key={index}>{category.name}</SelectItem>
+                ))}
+              </Select>
             </div>
           </div>
           <div className="w-full flex gap-2">
@@ -178,26 +236,79 @@ const AddProductForm = () => {
                 className="block text-sm font-medium mb-1"
                 htmlFor="status"
               >
-                Comment Status
+                Product Type
               </label>
               <Select
-                id="commentStatus"
-                name="commentStatus"
-                defaultSelectedKeys={["open"]}
+                id="productType"
+                name="productType"
+                defaultSelectedKeys={["SIMPLE"]}
+                onChange={(e) => handleProductTypeChange(e.target.value)}
                 required
               >
-                <SelectItem key="open">Open</SelectItem>
-                <SelectItem key="closed">Closed</SelectItem>
+                <SelectItem key="SIMPLE">Simple</SelectItem>
+                <SelectItem key="VARIABLE">Variable</SelectItem>
               </Select>
             </div>
           </div>
-          <div className="w-full">
+          <div className="w-full flex gap-2">
             <div className="w-full">
-              <Switch defaultSelected name="isOnSale" id="isOnSale">
-                Is on sale
-              </Switch>
+              <label
+                className="block text-sm font-medium mb-1"
+                htmlFor="displayStatus"
+              >
+                Display Status
+              </label>
+              <Select
+                id="displayStatus"
+                name="displayStatus"
+                defaultSelectedKeys={["simple"]}
+                required
+              >
+                <SelectItem key="publish">Publish</SelectItem>
+                <SelectItem key="trash">Trash</SelectItem>
+              </Select>
+            </div>
+            <div className="w-full">
+              <label className="block text-sm font-medium mb-1" htmlFor="stockQuantity">
+                Stock Quantity
+              </label>
+              <Input type="text" id="stockQuantity" name="stockQuantity" />
             </div>
           </div>
+          <div className="w-full flex gap-2">
+            <div className="w-full">
+              <label
+                className="block text-sm font-medium mb-1"
+                htmlFor="boxQuantity"
+              >
+                Box Quantity
+              </label>
+              <Input type="text" id="boxQuantity" name="boxQuantity" />
+            </div>
+            <div className="w-full">
+              <label className="block text-sm font-medium mb-1" htmlFor="caseQuantity">
+                Case Quantity
+              </label>
+              <Input type="text" id="caseQuantity" name="caseQuantity" />
+            </div>
+          </div>
+          <div className="w-full">
+            <label className="block text-sm font-medium mb-1" htmlFor="description">
+              Description
+            </label>
+            <Textarea
+              id="description"
+              name="description"
+              rows={4}
+              required
+            />
+          </div>
+          <div className="w-full">
+            <Switch defaultSelected name="isOnSale" id="isOnSale">
+              Add to Deals
+            </Switch>
+          </div>
+
           <div className="flex gap-2 w-full">
             <div className="w-full">
               <FormSubmitButton
@@ -222,15 +333,14 @@ const AddProductForm = () => {
             id="displayImage"
             onChange={handleDisplayImageFileChange}
             ref={displayImageFileInput}
-            accept="image/*"
-          />
+            accept="image/*,video/*" />
           <input
             className="hidden"
             multiple
             type="file"
             name="images"
             id="images"
-            accept="image/*"
+            accept="image/*,video/*"
             onChange={handleImagesFileChange}
             ref={imagesFileInput}
           />
@@ -241,14 +351,20 @@ const AddProductForm = () => {
             />
             {dataUrl && (
               <div className="flex justify-end gap-2">
-                {/* Render video and image based on requirement here */}
-                {imagesDataUrl?.length ? (
-                  imagesDataUrl?.map((imageUrl, index) => (
+                {imagesDataUrl.length > 0 ? (
+                  imagesDataUrl.map((imageUrl, index) => (
                     <div
                       key={`image-${index}`}
-                      className="w-16 h-16 flex items-center justify-center space-x-4 rounded-lg border p-1"
+                      className="w-16 h-16 relative flex items-center justify-center space-x-4 rounded-lg border p-1"
                     >
                       <VideoPreview dataUrl={imageUrl} />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveImage(index)}
+                        className="absolute -top-2 -right-2 bg-danger-500 text-white rounded-full w-5 h-5 flex items-center justify-center hover:bg-danger-600"
+                      >
+                        <span className="material-symbols-rounded text-sm">close</span>
+                      </button>
                     </div>
                   ))
                 ) : (
@@ -266,6 +382,21 @@ const AddProductForm = () => {
             )}
           </div>
         </div>
+      </div>
+      <div className="mt-4">
+        {showVariations && (
+          <>
+            <ProductVariations
+              onVariationsChange={handleVariationsChange}
+            />
+            <input
+              type="hidden"
+              name="variations"
+              value={JSON.stringify(variations)}
+              readOnly
+            />
+          </>
+        )}
       </div>
     </form>
   );

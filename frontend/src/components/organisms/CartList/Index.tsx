@@ -1,112 +1,199 @@
-'use client'
-import Button from '@/components/atoms/Button';
-import React, { useState } from 'react';
+'use client';
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
+import { useFormState } from 'react-dom';
+import { handleRemoveItemAction, updateCartAction } from '../../../app/(protected)/cart-list/action';
+import { Message } from '@/utils/types';
+import { useCartStore } from '@/store/cartStore';
+import { Button, Card, Input } from '@nextui-org/react';
+import { CART_LIST_PAGE_ROUTE, CHECKOUT_PAGE_ROUTE, HOME_PAGE_ROUTE } from '@/utils/urls';
+import { toast } from 'react-toastify';
+import FormSubmitButton from '@/components/molecules/FormSubmitButton';
 
 interface CartItem {
-  id: number;
-  name: string;
+  product:any
+  variation: variation
   quantity: number;
-  price: number;
-  imageUrl: string;
 }
 
-const CartList = () => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    { id: 1, name: 'Vape 19', quantity: 2, price: 44.0, imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTe2y1UonY2mXYTnG1VMmbS75SKA6qCzyMZ7Q&s' },
-    { id: 2, name: 'Glacier CBD 500GB', quantity: 1, price: 249.99, imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxexGmpe5YkqC_Z2by4eTDjGQkkdR1iMQ39Q&s' },
-    { id: 3, name: 'kratom Gmc 500', quantity: 1, price: 119.99, imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR01WYtN2Zs1-v8cXLEbxTa8_tzpCGVfDu5mA&s' },
-  ]);
+interface variation {
+  variationName: string;
+  price: number;
+  details:string;
+}
 
-  const updateQuantity = (id: number, amount: number) => {
+interface CartListProps {
+  cartItemsList: CartItem[];
+}
+
+const CartList = ({ cartItemsList }: CartListProps) => {
+  const setCartCount = useCartStore((state) => state.setCartCount);
+  const [cartItems, setCartItems] = useState<CartItem[]>(cartItemsList || []);
+
+  const [state, formAction] = useFormState(async (state: undefined | Message, formData: FormData) => {
+    const result = await updateCartAction(state, formData, cartItems);
+    if (result?.success) {
+      setCartCount(result.totalQuantity,result.totalPrice);
+    }
+    return result;
+  }, undefined);
+
+  const updateVariationQuantity = (name: string, amount: number) => {
     setCartItems((prevItems) =>
       prevItems.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + amount } : item
+        (item.variation && item.variation.variationName === name) ? { ...item, quantity: item.quantity + amount } : item
       )
     );
   };
 
-  const removeItem = (id: number) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  const updateProductQuantity = (name: string, amount: number) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
+        (item.product && item.product.name === name) ? { ...item, quantity: item.quantity + amount } : item
+      )
+    );
   };
 
   const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
-  const totalCost = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const totalCost = cartItems.reduce((acc, item) => acc + (item.variation?(item.variation.price * item.quantity):(parseInt(item.product.price)* item.quantity)) , 0);
 
+  useEffect(() => {
+    if (state?.error) {
+      toast.error(state.error);
+    }
+    if (state?.success) {
+      toast.success("Cart updated successfully!");
+    }
+  }, [state?.error, state?.success]);
+
+  const handleRemoveItem = async (e: React.MouseEvent<HTMLButtonElement>, variation: any) => {
+    e.preventDefault();
+    const result = await handleRemoveItemAction(variation, totalItems, totalCost);
+    if (result?.success) {
+      setCartCount(result.updatedQuantity as number,result.updatedPrice as number);
+      toast.success("Deleted product successfully!");
+      window.location.href = CART_LIST_PAGE_ROUTE;
+    }
+    return result;
+  }
   return (
     <div className="flex justify-center py-10">
       <div className="w-full max-w-5xl">
-        <div className="grid grid-cols-3 gap-4">
-          <div className="col-span-2 bg-white shadow-md rounded-lg p-8">
-            <h2 className="text-xl font-bold mb-6">Shopping Cart</h2>
-            <div className="grid grid-cols-6 gap-4 text-center font-semibold text-gray-600 pb-4 border-b">
-              <div className="col-span-3 text-left">Product Details</div>
-              <div>Quantity</div>
-              <div>Price</div>
-              <div>Total</div>
-            </div>
-            {cartItems.map((item) => (
-              <div
-                key={item.id}
-                className="grid grid-cols-6 gap-4 items-center text-center py-4 border-b"
-              >
-                <div className="col-span-3 flex items-center space-x-4 text-left">
-                  <img src={item.imageUrl} alt={item.name} className="w-16 h-16 object-cover" />
-                  <div>
-                    <p className="font-semibold">{item.name}</p>
-                    <p className="text-gray-500">PS4</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Card className="col-span-1 md:col-span-2 bg-white shadow-md rounded-lg p-8">
+            <form action={formAction}>
+              <h2 className="text-xl font-bold mb-6">Shopping Cart</h2>
+              <div className="grid grid-cols-6 gap-4 text-center font-semibold text-gray-600 pb-4 border-b">
+                <div className="col-span-3 text-left">Product Details</div>
+                <div>Quantity</div>
+                <div>Price</div>
+                <div>Total</div>
+              </div>
+              {cartItems.map((item) => (
+                item.variation ?
+                (<div
+                  key={item.variation.variationName}
+                  className="grid grid-cols-6 gap-4 items-center text-center py-4 border-b"
+                >
+                  <div className="col-span-3 flex items-center space-x-4 text-left">
+                    <div>
+                      <p className="font-semibold">{item.variation.variationName}</p>
+                      <button
+                        type='button'
+                        className="text-red-500 text-sm"
+                        onClick={(e) => handleRemoveItem(e, item)}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-center space-x-4">
                     <button
-                      className="text-red-500 text-sm"
-                      onClick={() => removeItem(item.id)}
+                      type='button'
+                      className="border px-2 py-1"
+                      onClick={() => updateVariationQuantity(item.variation.variationName, -1)}
+                      disabled={item.quantity === 1}
                     >
-                      Remove
+                      -
+                    </button>
+                    <span>{item.quantity}</span>
+                    <button className="border px-2 py-1" type='button' onClick={() => updateVariationQuantity(item.variation.variationName, 1)}>
+                      +
                     </button>
                   </div>
-                </div>
-                <div className="flex items-center justify-center space-x-4">
-                  <button
-                    className="border px-2 py-1"
-                    onClick={() => updateQuantity(item.id, -1)}
-                    disabled={item.quantity === 1}
-                  >
-                    -
-                  </button>
-                  <span>{item.quantity}</span>
-                  <button className="border px-2 py-1" onClick={() => updateQuantity(item.id, 1)}>
-                    +
-                  </button>
-                </div>
-                <p>${item.price.toFixed(2)}</p>
-                <p>${(item.price * item.quantity).toFixed(2)}</p>
+                  <p>${item.variation.price.toFixed(2)}</p>
+                  <p>${(item.variation.price * item.quantity).toFixed(2)}</p>
+                </div>):(<div
+                  key={item.product.name}
+                  className="grid grid-cols-6 gap-4 items-center text-center py-4 border-b"
+                >
+                  <div className="col-span-3 flex items-center space-x-4 text-left">
+                    <div>
+                      <p className="font-semibold">{item.product.name}</p>
+                      <button
+                        type='button'
+                        className="text-red-500 text-sm"
+                        onClick={(e) => handleRemoveItem(e, item)}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-center space-x-4">
+                    <button
+                      type='button'
+                      className="border px-2 py-1"
+                      onClick={() => updateProductQuantity(item.product.name, -1)}
+                      disabled={item.quantity === 1}
+                    >
+                      -
+                    </button>
+                    <span>{item.quantity}</span>
+                    <button className="border px-2 py-1" type='button' onClick={() => updateProductQuantity(item.product.name, 1)}>
+                      +
+                    </button>
+                  </div>
+                  <p>${parseInt(item.product.price).toFixed(2)}</p>
+                  <p>${(parseInt(item.product.price) * item.quantity).toFixed(2)}</p>
+                </div>)
+              ))}
+              <div className="flex items-center justify-between">
+                <Link href={HOME_PAGE_ROUTE} className="text-blue-500 mt-4 inline-block">
+                  Continue Shopping
+                </Link>
+                <FormSubmitButton className="mt-3" color="primary" type='submit' pendingText='Updating the cart...'>
+                  <span>Update cart</span>
+                  <span className="material-symbols-rounded">shopping_cart</span>
+                </FormSubmitButton>
               </div>
-            ))}
-            <a href="#" className="text-blue-500 mt-4 inline-block">
-              Continue Shopping
-            </a>
-          </div>
+            </form>
+          </Card>
 
-          <div className="bg-white shadow-md rounded-lg p-8">
+          <Card className="bg-white shadow-md rounded-lg p-8">
             <h2 className="text-xl font-bold mb-6">Order Summary</h2>
             <div className="flex justify-between mb-4">
               <p>Items {totalItems}</p>
-              <p>${totalCost.toFixed(2)}</p>
+              <p>${totalCost}</p>
             </div>
             <div className="mb-4">
-                <p>Promo Code</p>
+              <p>Promo Code</p>
               <div className="flex space-x-2 w-full justify-between">
-                <input
-                  type="text"
-                  className="border px-4 py-2 w-full"
-                  placeholder="Enter your code"
+                <Input
+                  placeholder="Enter coupon code"
+                  name="coupon"
+                  labelPlacement="outside"
                 />
-                <Button className="bg-red-500 text-white px-4 py-2">Apply</Button>
+                <Button type='button' className='bg-red-500 text-white px-4 py-2'>Apply</Button>
               </div>
             </div>
             <div className="flex justify-between mb-4">
               <p>Total Cost</p>
-              <p>${(totalCost + 5).toFixed(2)}</p>
+              <p>${(totalCost)}</p>
             </div>
-            < Button className="w-full py-3 mt-4" color='primary'>Checkout</Button>
-          </div>
+            <FormSubmitButton type='button' className="w-full py-3 mt-4" color="primary" pendingText='Checking out..'>
+              <Link href={CHECKOUT_PAGE_ROUTE}>Checkout</Link>
+            </FormSubmitButton>
+          </Card>
         </div>
       </div>
     </div>

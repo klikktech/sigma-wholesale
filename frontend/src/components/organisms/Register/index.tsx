@@ -1,227 +1,259 @@
 "use client";
-
-import { FC } from "react";
 import { useFormState } from "react-dom";
-import { Button, Input, Spacer, Textarea } from "@nextui-org/react";
+import { Input, Spacer, Tab, Tabs } from "@nextui-org/react";
 import { createNewUser } from "@/app/(auth)/register/action";
-import Image from "next/image";
-import logo from "../../../assets/sigma-logo.png"
-
+import Button from "@/components/atoms/ScrollButton";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { LOGIN_PAGE_ROUTE } from "@/utils/urls";
+import { useRouter } from "next/navigation";
+import FormSubmitButton from "@/components/molecules/FormSubmitButton";
 
 interface FormErrorProps {
-    errors?: string[];
+  errors?: string[];
 }
 
-const FormError: FC<FormErrorProps> = ({ errors }) => {
-    if (!errors?.length) return null;
-
-    return (
-        <div className="p-2">
-            {errors.map((err) => {
-                return (
-                    <p className="text-tiny text-red-400 list-item" key={err}>
-                        {err}
-                    </p>
-                );
-            })}
-        </div>
-    );
-};
-
 const SignUp = () => {
-    const [state, formAction] = useFormState(createNewUser, {
-        success: false,
+  const [state, formAction] = useFormState(createNewUser, undefined);
+  const router = useRouter();
+  // State to hold input values
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    nickName: '',
+    email: '',
+    phone: '',
+    password: '',
+    confirmPassword: '',
+    shippingAddress: '',
+    shippingCity: '',
+    shippingState: '',
+    shippingZip: '',
+    storeAddress: '',
+    storeCity: '',
+    storeState: '',
+    storeZip: '',
+  });
+
+  useEffect(() => {
+    if (state?.error) {
+      toast.error(state.error);
+    }
+    if (state?.success) {
+      toast.success("Registration successful!");
+      router.push(LOGIN_PAGE_ROUTE);
+    }
+  }, [state, router]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const newFormData = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      newFormData.append(key, value);
     });
+    await formAction(newFormData);
+  };
 
-    return (
-        <div className="flex justify-center items-center p-2">
-            <form action={formAction} className="flex flex-col w-full" style={{ maxWidth: '500rem' }}>
-                <div className="mb-3 mx-10">
-                    <Image src={logo} alt={"logo"} />
-                </div>
+  return (
+    <div className="flex justify-center items-center p-4">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col w-full max-w-md"
+      >
 
-                <Input
-                    label="First Name *"
-                    name="firstName"
-                    placeholder="John"
-                    labelPlacement='outside'
-                />
-                <FormError errors={state.errors?.firstName} />
+        <Input
+          label="First Name *"
+          name="firstName"
+          value={formData.firstName}
+          onChange={handleChange}
+          placeholder="John"
+          labelPlacement="outside"
+        />
 
-                <Spacer y={3} />
+        <Spacer y={3} />
 
-                <Input
-                    label="Last Name *"
-                    name="lastName"
-                    placeholder="Doe"
-                    labelPlacement='outside'
-                />
-                <FormError errors={state.errors?.lastName} />
+        <Input
+          label="Last Name *"
+          name="lastName"
+          value={formData.lastName}
+          onChange={handleChange}
+          placeholder="Doe"
+          labelPlacement="outside"
+        />
 
-                <Spacer y={3} />
-                <Input
-                    label="Email *"
-                    name="email"
-                    type="email"
-                    placeholder="johndoe@example.com"
-                    labelPlacement='outside'
-                    fullWidth
-                />
-                <FormError errors={state.errors?.email} />
+        <Spacer y={3} />
+        <Input
+          label="Nick Name"
+          name="nickName"
+          value={formData.nickName}
+          onChange={handleChange}
+          placeholder="Howdy"
+          labelPlacement="outside"
+          fullWidth
+        />
 
-                <Spacer y={3} />
-                <Input
-                    label="Company Name"
-                    name="companyName"
-                    placeholder="Company LLC"
-                    labelPlacement='outside'
-                    fullWidth
-                />
-                <FormError errors={state.errors?.companyName} />
+        <Spacer y={3} />
+        <Input
+          label="Email *"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          type="email"
+          placeholder="johndoe@example.com"
+          labelPlacement="outside"
+          fullWidth
+        />
 
-                <Spacer y={3} />
+        <Spacer y={3} />
+        <Input
+          label="Phone Number *"
+          name="phone"
+          value={formData.phone}
+          onChange={handleChange}
+          type="tel"
+          placeholder="123-456-7890"
+          maxLength={10}
+          labelPlacement="outside"
+          fullWidth
+        />
+        <Spacer y={3} />
 
-                <Input
-                    label="Phone Number *"
-                    name="phoneNumber"
-                    type="tel"
-                    placeholder="123-456-7890"
-                    labelPlacement='outside'
-                    fullWidth
-                />
-                <FormError errors={state.errors?.phoneNumber} />
-                <Spacer y={3} />
+        <Input
+          label="Password *"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          type="password"
+          placeholder="********"
+          labelPlacement="outside"
+          fullWidth
+        />
+        <Spacer y={3} />
 
-                <Input
-                    label="Alternative Phone Number"
-                    name="altPhoneNumber"
-                    type="tel"
-                    placeholder="Optional"
-                    labelPlacement='outside'
-                    fullWidth
-                />
-                <FormError errors={state.errors?.altPhoneNumber} />
+        <Input
+          label="Confirm Password *"
+          name="confirmPassword"
+          value={formData.confirmPassword}
+          onChange={handleChange}
+          type="password"
+          placeholder="********"
+          labelPlacement="outside"
+          fullWidth
+        />
 
-                <Spacer y={3} />
-                <Input
-                    label="Sales Tax Number"
-                    name="taxNumber"
-                    placeholder="123456789"
-                    labelPlacement='outside'
-                    fullWidth
-                />
-                <FormError errors={state.errors?.taxNumber} />
+        <Spacer y={5} />
 
-                <Spacer y={3} />
-                <Input
-                    label="Website"
-                    name="website"
-                    type="url"
-                    placeholder="https://yourwebsite.com"
-                    labelPlacement='outside'
-                    fullWidth
-                />
-                <FormError errors={state.errors?.website} />
+        <Tabs className="flex justify-evenly" key="underlined" fullWidth color="primary" aria-label="Tabs variants">
+          <Tab key="shipping" 
+            title="Shipping Address" style={{ color: 'black !important' }}>
+            <Input
+              label="Shipping Address *"
+              name="shippingAddress"
+              value={formData.shippingAddress}
+              onChange={handleChange}
+              placeholder="123 Main St"
+              labelPlacement="outside"
+              fullWidth
+            />
+            <Spacer y={3} />
 
-                <Spacer y={3} />
+            <Input
+              label="Shipping City *"
+              name="shippingCity"
+              value={formData.shippingCity}
+              onChange={handleChange}
+              placeholder="City"
+              labelPlacement="outside"
+              fullWidth
+            />
+            <Spacer y={3} />
 
-                <Input
-                    label="Password *"
-                    name="password"
-                    type="password"
-                    placeholder="********"
-                    labelPlacement='outside'
-                    // required
-                    fullWidth
-                />
-                <FormError errors={state.errors?.password} />
-                <Spacer y={3} />
+            <Input
+              label="Shipping State *"
+              name="shippingState"
+              value={formData.shippingState}
+              onChange={handleChange}
+              placeholder="State"
+              labelPlacement="outside"
+              fullWidth
+            />
+            <Spacer y={3} />
 
-                <Input
-                    label="Confirm Password *"
-                    name="confirmPassword"
-                    type="password"
-                    placeholder="********"
-                    labelPlacement='outside'
-                    // required
-                    fullWidth
-                />
-                <FormError errors={state.errors?.confirmPassword} />
+            <Input
+              label="Shipping Zip Code *"
+              name="shippingZip"
+              value={formData.shippingZip}
+              onChange={handleChange}
+              placeholder="ZIP"
+              maxLength={5}
+              labelPlacement="outside"
+              fullWidth
+            />
+          </Tab>
+          <Tab key="store" 
+            title="Store Address" className="text-black">
+            <Input
+                label="Store Address *"
+                name="storeAddress"
+                value={formData.storeAddress}
+                onChange={handleChange}
+                placeholder="123 Main St"
+                labelPlacement="outside"
+                fullWidth
+              />
+              <Spacer y={3} />
 
-                <Spacer y={3} />
-                <Textarea
-                    label="Tell us a little about yourself"
-                    name="bio"
-                    placeholder="This will help us verify your business identity"
-                    labelPlacement='outside'
-                    fullWidth
-                />
-                <FormError errors={state.errors?.bio} />
+              <Input
+                label="Store City *"
+                name="storeCity"
+                value={formData.storeCity}
+                onChange={handleChange}
+                placeholder="City"
+                labelPlacement="outside"
+                fullWidth
+              />
+              <Spacer y={3} />
 
-                <Spacer y={3} />
-                <Input
-                    label="Address 1 *"
-                    name="address1"
-                    placeholder="123 Main St"
-                    labelPlacement='outside'
-                    // required
-                    fullWidth
-                />
-                <FormError errors={state.errors?.address1} />
+              <Input
+                label="Store State *"
+                name="storeState"
+                value={formData.storeState}
+                onChange={handleChange}
+                placeholder="State"
+                labelPlacement="outside"
+                fullWidth
+              />
+              <Spacer y={3} />
 
-                <Spacer y={3} />
-                <Input
-                    label="Address 2"
-                    name="address2"
-                    placeholder="Apartment, suite, etc."
-                    labelPlacement='outside'
-                    fullWidth
-                />
-                <FormError errors={state.errors?.address2} />
+              <Input
+                label="Store Zip Code *"
+                name="storeZip"
+                value={formData.storeZip}
+                onChange={handleChange}
+                placeholder="ZIP"
+                maxLength={5}
+                labelPlacement="outside"
+                fullWidth
+              />
+          </Tab>
+        </Tabs>
 
-                <Spacer y={3} />
-
-                <Input
-                    label="City *"
-                    name="city"
-                    placeholder="City"
-                    labelPlacement='outside'
-                    // required
-                    fullWidth
-                />
-                <FormError errors={state.errors?.city} />
-                <Spacer y={3} />
-
-                <Input
-                    label="Country *"
-                    name="country"
-                    placeholder="Country"
-                    labelPlacement='outside'
-                    // required
-                    fullWidth
-                />
-                <FormError errors={state.errors?.country} />
-                <Spacer y={3} />
-
-                <Input
-                    label="Zip Code *"
-                    name="zipCode"
-                    placeholder="ZIP"
-                    labelPlacement='outside'
-                    // required
-                    fullWidth
-                />
-                <FormError errors={state.errors?.zipCode} />
-
-                <Spacer y={3} />
-                {/* {error && <p style={{ color: 'red' }}>{error}</p>}
-            {success && <p style={{ color: 'green' }}>{success}</p>} */}
-                <Button type="submit" color="primary" size="lg">
-                    Register
-                </Button>
-            </form>
-        </div>
-    );
+        <Spacer y={3} />
+        {state?.error && <p style={{ color: "red" }}>{state?.error}</p>}
+        <FormSubmitButton type="submit" color="primary" size="lg" pendingText="Registering...">
+          Register
+        </FormSubmitButton>
+      </form>
+    </div>
+  );
 };
 
 export default SignUp;

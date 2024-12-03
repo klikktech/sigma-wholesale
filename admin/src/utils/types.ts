@@ -4,31 +4,43 @@ export type Message =
   | { message: string };
 
 export interface UserDetails {
-  firstName?: string;
-  lastName?: string;
+  firstname?: string;
+  lastname?: string;
   username: string;
   phone: string;
   role: string;
   email: string;
-  password: string;
-  address?: string;
+  password?: string;
+  storeAddress?: string;
+  StoreState?:string;
+  StoreCity?:string;
+  storeZipcode?:string;
 }
 
 export interface ProductDetails {
+  id?:number
   name: string;
-  maxPrice: number;
-  minPrice: number;
-  // price: number;
+  salePrice?:number;
+  // maxPrice: number;
+  // minPrice: number;
+  price: number;
   sku: string;
   isOnSale: boolean;
   status: "instock" | "outofstock";
   displayStatus: string;
-  // stockQuantity: number;
+  details?:string;
+  stockQuantity: number;
   // totalSales: string;
-  commentStatus: string;
-  displayImage?: string;
+  // commentStatus: string;
+  displayImage?: any;
   images?: string[]
-  // category: string;
+  category: string;
+  brand:string;
+  productType:string;
+  boxQuantity:number;
+  caseQuantity:number;
+  description:string;
+  variations:Variation[]
 }
 
 export interface ITableColumn {
@@ -65,3 +77,20 @@ export type AxiosResponse = {
     message: string;
   };
 };
+
+export interface Variation {
+  id: string;
+  variationName: string;
+  price: string;
+  salePrice: string;
+  sku: string;
+  stockStatus: string;
+  displayStatus: string;
+  stockQuantity: string;
+  isSelected?: boolean;
+}
+export interface Brand {
+  id?: number;
+  name: string;
+  image: string;
+}

@@ -1,58 +1,68 @@
 "use server";
+import { axios } from "@/lib/axios";
+import { Message, RegisterDetails } from "@/utils/types";
+import { LOGIN_PAGE_ROUTE } from "@/utils/urls";
 import { RegisterFormValidator } from "@/utils/validators";
-
-export interface SignUpErrors {
-  errors?: {email?: string[];
-            password?: string[];
-            firstName?: string[];
-            lastName?: string[];
-            companyName?: string[];
-            phoneNumber?: string[];
-            altPhoneNumber?: string[];
-            taxNumber?: string[];
-            website?: string[];
-            confirmPassword?: string[];
-            bio?: string[];
-            address1?: string[];
-            address2?: string[];
-            city?: string[];
-            country?: string[];
-            zipCode?: string[];
-         };
-  success: boolean;
-}
+import { redirect } from "next/navigation";
 
 export const createNewUser = async (
-  data: SignUpErrors,
+  state: undefined | Message,
   formData: FormData
-): Promise<SignUpErrors> => {
-  const result = RegisterFormValidator.safeParse({
-    firstName: formData.get("firstName"),
-    lastName: formData.get("lastName"),
-    email: formData.get("email"),
-    password: formData.get("password"),
-    companyName: formData.get("companyName"),
-    phoneNumber: formData.get("phoneNumber"),
-    altPhoneNumber: formData.get("altPhoneNumber"),
-    taxNumber: formData.get("taxNumber"),
-    website: formData.get("website"),
-    confirmPassword: formData.get("confirmPassword"),
-    bio: formData.get("bio"),
-    address1: formData.get("address1"),
-    address2: formData.get("address2"),
-    city: formData.get("city"),
-    country: formData.get("country"),
-    zipcode: formData.get("zipcode"),
-  });
+) => {
+  const firstName = formData.get("firstName");
+  const lastName = formData.get("lastName");
+  const nickName = formData.get("nickName");
+  const email = formData.get("email");
+  const phone = formData.get("phone");
+  const password = formData.get("password");
+  const confirmPassword = formData.get("confirmPassword");
+  const shippingAddress = formData.get("shippingAddress");
+  const shippingCity = formData.get("shippingCity");
+  const shippingState = formData.get("shippingState");
+  const shippingZip = formData.get("shippingZip");
+  const storeAddress = formData.get("storeAddress");
+  const storeCity = formData.get("storeCity");
+  const storeState = formData.get("storeState");
+  const storeZip = formData.get("storeZip");
 
-  if (result.success) {
-    // now you can sign up or create new user inside your database
-    console.log(result.data);
-    return { success: true };
+  const formDetails = {
+    firstName,
+    lastName,
+    nickName,
+    email,
+    phone,
+    password,
+    confirmPassword,
+    shippingAddress,
+    shippingCity,
+    shippingState,
+    shippingZip,
+    storeAddress,
+    storeCity,
+    storeState,
+    storeZip,
+  };
+
+  const parsedCredentials = RegisterFormValidator.safeParse(formDetails);
+
+  if (parsedCredentials.error) {
+    return { error: parsedCredentials.error.errors[0].message as string };
   }
 
-  return {
-    success: false,
-    errors: result.error.flatten().fieldErrors,
-  };
+  if (password !== confirmPassword) {
+    return { error: "Password and confirm password are not equal" };
+  }
+
+  const payload: RegisterDetails = formDetails as unknown as RegisterDetails;
+
+  if (parsedCredentials.success) {
+    const { data, status, error } = await axios.auth.signUpWithEmail(payload);
+    console.log(status, error, data);
+    if (error) {
+      return { error: error.message };
+    }
+    if (data && status === 200) {
+      return { success: "Registration successful!" };
+    }
+  }
 };

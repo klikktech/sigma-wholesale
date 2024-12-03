@@ -1,6 +1,19 @@
+.embla__slide {
+    flex: 0 0 100%;
+    min-width: 0;
+}
+.embla-container {
+  position: relative;
+}
+
+.embla-content {
+  margin: 1.25rem auto 0;
+  width: calc(100% - 76px);
+}
+
 .next,
 .prev {
-  top: 40%;
+  top: 50%;
   position: absolute;
   display: flex;
   justify-content: center;
@@ -11,22 +24,15 @@
   font-size: 18px;
   z-index: 2;
 }
+
 .next {
-    right: 6rem;
-  }
-  
-  .prev {
-    left: 6rem;
-  }
-  .embla__viewport {
-    overflow: hidden;
+  right: 0;
+}
+.embla__viewport {
+  overflow: hidden;
 }
 
-.embla__container {
-    display: flex;
-}
-
-.embla__slide {
-    flex: 0 0 100%;
-    min-width: 0;
+.embla-inner-container {
+  display: flex;
+  flex-direction: row;
 }

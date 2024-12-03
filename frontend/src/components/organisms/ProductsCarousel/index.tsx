@@ -11,8 +11,19 @@ type Props = {
 
 const ProductsCarousel = ({ children }: Props) => {
   const [emblaRef, emblaApi] = useEmblaCarousel(
-    { slidesToScroll: 2, loop: true },
-    [Autoplay()]
+    { 
+      slidesToScroll: 1,
+      loop: true,
+      breakpoints: {
+        '(min-width: 640px)': { slidesToScroll: 2 },
+        '(min-width: 1024px)': { slidesToScroll: 3 },
+        '(min-width: 1280px)': { slidesToScroll: 4 },
+        '(min-width: 1620px)': { slidesToScroll: 5 },
+      }
+    },
+    [Autoplay({
+      delay: 10000
+    })]
   );
 
   const scrollPrev = useCallback(() => {

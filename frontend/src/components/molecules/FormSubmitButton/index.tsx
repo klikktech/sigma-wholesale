@@ -2,7 +2,7 @@
 
 import { useFormStatus } from "react-dom";
 import { ButtonProps } from "@nextui-org/react";
-import Button from "@/components/atoms/Button";
+import Button from "@/components/atoms/ScrollButton";
 
 interface Props extends ButtonProps {
   pendingText?: string;
