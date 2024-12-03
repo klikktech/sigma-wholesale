@@ -9,6 +9,10 @@ export const CHECKOUT_PAGE_ROUTE = "/check-out";
 export const ORDERS_PAGE_ROUTE = "/orders";
 export const ADDRESSES_PAGE_ROUTE ='/address'
 export const ACCOUNT_PAGE_ROUTE = '/account'
+export const PRIVACY_POLICY_PAGE_ROUTE = '/privacy-policy'
+export const TERMS_AND_CONDITIONS_PAGE_ROUTE = '/terms-conditions'
+export const SHIPPING_POLICY_PAGE_ROUTE = '/shipping-policy'
+export const RETURN_POLICY_PAGE_ROUTE = '/return-policy'
 
 
 // API Endpoints

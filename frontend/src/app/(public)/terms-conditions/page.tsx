@@ -27,7 +27,7 @@ export default function TermsAndConditions() {
 
                                 <section className="space-y-4">
                                     {/* Platform Ownership */}
-                                    <div className="border-l-4 border-primary pl-4">
+                                    <div className=" pl-4">
                                         <h2 className="text-xl font-semibold text-red-600 mb-3">
                                             Platform Ownership
                                         </h2>
@@ -51,7 +51,7 @@ export default function TermsAndConditions() {
                                     </div>
 
                                     {/* Membership Eligibility */}
-                                    <div className="border-l-4 border-primary pl-4">
+                                    <div className="pl-4">
                                         <h2 className="text-xl font-semibold text-red-600 mb-3">
                                             Membership Eligibility
                                         </h2>
@@ -62,7 +62,7 @@ export default function TermsAndConditions() {
                                     </div>
 
                                     {/* Account Responsibilities */}
-                                    <div className="border-l-4 border-primary pl-4">
+                                    <div className="pl-4">
                                         <h2 className="text-xl font-semibold text-red-600 mb-3">
                                             Your Account and Registration Obligations
                                         </h2>
@@ -76,14 +76,14 @@ export default function TermsAndConditions() {
                                             If You share or allow others to have access to Your account on the Platform (“Account”), by creating separate profiles under Your Account, or otherwise, they will be able to view and access Your Account information. You shall be solely liable and responsible for all the activities undertaken under Your Account, and any consequences therefrom.                    </p>
                                     </div>
 
-                                    <div className="border-l-4 border-primary pl-4">
+                                    <div className="pl-4">
                                         <h2 className="text-xl font-semibold text-red-600 mb-3">
                                             Communications
                                         </h2>
                                         <p className="text-gray-700 leading-relaxed">
                                             When You use the Platform or send emails or other data, information or communication to us, You agree and understand that You are communicating with Us through electronic records and You consent to receive communications via electronic records from Us periodically and as and when required. We may communicate with you by email or by such other mode of communication, electronic or otherwise.</p>
                                     </div>
-                                    <div className="border-l-4 border-primary pl-4">
+                                    <div className="pl-4">
                                         <h2 className="text-xl font-semibold text-red-600 mb-3">
                                             Platform for Transaction and Communication
                                         </h2>
@@ -91,7 +91,7 @@ export default function TermsAndConditions() {
                                             The Platform is a platform that Users utilize to meet and interact with one another for their transactions. Flipkart is not and cannot be a party to or control in any manner any transaction between the Platform’s Users.
                                         </p>
                                     </div>
-                                    <div className="border-l-4 border-primary pl-4">
+                                    <div className="pl-4">
                                         <h2 className="text-xl font-semibold text-red-600 mb-3">
                                             Henceforward:
                                         </h2>

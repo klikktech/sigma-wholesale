@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, Divider, Spacer } from "@nextui-org/react";
+import { Card, CardHeader, Divider, Spacer } from "@nextui-org/react";
 
 export default function ShippingPolicy() {
   return (
@@ -8,10 +8,15 @@ export default function ShippingPolicy() {
       <div className="max-w-4xl mx-auto">
         <Card className="p-6 sm:p-8 bg-white shadow-lg">
           {/* Header */}
-          <h1 className="text-3xl font-bold text-center text-gray-900 mb-8">
+          <CardHeader className="flex flex-col gap-3 p-8 bg-primary">
+            <h1 className="text-3xl font-bold text-gray-800 text-center">
+              Shipping Policy
+            </h1>
+          </CardHeader>
+          {/* <h1 className="text-3xl font-bold text-center text-gray-900 mb-8">
             Shipping Policy
-          </h1>
-
+          </h1> */}
+          <Spacer y={4} />
           {/* COVID Notice */}
           <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8">
             <p className="text-yellow-700 font-medium text-center">
@@ -22,11 +27,11 @@ export default function ShippingPolicy() {
           {/* General Information */}
           <div className="space-y-6 text-gray-700">
             <p>
-              Sacramento Cash and Carry accepts online orders 24 hours a day, every day of the week. 
-              Phone orders are received Mon – Sat between 7 a.m. to 5 p.m. Orders are processed in 
+              Sacramento Cash and Carry accepts online orders 24 hours a day, every day of the week.
+              Phone orders are received Mon – Sat between 7 a.m. to 5 p.m. Orders are processed in
               the order they are received. All orders are shipped from our location in Roseville CA.
               Sacramento Cash and Carry ships to all Continental U.S. except to Hawaii, Alaska, Puerto Rico and other territories. We also currently do not ship to APO(Army Post Office ) or FPO (Fleet Post Office ) addresses.
-              <Spacer y={4}/>
+              <Spacer y={4} />
               Orders placed are usually processed and shipped from Monday to Friday within 1-2 business days from the time the order is placed.
             </p>
 
@@ -36,10 +41,10 @@ export default function ShippingPolicy() {
             <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Free Shipping Order</h2>
               <p className="mb-4">
-                There will be no shipping charges on the first order you place with us. 
+                There will be no shipping charges on the first order you place with us.
                 All orders are shipped through UPS ground.
               </p>
-              
+
               <div className="bg-gray-50 p-4 rounded-lg">
                 <p className="font-medium mb-2">Some exclusions apply:</p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
@@ -69,7 +74,7 @@ export default function ShippingPolicy() {
             {/* Holiday Notice */}
             <div className="bg-blue-50 border-l-4 border-blue-400 p-4">
               <p className="text-blue-700 font-medium">
-                **Due to the high volume of orders during holiday seasons you may experience extended 
+                **Due to the high volume of orders during holiday seasons you may experience extended
                 processing time of up to 3 business days.**
               </p>
             </div>
@@ -88,7 +93,7 @@ export default function ShippingPolicy() {
             <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Additions or Changes to your Shipping Order:</h2>
               <p className="space-y-3">
-              In the event that you want to add items or make changes to your order, all orders or changes should be made before 2 p.m. (M-F) while the order is still in the processing stage. You will receive email notification of the status of your order periodically.
+                In the event that you want to add items or make changes to your order, all orders or changes should be made before 2 p.m. (M-F) while the order is still in the processing stage. You will receive email notification of the status of your order periodically.
               </p>
             </section>
 
@@ -116,7 +121,7 @@ export default function ShippingPolicy() {
             <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Undeliverable or Refused Shipment:</h2>
               <p className="space-y-3">
-              If your shipment is unclaimed, or refused (not because of damage) and undeliverable due to wrong address, you are responsible for the following:
+                If your shipment is unclaimed, or refused (not because of damage) and undeliverable due to wrong address, you are responsible for the following:
               </p>
               <ul className="space-y-3">
                 <li>• Original shipping costs.</li>

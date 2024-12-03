@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, Divider } from "@nextui-org/react";
+import { Card, CardHeader, Divider, Spacer } from "@nextui-org/react";
 
 export default function PrivacyPolicy() {
     return (
@@ -8,10 +8,15 @@ export default function PrivacyPolicy() {
             <div className="max-w-4xl mx-auto">
                 <Card className="p-6 sm:p-8 bg-white shadow-lg">
                     {/* Header */}
-                    <h1 className="text-3xl font-bold text-center text-gray-900 mb-8">
+                    <CardHeader className="flex flex-col gap-3 p-8 bg-primary">
+                        <h1 className="text-3xl font-bold text-gray-800 text-center">
                         Privacy Policy
-                    </h1>
-
+                        </h1>
+                    </CardHeader>
+                    {/* <h1 className="text-3xl font-bold text-center text-gray-900 mb-8">
+                        Privacy Policy
+                    </h1> */}
+                    <Spacer y={4} />
                     {/* Who We Are */}
                     <section className="mb-8">
                         <h2 className="text-xl font-semibold text-gray-900 mb-4">Who We Are</h2>

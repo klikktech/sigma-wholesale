@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from "next/image";
 import logo from "../../../assets/sigma-logo.png"
+import { HOME_PAGE_ROUTE, PRIVACY_POLICY_PAGE_ROUTE, PRODUCTS_PAGE_ROUTE, RETURN_POLICY_PAGE_ROUTE, SHIPPING_POLICY_PAGE_ROUTE, TERMS_AND_CONDITIONS_PAGE_ROUTE } from '@/utils/urls';
 
 const Footer = () => {
   return (
@@ -19,9 +20,9 @@ const Footer = () => {
           <div>
             <h3 className="text-white font-semibold mb-4">QUICK LINKS</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="hover:text-white">Home</a></li>
-              <li><a href="#" className="hover:text-white">Shop</a></li>
-              <li><a href="#" className="hover:text-white">Privacy Policy</a></li>
+              <li><a href={HOME_PAGE_ROUTE} className="hover:text-white">Home</a></li>
+              <li><a href={PRODUCTS_PAGE_ROUTE} className="hover:text-white">Shop</a></li>
+              <li><a href={PRIVACY_POLICY_PAGE_ROUTE} className="hover:text-white">Privacy Policy</a></li>
               <li><a href="#" className="hover:text-white">Blog</a></li>
               <li><a href="#" className="hover:text-white">Site Map</a></li>
             </ul>
@@ -30,10 +31,10 @@ const Footer = () => {
           <div>
             <h3 className="text-white font-semibold mb-4">POLICY</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="hover:text-white">Terms & Conditions</a></li>
-              <li><a href="#" className="hover:text-white">Shipping Policy</a></li>
-              <li><a href="#" className="hover:text-white">Return Policy</a></li>
-              <li><a href="#" className="hover:text-white">Privacy Policy</a></li>
+              <li><a href={TERMS_AND_CONDITIONS_PAGE_ROUTE} className="hover:text-white">Terms & Conditions</a></li>
+              <li><a href={SHIPPING_POLICY_PAGE_ROUTE} className="hover:text-white">Shipping Policy</a></li>
+              <li><a href={RETURN_POLICY_PAGE_ROUTE} className="hover:text-white">Return Policy</a></li>
+              <li><a href={PRIVACY_POLICY_PAGE_ROUTE} className="hover:text-white">Privacy Policy</a></li>
             </ul>
           </div>
 

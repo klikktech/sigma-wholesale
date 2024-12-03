@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, Divider, Spacer } from "@nextui-org/react";
+import { Card, CardHeader, Divider, Spacer } from "@nextui-org/react";
 
 export default function ReturnPolicy() {
     return (
@@ -8,9 +8,14 @@ export default function ReturnPolicy() {
             <div className="max-w-4xl mx-auto">
                 <Card className="p-6 sm:p-8 bg-white shadow-lg">
                     {/* Header */}
-                    <h1 className="text-3xl font-bold text-center text-gray-900 mb-8">
+                    <CardHeader className="flex flex-col gap-3 p-8 bg-primary">
+                        <h1 className="text-3xl font-bold text-gray-800 text-center">
+                            Return Policy
+                        </h1>
+                    </CardHeader>
+                    {/* <h1 className="text-3xl font-bold text-center text-gray-900 mb-8">
                         Return Policy
-                    </h1>
+                    </h1> */}
 
                     {/* Company Address */}
                     <div className="bg-gray-50 p-4 rounded-lg mb-8">
