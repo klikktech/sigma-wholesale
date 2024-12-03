@@ -29,7 +29,7 @@ public class Brand {
     )
     private String id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
     @Column(name = "image")
