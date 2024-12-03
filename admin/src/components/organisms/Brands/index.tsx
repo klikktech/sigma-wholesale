@@ -124,6 +124,7 @@ const Brands = ({ brands }: { brands: Brand[] }) => {
                                         <Input
                                             type="text"
                                             value={editingBrand ? editingBrand.name : newBrandName}
+                                            readOnly={editingBrand ? true : false}
                                             onChange={(e) => editingBrand 
                                                 ? setEditingBrand({ ...editingBrand, name: e.target.value })
                                                 : setNewBrandName(e.target.value)

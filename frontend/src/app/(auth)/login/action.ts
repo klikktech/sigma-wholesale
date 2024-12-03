@@ -33,16 +33,16 @@ export const signInAction = async (
     console.log(data, status, error, "data status error")
     if (error) {
       console.log("error", error);
-      return { error: error.message };
+      return { success: null,error: error.message };
     }
     if (data && status === 200) {
       console.log("success", status, data)
       createSession(data);
-      return { success: "Login successful!" };
+      return { success: "Login successful!",error:null };
     }
   }
 
-  return { error: "Something went wrong, please try again" };
+  return { success: null,error: "Something went wrong, please try again" };
 };
 
 export const signOutAction = async () => {

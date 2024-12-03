@@ -60,7 +60,7 @@ const ThankYouModal = ({ visible, onClose, orderedItems, totalCost }: ThankYouMo
                     </div>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={handleClose}>
+                    <Button color="primary" className='text-black' onClick={handleClose}>
                         Close
                     </Button>
                 </ModalFooter>

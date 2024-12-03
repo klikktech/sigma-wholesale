@@ -190,7 +190,7 @@ const CartList = ({ cartItemsList }: CartListProps) => {
               <p>Total Cost</p>
               <p>${(totalCost)}</p>
             </div>
-            <FormSubmitButton type='submit' className="w-full py-3 mt-4" color="primary" pendingText='Checking out..'>
+            <FormSubmitButton type='button' className="w-full py-3 mt-4" color="primary" pendingText='Checking out..'>
               <Link href={CHECKOUT_PAGE_ROUTE}>Checkout</Link>
             </FormSubmitButton>
           </Card>
