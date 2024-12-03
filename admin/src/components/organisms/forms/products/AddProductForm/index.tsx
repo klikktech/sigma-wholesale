@@ -11,8 +11,10 @@ import Image from "next/image";
 import FormSubmitButton from "@/components/molecules/FormSubmitButtton";
 import Video from "@/components/atoms/Video";
 import { Variation } from "@/utils/types";
-import { addProductAction } from "./action";
-import ProductVariations from "./ProductVariations";
+import { addProductAction } from "@/components/organisms/forms/products/AddProductForm/action";
+import ProductVariations from "@/components/organisms/forms/products/AddProductForm/ProductVariations";
+
+
 
 const generateDataUrlForDisplayImage = (
   file: File,
