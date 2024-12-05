@@ -25,6 +25,8 @@ export const SEARCH_PRODUCTS_URL = (keyword: string) => `products/search/${keywo
 
 
 export const GET_ALL_ORDERS_ENDPOINT = `admin/orders`;
+export const SEARCH_ORDERS_URL = (keyword: string) => `admin/orders/${keyword}`
+
 export const GET_ORDER_DETAILS_ENDPOINT = (orderId: string) =>
   `orderItems/${orderId}`;
 export const EDIT_ORDER_ENDPOINT = `admin/orders/update`;

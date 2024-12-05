@@ -19,7 +19,8 @@ import {
   GET_BRANDS_URL,
   DELETE_BRAND_URL,
   ADD_OR_UPDATE_BRANDS_URL,
-  GET_CATEGORIES_URL
+  GET_CATEGORIES_URL,
+  SEARCH_ORDERS_URL
 } from "@/utils/urls";
 import api, { authInstance } from "./instance";
 import {
@@ -244,7 +245,7 @@ export const axios = {
     getSearchOrdersList: async (keyword: string): Promise<AxiosResponse> => {
       console.log("get search list")
       try {
-        const { data, status } = await api.get(GET_ORDER_DETAILS_ENDPOINT(keyword));
+        const { data, status } = await api.get(SEARCH_ORDERS_URL(keyword));
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;
