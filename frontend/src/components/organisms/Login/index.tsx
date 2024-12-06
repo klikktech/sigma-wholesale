@@ -3,7 +3,7 @@
 import { Input, Link, Spacer } from "@nextui-org/react";
 import { useFormState, useFormStatus } from "react-dom";
 import { signInAction } from "@/app/(auth)/login/action";
-import { HOME_PAGE_ROUTE, SIGNUP_PAGE_ROUTE } from "@/utils/urls";
+import { SIGNUP_PAGE_ROUTE } from "@/utils/urls";
 import FormMessage from "@/components/molecules/FormMessage";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
@@ -17,18 +17,10 @@ const Login = () => {
   const router = useRouter();
 
   useEffect(() => {
-    console.log("state", state)
     if (state?.error) {
-      console.log("state.error", state.error)
       toast.error(state.error);
     }
-    if (state?.success) {
-      console.log("state.success", state.success)
-      toast.success(state.success);
-      router.push(HOME_PAGE_ROUTE);
-      router.refresh();
-    }
-  }, [state, router]);
+  }, [state]);
 
   return (
     <div className="flex justify-center items-center">

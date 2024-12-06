@@ -3,7 +3,7 @@
 import { axios } from "@/lib/axios";
 import { createSession, deleteSession } from "@/lib/axios/session";
 import { Message } from "@/utils/types";
-import { LOGIN_PAGE_ROUTE } from "@/utils/urls";
+import { LOGIN_PAGE_ROUTE, HOME_PAGE_ROUTE } from "@/utils/urls";
 import { LoginFormValidator } from "@/utils/validators";
 import { redirect } from "next/navigation";
 
@@ -18,31 +18,26 @@ export const signInAction = async (
     email,
     password,
   });
-  console.log(parsedCredentials, "parsedCredentials")
-  if (parsedCredentials.error) {
-    console.log(parsedCredentials.error, "parsedCredentials error")
 
+  if (parsedCredentials.error) {
     return { error: parsedCredentials.error.errors[0].message as string };
   }
 
   if (parsedCredentials.success) {
-    console.log("inside login")
     const { data, status, error } = await axios.auth.signInWithEmail(
       parsedCredentials.data
     );
-    console.log(data, status, error, "data status error")
+
     if (error) {
-      console.log("error", error);
-      return { success: null,error: error.message };
+      return { success: null, error: error.message };
     }
     if (data && status === 200) {
-      console.log("success", status, data)
       createSession(data);
-      return { success: "Login successful!",error:null };
+      redirect(HOME_PAGE_ROUTE);
     }
   }
 
-  return { success: null,error: "Something went wrong, please try again" };
+  return { success: null, error: "Something went wrong, please try again" };
 };
 
 export const signOutAction = async () => {

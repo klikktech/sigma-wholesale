@@ -1,3 +1,7 @@
+'use client'
+
+import { useEffect, useState } from "react";
+import { getUserDetails } from "./action";
 import { PRODUCT_VIEW_PAGE_ROUTE } from "@/utils/urls";
 import { Button, Chip } from "@nextui-org/react";
 import Image from "next/image";
@@ -18,6 +22,18 @@ const stockChipColorMap = {
 };
 
 const ProductCard = (props: Props) => {
+  const [showPrice, setShowPrice] = useState(false);
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const { isAuthenticated } = await getUserDetails();
+      setShowPrice(isAuthenticated);
+      console.log(isAuthenticated,"isAuthenticated")
+    };
+    
+    checkUser();
+  }, []);
+
   return (
     <>
       <div className="max-w-xs min-w-60 bg-gray-100 text-black rounded-xl shadow-lg overflow-hidden h-full">
@@ -46,7 +62,7 @@ const ProductCard = (props: Props) => {
         <div className="mt-2 p-4">
           <div className="flex justify-between h-full">
             <h3 className="text-sm font-semibold h-10 overflow-hidden line-clamp-2">{props.title}</h3>
-            <p className="text-gray-400">{props.price}</p>
+            {showPrice && <p className="text-gray-400">{props.price}</p>}
           </div>
           <Button color="primary" className="w-full mt-4 rounded-lg hover:bg-primary-300">
             <Link className="w-full text-black py-2" href={PRODUCT_VIEW_PAGE_ROUTE(props.details)}>Shop Now</Link>
