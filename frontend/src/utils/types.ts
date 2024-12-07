@@ -117,6 +117,7 @@ export interface orderDetails{
   orderTotal: number;
   id: string;
   orderCreatedAt: string;
+  orderStatus:string;
   itemsList:orderItemsDetails[];
   totalCount:number;
 }

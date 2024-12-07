@@ -13,6 +13,21 @@ const formatDate = (dateString: string) => {
     }).format(date);
 };
 
+const statusColor = (status: string) => {
+    switch (status) {
+        case "PENDING":
+            return "text-yellow-500 border-yellow-500";
+        case "SHIPPED":
+            return "text-green-500 border-green-500";
+        case "COMPLETED":
+            return "text-blue-500 border-blue-500";
+        case "CANCELLED":
+            return "text-red-500 border-red-500";
+        default:
+            return "text-gray-500 border-gray-500";
+    }
+}
+
 const OrderCards = ({ orders }: { orders: orderDetails[] }) => {
     return (
         <div className="container">
@@ -41,7 +56,10 @@ const OrderCards = ({ orders }: { orders: orderDetails[] }) => {
                         </div>
 
                         <div className="mt-2 flex justify-between items-center">
-                            <p className="font-bold">{order.totalCount} Items</p>
+                            <div className="flex gap-5">
+                                <p className="font-bold">{order.totalCount} Items</p>
+                                <p className={`text-sm border rounded-full px-2 ${statusColor(order.orderStatus)}`}>{order.orderStatus}</p>
+                            </div>
                             <p className="font-bold">Total: $ {order.orderTotal.toLocaleString('en-US')}</p>
                         </div>
                     </div>
