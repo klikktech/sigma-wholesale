@@ -3,7 +3,7 @@ import SkeletonProductCard from "@/components/molecules/ProductCard/SkeletonCard
 import React, { Suspense, useEffect, useState } from "react";
 import ProductsCarousel from "../ProductsCarousel";
 
-const Tabview = ({ category }: { category: string }) => {
+const Tabview = ({ category, user }: { category: string, user:any }) => {
   const [products, setProducts] = useState<any[]>([]);
 
   useEffect(() => {
@@ -28,6 +28,7 @@ const Tabview = ({ category }: { category: string }) => {
           >
             <Suspense fallback={<SkeletonProductCard />}>
               <ProductCard
+                user={user}
                 img={item.displayImage?.imageUrl}
                 title={item.name}
                 price={"$" + item.price}

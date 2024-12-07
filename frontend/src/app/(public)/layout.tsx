@@ -3,7 +3,7 @@ import Footer from "@/components/organisms/Footer";
 import { getUser } from "@/lib/axios/session";
 
 const PublicLayout = async ({ children }: { children: React.ReactNode }) => {
-    const user = getUser()
+    const user = await getUser()
     return (
         <main>
             <Navbar user={user}/>

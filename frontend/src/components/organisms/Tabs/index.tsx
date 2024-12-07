@@ -5,7 +5,7 @@ import React from "react";
 import Tabview from "../Tabview";
 import { useRouter } from "next/navigation";
 
-const Tabs = () => {
+const Tabs = ({user}:{user:any}) => {
   const router = useRouter();
   const [selectedTab, setSelectedTab] = React.useState(TABS_LIST[0].key);
 
@@ -24,7 +24,7 @@ const Tabs = () => {
       >
         {TABS_LIST.map((tab) => (
           <Tab key={tab.key} title={tab.title} className="flex gap-3">
-            <Tabview category={tab.key}/>
+            <Tabview category={tab.key} user={user}/>
           </Tab>
         ))}
       </NextUITabs>

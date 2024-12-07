@@ -7,7 +7,7 @@ import Link from "next/link";
 import { PRODUCTS_PAGE_ROUTE } from "@/utils/urls";
 import { Button } from "@nextui-org/react";
 
-const NewArrivals = async () => {
+const NewArrivals = async ({user}:{user:any}) => {
   let products: any = [];
 
   try {
@@ -29,6 +29,7 @@ const NewArrivals = async () => {
     >
       <Suspense fallback={<SkeletonProductCard />}>
         <ProductCard
+          user={user}
           img={item.displayImage?.imageUrl}
           title={item.name}
           price={item.price ? "$" + item.price : ""}
