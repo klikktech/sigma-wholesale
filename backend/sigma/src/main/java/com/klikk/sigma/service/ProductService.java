@@ -6,6 +6,7 @@ import com.klikk.sigma.dto.response.ProductResponseDto;
 import com.klikk.sigma.dto.response.ProductsResponse;
 import com.klikk.sigma.dto.response.SuccessResponse;
 import com.klikk.sigma.dto.response.VariationResponseDto;
+import com.klikk.sigma.type.AttachmentType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,8 +27,6 @@ public interface ProductService {
     Page<ProductsResponse> getAllProductsForAdmin(Pageable pageable);
 
     List<VariationResponseDto> getProductVariations(String details);
-
-
 
     ProductsResponse getProductForAdmin(String details);
 

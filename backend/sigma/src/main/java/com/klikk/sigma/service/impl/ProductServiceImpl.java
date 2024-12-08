@@ -74,14 +74,14 @@ public class ProductServiceImpl implements ProductService {
 
         if (displayFile != null) {
             String fileUrl = awsService.uploadFileToAws(displayFile);
-            AttachmentType attachmentType = determineAttachmentType(displayFile);
+            AttachmentType attachmentType = awsService.determineAttachmentType(displayFile);
             // Save the display file as an attachment
             attachmentService.saveAttachment(attachmentType, fileUrl, savedProduct, true);
         }
 
         for (MultipartFile file : otherFiles) {
             String fileUrl = awsService.uploadFileToAws(file);
-            AttachmentType attachmentType = determineAttachmentType(file);
+            AttachmentType attachmentType = awsService.determineAttachmentType(file);
             attachmentService.saveAttachment(attachmentType, fileUrl, savedProduct, false);
         }
 
@@ -94,17 +94,7 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.productToProductResponseDto(savedProduct);
     }
 
-    private AttachmentType determineAttachmentType(MultipartFile file) {
-        String contentType = file.getContentType();
-        if (contentType != null) {
-            if (contentType.startsWith("image/")) {
-                return AttachmentType.IMAGE;
-            } else if (contentType.startsWith("video/")) {  
-                return AttachmentType.VIDEO;
-            }
-        }
-        throw new IllegalArgumentException("Unsupported file type: " + contentType);
-    }
+
 
     @Override
     public ProductResponseDto getProduct(String details) {
@@ -248,14 +238,14 @@ public class ProductServiceImpl implements ProductService {
 
         if (displayImage != null) {
             String fileUrl = awsService.uploadFileToAws(displayImage);
-            AttachmentType attachmentType = determineAttachmentType(displayImage);
+            AttachmentType attachmentType = awsService.determineAttachmentType(displayImage);
             // Save the display file as an attachment
             attachmentService.saveAttachment(attachmentType, fileUrl, updatedProduct, true);
         }
 
         for (MultipartFile file : otherFiles) {
             String fileUrl = awsService.uploadFileToAws(file);
-            AttachmentType attachmentType = determineAttachmentType(file);
+            AttachmentType attachmentType = awsService.determineAttachmentType(file);
             attachmentService.saveAttachment(attachmentType, fileUrl, updatedProduct, false);
         }
 

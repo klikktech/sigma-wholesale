@@ -2,6 +2,7 @@ package com.klikk.sigma.service.impl;
 
 import com.klikk.sigma.aws.AwsS3Properties;
 import com.klikk.sigma.service.AwsService;
+import com.klikk.sigma.type.AttachmentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -100,5 +101,17 @@ public class AwsServiceImpl implements AwsService {
         } else {
             throw new IllegalArgumentException("File URL does not match the expected bucket URL format.");
         }
+    }
+
+    public AttachmentType determineAttachmentType(MultipartFile file) {
+        String contentType = file.getContentType();
+        if (contentType != null) {
+            if (contentType.startsWith("image/")) {
+                return AttachmentType.IMAGE;
+            } else if (contentType.startsWith("video/")) {
+                return AttachmentType.VIDEO;
+            }
+        }
+        throw new IllegalArgumentException("Unsupported file type: " + contentType);
     }
 }
