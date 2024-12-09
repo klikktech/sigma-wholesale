@@ -13,6 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Table(name="banners")
 @Builder
 public class Banner {
     @Id
