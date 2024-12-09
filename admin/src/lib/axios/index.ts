@@ -22,7 +22,8 @@ import {
   GET_CATEGORIES_URL,
   SEARCH_ORDERS_URL,
   GET_BANNERS_URL,
-  DELETE_BANNER_URL
+  DELETE_BANNER_URL,
+  ADD_OR_UPDATE_BANNERS_URL
 } from "@/utils/urls";
 import api, { authInstance } from "./instance";
 import {
@@ -311,7 +312,7 @@ export const axios = {
     },
     addBanner: async (formData: FormData): Promise<AxiosResponse> => {
       try {
-        const { data, status } = await api.post(GET_BANNERS_URL, formData,
+        const { data, status } = await api.post(ADD_OR_UPDATE_BANNERS_URL, formData,
           {
             headers: {
               'Content-Type': 'multipart/form-data',

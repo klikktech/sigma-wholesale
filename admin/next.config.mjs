@@ -5,7 +5,7 @@ const nextConfig = {
       remotePatterns: [
         {
           protocol: 'https',
-          hostname: 'sigmawholesaleimages.s3.us-east-2.amazonaws.com',
+          hostname: 'sigmaimages.s3.us-east-2.amazonaws.com',
           pathname: '**',
         },
       ],
