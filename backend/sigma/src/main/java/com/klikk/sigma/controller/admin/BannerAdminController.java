@@ -1,5 +1,7 @@
 package com.klikk.sigma.controller.admin;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.klikk.sigma.dto.request.BannerAddDto;
 import com.klikk.sigma.dto.request.BannerRequest;
 import com.klikk.sigma.dto.response.SuccessResponse;
@@ -18,8 +20,12 @@ public class BannerAdminController {
     @Autowired
     private BannerService bannerService;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @PostMapping()
-    public ResponseEntity<String> addBanner(@RequestPart("banner") BannerAddDto bannerAddDto, @RequestPart(value = "image",required = false) MultipartFile image) {
+    public ResponseEntity<String> addBanner(@RequestPart("banner") String bannerString, @RequestPart(value = "image",required = false) MultipartFile image) throws JsonProcessingException {
+        BannerAddDto bannerAddDto = objectMapper.readValue(bannerString, BannerAddDto.class);
         bannerService.addBanner(bannerAddDto,image);
         return ResponseEntity.ok("Banner added successfully!");
     }
@@ -35,7 +41,4 @@ public class BannerAdminController {
         bannerService.updateBanner(bannerRequest,image);
         return new SuccessResponse(LocalDateTime.now(),"Banner updated successfully!");
     }
-
-
-
 }
