@@ -1,4 +1,4 @@
-import { BRANDS_PAGE_ROUTE, ORDERS_PAGE_ROUTE, PRODUCTS_PAGE_ROUTE, USERS_PAGE_ROUTE } from "./routes";
+import { BANNERS_PAGE_ROUTE, BRANDS_PAGE_ROUTE, ORDERS_PAGE_ROUTE, PRODUCTS_PAGE_ROUTE, USERS_PAGE_ROUTE } from "./routes";
 import { INavItem, IUser } from "./types";
 
 export const SIGMA_WHOLESALE = "Sigma Wholesale"
@@ -29,5 +29,10 @@ export const SAMPLE_NAV_USER: IUser = {
       icon: "branding_watermark",
       label: "Brands",
       path: BRANDS_PAGE_ROUTE,
+    },
+    {
+      icon: "campaign",
+      label: "Banners",
+      path: BANNERS_PAGE_ROUTE,
     }
   ];

@@ -14,9 +14,10 @@ interface ProductsProps {
   category?: string;
   brand?: string;
   searchkey?: string;
+  user?:string;
 }
 
-const Products = ({ products, totalPages, currentPage, size, category, brand, searchkey }: ProductsProps) => {
+const Products = ({ products, totalPages, currentPage, size, category, brand, searchkey, user }: ProductsProps) => {
   const router = useRouter();
   console.log(brand, "brand");
   const handlePageChange = (page: number) => {
@@ -53,6 +54,7 @@ const Products = ({ products, totalPages, currentPage, size, category, brand, se
                 price={product.price ? ("$" + product.price) : ''}
                 details={product.details}
                 stockStatus={product.status}
+                user={user}
               />
             </Suspense>
           </div>

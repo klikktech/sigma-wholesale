@@ -39,3 +39,4 @@ export const PRODUCT_BY_BRAND_URL = (brand:string) => `/categories/tag/${brand}/
 export const ADDRESS_URL = (type: string) => `/users/addresses?type=${type}`;
 export const DELETE_ADDRESS_URL = (address: string) =>`/address?address=${address}`;
 export const GET_BRANDS_URL = `/brands`
+export const GET_BANNERS_URL = `/banners`

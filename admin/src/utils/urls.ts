@@ -37,3 +37,6 @@ export const ADD_OR_UPDATE_BRANDS_URL = `admin/brands`
 export const DELETE_BRAND_URL = (name: string) => `admin/brands/${name}`;
 
 export const GET_CATEGORIES_URL = `categories`
+
+export const GET_BANNERS_URL = `banners`
+export const DELETE_BANNER_URL = (id: string) => `admin/banners/${id}`

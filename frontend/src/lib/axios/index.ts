@@ -18,6 +18,7 @@ import {
   DELETE_CART_ITEM_URL,
   PRODUCT_BY_BRAND_URL,
   GET_BRANDS_URL,
+  GET_BANNERS_URL,
 } from "@/utils/urls";
 import api, { authInstance } from "./instance";
 import { AxiosErrorResponse, AxiosResponse, RegisterDetails, UserDetails } from "@/utils/types";
@@ -226,5 +227,15 @@ export const axios = {
         return error as AxiosErrorResponse;
       }
     },
+  },
+  banners:{
+    getBannersList: async (): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.get(GET_BANNERS_URL);
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    }
   }
 };

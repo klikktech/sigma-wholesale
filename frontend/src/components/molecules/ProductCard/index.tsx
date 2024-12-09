@@ -10,8 +10,8 @@ interface Props {
   title: string;
   price: string;
   details: string;
-  stockStatus: 'instock' | 'outofstock';
-  user:any
+  stockStatus: string;
+  user?:any
 }
 
 const stockChipColorMap = {

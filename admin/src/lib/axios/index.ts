@@ -20,7 +20,9 @@ import {
   DELETE_BRAND_URL,
   ADD_OR_UPDATE_BRANDS_URL,
   GET_CATEGORIES_URL,
-  SEARCH_ORDERS_URL
+  SEARCH_ORDERS_URL,
+  GET_BANNERS_URL,
+  DELETE_BANNER_URL
 } from "@/utils/urls";
 import api, { authInstance } from "./instance";
 import {
@@ -292,6 +294,38 @@ export const axios = {
     deleteBrand: async (name: string): Promise<AxiosResponse> => {
       try {
         const { data, status } = await api.delete(DELETE_BRAND_URL(name));
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    }
+  },
+  banners:{
+    getBannersList: async (): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.get(GET_BANNERS_URL);
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    addBanner: async (formData: FormData): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.post(GET_BANNERS_URL, formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    deleteBanner: async (id: string): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.delete(DELETE_BANNER_URL(id));
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;

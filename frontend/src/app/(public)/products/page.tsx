@@ -1,9 +1,11 @@
 import ErrorComponent from '@/components/atoms/ErrorComponent';
 import Products from '@/components/organisms/Products'
 import { axios } from '@/lib/axios';
+import { getUser } from '@/lib/axios/session';
 import React from 'react'
 
 const ProductsPage = async ({ searchParams }: { searchParams: { page?: string, keyword?: string } }) => {
+  const user = await getUser()
   try {
     const page = searchParams.page ? parseInt(searchParams.page) : 0;
     const size = 16;
@@ -24,7 +26,7 @@ const ProductsPage = async ({ searchParams }: { searchParams: { page?: string, k
       return <ErrorComponent message="Error fetching products" />;
     }
 
-    if (!data || !data.content) {
+    if (!data || !data.content || data.content.length === 0) {
       return <ErrorComponent message="No products available" />;
     }
 
@@ -33,6 +35,7 @@ const ProductsPage = async ({ searchParams }: { searchParams: { page?: string, k
       totalPages: data.totalPages || 1,
       currentPage: page,
       size,
+      user: user?.email,
       ...(keyword && { searchkey: keyword })
     };
 

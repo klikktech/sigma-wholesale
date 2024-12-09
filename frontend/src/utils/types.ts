@@ -153,3 +153,10 @@ export interface Brand {
   name: string;
   image: string;
 }
+export interface Banner {
+  id: string;
+  image: string;
+  title: string;
+  description: string;
+  type: string;
+}

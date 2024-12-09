@@ -1,24 +1,39 @@
 import ScrollButton from "@/components/atoms/ScrollButton";
-import { CarouselInfo } from "@/utils/constants";
 import { Button, Image, Link } from "@nextui-org/react";
 import React from "react";
 import MainCarousel from "../MainCarousel";
 import { PRODUCTS_PAGE_ROUTE } from "@/utils/urls";
+import { axios } from "@/lib/axios";
+import { Banner } from "@/utils/types";
 
-const content = CarouselInfo;
+const CarouselContent = async () => {
+  let banners: any = [];
 
-const CarouselContent = () => {
-  const elements = content.map((item, index) => (
+  try {
+    const { data, error } = await axios.banners.getBannersList();   
+     if (data) {
+      banners = data;
+    } else {
+      return <div>No banners available</div>;
+    }
+    if(error) return <div>Error fetching banners</div>;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return <div>Error fetching banners</div>;
+  }
+  
+  const elements = banners?.map((item:Banner, index:number) => (
     <div
       key={index}
       className="flex flex-col md:flex-row gap-x-10 items-center"
     >
       <div className="w-full md:w-1/2">
-        <Image
+        {item.type === "IMAGE" && <Image
           className="rounded-2xl w-full h-auto"
           src={item.image}
           alt={item.title}
-        />
+        />}
+        {item.type === "VIDEO" && <video src={item.image} className="rounded-2xl w-full h-auto" />}
       </div>
       <div className="w-full md:w-1/2 flex flex-col items-center">
         <p className="text-5xl font-bold my-3 text-center">{item.title}</p>
