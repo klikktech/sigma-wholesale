@@ -4,6 +4,14 @@ import logo from "../../../assets/sigma-logo.png"
 import { HOME_PAGE_ROUTE, PRIVACY_POLICY_PAGE_ROUTE, PRODUCTS_PAGE_ROUTE, RETURN_POLICY_PAGE_ROUTE, SHIPPING_POLICY_PAGE_ROUTE, TERMS_AND_CONDITIONS_PAGE_ROUTE } from '@/utils/urls';
 
 const Footer = () => {
+  const handleClick = (scrollTargetId:string) => {
+    if (scrollTargetId) {
+      const section = document.getElementById(scrollTargetId);
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
   return (
     <footer className="bg-gray-900 text-gray-400 py-8">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-around">
@@ -41,11 +49,11 @@ const Footer = () => {
           <div>
             <h3 className="text-white font-semibold mb-4">TOP CATEGORIES</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="hover:text-white">New Arrivals</a></li>
-              <li><a href="#" className="hover:text-white">Smoke Shop</a></li>
-              <li><a href="#" className="hover:text-white">Vape Shop</a></li>
-              <li><a href="#" className="hover:text-white">CBD</a></li>
-              <li><a href="#" className="hover:text-white">Delt8</a></li>
+              <li className="hover:text-white" onClick={() => handleClick('new-arrivals')}>New Arrivals</li>
+              <li><a href="/categories/smoke-shop/products?page=1&size=16" className="hover:text-white">Smoke Shop</a></li>
+              <li><a href="/categories/vape-shop/products?page=1&size=16" className="hover:text-white">Vape Shop</a></li>
+              <li><a href="/categories/cbd/products?page=1&size=16" className="hover:text-white">CBD</a></li>
+              <li><a href="/categories/kratom/products?page=1&size=16" className="hover:text-white">Kratom</a></li>
             </ul>
           </div>
         </div>
