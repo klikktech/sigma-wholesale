@@ -28,12 +28,12 @@ const CarouselContent = async () => {
       className="flex flex-col md:flex-row gap-x-10 items-center"
     >
       <div className="w-full md:w-1/2">
-        {item.type === "IMAGE" && <Image
-          className="rounded-2xl w-full h-auto"
+      {item.type === "IMAGE" && <Image
+          className="rounded-2xl w-full h-80 object-cover"
           src={item.image}
           alt={item.title}
         />}
-        {item.type === "VIDEO" && <video src={item.image} className="rounded-2xl w-full h-auto" />}
+        {item.type === "VIDEO" && <video src={item.image} className="rounded-2xl w-full h-80 object-cover" />}
       </div>
       <div className="w-full md:w-1/2 flex flex-col items-center">
         <p className="text-5xl font-bold my-3 text-center">{item.title}</p>
