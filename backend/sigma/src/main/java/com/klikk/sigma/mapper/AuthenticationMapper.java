@@ -18,7 +18,7 @@ public abstract class AuthenticationMapper {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Mapping(source = "password", target = "passwordHash", qualifiedByName = "encodePassword")
+    @Mapping(source = "password", target = "passwordHash")
     @Mapping(target = "createdAt", qualifiedByName = "convertStringDateToDate")
     @Mapping(target = "storeAddress",ignore = true)
     @Mapping(target = "shippingAddress",ignore = true)
@@ -28,10 +28,10 @@ public abstract class AuthenticationMapper {
     @Mapping(source = "refreshToken", target = "refreshToken")
     public abstract AuthenticationResponse jwtTokenToAuthenticationResponse(String jwtToken, String refreshToken);
 
-    @Named("encodePassword")
-    public String encodePassword(String password) {
-        return passwordEncoder.encode(password);
-    }
+//    @Named("encodePassword")
+//    public String encodePassword(String password) {
+//        return passwordEncoder.encode(password);
+//    }
 
 
     @Named("convertStringDateToDate")
