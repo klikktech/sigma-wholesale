@@ -81,22 +81,24 @@ const Banners = ({ bannersList }: { bannersList: Banner[] }) => {
                 </Button>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                 {bannersList.length > 0 ? bannersList.map((banner) => (
-                    <Card key={banner.id} className="sm:p-4">
+                    <Card key={banner.id} className="sm:p-4 max-h-96">
                         <div className="relative">
-                            {banner.type === "IMAGE" &&
-                                <Image
-                                    src={banner.image}
-                                    alt={banner.title}
-                                    className="w-full h-48 object-cover rounded-lg"
-                                />
-                            }
-                            {banner.type === "VIDEO" &&
-                                <video src={banner.image}
-                                    className="w-full h-48 object-cover rounded-lg"
-                                />
-                            }
+                            <div className='flex items-center justify-center'>
+                                {banner.type === "IMAGE" &&
+                                    <Image
+                                        src={banner.image}
+                                        alt={banner.title}
+                                        className="w-full h-48 object-cover rounded-lg"
+                                    />
+                                }
+                                {banner.type === "VIDEO" &&
+                                    <video src={banner.image}
+                                        className="w-full h-48 object-cover rounded-lg"
+                                    />
+                                }
+                            </div>
                             <Button
                                 isIconOnly
                                 color="danger"
@@ -107,7 +109,7 @@ const Banners = ({ bannersList }: { bannersList: Banner[] }) => {
                                 <span className="material-symbols-rounded">delete</span>
                             </Button>
                         </div>
-                        <div className="mt-4">
+                        <div className="mt-4 overflow-y-auto scrollbar-hide">
                             <h3 className="text-lg font-semibold">{banner.title}</h3>
                             <p className="text-gray-600 mt-2">{banner.description}</p>
                         </div>
