@@ -27,7 +27,7 @@ const CarouselContent = async () => {
       key={index}
       className="flex flex-col md:flex-row gap-x-10 items-center"
     >
-      <div className="w-full md:w-1/2">
+      <div className="w-full md:w-1/2 lg:w-1/2 xl:w-1/2 flex justify-center items-center">
       {item.type === "IMAGE" && <Image
           className="rounded-2xl w-full h-80 object-cover"
           src={item.image}
@@ -35,9 +35,9 @@ const CarouselContent = async () => {
         />}
         {item.type === "VIDEO" && <video src={item.image} className="rounded-2xl w-full h-80 object-cover" />}
       </div>
-      <div className="w-full md:w-1/2 flex flex-col items-center">
-        <p className="text-5xl font-bold my-3 text-center">{item.title}</p>
-        <p className="text-base my-3 text-center">{item.description}</p>
+      <div className="w-full max-w-screen-lg text-balance md:w-1/2 lg:w-1/2 xl:w-1/2 flex flex-col items-center">
+        <p className="text-5xl font-bold my-3 text-center overflow-hidden max-w-screen-lg line-clamp-4">{item.title}</p>
+        <p className="text-base my-3 text-center overflow-hidden max-w-screen-lg line-clamp-4">{item.description}</p>
         <div className="flex gap-4 my-3">
           <Button
             color="primary"

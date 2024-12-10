@@ -114,7 +114,7 @@ import {
 import Image from "next/image";
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
-import logo from "../../../assets/sigma-logo.png";
+import logo from "../../../assets/sigma-logo.webp";
 import AvatarMenu from "../AvatarMenu";
 import { 
   ACCOUNT_PAGE_ROUTE,
