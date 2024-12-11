@@ -55,6 +55,7 @@ public class BrandServiceImpl implements BrandService {
         if(brandToDelete.isEmpty()){
             throw new NotFoundException("Delete a brand that exists");
         }
+        awsService.deleteFileFromS3ByUrl(brandToDelete.get().getImage());
         brandRepository.delete(brandToDelete.get());
     }
 

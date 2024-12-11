@@ -55,6 +55,7 @@ public class BannerServiceImpl implements BannerService {
         if(bannerToDelete.isEmpty()){
             throw new NotFoundException("Delete a banner that exists");
         }
+        awsService.deleteFileFromS3ByUrl(bannerToDelete.get().getImage());
         bannerRepository.delete(bannerToDelete.get());
     }
 
