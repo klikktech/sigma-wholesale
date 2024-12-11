@@ -93,11 +93,17 @@ const handleAxiosError = (error: any): AxiosErrorResponse => {
           error.response.data.message || "Not found",
           status
         );
+      case 413:
+        return formatErrorResponse(
+          error.response.data.message || "Request Entity Too Large - Please try again later",
+          status
+        );
       case 500:
         return formatErrorResponse(
           error.response.data.message || "Internal Server Error - Please try again later",
           status
         );
+        
       default:
         return formatErrorResponse(
           error.response.data.message || "An error occurred",

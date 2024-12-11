@@ -9,7 +9,9 @@ type Props = {
 };
 
 const MainCarousel = ({ elements }: Props) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true },[Autoplay()])
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true },[Autoplay({
+    delay: 10000
+  })])
 
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev()

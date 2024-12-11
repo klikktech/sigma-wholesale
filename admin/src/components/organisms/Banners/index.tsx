@@ -147,7 +147,7 @@ const Banners = ({ bannersList }: { bannersList: Banner[] }) => {
                                                 <div className="flex items-center justify-center gap-2">
                                                     <span className='material-symbols-rounded text-gray-400'>
                                                         {selectedFile?.type.includes('image') && 'image'}
-                                                        {selectedFile?.type.includes('video') && 'video'}
+                                                        {selectedFile?.type.includes('video') && 'videocam'}
                                                     </span>
                                                     <span className="text-gray-600">
                                                         {selectedFile ? selectedFile.name : 'Click to upload or drag and drop'}

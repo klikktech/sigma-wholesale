@@ -10,30 +10,34 @@ const CarouselContent = async () => {
   let banners: any = [];
 
   try {
-    const { data, error } = await axios.banners.getBannersList();   
-     if (data) {
+    const { data, error } = await axios.banners.getBannersList();
+    if (data) {
       banners = data;
     } else {
       return <div>No banners available</div>;
     }
-    if(error) return <div>Error fetching banners</div>;
+    if (error) return <div>Error fetching banners</div>;
   } catch (error) {
     console.error("Error fetching products:", error);
     return <div>Error fetching banners</div>;
   }
-  
-  const elements = banners?.map((item:Banner, index:number) => (
+
+  const elements = banners?.map((item: Banner, index: number) => (
     <div
       key={index}
       className="flex flex-col md:flex-row gap-x-10 items-center"
     >
       <div className="w-full md:w-1/2 lg:w-1/2 xl:w-1/2 flex justify-center items-center">
-      {item.type === "IMAGE" && <Image
+        {item.type === "IMAGE" && <Image
           className="rounded-2xl w-full h-80 object-cover"
           src={item.image}
           alt={item.title}
         />}
-        {item.type === "VIDEO" && <video src={item.image} className="rounded-2xl w-full h-80 object-cover" />}
+        {item.type === "VIDEO" &&
+          <video className="rounded-2xl w-full h-80 object-cover" autoPlay={true} muted={true} loop={true}>
+            <source src={item.image} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>}
       </div>
       <div className="w-full max-w-screen-lg text-balance md:w-1/2 lg:w-1/2 xl:w-1/2 flex flex-col items-center">
         <p className="text-5xl font-bold my-3 text-center overflow-hidden max-w-screen-lg line-clamp-4">{item.title}</p>
