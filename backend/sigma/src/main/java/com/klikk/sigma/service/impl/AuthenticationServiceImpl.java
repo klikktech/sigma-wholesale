@@ -1,16 +1,20 @@
 package com.klikk.sigma.service.impl;
 
 import com.klikk.sigma.dto.request.AuthenticationRequest;
+import com.klikk.sigma.dto.request.ResetPasswordRequest;
 import com.klikk.sigma.dto.response.AuthenticationResponse;
 import com.klikk.sigma.dto.request.RegisterRequest;
 import com.klikk.sigma.entity.Address;
+import com.klikk.sigma.entity.PasswordResetToken;
 import com.klikk.sigma.entity.Token;
 import com.klikk.sigma.entity.User;
 import com.klikk.sigma.exception.UnauthorisedException;
 import com.klikk.sigma.mapper.AuthenticationMapper;
+import com.klikk.sigma.repository.PasswordResetTokenRepository;
 import com.klikk.sigma.repository.TokenRepository;
 import com.klikk.sigma.repository.UserRepository;
 import com.klikk.sigma.service.AuthenticationService;
+import com.klikk.sigma.service.EmailService;
 import com.klikk.sigma.service.JwtService;
 import com.klikk.sigma.type.RoleType;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,6 +31,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -48,6 +53,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Autowired
     private AddressServiceImpl addressService;
+
+
 
     @Override
     public AuthenticationResponse register(RegisterRequest request) {

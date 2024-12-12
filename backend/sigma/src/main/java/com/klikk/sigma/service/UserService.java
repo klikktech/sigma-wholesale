@@ -3,6 +3,7 @@ package com.klikk.sigma.service;
 
 import com.klikk.sigma.dto.UserResponseDto;
 import com.klikk.sigma.dto.request.RegisterRequest;
+import com.klikk.sigma.dto.request.ResetPasswordRequest;
 import com.klikk.sigma.dto.request.UpdateUserAdminRequest;
 import com.klikk.sigma.dto.request.UpdateUserRequest;
 import com.klikk.sigma.dto.response.SuccessResponse;
@@ -14,6 +15,10 @@ import org.springframework.data.domain.Pageable;
 
 
 public interface UserService {
+
+    void sendResetPasswordEmail(HttpServletRequest request, String email);
+
+    void resetPassword(ResetPasswordRequest request);
 
     Page<UsersResponse> findAll(Pageable pageable);
 

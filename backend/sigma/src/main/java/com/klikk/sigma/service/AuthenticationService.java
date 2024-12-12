@@ -1,6 +1,7 @@
 package com.klikk.sigma.service;
 
 import com.klikk.sigma.dto.request.AuthenticationRequest;
+import com.klikk.sigma.dto.request.ResetPasswordRequest;
 import com.klikk.sigma.dto.response.AuthenticationResponse;
 import com.klikk.sigma.dto.request.RegisterRequest;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,4 +16,5 @@ public interface AuthenticationService {
     AuthenticationResponse adminAuthenticate(AuthenticationRequest request);
 
     AuthenticationResponse refreshToken(HttpServletRequest request, HttpServletResponse response);
+
 }

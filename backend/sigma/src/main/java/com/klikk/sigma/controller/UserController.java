@@ -1,6 +1,8 @@
 package com.klikk.sigma.controller;
 
+import com.klikk.sigma.dto.request.ForgotPasswordRequest;
 import com.klikk.sigma.dto.request.RegisterRequest;
+import com.klikk.sigma.dto.request.ResetPasswordRequest;
 import com.klikk.sigma.dto.request.UpdateUserRequest;
 import com.klikk.sigma.dto.response.AddressResponseDto;
 import com.klikk.sigma.dto.response.SuccessResponse;
@@ -105,6 +107,18 @@ public class UserController {
         catch (Exception exception) {
             return new ResponseEntity<>(new SuccessResponse(LocalDateTime.now(), "Failed to update user"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestBody ForgotPasswordRequest forgotPasswordRequest, HttpServletRequest request) {
+        userService.sendResetPasswordEmail(request,forgotPasswordRequest.getEmail());
+        return ResponseEntity.ok("Password reset email sent.");
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest request) {
+        userService.resetPassword(request);
+        return ResponseEntity.ok("Password updated successfully.");
     }
 
 }

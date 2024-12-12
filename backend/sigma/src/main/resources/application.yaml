@@ -7,6 +7,34 @@ aws:
     accessKeyId: "AKIATX3PIG55LAGWCXV7"
     secretKey: "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"
 spring:
+  mail:
+    host: smtp.gmail.com
+    username: fuzen.ltd@gmail.com
+    password: glzc dzwi kady fwqe
+    display-name: Sigma Wholesale
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+#  mail:
+#    host: smtp.gmail.com
+#    port: 587
+#    username: fuzen.ltd@gmail.com
+#    password: Test@123
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
+#            required: true
+#          connectiontimeout: 5000
+#          timeout: 3000
+#          writetimeout: 5000
+
   servlet:
     multipart:
       enabled: true

@@ -1,9 +1,12 @@
 package com.klikk.sigma.controller;
 
 import com.klikk.sigma.dto.request.AuthenticationRequest;
+import com.klikk.sigma.dto.request.ForgotPasswordRequest;
 import com.klikk.sigma.dto.request.RegisterRequest;
+import com.klikk.sigma.dto.request.ResetPasswordRequest;
 import com.klikk.sigma.dto.response.AuthenticationResponse;
 import com.klikk.sigma.service.AuthenticationService;
+import com.klikk.sigma.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,9 @@ public class AuthenticationController {
 
     @Autowired
     private AuthenticationService authenticationService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -36,7 +42,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.adminAuthenticate(request));
     }
 
-    @PostMapping("/refresh-token")
+    @PostMapping("/admin/refresh-token")
     public ResponseEntity<AuthenticationResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) {
         return ResponseEntity.ok(authenticationService.refreshToken(request, response));
     }

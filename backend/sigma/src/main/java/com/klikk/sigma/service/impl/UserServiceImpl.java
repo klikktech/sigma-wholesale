@@ -2,18 +2,21 @@ package com.klikk.sigma.service.impl;
 
 import com.klikk.sigma.dto.UserResponseDto;
 import com.klikk.sigma.dto.request.RegisterRequest;
+import com.klikk.sigma.dto.request.ResetPasswordRequest;
 import com.klikk.sigma.dto.request.UpdateUserAdminRequest;
 import com.klikk.sigma.dto.request.UpdateUserRequest;
 import com.klikk.sigma.dto.response.SuccessResponse;
 import com.klikk.sigma.dto.response.UsersResponse;
+import com.klikk.sigma.entity.PasswordResetToken;
 import com.klikk.sigma.entity.Token;
 import com.klikk.sigma.entity.User;
 import com.klikk.sigma.exception.NotFoundException;
 import com.klikk.sigma.mapper.AuthenticationMapper;
 import com.klikk.sigma.mapper.UserMapper;
-import com.klikk.sigma.repository.AddressRepository;
+import com.klikk.sigma.repository.PasswordResetTokenRepository;
 import com.klikk.sigma.repository.TokenRepository;
 import com.klikk.sigma.repository.UserRepository;
+import com.klikk.sigma.service.EmailService;
 import com.klikk.sigma.service.JwtService;
 import com.klikk.sigma.service.UserService;
 import com.klikk.sigma.type.RoleType;
@@ -31,6 +34,7 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,6 +60,42 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private TokenRepository tokenRepository;
+
+
+    @Autowired
+    private PasswordResetTokenRepository passwordResetTokenRepository;
+
+    @Autowired
+    private EmailService emailService;
+
+
+    @Override
+    public void sendResetPasswordEmail(HttpServletRequest request, String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        String token = UUID.randomUUID().toString().replace("-", "").substring(0,6);
+        PasswordResetToken resetToken=PasswordResetToken.builder().token(token).user(user).expiryDate(LocalDateTime.now().plusMinutes(30)).build();
+        passwordResetTokenRepository.save(resetToken);
+
+        emailService.sendResetPasswordEmail(email,token);
+
+    }
+
+    @Override
+    public void resetPassword(ResetPasswordRequest request) {
+        PasswordResetToken resetToken = passwordResetTokenRepository.findByToken(request.getToken())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid token"));
+
+        if(resetToken.getExpiryDate().isBefore(LocalDateTime.now())){
+            throw new IllegalArgumentException("Token is Expired, Please try again");
+        }
+
+        User user = resetToken.getUser();
+        user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+        passwordResetTokenRepository.delete(resetToken);
+    }
 
 
     @Override
