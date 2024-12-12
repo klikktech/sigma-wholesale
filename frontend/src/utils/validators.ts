@@ -116,3 +116,20 @@ export const UserDetailsValidator = z.object({
   message: "New password and confirm new password must match.",
   path: ["confirmNewPassword"],
 });
+
+export const UserForgotPasswordValidator = z.object({
+  token: z.string().min(6, { message: "Code must be 6 characters long" }).regex(/[0-9]/, { message: "Please enter a valid code." }),
+  newPassword: z
+    .string()
+    .min(8, { message: "New password must be at least 8 characters long" })
+    .regex(/[a-zA-Z]/, { message: "Must contain at least one letter." })
+    .regex(/[0-9]/, { message: "Must contain at least one number." })
+    .regex(/[^a-zA-Z0-9]/, { message: "Must contain at least one special character." }),
+  confirmNewPassword: z.string().min(8, { message: "Confirm new password must be at least 8 characters long" })
+    .regex(/[a-zA-Z]/, { message: "Must contain at least one letter." })
+    .regex(/[0-9]/, { message: "Must contain at least one number." })
+    .regex(/[^a-zA-Z0-9]/, { message: "Must contain at least one special character." }),
+}).refine(data => data.newPassword === data.confirmNewPassword, {
+  message: "New password and confirm new password must match.",
+  path: ["confirmNewPassword"],
+});

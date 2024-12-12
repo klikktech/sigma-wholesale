@@ -19,6 +19,8 @@ import {
   PRODUCT_BY_BRAND_URL,
   GET_BRANDS_URL,
   GET_BANNERS_URL,
+  FORGOT_PASSWORD_URL,
+  CONFIRM_FORGOT_PASSWORD_URL,
 } from "@/utils/urls";
 import api, { authInstance } from "./instance";
 import { AxiosErrorResponse, AxiosResponse, RegisterDetails, UserDetails } from "@/utils/types";
@@ -66,7 +68,24 @@ export const axios = {
         return error as AxiosErrorResponse;
       }
     },
-    
+    forgotPassword: async (email: string): Promise<AxiosResponse> => {
+      try {
+        const payload = { email: email }
+        const { data, status } = await api.post(FORGOT_PASSWORD_URL, payload);
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    confirmForgotPassword: async (payload: any): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.post(CONFIRM_FORGOT_PASSWORD_URL, payload);
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+
+    },
   },
   users: {
     getAddresses: async (type: string): Promise<AxiosResponse> => {

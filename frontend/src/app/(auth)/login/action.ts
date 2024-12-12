@@ -40,6 +40,17 @@ export const signInAction = async (
   return { success: null, error: "Something went wrong, please try again" };
 };
 
+export const forgotPasswordAction = async (email: string) => {
+  const { data, status, error } = await axios.auth.forgotPassword(email);
+  console.log("data", data, status, error)
+  if (error) {
+    return { success: null, error: error.message };
+  }
+  if (data && status === 200) {
+    return { success: data, error: null };
+  }
+} 
+
 export const signOutAction = async () => {
   console.log("inside signout")
   await axios.auth.signOut();

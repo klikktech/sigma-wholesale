@@ -13,6 +13,7 @@ export const PRIVACY_POLICY_PAGE_ROUTE = '/privacy-policy'
 export const TERMS_AND_CONDITIONS_PAGE_ROUTE = '/terms-conditions'
 export const SHIPPING_POLICY_PAGE_ROUTE = '/shipping-policy'
 export const RETURN_POLICY_PAGE_ROUTE = '/return-policy'
+export const FORGOT_PASSWORD_PAGE_ROUTE = '/forgot-password'
 
 
 // API Endpoints
@@ -40,3 +41,5 @@ export const ADDRESS_URL = (type: string) => `/users/addresses?type=${type}`;
 export const DELETE_ADDRESS_URL = (address: string) =>`/address?address=${address}`;
 export const GET_BRANDS_URL = `/brands`
 export const GET_BANNERS_URL = `/banners`
+export const FORGOT_PASSWORD_URL = `/users/forgot-password`
+export const CONFIRM_FORGOT_PASSWORD_URL = `/users/reset-password`

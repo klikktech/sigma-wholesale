@@ -13,6 +13,14 @@ const nextConfig = {
     compiler: {
       styledComponents: true,
     },
+    webpack: (config, { isServer }) => {
+      // Increase the timeout value (in milliseconds)
+      config.watchOptions = {
+        aggregateTimeout: 5000, // Default is 20
+        poll: 1000, // Check for changes every second
+      }
+      return config
+    },
 };
 
 

@@ -7,17 +7,12 @@ export default function PrivacyPolicy() {
         <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto">
                 <Card className="p-6 sm:p-8 bg-white shadow-lg">
-                    {/* Header */}
                     <CardHeader className="flex flex-col gap-3 p-8 bg-primary">
                         <h1 className="text-3xl font-bold text-gray-800 text-center">
                         Privacy Policy
                         </h1>
                     </CardHeader>
-                    {/* <h1 className="text-3xl font-bold text-center text-gray-900 mb-8">
-                        Privacy Policy
-                    </h1> */}
                     <Spacer y={4} />
-                    {/* Who We Are */}
                     <section className="mb-8">
                         <h2 className="text-xl font-semibold text-gray-900 mb-4">Who We Are</h2>
                         <p className="text-gray-700">
