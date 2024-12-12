@@ -156,6 +156,8 @@ export const axios = {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
+            maxContentLength: Infinity,
+            maxBodyLength: Infinity,
           }
         );
         return { data, status };
@@ -172,6 +174,8 @@ export const axios = {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
+            maxContentLength: Infinity,
+            maxBodyLength: Infinity,
           }
         );
         return { data, status };
@@ -271,6 +275,8 @@ export const axios = {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
+            maxContentLength: Infinity,
+            maxBodyLength: Infinity,
           }
         );
         return { data, status };
@@ -285,6 +291,8 @@ export const axios = {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
+            maxContentLength: Infinity,
+            maxBodyLength: Infinity,
           }
         );
         return { data, status };
@@ -317,6 +325,8 @@ export const axios = {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
+            maxContentLength: Infinity,
+            maxBodyLength: Infinity,
           }
         );
         return { data, status };
