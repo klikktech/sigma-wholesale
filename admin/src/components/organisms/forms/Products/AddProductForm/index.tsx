@@ -11,8 +11,8 @@ import Image from "next/image";
 import FormSubmitButton from "@/components/molecules/FormSubmitButtton";
 import Video from "@/components/atoms/Video";
 import { Variation } from "@/utils/types";
-import { addProductAction } from "@/components/organisms/forms/Products/AddProductForm/action";
-import ProductVariations from "@/components/organisms/forms/Products/AddProductForm/ProductVariations";
+import { addProductAction } from "@/components/organisms/Forms/Products/AddProductForm/action";
+import ProductVariations from "@/components/organisms/Forms/Products/AddProductForm/ProductVariations";
 
 
 
