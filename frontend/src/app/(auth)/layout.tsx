@@ -1,6 +1,7 @@
 import Image from "next/image";
 import authBanner from "@/assets/auth-logo.webp";
 import logo from "../../assets/sigma-logo.webp"
+import login from "@/assets/login.webp"
 
 const AuthLayout = async ({ children }: { children: React.ReactNode }) => {
   return (
@@ -8,7 +9,7 @@ const AuthLayout = async ({ children }: { children: React.ReactNode }) => {
       <div className="min-w-70 max-w-[90vw] md:max-w-[75vw] mt-10 flex flex-col md:flex-row items-center rounded-2xl overflow-hidden shadow-2xl shadow-shadow">
         <div className="w-full md:w-1/2">
           <Image
-            src={authBanner}
+            src={login}
             alt="auth-banner"
             className="object-cover h-[40vh] md:h-[85vh] w-full"
           />
