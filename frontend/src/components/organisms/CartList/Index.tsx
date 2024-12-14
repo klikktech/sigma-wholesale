@@ -161,7 +161,7 @@ const CartList = ({ cartItemsList }: CartListProps) => {
                 <Link href={HOME_PAGE_ROUTE} className="text-blue-500 mt-4 inline-block">
                   Continue Shopping
                 </Link>
-                <FormSubmitButton className="mt-3" color="primary" type='submit' pendingText='Updating the cart...'>
+                <FormSubmitButton className="mt-3 hover:bg-primary-600" color="primary" type='submit' pendingText='Updating the cart...'>
                   <span>Update cart</span>
                   <span className="material-symbols-rounded">shopping_cart</span>
                 </FormSubmitButton>
@@ -190,7 +190,7 @@ const CartList = ({ cartItemsList }: CartListProps) => {
               <p>Total Cost</p>
               <p>${(totalCost)}</p>
             </div>
-            <FormSubmitButton type='button' className="w-full py-3 mt-4" color="primary" pendingText='Checking out..'>
+            <FormSubmitButton type='button' className="w-full py-3 mt-4 hover:bg-primary-600" color="primary" pendingText='Checking out..'>
               <Link href={CHECKOUT_PAGE_ROUTE}>Checkout</Link>
             </FormSubmitButton>
           </Card>

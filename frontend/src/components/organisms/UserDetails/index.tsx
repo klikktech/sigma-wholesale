@@ -40,6 +40,7 @@ const UserDetails = ({ user }: { user: UserDetailsResponse }) => {
           name="role"
           type="text"
           defaultValue={user.role}
+          readOnly
           fullWidth
         />
 

@@ -49,7 +49,7 @@ const CarouselContent = async () => {
           >
             <Link className="text-black" href={PRODUCTS_PAGE_ROUTE}>Shop Now</Link>
           </Button>
-          <ScrollButton color="primary" scrollTargetId="tabs-section">
+          <ScrollButton color="primary" className="hover:bg-primary-600" scrollTargetId="tabs-section">
             Learn More
           </ScrollButton>
         </div>

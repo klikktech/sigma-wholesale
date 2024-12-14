@@ -151,6 +151,7 @@ const CheckOut = ({ cartItemsList, totalCost, discount, tax, shippingAddresses }
                                     disabled={pending}
                                     aria-disabled={pending}
                                     pendingText="Placing order..."
+                                    className="hover:bg-primary-600"
                                 >
                                     Place Order
                                 </FormSubmitButton>

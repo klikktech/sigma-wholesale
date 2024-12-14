@@ -14,15 +14,15 @@ export const LoginFormValidator = z.object({
 });
 
 export const RegisterFormValidator = z.object({
-  firstName: z
+  firstname: z
     .string()
     .min(2, { message: "First name must be at least 2 characters long." })
     .trim(),
-  lastName: z
+  lastname: z
     .string()
     .min(2, { message: "Last name must be at least 2 characters long." })
     .trim(),
-  nickName: z
+  nickname: z
     .string()
     .min(2, { message: "Nick name must be at least 2 characters long." })
     .trim(),

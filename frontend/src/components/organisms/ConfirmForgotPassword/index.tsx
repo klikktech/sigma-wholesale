@@ -40,7 +40,7 @@ const ConfirmForgotPassword = () => {
                 />
                 <Spacer y={5} />
                 <p className="text-red-500 text-left">{state && <FormMessage message={state} />}</p>
-                <FormSubmitButton className="mb-10" disabled={pending} type="submit" color="primary" size="lg" pendingText="Submitting...">
+                <FormSubmitButton className="mb-10 hover:bg-primary-600" disabled={pending} type="submit" color="primary" size="lg" pendingText="Submitting...">
                     submit
                 </FormSubmitButton>
             </form>

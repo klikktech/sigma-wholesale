@@ -18,9 +18,9 @@ const SignUp = () => {
   const router = useRouter();
   // State to hold input values
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    nickName: '',
+    firstname: '',
+    lastname: '',
+    nickname: '',
     email: '',
     phone: '',
     password: '',
@@ -71,8 +71,8 @@ const SignUp = () => {
 
         <Input
           label="First Name *"
-          name="firstName"
-          value={formData.firstName}
+          name="firstname"
+          value={formData.firstname}
           onChange={handleChange}
           placeholder="John"
           labelPlacement="outside"
@@ -82,8 +82,8 @@ const SignUp = () => {
 
         <Input
           label="Last Name *"
-          name="lastName"
-          value={formData.lastName}
+          name="lastname"
+          value={formData.lastname}
           onChange={handleChange}
           placeholder="Doe"
           labelPlacement="outside"
@@ -92,8 +92,8 @@ const SignUp = () => {
         <Spacer y={3} />
         <Input
           label="Nick Name"
-          name="nickName"
-          value={formData.nickName}
+          name="nickname"
+          value={formData.nickname}
           onChange={handleChange}
           placeholder="Howdy"
           labelPlacement="outside"
@@ -248,7 +248,7 @@ const SignUp = () => {
 
         <Spacer y={3} />
         {state?.error && <p style={{ color: "red" }}>{state?.error}</p>}
-        <FormSubmitButton type="submit" color="primary" size="lg" pendingText="Registering...">
+        <FormSubmitButton className="hover:bg-primary-600" type="submit" color="primary" size="lg" pendingText="Registering...">
           Register
         </FormSubmitButton>
       </form>

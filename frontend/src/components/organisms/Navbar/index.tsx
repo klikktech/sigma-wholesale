@@ -189,7 +189,7 @@ const Navbar = ({ user }: Props) => {
             <FormSubmitButton 
               type="submit" 
               color="primary" 
-              className="ml-2 text-black"
+              className="ml-2 text-black hover:bg-primary-600"
               pendingText="Searching..."
               disabled={pending}
             >
@@ -230,7 +230,7 @@ const Navbar = ({ user }: Props) => {
               as={Link} 
               href={LOGIN_PAGE_ROUTE} 
               color="primary" 
-              className="text-black"
+              className="text-black hover:bg-primary-600"
             >
               Sign In
             </Button>

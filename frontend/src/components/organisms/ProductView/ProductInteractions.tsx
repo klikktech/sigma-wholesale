@@ -111,7 +111,7 @@ const ProductInteractions = ({ productDetails }: ProductInteractionsProps) => {
               ))}
         </div>
       </div>}
-      <FormSubmitButton className="w-full mt-3 px-3" color="primary" type='submit' pendingText="Adding to the cart...">
+      <FormSubmitButton className="w-full mt-3 px-3 hover:bg-primary-600" color="primary" type='submit' pendingText="Adding to the cart...">
         <span>Add to cart</span>
         <span className="material-symbols-rounded">shopping_cart</span>
       </FormSubmitButton>

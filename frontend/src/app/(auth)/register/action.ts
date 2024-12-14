@@ -9,9 +9,9 @@ export const createNewUser = async (
   state: undefined | Message,
   formData: FormData
 ) => {
-  const firstName = formData.get("firstName");
-  const lastName = formData.get("lastName");
-  const nickName = formData.get("nickName");
+  const firstname = formData.get("firstname");
+  const lastname = formData.get("lastname");
+  const nickname = formData.get("nickname");
   const email = formData.get("email");
   const phone = formData.get("phone");
   const password = formData.get("password");
@@ -26,9 +26,9 @@ export const createNewUser = async (
   const storeZip = formData.get("storeZip");
 
   const formDetails = {
-    firstName,
-    lastName,
-    nickName,
+    firstname,
+    lastname,
+    nickname,
     email,
     phone,
     password,
