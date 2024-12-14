@@ -86,18 +86,16 @@ const Banners = ({ bannersList }: { bannersList: Banner[] }) => {
                     <Card key={banner.id} className="sm:p-4 max-h-96">
                         <div className="relative">
                             <div className='flex items-center justify-center'>
-                                {banner.type === "IMAGE" &&
-                                    <Image
-                                        src={banner.image}
-                                        alt={banner.title}
-                                        className="w-full h-48 object-cover rounded-lg"
-                                    />
-                                }
+                                {banner.type === "IMAGE" && <Image
+                                    className="w-full h-48 object-cover rounded-lg"
+                                    src={banner.image}
+                                    alt={banner.title}
+                                />}
                                 {banner.type === "VIDEO" &&
-                                    <video src={banner.image}
-                                        className="w-full h-48 object-cover rounded-lg"
-                                    />
-                                }
+                                    <video className="w-full h-48 object-cover rounded-lg" autoPlay={true} muted={true} loop={true}>
+                                        <source src={banner.image} type="video/mp4" />
+                                        Your browser does not support the video tag.
+                                    </video>}
                             </div>
                             <Button
                                 isIconOnly
@@ -139,7 +137,7 @@ const Banners = ({ bannersList }: { bannersList: Banner[] }) => {
                                             <div className="relative border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-gray-400 transition-colors">
                                                 <input
                                                     type="file"
-                                                    accept="image/*, video/*"
+                                                    accept="image/*, video/*, video/quicktime"
                                                     onChange={handleFileSelect}
                                                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                                                     required
@@ -155,7 +153,7 @@ const Banners = ({ bannersList }: { bannersList: Banner[] }) => {
                                                 </div>
                                                 {!selectedFile && (
                                                     <p className="text-sm text-gray-500 text-center mt-2">
-                                                        PNG, JPG, GIF up to 10MB
+                                                        Add image or video of banner
                                                     </p>
                                                 )}
                                             </div>

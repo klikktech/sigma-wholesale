@@ -152,7 +152,7 @@ const Brands = ({ brands }: { brands: Brand[] }) => {
                                             </div>
                                             {!newImage && (
                                                 <p className="text-sm text-gray-500 text-center mt-2">
-                                                    PNG, JPG, GIF up to 10MB
+                                                    Add image of brand
                                                 </p>
                                             )}
                                         </div>

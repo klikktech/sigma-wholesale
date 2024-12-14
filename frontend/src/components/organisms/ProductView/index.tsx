@@ -17,7 +17,7 @@ const ProductView = ({ productDetails }: { productDetails: ProdDetails }) => {
         </div>
         <p className="text-3xl text-red-500 font-bold">${productDetails.price}</p>
       </div>
-      
+      <Spacer y={3} />
       <div className="flex flex-col md:flex-row gap-6">
         <div className="flex-1">
           <ProductInteractions productDetails={productDetails} />
