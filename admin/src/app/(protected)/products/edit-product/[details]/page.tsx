@@ -1,4 +1,4 @@
-import EditProductForm from "@/components/organisms/Forms/Products/EditProductForm/index"
+import EditProductForm from "@/components/organisms/forms/products/EditProductForm";
 import { axios } from "@/lib/axios";
 import React from "react";
 

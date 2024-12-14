@@ -1,4 +1,4 @@
-import ProductForm from "@/components/organisms/Forms/Products/AddProductForm/index"
+import AddProductForm from "@/components/organisms/forms/products/AddProductForm";
 import React from "react";
 import { axios } from "@/lib/axios";
 
@@ -18,7 +18,7 @@ const AddUserPage = async () => {
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">New Product</h1>
-      <ProductForm categories={categories} brands={brands} />
+      <AddProductForm categories={categories} brands={brands} />
     </div>
   );
 };

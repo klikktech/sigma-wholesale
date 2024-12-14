@@ -1,4 +1,4 @@
-import EditUserForm from "@/components/organisms/Forms/Users/EditUserForm";
+import EditUserForm from "@/components/organisms/forms/users/EditUserForm";
 import { axios } from "@/lib/axios";
 import React from "react";
 
