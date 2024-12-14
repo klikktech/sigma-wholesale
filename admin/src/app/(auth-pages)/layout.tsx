@@ -1,5 +1,5 @@
 import Image from "next/image";
-import authBanner from "@/assets/auth-banner.webp";
+import authBanner from "@/assets/login.webp";
 import brandLogo from "@/assets/sigma-logo.webp";
 
 const AuthLayout = async ({ children }: { children: React.ReactNode }) => {
