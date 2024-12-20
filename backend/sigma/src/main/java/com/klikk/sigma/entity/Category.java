@@ -3,6 +3,7 @@ package com.klikk.sigma.entity;
 import com.klikk.sigma.util.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -13,6 +14,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "categories")
 public class Category {
     @Id
@@ -34,7 +36,7 @@ public class Category {
     @Column(name = "slug")
     private String slug;
 
-    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.EAGER)
     private List<Product> products;
 
     @Column(name = "type")
@@ -43,5 +45,9 @@ public class Category {
     @ManyToOne
     @JoinColumn(name = "parent_id",referencedColumnName = "id")
     private Category parentCategory;
+
+    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Category> childCategories;
+
 
 }

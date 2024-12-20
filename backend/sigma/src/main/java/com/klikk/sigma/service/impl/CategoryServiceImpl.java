@@ -1,5 +1,6 @@
 package com.klikk.sigma.service.impl;
 
+import com.klikk.sigma.dto.request.CategoryRequest;
 import com.klikk.sigma.dto.response.AttachmentResponse;
 import com.klikk.sigma.dto.response.CategoryProductsDto;
 import com.klikk.sigma.dto.response.CategoryResponseDto;
@@ -40,8 +41,10 @@ public class CategoryServiceImpl implements CategoryService {
     private ProductMapper productMapper;
 
     @Override
-    public void saveCategory(Category category) {
-        categoryRepository.save(category);
+    public void saveCategory(CategoryRequest categoryRequest) {
+        Category newCategory=Category.builder().type("product_cat").slug(generateUniqueSlug(categoryRequest.getName()))
+                .name(categoryRequest.getName()).parentCategory(categoryRepository.findBySlugAndType(categoryRequest.getParentCategory(),"product_cat")).build();
+        categoryRepository.save(newCategory);
     }
 
     @Override
@@ -84,8 +87,20 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryResponseDto> getAllCategories() {
         return categoryRepository.findByType("product_cat").stream().map(category -> {
             return categoryMapper.categoryToCategoryResponseDto(category);
+
         }).toList();
 
+    }
+
+    private String generateUniqueSlug(String name) {
+        String baseSlug = name.toLowerCase().replace(" ", "-");
+        String uniqueSlug = baseSlug;
+        int counter = 1;
+        while (categoryRepository.existsBySlug(uniqueSlug)) {
+            uniqueSlug = baseSlug + "-" + counter;
+            counter++;
+        }
+        return uniqueSlug;
     }
 
     @Override

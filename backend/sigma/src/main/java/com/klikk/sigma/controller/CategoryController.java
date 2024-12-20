@@ -1,6 +1,7 @@
 package com.klikk.sigma.controller;
 
 
+import com.klikk.sigma.dto.request.CategoryRequest;
 import com.klikk.sigma.dto.response.CategoryProductsDto;
 import com.klikk.sigma.dto.response.CategoryResponseDto;
 import com.klikk.sigma.entity.Category;
@@ -23,8 +24,8 @@ public class CategoryController {
     private CategoryServiceImpl categoryServiceImpl;
 
     @PostMapping()
-    public ResponseEntity<String> addCategory(@RequestBody Category category){
-        categoryServiceImpl.saveCategory(category);
+    public ResponseEntity<String> addCategory(@RequestBody CategoryRequest categoryRequest){
+        categoryServiceImpl.saveCategory(categoryRequest);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("Category created");
     }
 

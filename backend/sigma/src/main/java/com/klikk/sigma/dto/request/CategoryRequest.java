@@ -1,4 +1,4 @@
-package com.klikk.sigma.dto;
+package com.klikk.sigma.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,9 +8,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryRequest {
-    private String categoryId;
 
     private String name;
 
-    private String slug;
+    private boolean isSubcategory;
+
+    private String parentCategory;
 }
