@@ -109,6 +109,8 @@ const AddProductForm = ({ categories, brands }: { categories: any, brands: any }
   const [dataUrl, setDataUrl] = useState<string | null>(null);
   const [imagesDataUrl, setImagesDataUrl] = useState<string[]>([]);
   const [showVariations, setShowVariations] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [availableSubCategories, setAvailableSubCategories] = useState<any[]>([]);
 
   const handleDisplayImageFileChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -144,6 +146,12 @@ const AddProductForm = ({ categories, brands }: { categories: any, brands: any }
     setImagesDataUrl(prevUrls => prevUrls.filter((_, index) => index !== indexToRemove));
   };
 
+  const handleCategoryChange = (value: string) => {
+    setSelectedCategory(value);
+    const category = categories.find((cat: any) => cat.name === value);
+    setAvailableSubCategories(category?.childCategories || []);
+  };
+
   return (
     <form ref={formRef} action={formAction}>
       <div className="flex gap-4">
@@ -154,12 +162,6 @@ const AddProductForm = ({ categories, brands }: { categories: any, brands: any }
                 Product Name
               </label>
               <Input type="text" id="name" name="name" required />
-            </div>
-            <div className="w-full">
-              <label className="block text-sm font-medium mb-1" htmlFor="salePrice">
-                Sale Price
-              </label>
-              <Input type="text" id="salePrice" name="salePrice" />
             </div>
           </div>
           <div className="w-full flex gap-2">
@@ -173,13 +175,19 @@ const AddProductForm = ({ categories, brands }: { categories: any, brands: any }
               <Input type="text" id="price" name="price" />
             </div>
             <div className="w-full">
+              <label className="block text-sm font-medium mb-1" htmlFor="salePrice">
+                Sale Price
+              </label>
+              <Input type="text" id="salePrice" name="salePrice" />
+            </div>
+          </div>
+          <div className="w-full flex gap-2">
+          <div className="w-full">
               <label className="block text-sm font-medium mb-1" htmlFor="sku">
                 Sku
               </label>
               <Input type="text" id="sku" name="sku" required />
             </div>
-          </div>
-          <div className="w-full flex gap-2">
             <div className="w-full">
               <label
                 className="block text-sm font-medium mb-1"
@@ -192,11 +200,13 @@ const AddProductForm = ({ categories, brands }: { categories: any, brands: any }
                 name="brand"
                 required
               >
-                {brands?.map((brand: any, index: number) => (
-                  <SelectItem key={index}>{brand.name}</SelectItem>
+                {brands?.map((brand: any) => (
+                  <SelectItem key={brand.name} value={brand.name}>{brand.name}</SelectItem>
                 ))}
               </Select>
             </div>
+          </div>
+          <div className="w-full flex gap-2">
             <div className="w-full">
               <label
                 className="block text-sm font-medium mb-1"
@@ -205,12 +215,35 @@ const AddProductForm = ({ categories, brands }: { categories: any, brands: any }
                 Category
               </label>
               <Select
-                id="productType"
+                id="category"
                 name="category"
                 required
+                onChange={(e) => handleCategoryChange(e.target.value)}
               >
-                {categories?.map((category: any, index: number) => (
-                  <SelectItem key={index}>{category.name}</SelectItem>
+                {categories?.map((category: any) => (
+                  <SelectItem key={category.name} value={category.name}>
+                    {category.name}
+                  </SelectItem>
+                ))}
+              </Select>
+            </div>
+            <div className="w-full">
+              <label
+                className="block text-sm font-medium mb-1"
+                htmlFor="subCategory"
+              >
+                Sub Category
+              </label>
+              <Select
+                id="subCategory"
+                name="subCategory"
+                required
+                isDisabled={!selectedCategory || availableSubCategories.length === 0}
+              >
+                {availableSubCategories.map((subCategory: any) => (
+                  <SelectItem key={subCategory.name} value={subCategory.name}>
+                    {subCategory.name}
+                  </SelectItem>
                 ))}
               </Select>
             </div>
@@ -263,7 +296,7 @@ const AddProductForm = ({ categories, brands }: { categories: any, brands: any }
               <Select
                 id="displayStatus"
                 name="displayStatus"
-                defaultSelectedKeys={["simple"]}
+                defaultSelectedKeys={["publish"]}
                 required
               >
                 <SelectItem key="publish">Publish</SelectItem>
@@ -306,9 +339,10 @@ const AddProductForm = ({ categories, brands }: { categories: any, brands: any }
             />
           </div>
           <div className="w-full">
-            <Switch defaultSelected name="isOnSale" id="isOnSale">
+            <Switch defaultSelected id="isOnSale" name="isOnSale">
               Add to Deals
             </Switch>
+            <input type="hidden" name="isOnSale" value={formRef.current?.isOnSale} />
           </div>
 
           <div className="flex gap-2 w-full">

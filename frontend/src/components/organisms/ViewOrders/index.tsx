@@ -30,9 +30,9 @@ const statusColor = (status: string) => {
 
 const OrderCards = ({ orders }: { orders: orderDetails[] }) => {
     return (
-        <div className="container">
-            <h1 className="my-2 mx-5 text-xl">Orders</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6" >
+        <div className="w-full">
+            <h1 className="text-2xl font-semibold mb-6">Orders</h1>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {orders.map((order) => (
                     <div key={order.id} className="bg-white rounded-lg shadow-lg p-6 flex flex-col justify-between h-[48vh]" >
 

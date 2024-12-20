@@ -14,3 +14,5 @@ export const REVIEWS_PAGE_ROUTE = "/reviews";
 export const LANDING_PAGE_ROUTE = USERS_PAGE_ROUTE;
 export const BRANDS_PAGE_ROUTE = "/brands";
 export const BANNERS_PAGE_ROUTE = "/banners";
+export const CATEGORIES_PAGE_ROUTE = "/categories";
+export const ADD_CATEGORY_PAGE_ROUTE = CATEGORIES_PAGE_ROUTE + "/add-category";

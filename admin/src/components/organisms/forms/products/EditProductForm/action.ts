@@ -50,6 +50,7 @@ export const editProductAction = async (
             sku: validatedFormFields.data.sku,
             brand: validatedFormFields.data.brand,
             category: validatedFormFields.data.category,
+            subCategory: validatedFormFields.data.subCategory,
             isOnSale: validatedFormFields.data.isOnSale as boolean,
             status: validatedFormFields.data.status as "instock" | "outofstock",
             stockQuantity: validatedFormFields.data.stockQuantity,

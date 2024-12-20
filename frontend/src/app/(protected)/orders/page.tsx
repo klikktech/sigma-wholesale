@@ -25,7 +25,7 @@ const OrdersPage = async () => {
   console.log(ordersWithItems, "ordersWithItems")
 
   return (
-    <div>
+    <div className="py-8 w-full">
       <OrderCards orders={ordersWithItems} />
     </div>
   );

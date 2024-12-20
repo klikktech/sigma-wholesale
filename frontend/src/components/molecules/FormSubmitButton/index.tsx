@@ -1,8 +1,7 @@
 "use client";
 
 import { useFormStatus } from "react-dom";
-import { ButtonProps } from "@nextui-org/react";
-import Button from "@/components/atoms/ScrollButton";
+import { Button, ButtonProps } from "@nextui-org/react";
 
 interface Props extends ButtonProps {
   pendingText?: string;

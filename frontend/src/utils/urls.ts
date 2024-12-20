@@ -22,7 +22,7 @@ export const BASE_BACKEND_URL = process.env.BASE_BACKEND_URL;
 export const SIGNUP_URL = `/api/auth/register`;
 export const LOGIN_URL = `/api/auth/authenticate`;
 export const LOGOUT_URL = `/api/auth/logout`;
-export const REFRESH_TOKEN_URL = `/api/auth/refresh-token`;
+export const REFRESH_TOKEN_URL = `/api/auth/admin/refresh-token`;
 export const USERS_DETAILS_URL = `/users/details`;
 export const USER_BY_ID_URL = (id: string) => `/users/${id}`;
 export const PRODUCTS_URL = '/products';

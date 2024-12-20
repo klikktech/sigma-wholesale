@@ -1,16 +1,20 @@
-import CartList from "@/components/organisms/CartList/Index";
+import CartList from "@/components/organisms/CartList";
 import { axios } from "@/lib/axios";
+import { redirect } from 'next/navigation';
+import { HOME_PAGE_ROUTE } from '@/utils/urls';
 
 const OrdersPage = async () => {
   const { data, error } = await axios.products.getCartList();
   if (error) {
     throw new Error(error.message)
   }
-  console.log(data, "in page cartlist")
+
+  if (!data.cartItems || data.cartItems.length === 0) {
+    redirect(HOME_PAGE_ROUTE);
+  }
+
   return (
-    <div>
-      <CartList cartItemsList={data.cartItems} />
-    </div>
+    <CartList cartItemsList={data.cartItems} />
   );
 };
 

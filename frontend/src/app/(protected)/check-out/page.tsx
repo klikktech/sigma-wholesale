@@ -1,5 +1,7 @@
 import CheckOut from "@/components/organisms/CheckOut";
 import { axios } from "@/lib/axios";
+import { redirect } from "next/navigation";
+import { HOME_PAGE_ROUTE } from "@/utils/urls";
 
 const fetchAddresses = async (type: string) => {
   const { data, error } = await axios.users.getAddresses(type);
@@ -18,6 +20,9 @@ const CheckOutPage = async () => {
     const { data, error } = await axios.products.getCartList();
     if(error){
       throw new Error(error.message)
+    }
+    if (!data.cartItems || data.cartItems.length === 0) {
+      redirect(HOME_PAGE_ROUTE);
     }
     const shippingAddresses = await fetchAddresses('shipping');
   return (

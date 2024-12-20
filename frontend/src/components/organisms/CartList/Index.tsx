@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useFormState } from 'react-dom';
 import { handleRemoveItemAction, updateCartAction } from '../../../app/(protected)/cart-list/action';
 import { Message } from '@/utils/types';
@@ -30,6 +30,24 @@ const CartList = ({ cartItemsList }: CartListProps) => {
   const setCartCount = useCartStore((state) => state.setCartCount);
   const [cartItems, setCartItems] = useState<CartItem[]>(cartItemsList || []);
 
+  // Memoize calculations
+  const { totalItems, totalCost } = useMemo(() => {
+    const items = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+    const cost = cartItems.reduce((acc, item) => 
+      acc + (item.variation 
+        ? (item.variation.price * item.quantity)
+        : (parseInt(item.product.price) * item.quantity)
+      ), 0
+    );
+    
+    return { totalItems: items, totalCost: cost };
+  }, [cartItems]);
+
+  // Update cart count when totals change
+  useEffect(() => {
+    setCartCount(totalItems, totalCost);
+  }, [totalItems, totalCost, setCartCount]);
+
   const [state, formAction] = useFormState(async (state: undefined | Message, formData: FormData) => {
     const result = await updateCartAction(state, formData, cartItems);
     if (result?.success) {
@@ -54,14 +72,12 @@ const CartList = ({ cartItemsList }: CartListProps) => {
     );
   };
 
-  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
-  const totalCost = cartItems.reduce((acc, item) => acc + (item.variation?(item.variation.price * item.quantity):(parseInt(item.product.price)* item.quantity)) , 0);
-
   useEffect(() => {
     if (state?.error) {
       toast.error(state.error);
     }
     if (state?.success) {
+      window.location.href = CART_LIST_PAGE_ROUTE;
       toast.success("Cart updated successfully!");
     }
   }, [state?.error, state?.success]);
@@ -77,124 +93,139 @@ const CartList = ({ cartItemsList }: CartListProps) => {
     return result;
   }
   return (
-    <div className="flex justify-center py-10">
-      <div className="w-full max-w-5xl">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card className="col-span-1 md:col-span-2 bg-white shadow-md rounded-lg p-8">
-            <form action={formAction}>
-              <h2 className="text-xl font-bold mb-6">Shopping Cart</h2>
-              <div className="grid grid-cols-6 gap-4 text-center font-semibold text-gray-600 pb-4 border-b">
-                <div className="col-span-3 text-left">Product Details</div>
-                <div>Quantity</div>
-                <div>Price</div>
-                <div>Total</div>
-              </div>
+    <div className="w-full py-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <Card className="col-span-1 sm:col-span-2 bg-white shadow-lg rounded-lg p-6">
+          <form action={formAction}>
+            <h2 className="text-2xl font-semibold mb-6">Shopping Cart</h2>
+            <div className="grid grid-cols-6 gap-4 text-center font-semibold text-gray-600 pb-4 border-b">
+              <div className="col-span-3 text-left">Product Details</div>
+              <div>Quantity</div>
+              <div>Price</div>
+              <div>Total</div>
+            </div>
+            
+            {/* Cart Items */}
+            <div className="divide-y divide-gray-200">
               {cartItems.map((item) => (
-                item.variation ?
-                (<div
-                  key={item.variation.variationName}
-                  className="grid grid-cols-6 gap-4 items-center text-center py-4 border-b"
-                >
-                  <div className="col-span-3 flex items-center space-x-4 text-left">
-                    <div>
-                      <p className="font-semibold">{item.variation.variationName}</p>
+                item.variation ? (
+                  <div key={item.variation.variationName} className="grid grid-cols-6 gap-4 items-center text-center py-4">
+                    <div className="col-span-3 flex items-center space-x-4 text-left">
+                      <div>
+                        <p className="font-semibold">{item.variation.variationName}</p>
+                        <button
+                          type='button'
+                          className="text-red-500 text-sm"
+                          onClick={(e) => handleRemoveItem(e, item)}
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-center space-x-4">
                       <button
                         type='button'
-                        className="text-red-500 text-sm"
-                        onClick={(e) => handleRemoveItem(e, item)}
+                        className="border px-2 py-1"
+                        onClick={() => updateVariationQuantity(item.variation.variationName, -1)}
+                        disabled={item.quantity === 1}
                       >
-                        Remove
+                        -
+                      </button>
+                      <span>{item.quantity}</span>
+                      <button className="border px-2 py-1" type='button' onClick={() => updateVariationQuantity(item.variation.variationName, 1)}>
+                        +
                       </button>
                     </div>
+                    <p>${item.variation.price.toFixed(2)}</p>
+                    <p>${(item.variation.price * item.quantity).toFixed(2)}</p>
                   </div>
-                  <div className="flex items-center justify-center space-x-4">
-                    <button
-                      type='button'
-                      className="border px-2 py-1"
-                      onClick={() => updateVariationQuantity(item.variation.variationName, -1)}
-                      disabled={item.quantity === 1}
-                    >
-                      -
-                    </button>
-                    <span>{item.quantity}</span>
-                    <button className="border px-2 py-1" type='button' onClick={() => updateVariationQuantity(item.variation.variationName, 1)}>
-                      +
-                    </button>
-                  </div>
-                  <p>${item.variation.price.toFixed(2)}</p>
-                  <p>${(item.variation.price * item.quantity).toFixed(2)}</p>
-                </div>):(<div
-                  key={item.product.name}
-                  className="grid grid-cols-6 gap-4 items-center text-center py-4 border-b"
-                >
-                  <div className="col-span-3 flex items-center space-x-4 text-left">
-                    <div>
-                      <p className="font-semibold">{item.product.name}</p>
+                ) : (
+                  <div key={item.product.name} className="grid grid-cols-6 gap-4 items-center text-center py-4">
+                    <div className="col-span-3 flex items-center space-x-4 text-left">
+                      <div>
+                        <p className="font-semibold">{item.product.name}</p>
+                        <button
+                          type='button'
+                          className="text-red-500 text-sm"
+                          onClick={(e) => handleRemoveItem(e, item)}
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-center space-x-4">
                       <button
                         type='button'
-                        className="text-red-500 text-sm"
-                        onClick={(e) => handleRemoveItem(e, item)}
+                        className="border px-2 py-1"
+                        onClick={() => updateProductQuantity(item.product.name, -1)}
+                        disabled={item.quantity === 1}
                       >
-                        Remove
+                        -
+                      </button>
+                      <span>{item.quantity}</span>
+                      <button className="border px-2 py-1" type='button' onClick={() => updateProductQuantity(item.product.name, 1)}>
+                        +
                       </button>
                     </div>
+                    <p>${parseInt(item.product.price).toFixed(2)}</p>
+                    <p>${(parseInt(item.product.price) * item.quantity).toFixed(2)}</p>
                   </div>
-                  <div className="flex items-center justify-center space-x-4">
-                    <button
-                      type='button'
-                      className="border px-2 py-1"
-                      onClick={() => updateProductQuantity(item.product.name, -1)}
-                      disabled={item.quantity === 1}
-                    >
-                      -
-                    </button>
-                    <span>{item.quantity}</span>
-                    <button className="border px-2 py-1" type='button' onClick={() => updateProductQuantity(item.product.name, 1)}>
-                      +
-                    </button>
-                  </div>
-                  <p>${parseInt(item.product.price).toFixed(2)}</p>
-                  <p>${(parseInt(item.product.price) * item.quantity).toFixed(2)}</p>
-                </div>)
+                )
               ))}
-              <div className="flex items-center justify-between">
-                <Link href={HOME_PAGE_ROUTE} className="text-blue-500 mt-4 inline-block">
-                  Continue Shopping
-                </Link>
-                <FormSubmitButton className="mt-3 hover:bg-primary-600" color="primary" type='submit' pendingText='Updating the cart...'>
-                  <span>Update cart</span>
-                  <span className="material-symbols-rounded">shopping_cart</span>
-                </FormSubmitButton>
-              </div>
-            </form>
-          </Card>
+            </div>
 
-          <Card className="bg-white shadow-md rounded-lg p-8">
-            <h2 className="text-xl font-bold mb-6">Order Summary</h2>
-            <div className="flex justify-between mb-4">
+            <div className="flex items-center justify-between mt-6">
+              <Link href={HOME_PAGE_ROUTE} className="text-blue-500 hover:text-blue-600">
+                Continue Shopping
+              </Link>
+              <FormSubmitButton className="bg-primary hover:bg-primary-600" color="primary" type="submit" pendingText="Updating the cart...">
+                <span>Update cart</span>
+                <span className="material-symbols-rounded">shopping_cart</span>
+              </FormSubmitButton>
+            </div>
+          </form>
+        </Card>
+
+        <Card className="bg-white shadow-lg rounded-lg p-6 h-fit">
+          <h2 className="text-2xl font-semibold mb-6">Order Summary</h2>
+          <div className="space-y-4">
+            <div className="flex justify-between">
               <p>Items {totalItems}</p>
               <p>${totalCost}</p>
             </div>
-            <div className="mb-4">
+
+            <div className="space-y-2">
               <p>Promo Code</p>
-              <div className="flex space-x-2 w-full justify-between">
+              <div className="flex gap-2">
                 <Input
                   placeholder="Enter coupon code"
                   name="coupon"
                   labelPlacement="outside"
+                  className="flex-1"
                 />
-                <Button type='button' className='bg-red-500 text-white px-4 py-2'>Apply</Button>
+                <Button type="button" className="bg-red-500 text-white px-4">
+                  Apply
+                </Button>
               </div>
             </div>
-            <div className="flex justify-between mb-4">
+
+            <div className="flex justify-between font-semibold">
               <p>Total Cost</p>
-              <p>${(totalCost)}</p>
+              <p>${totalCost}</p>
             </div>
-            <FormSubmitButton type='button' className="w-full py-3 mt-4 hover:bg-primary-600" color="primary" pendingText='Checking out..'>
-              <Link href={CHECKOUT_PAGE_ROUTE}>Checkout</Link>
+
+            <FormSubmitButton 
+              type="button" 
+              className="w-full bg-primary hover:bg-primary-600 mt-4" 
+              color="primary" 
+              pendingText="Checking out.."
+            >
+              <Link href={CHECKOUT_PAGE_ROUTE} className="w-full">
+                Checkout
+              </Link>
             </FormSubmitButton>
-          </Card>
-        </div>
+          </div>
+        </Card>
       </div>
     </div>
   );

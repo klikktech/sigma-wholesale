@@ -1,13 +1,15 @@
 import Footer from "@/components/organisms/Footer";
 import Navbar from "@/components/organisms/Navbar";
-import { getUser } from "@/lib/axios/session";
+import { getCartCount, getUser } from "@/lib/axios/session";
 
 const ProtectedLayout = async ({ children }: { children: React.ReactNode }) => {
-    const user = getUser()
+    const user = await getUser()
+    const {cartCount,cartPrice} = await getCartCount()
+    
     return (
         <main>
-            <Navbar user={user}/>
-            <div className="px-4 md:px-8 lg:px-32 min-h-[calc(100vh-20rem)]">
+            <Navbar user={user} cartTotalCount={cartCount} cartTotalPrice={cartPrice}/>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[calc(100vh-20rem)]">
                 {children}
             </div>
             <Footer/>

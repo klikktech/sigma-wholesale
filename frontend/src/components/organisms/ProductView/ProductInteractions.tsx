@@ -10,6 +10,7 @@ import { HOME_PAGE_ROUTE } from "@/utils/urls";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import FormSubmitButton from "@/components/molecules/FormSubmitButton";
+import { getCartCount } from "@/lib/axios/session";
 
 interface ProductInteractionsProps {
   productDetails: ProdDetails;
@@ -41,6 +42,7 @@ const ProductInteractions = ({ productDetails }: ProductInteractionsProps) => {
     if (state?.success) {
       toast.success("Added to cart successfully!");
       router.push(HOME_PAGE_ROUTE);
+      router.refresh();
     }
   }, [state,router]);
 

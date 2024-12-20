@@ -28,8 +28,8 @@ export const useCartStore = create<CartStore>((set) => ({
   setCartCount: (count, price) => {
     set({ cartCount: count, cartPrice: price });
     if (typeof window !== 'undefined') {
-      localStorage.setItem('cartCount', count.toString());
-      localStorage.setItem('cartPrice', price.toString());
+      localStorage.setItem('cartCount', count?.toString() || '0');
+      localStorage.setItem('cartPrice', price?.toString() || '0');
     }
   },
 })); 
