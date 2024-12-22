@@ -42,6 +42,7 @@ public class Category {
     @JoinColumn(name = "parent_category",referencedColumnName = "id")
     private Category parent;
 
+    @Column(name = "parent_id")
     private Long parentId;
 
     @Column(name = "type")
@@ -52,11 +53,5 @@ public class Category {
 
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Product> products;
-
-    @JsonIgnore
-    public void setParent(Category parent){
-        this.parent=parent;
-    }
-
 
 }
