@@ -17,7 +17,12 @@ export async function deleteCategory(categoryName: string) {
     const { data, status, error } = await axios.categories.deleteCategory(categoryName);
 
     if (error) {
-        return { error: error.message };
+        if (error.message?.includes('Unauthorised')) {
+            throw new Error('UNAUTHORIZED', { cause: error.message });
+        }
+        else{
+            throw new Error(error.message)
+        }
     }
     if (data && status === 200) {
         redirect(CATEGORIES_PAGE_ROUTE);

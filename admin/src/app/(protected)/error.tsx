@@ -31,17 +31,16 @@ export default function Error({
               <div className="flex gap-2">
                 <span className="material-symbols-rounded">error</span>
                 <span>
-                  {error.message}
-                  {error.message.includes("Unauthorised") ? (
-                    <> Your session has expired.</>
+                  {error.digest?.includes('UNAUTHORIZED') || error.message?.includes("Unauthorised") ? (
+                    'Your session has expired.'
                   ) : (
-                    <>Something went wrong!</>
+                    'Something went wrong!'
                   )}
                 </span>
               </div>
             </ModalBody>
             <ModalFooter>
-              {error.message.includes("Unauthorised") ? (
+              {error.digest?.includes('UNAUTHORIZED') || error.message?.includes("Unauthorised") ? (
                 <form action={sessionExpiredAction}>
                   <Button type="submit">Retry</Button>
                 </form>

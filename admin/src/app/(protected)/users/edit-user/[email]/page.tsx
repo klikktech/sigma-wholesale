@@ -6,7 +6,12 @@ const EditUserPage = async ({ params }: { params: { email: string } }) => {
   const { data, error } = await axios.users.getUserDetails(params.email);
   console.log(data,"edit user")
   if (error) {
-    throw new Error(error.message);
+    if (error.message?.includes('Unauthorised')) {
+      throw new Error('UNAUTHORIZED', { cause: error.message });
+    }
+    else{
+      throw new Error(error.message)
+    }
   }
   
   return (

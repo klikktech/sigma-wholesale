@@ -7,13 +7,28 @@ const EditProductPage = async ({ params }: { params: { details: string } }) => {
   const { data: categories, error: categoriesError } = await axios.products.getCategories();
   const { data: brands, error: brandsError } = await axios.brands.getBrandsList();
   if (categoriesError) {
-    throw new Error(categoriesError.message);
+    if (categoriesError.message?.includes('Unauthorised')) {
+      throw new Error('UNAUTHORIZED', { cause: categoriesError.message });
+    }
+    else{
+      throw new Error(categoriesError.message)
+    }
   }
   if (brandsError) {
-    throw new Error(brandsError.message);
+    if (brandsError.message?.includes('Unauthorised')) {
+      throw new Error('UNAUTHORIZED', { cause: brandsError.message });
+    }
+    else{
+      throw new Error(brandsError.message)
+    }
   }
   if (productError) {
-    throw new Error(productError.message);
+    if (productError.message?.includes('Unauthorised')) {
+      throw new Error('UNAUTHORIZED', { cause: productError.message });
+    }
+    else{
+      throw new Error(productError.message)
+    }
   }
   
   return (

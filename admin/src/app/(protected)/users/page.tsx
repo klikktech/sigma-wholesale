@@ -20,9 +20,14 @@ const UsersPage = async ({ searchParams }: Props) => {
     ? await axios.users.getSearchUsersList(keyword)
     : await axios.users.getAllUsers(page, size);
 
-  if (error) {
-    throw new Error(error?.message);
-  }
+    if (error) {
+      if (error.message?.includes('Unauthorised')) {
+        throw new Error('UNAUTHORIZED', { cause: error.message });
+      }
+      else{
+        throw new Error(error.message)
+      }
+    }
   return (
     <>
       <section className="py-2">

@@ -23,7 +23,12 @@ const ProductsPage = async ({ searchParams }: Props) => {
   const { data, error } = response;
   console.log(data, "data")
   if (error) {
-    throw new Error(error?.message);
+    if (error.message?.includes('Unauthorised')) {
+      throw new Error('UNAUTHORIZED', { cause: error.message });
+    }
+    else{
+      throw new Error(error.message)
+    }
   }
 
   return (

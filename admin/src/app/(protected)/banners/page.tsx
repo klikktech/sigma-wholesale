@@ -7,7 +7,12 @@ const BannerPage = async () => {
     const { data, error } = await axios.banners.getBannersList();
     console.log(data, "BannerPage data")
     if (error) {
+      if (error.message?.includes('Unauthorised')) {
+        throw new Error('UNAUTHORIZED', { cause: error.message });
+      }
+      else{
         throw new Error(error.message)
+      }
     }
   return (
     <div>
