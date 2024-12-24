@@ -31,6 +31,7 @@ export default function Error({
               <div className="flex gap-2">
                 <span className="material-symbols-rounded">error</span>
                 <span>
+                  {error.message}
                   {error.message.includes("Unauthorised") ? (
                     <> Your session has expired.</>
                   ) : (
