@@ -29,6 +29,9 @@ export const getCartCount = async () => {
   if(error){
     throw new Error(error.message)
   }
+  if(!data.cartItems || data.cartItems.length === 0){
+    return {cartCount:0,cartPrice:0};
+  }
   const cartCount = data.cartItems.reduce((acc:any, item:any) => acc + item.quantity, 0);
   const cartPrice = data.cartItems.reduce((acc:any, item:any) => acc + (item.variation?(item.variation.price * item.quantity):(parseInt(item.product.price)* item.quantity)) , 0);
   return {cartCount,cartPrice};

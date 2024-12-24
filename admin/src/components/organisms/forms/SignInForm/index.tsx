@@ -37,7 +37,7 @@ const SignInForm = () => {
         />
 
         <Spacer y={5} />
-        <p className="text-red-500 text-left">{state && <FormMessage message={state} />}</p>
+        <div className="text-red-500 text-left">{state && <FormMessage message={state} />}</div>
         <Spacer y={3} />
         <FormSubmitButton className="mb-10" disabled={pending} type="submit" color="primary" size="lg" pendingText="Logging in...">
           Login

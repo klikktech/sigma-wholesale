@@ -126,13 +126,18 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
     );
 
     const [showVariations, setShowVariations] = useState(product.productType === "VARIABLE");
-    const [selectedCategory, setSelectedCategory] = useState<string>(product.category || "");
+    const [selectedCategories, setSelectedCategories] = useState<string[]>(
+        product.category ? [product.category] : []
+    );
     const [availableSubCategories, setAvailableSubCategories] = useState<any[]>([]);
 
-    const handleCategoryChange = (value: string) => {
-        setSelectedCategory(value);
-        const category = categories.find((cat: any) => cat.name === value);
-        setAvailableSubCategories(category?.childCategories || []);
+    const handleCategoryChange = (values: string[]) => {
+        setSelectedCategories(values);
+        const subCategories = values.reduce((acc: any[], categoryName: string) => {
+            const category = categories.find((cat: any) => cat.name === categoryName);
+            return [...acc, ...(category?.childCategories || [])];
+        }, []);
+        setAvailableSubCategories(subCategories);
     };
 
     const handleDisplayImageFileChange = (
@@ -239,14 +244,23 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
                                 id="category"
                                 name="category"
                                 defaultSelectedKeys={[product.category]}
-                                onChange={(e) => handleCategoryChange(e.target.value)}
+                                selectedKeys={selectedCategories}
+                                selectionMode="multiple"
+                                onSelectionChange={(keys) => handleCategoryChange(Array.from(keys) as string[])}
                                 required
                             >
                                 {categories?.map((category: any) => (
-                                    <SelectItem key={category.name} value={category.name}>{category.name}</SelectItem>
+                                    <SelectItem key={category.name} value={category.name}>
+                                        {category.name}
+                                    </SelectItem>
                                 ))}
                             </Select>
                         </div>
+                        <input
+                            type="hidden"
+                            name="categories"
+                            value={JSON.stringify(selectedCategories)}
+                        />
                         <div className="w-full">
                             <label
                                 className="block text-sm font-medium mb-1"
@@ -258,7 +272,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
                                 id="subCategory"
                                 name="subCategory"
                                 defaultSelectedKeys={[product.subCategory]}
-                                isDisabled={!selectedCategory || availableSubCategories.length === 0}
+                                isDisabled={!selectedCategories || availableSubCategories.length === 0}
                                 required
                             >
                                 {availableSubCategories.map((subCategory: any) => (

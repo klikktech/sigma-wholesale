@@ -38,7 +38,7 @@ const Brands = async () => {
                         </div>
 
                         <div className="absolute inset-x-0 bottom-0 p-2 bg-black bg-opacity-50 rounded-b-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <p className="text-white text-xs text-center truncate">
+                            <p className="text-white text-xs text-center truncate uppercase">
                                 {brand.name}
                             </p>
                         </div>

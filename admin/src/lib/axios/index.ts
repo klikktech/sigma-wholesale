@@ -348,11 +348,9 @@ export const axios = {
     }
   },
   categories:{
-    getCategoryList: async (page:number,size:number): Promise<AxiosResponse> => {
+    getCategoryList: async (): Promise<AxiosResponse> => {
       try {
-        const { data, status } = await api.get(GET_CATEGORY_LIST_URL,{
-          params: { page, size }
-        });
+        const { data, status } = await api.get(GET_CATEGORY_LIST_URL);
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;

@@ -109,8 +109,8 @@ const AddProductForm = ({ categories, brands }: { categories: any, brands: any }
   const [dataUrl, setDataUrl] = useState<string | null>(null);
   const [imagesDataUrl, setImagesDataUrl] = useState<string[]>([]);
   const [showVariations, setShowVariations] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [availableSubCategories, setAvailableSubCategories] = useState<any[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   const handleDisplayImageFileChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -146,10 +146,13 @@ const AddProductForm = ({ categories, brands }: { categories: any, brands: any }
     setImagesDataUrl(prevUrls => prevUrls.filter((_, index) => index !== indexToRemove));
   };
 
-  const handleCategoryChange = (value: string) => {
-    setSelectedCategory(value);
-    const category = categories.find((cat: any) => cat.name === value);
-    setAvailableSubCategories(category?.childCategories || []);
+  const handleCategoryChange = (values: string[]) => {
+    setSelectedCategories(values);
+    const subCategories = values.reduce((acc: any[], categoryName: string) => {
+      const category = categories.find((cat: any) => cat.name === categoryName);
+      return [...acc, ...(category?.childCategories || [])];
+    }, []);
+    setAvailableSubCategories(subCategories);
   };
 
   return (
@@ -182,7 +185,7 @@ const AddProductForm = ({ categories, brands }: { categories: any, brands: any }
             </div>
           </div>
           <div className="w-full flex gap-2">
-          <div className="w-full">
+            <div className="w-full">
               <label className="block text-sm font-medium mb-1" htmlFor="sku">
                 Sku
               </label>
@@ -218,7 +221,10 @@ const AddProductForm = ({ categories, brands }: { categories: any, brands: any }
                 id="category"
                 name="category"
                 required
-                onChange={(e) => handleCategoryChange(e.target.value)}
+                selectionMode="multiple"
+                selectedKeys={selectedCategories}
+                onSelectionChange={(keys) => handleCategoryChange(Array.from(keys) as string[])}
+                className="flex-wrap line-clamp-1"
               >
                 {categories?.map((category: any) => (
                   <SelectItem key={category.name} value={category.name}>
@@ -227,6 +233,11 @@ const AddProductForm = ({ categories, brands }: { categories: any, brands: any }
                 ))}
               </Select>
             </div>
+            <input
+              type="hidden"
+              name="categories"
+              value={JSON.stringify(selectedCategories)}
+            />
             <div className="w-full">
               <label
                 className="block text-sm font-medium mb-1"
@@ -237,8 +248,7 @@ const AddProductForm = ({ categories, brands }: { categories: any, brands: any }
               <Select
                 id="subCategory"
                 name="subCategory"
-                required
-                isDisabled={!selectedCategory || availableSubCategories.length === 0}
+                isDisabled={!selectedCategories.length || availableSubCategories.length === 0}
               >
                 {availableSubCategories.map((subCategory: any) => (
                   <SelectItem key={subCategory.name} value={subCategory.name}>
