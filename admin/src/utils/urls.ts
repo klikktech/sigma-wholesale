@@ -4,7 +4,6 @@ export const SIGNIN_ENDPOINT = `api/auth/admin/authenticate`;
 export const SIGNOUT_ENDPOINT = `api/auth/logout`;
 export const REFRESH_TOKEN_URL = `api/auth/admin/refresh-token`;
 
-
 export const GET_ALL_USERS_ENDPOINT = `admin/users`;
 export const EDIT_USERS_ENDPOINT = `admin/users/update`;
 export const ADD_USER_ENDPOINT = `admin/users/register`;
