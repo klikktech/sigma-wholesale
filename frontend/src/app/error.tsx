@@ -1,21 +1,56 @@
 "use client";
 
-import Button from "@/components/atoms/ScrollButton";
-import React from "react";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from "@nextui-org/react";
+import { sessionExpiredAction } from "./(auth)/login/action";
 
-interface ErrorProps {
+export default function Error({
+  error,
+  reset,
+}: {
   error: Error & { digest?: string };
   reset: () => void;
-}
-
-const ErrorBoundary = ({ error, reset }: ErrorProps) => {
+}) {
   return (
-    <div className="flex flex-col gap-4 justify-center items-center h-[50vh]">
-      {/* <div>Error: {error.message}</div>{" "} */}
-      <div>Something went wrong please try again later</div>
-      <Button onClick={() => reset()}>Try again</Button>
+    <div>
+      <>
+        <Modal
+          backdrop="blur"
+          isOpen={true}
+          closeButton={<div className="hidden"></div>}
+        >
+          <ModalContent>
+            <ModalHeader></ModalHeader>
+            <ModalBody>
+              <div className="flex gap-2">
+                <span className="material-symbols-rounded">error</span>
+                <span>
+                  {error.message.includes("Unauthorised") ? (
+                    <> Your session has expired.</>
+                  ) : (
+                    <>Something went wrong!</>
+                  )}
+                </span>
+              </div>
+            </ModalBody>
+            <ModalFooter>
+              {error.message.includes("Unauthorised") ? (
+                <form action={sessionExpiredAction}>
+                  <Button type="submit">Retry</Button>
+                </form>
+              ) : (
+                <Button onClick={() => reset()}>Try again</Button>
+              )}
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
     </div>
   );
-};
-
-export default ErrorBoundary;
+}

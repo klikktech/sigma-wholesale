@@ -1,7 +1,7 @@
 "use server";
 
 import { axios } from "@/lib/axios";
-import { createSession, deleteSession } from "@/lib/axios/session";
+import { createSession, deleteSession, getRefreshToken } from "@/lib/axios/session";
 import { Message } from "@/utils/types";
 import { LOGIN_PAGE_ROUTE, HOME_PAGE_ROUTE } from "@/utils/urls";
 import { LoginFormValidator } from "@/utils/validators";
@@ -56,4 +56,20 @@ export const signOutAction = async () => {
   await axios.auth.signOut();
   deleteSession();
   return redirect(LOGIN_PAGE_ROUTE);
+};
+
+export const sessionExpiredAction = async () => {
+  const refreshToken = getRefreshToken();
+  if (refreshToken) {
+    const { data, error } = await axios.auth.refreshToken(refreshToken);
+    if (error) {
+      deleteSession();
+      redirect(LOGIN_PAGE_ROUTE);
+    } else {
+      createSession(data);
+      redirect(HOME_PAGE_ROUTE);
+    }
+  }
+  deleteSession();
+  redirect(LOGIN_PAGE_ROUTE);
 };
