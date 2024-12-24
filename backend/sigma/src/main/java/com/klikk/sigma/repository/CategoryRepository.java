@@ -8,14 +8,11 @@ import java.util.List;
 
 public interface CategoryRepository extends JpaRepository<Category, String> {
 
-    @EntityGraph(attributePaths = {"parentCategory", "childCategories"})
     Category findFirstByName(String name);
 
-    @EntityGraph(attributePaths = {"parentCategory", "childCategories"})
     Category findBySlugAndType(String slug, String type);
 
-    @EntityGraph(attributePaths = {"parentCategory", "childCategories"})
-    List<Category> findByType(String type);
+    List<Category> findAllByType(String type);
 
     boolean existsBySlug(String slug);
 }

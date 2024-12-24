@@ -24,7 +24,7 @@ public class CategoryResponseDto {
 
     private String type;
 
-    private CategoryResponseDto parentCategory;
+    private SubCategoryResponse parentCategory;
 
-    private List<Category> childCategories;
+    private List<SubCategoryResponse> childCategories;
 }

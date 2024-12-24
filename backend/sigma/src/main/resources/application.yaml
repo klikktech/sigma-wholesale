@@ -44,14 +44,16 @@ spring:
     serialization:
       fail_on_empty_beans: false
   datasource:
-    username: admin
-    password: rjpdevelopersteam
+#    username: admin
+#    password: rjpdevelopersteam
+    username: root
+    password: password
     #    url: jdbc:mysql://localhost:3306/sigmawholesale
-#    url: jdbc:mysql://localhost:3306/sigmawholesale
-    url: jdbc:mysql://database-1.cjkggkiyswkw.us-east-2.rds.amazonaws.com:3306/sigmawholesale
+    url: jdbc:mysql://localhost:3306/sigmawholesale
+#    url: jdbc:mysql://database-1.cjkggkiyswkw.us-east-2.rds.amazonaws.com:3306/sigmawholesale
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    show-sql: false
+    show-sql: true
     hibernate:
       ddl-auto: update
 

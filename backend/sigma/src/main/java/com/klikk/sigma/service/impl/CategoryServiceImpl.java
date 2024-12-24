@@ -85,11 +85,35 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryResponseDto> getAllCategories() {
-        return categoryRepository.findByType("product_cat").stream().map(category -> {
-            return categoryMapper.categoryToCategoryResponseDto(category);
+        return categoryRepository.findAllByType("product_cat").stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
 
-        }).toList();
+    }
 
+    @Override
+    public CategoryResponseDto getCategory(String name) {
+        Category category=categoryRepository.findBySlugAndType(name,"product_cat");
+        return convertToDto(category);
+    }
+
+    @Override
+    public List<CategoryResponseDto> getChildCategories(String name) {
+        Category category=categoryRepository.findBySlugAndType(name,"product_cat");
+        return category.getChildCategories().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    private CategoryResponseDto convertToDto(Category category) {
+        // Map Category entity to CategoryResponseDto
+        return CategoryResponseDto.builder()
+                .name(category.getName())
+                .slug(category.getSlug())
+                .type(category.getType())
+                .parentCategory(categoryMapper.categoryToSubCategoryResponseDto(category.getParentCategory()))
+                .childCategories(category.getChildCategories().stream().map(childCategory -> categoryMapper.categoryToSubCategoryResponseDto(childCategory)).toList())// Optional: Include if required
+                .build();
     }
 
     private String generateUniqueSlug(String name) {

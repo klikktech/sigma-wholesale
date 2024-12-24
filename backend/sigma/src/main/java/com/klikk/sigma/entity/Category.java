@@ -36,17 +36,17 @@ public class Category {
     @Column(name = "slug")
     private String slug;
 
-    @ManyToMany(mappedBy = "categories", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "categories")
     private List<Product> products;
 
     @Column(name = "type")
     private String type;
 
     @ManyToOne
-    @JoinColumn(name = "parent_id",referencedColumnName = "id")
+    @JoinColumn(name = "parent_category",referencedColumnName = "id")
     private Category parentCategory;
 
-    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
     private List<Category> childCategories;
 
 

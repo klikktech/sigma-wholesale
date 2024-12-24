@@ -43,4 +43,14 @@ public class CategoryController {
     public ResponseEntity<Page<CategoryProductsDto>> getProductsOfTag(@PathVariable String name, Pageable pageable){
         return ResponseEntity.ok(categoryServiceImpl.getProductsOfTag(name, pageable));
     }
+
+    @GetMapping("/{name}")
+    public ResponseEntity<CategoryResponseDto> getCategory(@PathVariable String name){
+        return ResponseEntity.ok(categoryServiceImpl.getCategory(name));
+    }
+
+    @GetMapping("/{name}/childCategories")
+    public ResponseEntity<List<CategoryResponseDto>> getChildCategories(@PathVariable String name){
+        return ResponseEntity.ok(categoryServiceImpl.getChildCategories(name));
+    }
 }
