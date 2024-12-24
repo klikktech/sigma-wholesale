@@ -23,7 +23,7 @@ const CarouselContent = async () => {
   }
 
   const elements = banners?.map((item: Banner, index: number) => (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto" key={index}>
       <div className="flex flex-col md:flex-row gap-8 items-center">
         <div className="w-full md:w-1/2">
           {item.type === "IMAGE" && (

@@ -1,6 +1,6 @@
 "use client";
 import { User, Tooltip, Link } from "@nextui-org/react";
-import { DeleteIcon, EditIcon, EyeIcon } from "@/utils/icons";
+import { DeleteIcon, EditIcon } from "@/utils/icons";
 import Modal from "@/components/molecules/Modal";
 import React from "react";
 import { ITableColumn } from "@/utils/types";

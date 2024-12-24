@@ -1,5 +1,5 @@
 "use client";
-import { User, Tooltip, Link, Chip } from "@nextui-org/react";
+import { User, Tooltip, Chip } from "@nextui-org/react";
 import { DeleteIcon } from "@/utils/icons";
 import Modal from "@/components/molecules/Modal";
 import React from "react";
