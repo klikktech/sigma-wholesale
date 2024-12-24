@@ -13,6 +13,7 @@ export const addProductAction = async (
   state: undefined | Message,
   formData: FormData,
 ) => {
+  console.log(formData,"formData")
   const displayImage = formData.get("displayImage");
   const images = formData.getAll("images");
   const validatedFormFields = ProductFormValidator.safeParse(
@@ -48,6 +49,7 @@ console.log(displayImage,images,validatedFormFields,variations,"prod")
       sku: validatedFormFields.data.sku,
       brand: validatedFormFields.data.brand,
       category: validatedFormFields.data.category,
+      subCategory: validatedFormFields.data.subCategory,
       isOnSale: validatedFormFields.data.isOnSale as boolean,
       status: validatedFormFields.data.status as "instock" | "outofstock",
       stockQuantity: validatedFormFields.data.stockQuantity,
@@ -58,6 +60,7 @@ console.log(displayImage,images,validatedFormFields,variations,"prod")
       displayStatus:  validatedFormFields.data.displayStatus,
       variations: variations,
     };
+    console.log(payload,"payload")
     const formData = new FormData();
     formData.append("product", JSON.stringify(payload));
     if (validatedImages.data.displayImage) formData.append("displayImage", validatedImages.data.displayImage);

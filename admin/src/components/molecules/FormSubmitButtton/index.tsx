@@ -13,8 +13,8 @@ interface Props extends ButtonProps {
 }
 
 const FormSubmitButton = ({
-  buttonText = "Sign up",
-  pendingText = "Loading",
+  buttonText = "Login",
+  pendingText = "Logging in...",
   ...props
 }: Props) => {
   const { pending } = useFormStatus();

@@ -33,7 +33,7 @@ export const axios = {
     }): Promise<AxiosResponse> => {
       console.log("post sign in")
       try {
-        const { data, status } = await api.post(LOGIN_URL, credentials);
+        const { data, status } = await authInstance.post(LOGIN_URL, credentials);
         console.log(data, status, "inside index login")
         return { data, status };
       } catch (error) {
@@ -54,7 +54,7 @@ export const axios = {
     },
     signUpWithEmail: async (userDetails: RegisterDetails): Promise<AxiosResponse> => {
       try {
-        const { data, status } = await api.post(SIGNUP_URL, userDetails);
+        const { data, status } = await authInstance.post(SIGNUP_URL, userDetails);
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;
@@ -71,7 +71,7 @@ export const axios = {
     forgotPassword: async (email: string): Promise<AxiosResponse> => {
       try {
         const payload = { email: email }
-        const { data, status } = await api.post(FORGOT_PASSWORD_URL, payload);
+        const { data, status } = await authInstance.post(FORGOT_PASSWORD_URL, payload);
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;
@@ -79,7 +79,7 @@ export const axios = {
     },
     confirmForgotPassword: async (payload: any): Promise<AxiosResponse> => {
       try {
-        const { data, status } = await api.post(CONFIRM_FORGOT_PASSWORD_URL, payload);
+        const { data, status } = await authInstance.post(CONFIRM_FORGOT_PASSWORD_URL, payload);
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;

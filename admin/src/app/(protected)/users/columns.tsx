@@ -63,18 +63,12 @@ export const renderUserTableCell = (user: User, columnKey: React.Key) => {
         </User>
       );
     case "createdAt":
-      return <span>{new Date(cellValue).toLocaleDateString()}</span>;
+      return <span>{new Date(cellValue).toLocaleDateString('en-US')}</span>;
     case "actions":
       return (
         <div className="relative flex items-center gap-4">
-          <Tooltip content="Details">
-            <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
-              <EyeIcon />
-            </span>
-          </Tooltip>
           <Tooltip content="Edit user">
           <Link href={EDIT_USER_PAGE_ROUTE(user.email)}>
-
             <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
               <EditIcon />
             </span>

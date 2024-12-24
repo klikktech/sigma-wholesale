@@ -94,11 +94,11 @@ export const renderCell = (product: Product, columnKey: React.Key) => {
     case "actions":
       return (
         <div className="relative flex items-center gap-4">
-          <Tooltip content="Details">
+          {/* <Tooltip content="Details">
             <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
               <EyeIcon />
             </span>
-          </Tooltip>
+          </Tooltip> */}
           <Tooltip content="Edit Product">
             <Link href={EDIT_PRODUCT_PAGE_ROUTE(product.details)}>
               <span className="cursor-pointer text-lg text-default-400 active:opacity-50">

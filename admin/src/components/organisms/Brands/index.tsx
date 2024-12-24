@@ -77,9 +77,9 @@ const Brands = ({ brands }: { brands: Brand[] }) => {
                     Add Brand
                 </Button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 lg:grid-cols-8 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
                 {brands.map((brand: Brand, index: number) => (
-                    <div key={index} className="relative group">
+                    <div key={index} className="relative group bg-white rounded-lg p-4 border border-gray-300">
                         <Image
                             src={brand.image}
                             width={100}
@@ -100,6 +100,11 @@ const Brands = ({ brands }: { brands: Brand[] }) => {
                             >
                                 <span className="material-symbols-rounded">delete</span>
                             </button>
+                        </div>
+                        <div className="absolute inset-x-0 bottom-0 p-2 bg-black bg-opacity-50 rounded-b-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <p className="text-white text-xs text-center truncate">
+                                {brand.name}
+                            </p>
                         </div>
                     </div>
                 ))}

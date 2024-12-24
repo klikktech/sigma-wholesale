@@ -20,85 +20,85 @@ import ProductVariations from "@/components/organisms/forms/products/EditProduct
 const generateDataUrlForDisplayImage = (
     file: File,
     callback: (imageUrl: string) => void
-  ) => {
+) => {
     const reader = new FileReader();
     reader.onload = () => callback(reader.result as string);
     reader.readAsDataURL(file);
-  };
-  
-  const generateDataUrlForImages = (
+};
+
+const generateDataUrlForImages = (
     files: FileList,
     callback: (imageUrl: string[]) => void
-  ) => {
+) => {
     const fileReaders: FileReader[] = [];
     const urls: string[] = [];
     let loaded = 0;
-  
+
     Array.from(files).forEach((file, index) => {
-      const reader = new FileReader();
-      fileReaders.push(reader);
-      reader.onload = () => {
-        urls[index] = reader.result as string;
-        loaded++;
-        if (loaded === files.length) {
-          callback(urls);
-        }
-      };
-      reader.readAsDataURL(file);
+        const reader = new FileReader();
+        fileReaders.push(reader);
+        reader.onload = () => {
+            urls[index] = reader.result as string;
+            loaded++;
+            if (loaded === files.length) {
+                callback(urls);
+            }
+        };
+        reader.readAsDataURL(file);
     });
-  };
-  
-  const VideoPreview = ({ dataUrl }: { readonly dataUrl: string }) => {
+};
+
+const VideoPreview = ({ dataUrl }: { readonly dataUrl: string }) => {
     return (
-      <Video
-        src={dataUrl}
+        <Video
+            src={dataUrl}
         // alt="preview"
         // className="rounded-lg w-full h-full object-cover"
-      />
+        />
     );
-  };
-  
-  const ImagePreview = ({ dataUrl }: { readonly dataUrl: string }) => {
+};
+
+const ImagePreview = ({ dataUrl }: { readonly dataUrl: string }) => {
     return (
-      <Image
-        src={dataUrl}
-        width={200}
-        height={200}
-        alt="preview"
-        className="rounded-lg w-full h-full"
-      />
+        <Image
+            src={dataUrl}
+            width={200}
+            height={200}
+            alt="preview"
+            className="rounded-lg w-full h-full"
+        />
     );
-  };
-  
-  const DisplayImageCard = ({
+};
+
+const DisplayImageCard = ({
     dataUrl,
     displayImageFileInput,
-  }: {
+}: {
     readonly dataUrl: string;
     readonly displayImageFileInput: React.RefObject<HTMLInputElement>;
-  }) => {
+}) => {
     const imagePreview = dataUrl ? (
-      <ImagePreview dataUrl={dataUrl} />
+        <ImagePreview dataUrl={dataUrl} />
     ) : (
-      <p className="flex gap-2 text-default-500">
-        <span className="material-symbols-rounded">add_a_photo</span>Upload new
-        display image
-      </p>
+        <p className="flex gap-2 text-default-500">
+            <span className="material-symbols-rounded">add_a_photo</span>Upload new
+            display image
+        </p>
     );
-  
+
     return (
-      <div className="w-full relative">
-        <div className="flex items-center justify-center w-full h-[500px] space-x-4 rounded-lg border p-1">
-          {imagePreview}
+        <div className="w-full relative">
+            <div className="flex items-center justify-center w-full h-[500px] space-x-4 rounded-lg border p-1">
+                {imagePreview}
+            </div>
+            <button
+                onClick={() => displayImageFileInput.current?.click()}
+                className="w-full absolute inset-0"
+                type="button"
+            ></button>
         </div>
-        <button
-          onClick={() => displayImageFileInput.current?.click()}
-          className="w-full absolute inset-0"
-          type="button"
-        ></button>
-      </div>
     );
-  };
+};
 
 interface EditProductFormProps {
     product: ProductDetails;
@@ -115,39 +115,51 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
     const [variations, setVariations] = useState<Variation[]>(product.variations || []);
     const formRef = useRef<HTMLFormElement>(null);
 
-    
-  const displayImageFileInput = useRef<HTMLInputElement>(null);
-  const imagesFileInput = useRef<HTMLInputElement>(null);
-  const [dataUrl, setDataUrl] = useState<string | null>(
-    product.displayImage?.imageUrl || null
-  );
-  const [imagesDataUrl, setImagesDataUrl] = useState<string[] | null>(
-    product.images || null
-  );
+
+    const displayImageFileInput = useRef<HTMLInputElement>(null);
+    const imagesFileInput = useRef<HTMLInputElement>(null);
+    const [dataUrl, setDataUrl] = useState<string | null>(
+        product.displayImage?.imageUrl || null
+    );
+    const [imagesDataUrl, setImagesDataUrl] = useState<string[] | null>(
+        product.images || null
+    );
 
     const [showVariations, setShowVariations] = useState(product.productType === "VARIABLE");
-    
+    const [selectedCategories, setSelectedCategories] = useState<string[]>(
+        product.category ? [product.category] : []
+    );
+    const [availableSubCategories, setAvailableSubCategories] = useState<any[]>([]);
+
+    const handleCategoryChange = (values: string[]) => {
+        setSelectedCategories(values);
+        const subCategories = values.reduce((acc: any[], categoryName: string) => {
+            const category = categories.find((cat: any) => cat.name === categoryName);
+            return [...acc, ...(category?.childCategories || [])];
+        }, []);
+        setAvailableSubCategories(subCategories);
+    };
 
     const handleDisplayImageFileChange = (
         e: React.ChangeEvent<HTMLInputElement>
-      ) => {
+    ) => {
         const file = e.target.files?.[0];
         if (file) generateDataUrlForDisplayImage(file, setDataUrl);
-      };
-    
-      const handleImagesFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    };
+
+    const handleImagesFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
         if (files && files.length > 0) {
-          generateDataUrlForImages(files, (newUrls) => {
-            setImagesDataUrl(prevUrls => [...(prevUrls || []), ...newUrls]);
-          });
+            generateDataUrlForImages(files, (newUrls) => {
+                setImagesDataUrl(prevUrls => [...(prevUrls || []), ...newUrls]);
+            });
         }
-      };
+    };
 
-      const handleProductTypeChange = (value: string) => {
-        console.log(value,"Product Type")
+    const handleProductTypeChange = (value: string) => {
+        console.log(value, "Product Type")
         setShowVariations(value === "VARIABLE");
-      };
+    };
 
     const handleVariationsChange = (newVariations: Variation[]) => {
         setVariations(newVariations);
@@ -160,9 +172,9 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
     };
 
     const removeImage = (indexToRemove: number) => {
-      setImagesDataUrl(prevUrls => 
-        prevUrls ? prevUrls.filter((_, index) => index !== indexToRemove) : null
-      );
+        setImagesDataUrl(prevUrls =>
+            prevUrls ? prevUrls.filter((_, index) => index !== indexToRemove) : null
+        );
     };
 
     return (
@@ -176,12 +188,6 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
                             </label>
                             <Input type="text" id="name" name="name" defaultValue={product.name} readOnly required />
                         </div>
-                        <div className="w-full">
-                            <label className="block text-sm font-medium mb-1" htmlFor="salePrice">
-                                Sale Price
-                            </label>
-                            <Input type="text" id="salePrice" name="salePrice" defaultValue={product.salePrice?.toString()} />
-                        </div>
                     </div>
                     <div className="w-full flex gap-2">
                         <div className="w-full">
@@ -194,17 +200,23 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
                             <Input type="text" id="price" name="price" defaultValue={product.price?.toString()} />
                         </div>
                         <div className="w-full">
+                            <label className="block text-sm font-medium mb-1" htmlFor="salePrice">
+                                Sale Price
+                            </label>
+                            <Input type="text" id="salePrice" name="salePrice" defaultValue={product.salePrice?.toString()} />
+                        </div>
+                    </div>
+                    <div className="w-full flex gap-2">
+                        <div className="w-full">
                             <label className="block text-sm font-medium mb-1" htmlFor="sku">
                                 Sku
                             </label>
                             <Input type="text" id="sku" name="sku" defaultValue={product.sku} readOnly required />
                         </div>
-                    </div>
-                    <div className="w-full flex gap-2">
                         <div className="w-full">
                             <label
                                 className="block text-sm font-medium mb-1"
-                                htmlFor="status"
+                                htmlFor="brand"
                             >
                                 Brand
                             </label>
@@ -214,11 +226,13 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
                                 defaultSelectedKeys={[product.brand]}
                                 required
                             >
-                                {brands?.map((brand: any, index: number) => (
-                                    <SelectItem key={index}>{brand.name}</SelectItem>
+                                {brands?.map((brand: any) => (
+                                    <SelectItem key={brand.name} value={brand.name}>{brand.name}</SelectItem>
                                 ))}
                             </Select>
                         </div>
+                    </div>
+                    <div className="w-full flex gap-2">
                         <div className="w-full">
                             <label
                                 className="block text-sm font-medium mb-1"
@@ -230,10 +244,41 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
                                 id="category"
                                 name="category"
                                 defaultSelectedKeys={[product.category]}
+                                selectedKeys={selectedCategories}
+                                selectionMode="multiple"
+                                onSelectionChange={(keys) => handleCategoryChange(Array.from(keys) as string[])}
                                 required
                             >
-                                {categories?.map((category: any, index: number) => (
-                                    <SelectItem key={index}>{category.name}</SelectItem>
+                                {categories?.map((category: any) => (
+                                    <SelectItem key={category.name} value={category.name}>
+                                        {category.name}
+                                    </SelectItem>
+                                ))}
+                            </Select>
+                        </div>
+                        <input
+                            type="hidden"
+                            name="categories"
+                            value={JSON.stringify(selectedCategories)}
+                        />
+                        <div className="w-full">
+                            <label
+                                className="block text-sm font-medium mb-1"
+                                htmlFor="subCategory"
+                            >
+                                Sub Category
+                            </label>
+                            <Select
+                                id="subCategory"
+                                name="subCategory"
+                                defaultSelectedKeys={[product.subCategory]}
+                                isDisabled={!selectedCategories || availableSubCategories.length === 0}
+                                required
+                            >
+                                {availableSubCategories.map((subCategory: any) => (
+                                    <SelectItem key={subCategory.name} value={subCategory.name}>
+                                        {subCategory.name}
+                                    </SelectItem>
                                 ))}
                             </Select>
                         </div>
@@ -333,6 +378,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
                         <Switch defaultSelected={product.isOnSale} name="isOnSale" id="isOnSale">
                             Add to Deals
                         </Switch>
+                        <input type="hidden" name="isOnSale" value={formRef.current?.isOnSale} />
                     </div>
                     <div className="flex gap-2 w-full">
                         <div className="w-full">

@@ -3,22 +3,20 @@ import CarouselContent from '@/components/organisms/CarouselContent';
 import NewArrivals from '@/components/organisms/NewArrivals';
 import Tabs from '@/components/organisms/Tabs';
 import { getUser } from '@/lib/axios/session';
-import { Spacer } from '@nextui-org/react';
-import React from 'react';
+import ScrollHandler from '@/components/molecules/ScrollHandler';
 
 const HomePage = async () => {
-  const user = await getUser()
+  const user = await getUser();
+
   return (
-    <div className=''>
+    <div className='space-y-16'>
+      <ScrollHandler />
       <CarouselContent />
-      <Spacer y={10} />
       <NewArrivals user={user}/>
-      <Spacer y={10} />
       <Tabs user={user}/>
-      <Spacer y={10} />
       <Brands/>
     </div>
-  )
+  );
 };
 
 export default HomePage;

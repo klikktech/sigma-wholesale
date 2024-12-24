@@ -2,8 +2,7 @@
 export const BASE_BACKEND_URL = process.env.BASE_BACKEND_URL;
 export const SIGNIN_ENDPOINT = `api/auth/admin/authenticate`;
 export const SIGNOUT_ENDPOINT = `api/auth/logout`;
-export const REFRESH_TOKEN_URL = `api/auth/refresh-token`;
-
+export const REFRESH_TOKEN_URL = `api/auth/admin/refresh-token`;
 
 export const GET_ALL_USERS_ENDPOINT = `admin/users`;
 export const EDIT_USERS_ENDPOINT = `admin/users/update`;
@@ -36,8 +35,13 @@ export const GET_BRANDS_URL = `brands`
 export const ADD_OR_UPDATE_BRANDS_URL = `admin/brands`
 export const DELETE_BRAND_URL = (name: string) => `admin/brands/${name}`;
 
-export const GET_CATEGORIES_URL = `categories`
+export const GET_CATEGORY_NAMES_URL = `categories`
 
 export const ADD_OR_UPDATE_BANNERS_URL = `admin/banners`
 export const GET_BANNERS_URL = `banners`
 export const DELETE_BANNER_URL = (id: string) => `admin/banners/${id}`
+
+export const ADD_CATEGORY_URL = `categories`
+export const GET_CATEGORY_LIST_URL = `categories`
+export const DELETE_CATEGORY_URL = (categoryName: string) => `admin/categories/${categoryName}`
+export const SEARCH_CATEGORY_URL = (keyword: string) => `admin/categories/search/${keyword}`

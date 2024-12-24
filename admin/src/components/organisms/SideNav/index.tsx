@@ -25,7 +25,7 @@ const SideNav = ({ items, user }: Props) => {
         </div>
       </div>
       <div className="flex gap-2 m-2 p-2 items-center justify-around border rounded-lg">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 line-clamp-1">
           <User
             avatarProps={{
               radius: "full",

@@ -19,11 +19,15 @@ import {
   GET_BRANDS_URL,
   DELETE_BRAND_URL,
   ADD_OR_UPDATE_BRANDS_URL,
-  GET_CATEGORIES_URL,
   SEARCH_ORDERS_URL,
   GET_BANNERS_URL,
   DELETE_BANNER_URL,
-  ADD_OR_UPDATE_BANNERS_URL
+  ADD_OR_UPDATE_BANNERS_URL,
+  GET_CATEGORY_NAMES_URL,
+  ADD_CATEGORY_URL,
+  GET_CATEGORY_LIST_URL,
+  DELETE_CATEGORY_URL,
+  SEARCH_CATEGORY_URL
 } from "@/utils/urls";
 import api, { authInstance } from "./instance";
 import {
@@ -205,7 +209,7 @@ export const axios = {
     },
     getCategories: async (): Promise<AxiosResponse> => {
       try {
-        const { data, status } = await api.get(GET_CATEGORIES_URL);
+        const { data, status } = await api.get(GET_CATEGORY_NAMES_URL);
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;
@@ -337,6 +341,40 @@ export const axios = {
     deleteBanner: async (id: string): Promise<AxiosResponse> => {
       try {
         const { data, status } = await api.delete(DELETE_BANNER_URL(id));
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    }
+  },
+  categories:{
+    getCategoryList: async (): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.get(GET_CATEGORY_LIST_URL);
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    addCategory: async (payload: any): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.post(ADD_CATEGORY_URL, payload);
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    deleteCategory: async (categoryName: string): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.delete(DELETE_CATEGORY_URL(categoryName));
+        return { data, status };
+      } catch (error) {
+        return error as AxiosErrorResponse;
+      }
+    },
+    getSearchCategoryList: async (keyword: string): Promise<AxiosResponse> => {
+      try {
+        const { data, status } = await api.get(SEARCH_CATEGORY_URL(keyword));
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;

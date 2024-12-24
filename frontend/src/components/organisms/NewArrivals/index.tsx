@@ -41,19 +41,22 @@ const NewArrivals = async ({user}:{user:any}) => {
   ));
 
   return (
-    <div className="container mx-auto new-arrivals">
-      <h1 className="text-xl">NEW ARRIVALS</h1>
-      <Spacer y={5} />
+    <section className="max-w-7xl mx-auto" id="new-arrivals-section">
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold">NEW ARRIVALS</h2>
+      </div>
       <ProductsCarousel>{productElements}</ProductsCarousel>
-      <div className="text-center">
+      <div className="flex justify-center mt-4">
         <Button
+          as={Link}
+          href={PRODUCTS_PAGE_ROUTE}
           color="primary"
-          className="mt-4 text-black py-2 rounded-lg hover:bg-primary-600"
+          className="text-black hover:bg-primary-600 px-6 py-2"
         >
-          <Link href={PRODUCTS_PAGE_ROUTE}>View More</Link>
+          View More
         </Button>
       </div>
-    </div>
+    </section>
   );
 };
 

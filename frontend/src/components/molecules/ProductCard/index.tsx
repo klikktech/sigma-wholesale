@@ -21,10 +21,10 @@ const stockChipColorMap = {
 const ProductCard = (props: Props) => {
 
   return (
-    <div className="max-w-xs min-w-60 bg-gray-100 text-black rounded-xl shadow-lg overflow-hidden h-full">
-      <div className="relative h-48">
+    <div className="w-60 group relative bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 ease-in-out border border-gray-100 overflow-hidden h-full">
+      <div className="relative h-60 aspect-square overflow-hidden bg-gray-50">
         <Image
-          className="w-full h-full object-cover"
+          className="w-full h-full text-center object-cover transform group-hover:scale-105 transition-transform duration-500"
           fill
           sizes="(max-width: 768px) 100vw, 384px"
           src={props.img}
@@ -32,7 +32,13 @@ const ProductCard = (props: Props) => {
           priority
         />
         <Chip
-          className="capitalize text-white absolute top-2 right-2"
+          className={`
+            capitalize absolute top-3 right-3 shadow-sm
+            ${props.stockStatus === 'instock' 
+              ? 'bg-green-500 text-white' 
+              : 'bg-red-500 text-white'
+            }
+          `}
           color={
             stockChipColorMap[props.stockStatus as "instock" | "outofstock"] as
             | "success"
@@ -45,21 +51,36 @@ const ProductCard = (props: Props) => {
         </Chip>
       </div>
 
-      <div className="mt-2 p-4">
-        <div className="flex justify-between h-full">
-          <h3 className="text-sm font-semibold h-10 overflow-hidden line-clamp-2">{props.title}</h3>
-          {props.user && <p className="text-gray-400">{props.price}</p>}
+      <div className="p-4 space-y-4">
+        <div className="flex justify-between items-start gap-2">
+          <h3 className="h-10 text-sm font-medium text-gray-900 line-clamp-2 flex-grow">
+            {props.title}
+          </h3>
+          {props.user && (
+            <p className="text-lg font-semibold text-gray-900 whitespace-nowrap">
+              {props.price}
+            </p>
+          )}
         </div>
-        <Button color="primary" className="w-full mt-4 rounded-lg hover:bg-primary-600">
-          <Link 
-            className="w-full text-black py-2 hover:bg-primary-600" 
+
+        <div className="mt-auto">
+          <Button 
+            as={Link}
             href={PRODUCT_VIEW_PAGE_ROUTE(props.details)}
+            className="w-full bg-primary hover:bg-primary-600 transform transition-all duration-300 hover:-translate-y-1"
             aria-label={`Shop now for ${props.title}`}
           >
-            Shop Now
-          </Link>
-        </Button>
+            <span className="flex items-center justify-center gap-2 text-black">
+              Shop Now
+              <span className="material-symbols-rounded text-lg">
+                arrow_forward
+              </span>
+            </span>
+          </Button>
+        </div>
       </div>
+
+      <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none" />
     </div>
   );
 };

@@ -35,6 +35,7 @@ export interface ProductDetails {
   displayImage?: any;
   images?: string[]
   category: string;
+  subCategory: string;
   brand:string;
   productType:string;
   boxQuantity:number;

@@ -1,6 +1,7 @@
 import "server-only";
 
 import { cookies } from "next/headers";
+import { axios } from ".";
 
 interface JwtPayload {
   sub: string;
@@ -22,6 +23,19 @@ export const deleteSession = () => {
   cookies().delete("accessToken");
   cookies().delete("refreshToken");
 };
+
+export const getCartCount = async () => {
+  const { data, error } = await axios.products.getCartList();
+  if(error){
+    throw new Error(error.message)
+  }
+  if(!data.cartItems || data.cartItems.length === 0){
+    return {cartCount:0,cartPrice:0};
+  }
+  const cartCount = data.cartItems.reduce((acc:any, item:any) => acc + item.quantity, 0);
+  const cartPrice = data.cartItems.reduce((acc:any, item:any) => acc + (item.variation?(item.variation.price * item.quantity):(parseInt(item.product.price)* item.quantity)) , 0);
+  return {cartCount,cartPrice};
+}
 
 export const getUser = () => {
   try {

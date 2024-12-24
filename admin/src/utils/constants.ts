@@ -1,4 +1,4 @@
-import { BANNERS_PAGE_ROUTE, BRANDS_PAGE_ROUTE, ORDERS_PAGE_ROUTE, PRODUCTS_PAGE_ROUTE, USERS_PAGE_ROUTE } from "./routes";
+import { BANNERS_PAGE_ROUTE, BRANDS_PAGE_ROUTE, CATEGORIES_PAGE_ROUTE, ORDERS_PAGE_ROUTE, PRODUCTS_PAGE_ROUTE, USERS_PAGE_ROUTE } from "./routes";
 import { INavItem, IUser } from "./types";
 
 export const SIGMA_WHOLESALE = "Sigma Wholesale"
@@ -21,6 +21,11 @@ export const SAMPLE_NAV_USER: IUser = {
       path: PRODUCTS_PAGE_ROUTE,
     },
     {
+      icon: "category",
+      label: "Categories",
+      path: CATEGORIES_PAGE_ROUTE,
+    },
+    {
       icon: "local_shipping",
       label: "Orders",
       path: ORDERS_PAGE_ROUTE,
@@ -34,5 +39,5 @@ export const SAMPLE_NAV_USER: IUser = {
       icon: "campaign",
       label: "Banners",
       path: BANNERS_PAGE_ROUTE,
-    }
+    },
   ];
