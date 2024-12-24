@@ -19,7 +19,7 @@ const OrdersPage = async ({ searchParams }: Props) => {
   const { data, error } = response;
   console.log(data, "data")
   if (error) {
-    console.error("API Error:", error);
+    throw new Error(error?.message);
   }
 
   return (

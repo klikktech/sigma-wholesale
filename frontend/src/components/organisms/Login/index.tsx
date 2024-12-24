@@ -82,7 +82,7 @@ const Login = () => {
         <Spacer y={3} />
         <p className="text-red-500 text-left">{state && <FormMessage message={state} />}</p>
         <Spacer y={3} />
-        <FormSubmitButton className="mb-10 hover:bg-primary-600" disabled={pending} type="submit" color="primary" size="lg" pendingText="Logging in...">
+        <FormSubmitButton className="mb-10 hover:bg-primary-600 text-black" disabled={pending} type="submit" color="primary" size="lg" pendingText="Logging in...">
           Login
         </FormSubmitButton>
       </form>

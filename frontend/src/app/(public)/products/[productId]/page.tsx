@@ -3,7 +3,6 @@ import { axios } from '@/lib/axios';
 
 const ProductDetails = async ({ params }: { params: { productId?: string } }) => {
 
-  console.log(JSON.stringify(params.productId), "search params")
   const details = params?.productId || ''
   const { data, error } = await axios.products.getProductDetails(details);
   if (error) {
