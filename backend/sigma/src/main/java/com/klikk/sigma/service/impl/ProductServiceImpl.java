@@ -10,9 +10,7 @@ import com.klikk.sigma.exception.NotFoundException;
 import com.klikk.sigma.mapper.AttachmentMapper;
 import com.klikk.sigma.mapper.ProductMapper;
 import com.klikk.sigma.mapper.VariationMapper;
-import com.klikk.sigma.repository.AttachmentRepository;
-import com.klikk.sigma.repository.ProductRepository;
-import com.klikk.sigma.repository.VariationRepository;
+import com.klikk.sigma.repository.*;
 import com.klikk.sigma.service.AttachmentService;
 import com.klikk.sigma.service.AwsService;
 import com.klikk.sigma.service.ProductService;
@@ -27,6 +25,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -54,6 +53,12 @@ public class ProductServiceImpl implements ProductService {
     private VariationMapper variationMapper;
 
     @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private BrandRepository brandRepository;
+
+    @Autowired
     private AttachmentService attachmentService;
 
     @Autowired
@@ -68,6 +73,19 @@ public class ProductServiceImpl implements ProductService {
         Product newProduct = productMapper.productRequestToProduct(productRequest);
         newProduct.setCreatedAt(LocalDateTime.now());
         newProduct.setDetails(generateUniqueDetails(newProduct));
+        if(productRequest.getCategories()==null){
+            newProduct.setCategories(new ArrayList<>());
+        }
+        else{
+            newProduct.setCategories(productRequest.getCategories().stream().map(category -> categoryRepository.findBySlugAndType(category,"product_cat")).toList());
+        }
+        if (brandRepository.findByName(productRequest.getBrand()).isPresent()) {
+            newProduct.setBrand(brandRepository.findByName(productRequest.getBrand()).get());
+        }
+        else {
+            newProduct.setBrand(null);
+        }
+
         ProductType newProductType= productRequest.getProductType().toLowerCase().equals("simple")?ProductType.SIMPLE:ProductType.VARIABLE;
         newProduct.setProductType(newProductType);
         final Product savedProduct = productRepository.save(newProduct);

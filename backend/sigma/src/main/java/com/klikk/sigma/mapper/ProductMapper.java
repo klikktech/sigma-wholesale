@@ -25,6 +25,8 @@ public abstract class ProductMapper {
     @Mapping(target = "totalSales",ignore = true)
     @Mapping(target = "productType",ignore = true)
     @Mapping(target = "variations",ignore = true)
+    @Mapping(target = "categories",ignore = true)
+    @Mapping(target = "brand",ignore = true)
     public abstract Product productRequestToProduct(ProductRequestDto productRequestDto);
 
 //    @Mapping(source = "displayImage", target = "displayImage", qualifiedByName = "mapDisplayImage")

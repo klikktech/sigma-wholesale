@@ -41,4 +41,8 @@ public class ProductRequestDto {
 
     private List<VariationDto> variations;
 
+    private String brand;
+
+    private List<String> categories;
+
 }

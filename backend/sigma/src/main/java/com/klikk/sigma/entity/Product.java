@@ -92,4 +92,8 @@ public class Product {
     @Column(name = "box_quantity")
     private Long boxQuantity;
 
+    @ManyToOne
+    @JoinColumn(name = "brand_id", referencedColumnName = "id")
+    private Brand brand;
+
 }
