@@ -35,13 +35,13 @@ export const GET_BRANDS_URL = `brands`
 export const ADD_OR_UPDATE_BRANDS_URL = `admin/brands`
 export const DELETE_BRAND_URL = (name: string) => `admin/brands/${name}`;
 
-export const GET_CATEGORY_NAMES_URL = `categories`
+export const GET_CATEGORY_NAMES_URL = `admin/categories`
 
 export const ADD_OR_UPDATE_BANNERS_URL = `admin/banners`
 export const GET_BANNERS_URL = `banners`
 export const DELETE_BANNER_URL = (id: string) => `admin/banners/${id}`
 
-export const ADD_CATEGORY_URL = `categories`
-export const GET_CATEGORY_LIST_URL = `categories`
+export const ADD_CATEGORY_URL = `admin/categories`
+export const GET_CATEGORY_LIST_URL = `admin/categories/pagination`
 export const DELETE_CATEGORY_URL = (categoryName: string) => `admin/categories/${categoryName}`
 export const SEARCH_CATEGORY_URL = (keyword: string) => `admin/categories/search/${keyword}`

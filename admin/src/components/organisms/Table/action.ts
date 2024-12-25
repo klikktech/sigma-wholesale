@@ -26,6 +26,9 @@ export const searchAction = async (
         case 'orders':
             ({ data, status, error } = await axios.orders.getSearchOrdersList(keyword));
             break;
+        case 'categories':
+            ({ data, status, error } = await axios.categories.getSearchCategoryList(keyword));
+            break;
         default:
             return { error: "Invalid type" };
     }

@@ -26,9 +26,23 @@ export const deleteSession = () => {
 
 export const getCartCount = async () => {
   const { data, error } = await axios.products.getCartList();
-  if(error){
-    throw new Error(error.message)
-  }
+  if (error) {
+    if (error.message?.includes('Unauthorised')) {
+      throw new Error('UNAUTHORIZED', { 
+        cause: {
+          code: 'Unauthorised',
+          message: 'Your session has expired. Please log in again.'
+        }
+      });
+    } else {
+      throw new Error('ERROR', { 
+        cause: {
+          code: 'UNKNOWN',
+          message: error.message
+        }
+      });
+    }
+}
   if(!data.cartItems || data.cartItems.length === 0){
     return {cartCount:0,cartPrice:0};
   }

@@ -109,8 +109,9 @@ const AddProductForm = ({ categories, brands }: { categories: any, brands: any }
   const [dataUrl, setDataUrl] = useState<string | null>(null);
   const [imagesDataUrl, setImagesDataUrl] = useState<string[]>([]);
   const [showVariations, setShowVariations] = useState(false);
-  const [availableSubCategories, setAvailableSubCategories] = useState<any[]>([]);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  // const [availableSubCategories, setAvailableSubCategories] = useState<any[]>([]);
+  // const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [isOnSale, setIsOnSale] = useState(true);
 
   const handleDisplayImageFileChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -146,13 +147,17 @@ const AddProductForm = ({ categories, brands }: { categories: any, brands: any }
     setImagesDataUrl(prevUrls => prevUrls.filter((_, index) => index !== indexToRemove));
   };
 
-  const handleCategoryChange = (values: string[]) => {
-    setSelectedCategories(values);
-    const subCategories = values.reduce((acc: any[], categoryName: string) => {
-      const category = categories.find((cat: any) => cat.name === categoryName);
-      return [...acc, ...(category?.childCategories || [])];
-    }, []);
-    setAvailableSubCategories(subCategories);
+  // const handleCategoryChange = (values: string[]) => {
+  //   setSelectedCategories(values);
+  //   const subCategories = values.reduce((acc: any[], categoryName: string) => {
+  //     const category = categories.find((cat: any) => cat.name === categoryName);
+  //     return [...acc, ...(category?.childCategories || [])];
+  //   }, []);
+  //   setAvailableSubCategories(subCategories);
+  // };
+
+  const handleIsOnSaleChange = (checked: boolean) => {
+    setIsOnSale(checked);
   };
 
   return (
@@ -209,54 +214,32 @@ const AddProductForm = ({ categories, brands }: { categories: any, brands: any }
               </Select>
             </div>
           </div>
-          <div className="w-full flex gap-2">
-            <div className="w-full">
-              <label
-                className="block text-sm font-medium mb-1"
-                htmlFor="category"
-              >
-                Category
-              </label>
-              <Select
-                id="category"
-                name="category"
-                required
-                selectionMode="multiple"
-                selectedKeys={selectedCategories}
-                onSelectionChange={(keys) => handleCategoryChange(Array.from(keys) as string[])}
-                className="flex-wrap line-clamp-1"
-              >
-                {categories?.map((category: any) => (
-                  <SelectItem key={category.name} value={category.name}>
-                    {category.name}
-                  </SelectItem>
-                ))}
-              </Select>
-            </div>
-            <input
-              type="hidden"
+          <div className="w-full">
+            <label
+              className="block text-sm font-medium mb-1"
+              htmlFor="categories"
+            >
+              Category
+            </label>
+            <Select
+              id="categories"
               name="categories"
-              value={JSON.stringify(selectedCategories)}
-            />
-            <div className="w-full">
-              <label
-                className="block text-sm font-medium mb-1"
-                htmlFor="subCategory"
-              >
-                Sub Category
-              </label>
-              <Select
-                id="subCategory"
-                name="subCategory"
-                isDisabled={!selectedCategories.length || availableSubCategories.length === 0}
-              >
-                {availableSubCategories.map((subCategory: any) => (
-                  <SelectItem key={subCategory.name} value={subCategory.name}>
-                    {subCategory.name}
-                  </SelectItem>
-                ))}
-              </Select>
-            </div>
+              required
+              selectionMode="multiple"
+              classNames={{
+                base: "w-full",
+                trigger: "h-auto min-h-[40px] p-1",
+                value: "bg-default-100 px-2 py-1 rounded-md text-sm grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1",
+                listbox: "max-h-[400px]"
+              }}
+              placeholder="Select categories"
+            >
+              {categories?.map((category: any) => (
+                <SelectItem key={category.name} value={category.name}>
+                  {category.name}
+                </SelectItem>
+              ))}
+            </Select>
           </div>
           <div className="w-full flex gap-2">
             <div className="w-full">
@@ -349,10 +332,18 @@ const AddProductForm = ({ categories, brands }: { categories: any, brands: any }
             />
           </div>
           <div className="w-full">
-            <Switch defaultSelected id="isOnSale" name="isOnSale">
+            <Switch 
+              defaultSelected 
+              id="isOnSale" 
+              onValueChange={handleIsOnSaleChange}
+            >
               Add to Deals
             </Switch>
-            <input type="hidden" name="isOnSale" value={formRef.current?.isOnSale} />
+            <input 
+              type="hidden" 
+              name="isOnSale" 
+              value={isOnSale.toString()} 
+            />
           </div>
 
           <div className="flex gap-2 w-full">

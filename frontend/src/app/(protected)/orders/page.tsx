@@ -5,15 +5,44 @@ const OrdersPage = async () => {
   const { data: ordersList, error: ordersError } = await axios.products.getOrdersList();
   console.log(ordersList, "ordersList")
   if (ordersError) {
-    throw new Error(ordersError.message);
+    if (ordersError.message?.includes('Unauthorised')) {
+      throw new Error('UNAUTHORIZED', {
+        cause: {
+          code: 'Unauthorised',
+          message: 'Your session has expired. Please log in again.'
+        }
+      });
+    } else {
+      throw new Error('ERROR', {
+        cause: {
+          code: 'UNKNOWN',
+          message: ordersError.message
+        }
+      });
+    }
   }
+
 
   const ordersWithItems = await Promise.all(
     ordersList.map(async (order: any) => {
       const { data: itemsList, error: itemsError } = await axios.products.getOrderItemsList(order.id);
       console.log(itemsList, "itemsList")
       if (itemsError) {
-        throw new Error(itemsError.message);
+        if (itemsError.message?.includes('Unauthorised')) {
+          throw new Error('UNAUTHORIZED', {
+            cause: {
+              code: 'Unauthorised',
+              message: 'Your session has expired. Please log in again.'
+            }
+          });
+        } else {
+          throw new Error('ERROR', {
+            cause: {
+              code: 'UNKNOWN',
+              message: itemsError.message
+            }
+          });
+        }
       }
       let totalCount = 0;
       itemsList.map((item: any) => {

@@ -10,19 +10,36 @@ const AddUserPage = async () => {
 
   if (categoriesError) {
     if (categoriesError.message?.includes('Unauthorised')) {
-      throw new Error('UNAUTHORIZED', { cause: categoriesError.message });
+      throw new Error('UNAUTHORIZED', { 
+        cause: {
+          code: 'Unauthorised',
+          message: 'Your session has expired. Please log in again.'
+        }
+      });
     }
     else{
-      throw new Error(categoriesError.message)
-    }
+      throw new Error('ERROR', { 
+        cause: {
+          code: 'UNKNOWN',
+          message: categoriesError.message
+        }
+      });    }
   }
   if (brandsError) {
     if (brandsError.message?.includes('Unauthorised')) {
-      throw new Error('UNAUTHORIZED', { cause: brandsError.message });
-    }
+      throw new Error('UNAUTHORIZED', { 
+        cause: {
+          code: 'Unauthorised',
+          message: 'Your session has expired. Please log in again.'
+        }
+      });    }
     else{
-      throw new Error(brandsError.message)
-    }
+      throw new Error('ERROR', { 
+        cause: {
+          code: 'UNKNOWN',
+          message: brandsError.message
+        }
+      });    }
   }
 
   return (

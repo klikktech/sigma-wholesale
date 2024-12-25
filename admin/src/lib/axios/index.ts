@@ -348,9 +348,13 @@ export const axios = {
     }
   },
   categories:{
-    getCategoryList: async (): Promise<AxiosResponse> => {
+    getCategoryList: async (page:number,size:number): Promise<AxiosResponse> => {
       try {
-        const { data, status } = await api.get(GET_CATEGORY_LIST_URL);
+        const { data, status } = await api.get(GET_CATEGORY_LIST_URL,
+          {
+            params: { page, size }
+          }
+        );
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;
@@ -364,9 +368,9 @@ export const axios = {
         return error as AxiosErrorResponse;
       }
     },
-    deleteCategory: async (categoryName: string): Promise<AxiosResponse> => {
+    deleteCategory: async (categorySlug: string): Promise<AxiosResponse> => {
       try {
-        const { data, status } = await api.delete(DELETE_CATEGORY_URL(categoryName));
+        const { data, status } = await api.delete(DELETE_CATEGORY_URL(categorySlug));
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;

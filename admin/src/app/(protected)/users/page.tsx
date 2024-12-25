@@ -22,10 +22,19 @@ const UsersPage = async ({ searchParams }: Props) => {
 
     if (error) {
       if (error.message?.includes('Unauthorised')) {
-        throw new Error('UNAUTHORIZED', { cause: error.message });
-      }
-      else{
-        throw new Error(error.message)
+        throw new Error('UNAUTHORIZED', { 
+          cause: {
+            code: 'Unauthorised',
+            message: 'Your session has expired. Please log in again.'
+          }
+        });
+      } else {
+        throw new Error('ERROR', { 
+          cause: {
+            code: 'UNKNOWN',
+            message: error.message
+          }
+        });
       }
     }
   return (

@@ -7,12 +7,21 @@ const BrandsPage = async () => {
     const { data, error } = await axios.brands.getBrandsList();
     if (error) {
       if (error.message?.includes('Unauthorised')) {
-        throw new Error('UNAUTHORIZED', { cause: error.message });
+        throw new Error('UNAUTHORIZED', { 
+          cause: {
+            code: 'Unauthorised',
+            message: 'Your session has expired. Please log in again.'
+          }
+        });
+      } else {
+        throw new Error('ERROR', { 
+          cause: {
+            code: 'UNKNOWN',
+            message: error.message
+          }
+        });
       }
-      else{
-        throw new Error(error.message)
-      }
-    }
+  }
   return (
     <div>
         <Brands brands={data} />

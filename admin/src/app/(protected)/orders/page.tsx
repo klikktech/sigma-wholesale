@@ -20,7 +20,7 @@ const OrdersPage = async ({ searchParams }: Props) => {
   console.log(data, "data")
   if (error) {
     if (error.message?.includes('Unauthorised')) {
-      throw new Error('UNAUTHORIZED', { cause: error.message });
+      throw new Error('Unauthorised', { cause: error.message });
     }
     else{
       throw new Error(error.message)

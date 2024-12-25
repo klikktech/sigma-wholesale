@@ -10,6 +10,7 @@ interface Category {
     id: string;
     name: string;
     childCategories: any[];
+    slug: string;
 }
 
 export const CATEGORY_COLUMNS: ITableColumn[] = [
@@ -51,7 +52,7 @@ export const renderCategoryTableCell = (category: Category, columnKey: React.Key
         case "subCategories":
             return (
                 <div className="flex flex-wrap gap-2">
-                    {category.childCategories.map((subCategory: any) => (
+                    {category.childCategories.length > 0 ? category.childCategories.map((subCategory: any) => (
                         <Chip 
                             key={subCategory.slug} 
                             className="capitalize text-sm" 
@@ -61,7 +62,7 @@ export const renderCategoryTableCell = (category: Category, columnKey: React.Key
                         >
                             {subCategory.name}
                         </Chip>
-                    ))}
+                    )) : <Chip className="capitalize text-sm" color="default" variant="flat" size="sm">No subcategories</Chip>}
                 </div>
             );
         case "actions":
@@ -77,7 +78,7 @@ export const renderCategoryTableCell = (category: Category, columnKey: React.Key
                                     </div>
                                 }
                                 onSuccess={async () => {
-                                    await deleteCategory(category.name);
+                                    await deleteCategory(category.slug);
                                 }}
                                 successButton="Delete"
                             >

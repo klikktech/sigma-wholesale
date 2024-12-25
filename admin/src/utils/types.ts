@@ -34,8 +34,8 @@ export interface ProductDetails {
   // commentStatus: string;
   displayImage?: any;
   images?: string[]
-  category: string;
-  subCategory: string;
+  categories: string[];
+  subCategory?: string;
   brand:string;
   productType:string;
   boxQuantity:number;

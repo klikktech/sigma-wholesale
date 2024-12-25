@@ -13,13 +13,18 @@ export const addProductAction = async (
   state: undefined | Message,
   formData: FormData,
 ) => {
-  console.log(formData,"formData")
   const displayImage = formData.get("displayImage");
   const images = formData.getAll("images");
-  const validatedFormFields = ProductFormValidator.safeParse(
-    Object.fromEntries(formData)
-  );
   
+  // Create form data object with special handling for categories
+  const formDataObject = Object.fromEntries(formData);
+  const categories = formData.getAll("categories"); // Get all category values as array
+  
+  const validatedFormFields = ProductFormValidator.safeParse({
+    ...formDataObject,
+    categories // Override categories with the array
+  });
+
   let variations = [];
   try {
     const variationsStr = formData.get('variations');
@@ -29,8 +34,8 @@ export const addProductAction = async (
   } catch (error) {
     return { error: "Invalid variations data" };
   }
+  console.log(validatedFormFields.error,"validatedFormFields")
 
-console.log(displayImage,images,validatedFormFields,variations,"prod")
   if (validatedFormFields.error) {
     return { error: validatedFormFields.error.errors[0].message as string };
   }
@@ -41,6 +46,7 @@ console.log(displayImage,images,validatedFormFields,variations,"prod")
   });
   if (validatedImages.error)
     return { error: validatedImages.error.errors[0].message as string };
+  console.log(validatedFormFields,"validatedFormFields")
   if (validatedFormFields.success && validatedImages.success) {
     const payload: ProductDetails = {
       name: validatedFormFields.data.name,
@@ -48,8 +54,8 @@ console.log(displayImage,images,validatedFormFields,variations,"prod")
       price: validatedFormFields.data.price,
       sku: validatedFormFields.data.sku,
       brand: validatedFormFields.data.brand,
-      category: validatedFormFields.data.category,
-      subCategory: validatedFormFields.data.subCategory,
+      categories: validatedFormFields.data.categories,
+      // subCategory: validatedFormFields.data.subCategory,
       isOnSale: validatedFormFields.data.isOnSale as boolean,
       status: validatedFormFields.data.status as "instock" | "outofstock",
       stockQuantity: validatedFormFields.data.stockQuantity,
@@ -57,10 +63,10 @@ console.log(displayImage,images,validatedFormFields,variations,"prod")
       caseQuantity: validatedFormFields.data.caseQuantity,
       description: validatedFormFields.data.description,
       productType: validatedFormFields.data.productType,
-      displayStatus:  validatedFormFields.data.displayStatus,
+      displayStatus: validatedFormFields.data.displayStatus,
       variations: variations,
     };
-    console.log(payload,"payload")
+    console.log(payload, "payload")
     const formData = new FormData();
     formData.append("product", JSON.stringify(payload));
     if (validatedImages.data.displayImage) formData.append("displayImage", validatedImages.data.displayImage);

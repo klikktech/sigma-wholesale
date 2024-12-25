@@ -12,36 +12,39 @@ interface Props {
 }
 
 const CateroriesPage = async ({ searchParams }: Props) => {
-  // const page = searchParams.page ? parseInt(searchParams.page) : 0;
-  // const size = 20;
+  const page = searchParams.page ? parseInt(searchParams.page) : 0;
+  const size = 20;
   const keyword = searchParams.keyword || '';
   const response = keyword
     ? await axios.categories.getSearchCategoryList(keyword)
-    : await axios.categories.getCategoryList();
+    : await axios.categories.getCategoryList(page,size);
 
   const { data, error } = response;
   console.log(data, "data")
   if (error) {
     if (error.message?.includes('Unauthorised')) {
-      throw new Error('UNAUTHORIZED', { cause: error.message });
-    }
-    else{
-      throw new Error(error.message)
+      throw new Error('UNAUTHORIZED', { 
+        cause: {
+          code: 'Unauthorised',
+          message: 'Your session has expired. Please log in again.'
+        }
+      });
+    } else {
+      throw new Error('ERROR', { 
+        cause: {
+          code: 'UNKNOWN',
+          message: error.message
+        }
+      });
     }
   }
-
-  // Transform the data to include a unique identifier
-  const transformedData = (keyword ? [data] : data).map((category: any) => ({
-    ...category,
-    id: category.slug || category.name // Using slug or name as a unique identifier
-  }));
 
   return (
     <>
       <section className="py-2">
         <div className="container">
           <Table
-            data={transformedData}
+            data={keyword? data: data.content}
             columns={CATEGORY_COLUMNS}
             headerContent={
               <>
@@ -56,12 +59,12 @@ const CateroriesPage = async ({ searchParams }: Props) => {
                 </Link>
               </>
             }
-            itemsKey="id"
+            itemsKey="slug"
             searchPlaceholder="Search category by category name"
             type="categories"
             totalPages={data?.totalPages || 0}
-            currentPage={0}
-            size={20}
+            currentPage={page}
+            size={size}
             searchkey={keyword}
             renderCell={renderCategoryTableCell}
           />

@@ -6,8 +6,22 @@ import { HOME_PAGE_ROUTE } from "@/utils/urls";
 const fetchAddresses = async (type: string) => {
   const { data, error } = await axios.users.getAddresses(type);
   if (error) {
-      throw new Error(error.message);
-  }
+    if (error.message?.includes('Unauthorised')) {
+      throw new Error('UNAUTHORIZED', { 
+        cause: {
+          code: 'Unauthorised',
+          message: 'Your session has expired. Please log in again.'
+        }
+      });
+    } else {
+      throw new Error('ERROR', { 
+        cause: {
+          code: 'UNKNOWN',
+          message: error.message
+        }
+      });
+    }
+}
   
   const addressesWithId = data.map((address: any, index: number) => ({
     id: index + 1,
@@ -18,9 +32,23 @@ const fetchAddresses = async (type: string) => {
 };
 const CheckOutPage = async () => {
     const { data, error } = await axios.products.getCartList();
-    if(error){
-      throw new Error(error.message)
-    }
+    if (error) {
+      if (error.message?.includes('Unauthorised')) {
+        throw new Error('UNAUTHORIZED', { 
+          cause: {
+            code: 'Unauthorised',
+            message: 'Your session has expired. Please log in again.'
+          }
+        });
+      } else {
+        throw new Error('ERROR', { 
+          cause: {
+            code: 'UNKNOWN',
+            message: error.message
+          }
+        });
+      }
+  }
     if (!data.cartItems || data.cartItems.length === 0) {
       redirect(HOME_PAGE_ROUTE);
     }

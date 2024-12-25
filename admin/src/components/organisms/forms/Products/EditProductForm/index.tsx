@@ -126,19 +126,19 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
     );
 
     const [showVariations, setShowVariations] = useState(product.productType === "VARIABLE");
-    const [selectedCategories, setSelectedCategories] = useState<string[]>(
-        product.category ? [product.category] : []
-    );
-    const [availableSubCategories, setAvailableSubCategories] = useState<any[]>([]);
+    // const [selectedCategories, setSelectedCategories] = useState<string[]>(
+    //     product.category ? [product.category] : []
+    // );
+    // const [availableSubCategories, setAvailableSubCategories] = useState<any[]>([]);
 
-    const handleCategoryChange = (values: string[]) => {
-        setSelectedCategories(values);
-        const subCategories = values.reduce((acc: any[], categoryName: string) => {
-            const category = categories.find((cat: any) => cat.name === categoryName);
-            return [...acc, ...(category?.childCategories || [])];
-        }, []);
-        setAvailableSubCategories(subCategories);
-    };
+    // const handleCategoryChange = (values: string[]) => {
+    //     setSelectedCategories(values);
+    //     const subCategories = values.reduce((acc: any[], categoryName: string) => {
+    //         const category = categories.find((cat: any) => cat.name === categoryName);
+    //         return [...acc, ...(category?.childCategories || [])];
+    //     }, []);
+    //     setAvailableSubCategories(subCategories);
+    // };
 
     const handleDisplayImageFileChange = (
         e: React.ChangeEvent<HTMLInputElement>
@@ -236,18 +236,23 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
                         <div className="w-full">
                             <label
                                 className="block text-sm font-medium mb-1"
-                                htmlFor="category"
+                                htmlFor="categories"
                             >
                                 Category
                             </label>
                             <Select
-                                id="category"
-                                name="category"
-                                defaultSelectedKeys={[product.category]}
-                                selectedKeys={selectedCategories}
-                                selectionMode="multiple"
-                                onSelectionChange={(keys) => handleCategoryChange(Array.from(keys) as string[])}
+                                id="categories"
+                                name="categories"
                                 required
+                                selectionMode="multiple"
+                                classNames={{
+                                    base: "w-full",
+                                    trigger: "h-auto min-h-[40px] p-1",
+                                    value: "bg-default-100 px-2 py-1 rounded-md text-sm grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1",
+                                    listbox: "max-h-[400px]"
+                                }}
+                                placeholder="Select categories"
+                                selectedKeys={product.categories}
                             >
                                 {categories?.map((category: any) => (
                                     <SelectItem key={category.name} value={category.name}>
@@ -256,12 +261,8 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
                                 ))}
                             </Select>
                         </div>
-                        <input
-                            type="hidden"
-                            name="categories"
-                            value={JSON.stringify(selectedCategories)}
-                        />
-                        <div className="w-full">
+
+                        {/* <div className="w-full">
                             <label
                                 className="block text-sm font-medium mb-1"
                                 htmlFor="subCategory"
@@ -281,7 +282,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
                                     </SelectItem>
                                 ))}
                             </Select>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="w-full flex gap-2">
                         <div className="w-full">

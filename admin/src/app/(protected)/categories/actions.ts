@@ -13,17 +13,26 @@ import { redirect } from "next/navigation";
 //     return { data, status };
 // }
 
-export async function deleteCategory(categoryName: string) {
-    const { data, status, error } = await axios.categories.deleteCategory(categoryName);
+export async function deleteCategory(categorySlug: string) {
+    const { data, status, error } = await axios.categories.deleteCategory(categorySlug);
 
     if (error) {
         if (error.message?.includes('Unauthorised')) {
-            throw new Error('UNAUTHORIZED', { cause: error.message });
+          throw new Error('UNAUTHORIZED', { 
+            cause: {
+              code: 'Unauthorised',
+              message: 'Your session has expired. Please log in again.'
+            }
+          });
+        } else {
+          throw new Error('ERROR', { 
+            cause: {
+              code: 'UNKNOWN',
+              message: error.message
+            }
+          });
         }
-        else{
-            throw new Error(error.message)
-        }
-    }
+      }
     if (data && status === 200) {
         redirect(CATEGORIES_PAGE_ROUTE);
     }

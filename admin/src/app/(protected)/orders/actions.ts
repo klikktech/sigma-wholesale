@@ -10,12 +10,21 @@ export async function updateOrderStatus(orderId: string, orderStatus: string) {
 
     if (error) {
         if (error.message?.includes('Unauthorised')) {
-            throw new Error('UNAUTHORIZED', { cause: error.message });
+          throw new Error('UNAUTHORIZED', { 
+            cause: {
+              code: 'Unauthorised',
+              message: 'Your session has expired. Please log in again.'
+            }
+          });
+        } else {
+          throw new Error('ERROR', { 
+            cause: {
+              code: 'UNKNOWN',
+              message: error.message
+            }
+          });
         }
-        else{
-            throw new Error(error.message)
-        }
-    }
+      }
     if (data && responseStatus === 200) {
         redirect(ORDERS_PAGE_ROUTE);
     }
@@ -26,12 +35,21 @@ export async function deleteOrder(orderId: string) {
 
     if (error) {
         if (error.message?.includes('Unauthorised')) {
-            throw new Error('UNAUTHORIZED', { cause: error.message });
+          throw new Error('UNAUTHORIZED', { 
+            cause: {
+              code: 'Unauthorised',
+              message: 'Your session has expired. Please log in again.'
+            }
+          });
+        } else {
+          throw new Error('ERROR', { 
+            cause: {
+              code: 'UNKNOWN',
+              message: error.message
+            }
+          });
         }
-        else{
-            throw new Error(error.message)
-        }
-    }
+      }
     if (data && status === 200) {
         redirect(ORDERS_PAGE_ROUTE);
     }
@@ -42,11 +60,20 @@ export async function getOrderDetails(orderId: string) {
 
     if (error) {
         if (error.message?.includes('Unauthorised')) {
-            throw new Error('UNAUTHORIZED', { cause: error.message });
+          throw new Error('UNAUTHORIZED', { 
+            cause: {
+              code: 'Unauthorised',
+              message: 'Your session has expired. Please log in again.'
+            }
+          });
+        } else {
+          throw new Error('ERROR', { 
+            cause: {
+              code: 'UNKNOWN',
+              message: error.message
+            }
+          });
         }
-        else{
-            throw new Error(error.message)
-        }
-    }
+      }
     return { data, status };
 } 

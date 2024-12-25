@@ -111,14 +111,13 @@ export const ProductFormValidator = z.object({
     .string()
     .min(2, { message: "Brand must be at least 2 characters long." })
     .trim(),
-    category: z
-    .string()
-    .min(2, { message: "Category must be at least 2 characters long." })
-    .trim(),
-    subCategory: z
-    .string()
-    .min(2, { message: "Sub Category must be at least 2 characters long." })
-    .trim(),
+    categories: z
+    .array(z.string())
+    .min(1, { message: "Please select at least one category." }),
+    // subCategory: z
+    // .string()
+    // .min(2, { message: "Please select at least one sub category." })
+    // .trim(),
     productType: z
     .string()
     .min(2, { message: "Product type must be at least 2 characters long." })

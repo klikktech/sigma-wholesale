@@ -16,9 +16,13 @@ export const editProductAction = async (
 ) => {
     const displayImage = formData.get("displayImage");
     const images = formData.getAll("images");
-    const validatedFormFields = ProductFormValidator.safeParse(
-        Object.fromEntries(formData)
-    );
+    const formDataObject = Object.fromEntries(formData);
+    const categories = formData.getAll("categories"); // Get all category values as array
+    
+    const validatedFormFields = ProductFormValidator.safeParse({
+      ...formDataObject,
+      categories // Override categories with the array
+    });
 
     let variations = [];
     try {
@@ -49,8 +53,7 @@ export const editProductAction = async (
             price: validatedFormFields.data.price,
             sku: validatedFormFields.data.sku,
             brand: validatedFormFields.data.brand,
-            category: validatedFormFields.data.category,
-            subCategory: validatedFormFields.data.subCategory,
+            categories: validatedFormFields.data.categories,
             isOnSale: validatedFormFields.data.isOnSale as boolean,
             status: validatedFormFields.data.status as "instock" | "outofstock",
             stockQuantity: validatedFormFields.data.stockQuantity,
