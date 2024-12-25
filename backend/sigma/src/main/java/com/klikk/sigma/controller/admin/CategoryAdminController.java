@@ -22,7 +22,7 @@ public class CategoryAdminController {
     @PostMapping()
     public ResponseEntity<String> addCategory(@RequestBody CategoryRequest categoryRequest){
         categoryService.saveCategory(categoryRequest);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Category created");
+        return ResponseEntity.ok("Category created");
     }
 
     @GetMapping("/search/{name}")
@@ -43,6 +43,12 @@ public class CategoryAdminController {
     @GetMapping("/{name}")
     public ResponseEntity<CategoryResponseDto> getCategory(@PathVariable String name){
         return ResponseEntity.ok(categoryService.getCategory(name));
+    }
+
+    @DeleteMapping("/{name}")
+    public ResponseEntity<String> deleteCategory(@PathVariable String name){
+        categoryService.deleteCategory(name);
+        return ResponseEntity.ok("Category deleted");
     }
 
 

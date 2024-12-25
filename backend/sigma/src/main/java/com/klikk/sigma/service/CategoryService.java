@@ -25,6 +25,8 @@ public interface CategoryService {
     List<CategoryResponseDto> searchCategoriesByName(String name);
 
     Page<CategoryResponseDto> getAllCategoriesWithPagination(Pageable pageable);
+
+    void deleteCategory(String name);
 }
 
 

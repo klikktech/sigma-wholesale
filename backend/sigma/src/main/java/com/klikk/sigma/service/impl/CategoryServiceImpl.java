@@ -175,4 +175,10 @@ public class CategoryServiceImpl implements CategoryService {
     public Page<CategoryResponseDto> getAllCategoriesWithPagination(Pageable pageable) {
         return categoryRepository.findAll(pageable).map(this::convertToDto);
     }
+
+    @Override
+    public void deleteCategory(String name) {
+        Category category=categoryRepository.findBySlugAndType(name,"product_cat");
+        categoryRepository.delete(category);
+    }
 }
