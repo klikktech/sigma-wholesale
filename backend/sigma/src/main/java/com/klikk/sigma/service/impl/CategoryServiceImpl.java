@@ -162,4 +162,17 @@ public class CategoryServiceImpl implements CategoryService {
 
         return new PageImpl<>(paginatedProducts, pageable, products.size());
     }
+
+
+    @Override
+    public List<CategoryResponseDto> searchCategoriesByName(String name) {
+        return categoryRepository.findByNameContainingIgnoreCase(name).stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<CategoryResponseDto> getAllCategoriesWithPagination(Pageable pageable) {
+        return categoryRepository.findAll(pageable).map(this::convertToDto);
+    }
 }

@@ -21,6 +21,10 @@ public interface CategoryService {
     CategoryResponseDto getCategory(String name);
 
     List<CategoryResponseDto> getChildCategories(String name);
+
+    List<CategoryResponseDto> searchCategoriesByName(String name);
+
+    Page<CategoryResponseDto> getAllCategoriesWithPagination(Pageable pageable);
 }
 
 

@@ -23,16 +23,9 @@ public class CategoryController {
     @Autowired
     private CategoryServiceImpl categoryServiceImpl;
 
-    @PostMapping()
-    public ResponseEntity<String> addCategory(@RequestBody CategoryRequest categoryRequest){
-        categoryServiceImpl.saveCategory(categoryRequest);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Category created");
-    }
 
-    @GetMapping()
-    public ResponseEntity<List<CategoryResponseDto>> getAllCategories(){
-        return ResponseEntity.ok(categoryServiceImpl.getAllCategories());
-    }
+
+
 
     @GetMapping("/{name}/products")
     public ResponseEntity<Page<CategoryProductsDto>> getProductsOfCategory(@PathVariable String name, Pageable pageable){
@@ -44,10 +37,7 @@ public class CategoryController {
         return ResponseEntity.ok(categoryServiceImpl.getProductsOfTag(name, pageable));
     }
 
-    @GetMapping("/{name}")
-    public ResponseEntity<CategoryResponseDto> getCategory(@PathVariable String name){
-        return ResponseEntity.ok(categoryServiceImpl.getCategory(name));
-    }
+
 
     @GetMapping("/{name}/childCategories")
     public ResponseEntity<List<CategoryResponseDto>> getChildCategories(@PathVariable String name){
