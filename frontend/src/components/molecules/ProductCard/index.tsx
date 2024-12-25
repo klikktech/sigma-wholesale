@@ -33,7 +33,7 @@ const ProductCard = (props: Props) => {
         />
         <Chip
           className={`
-            capitalize absolute top-3 right-6 shadow-sm
+            capitalize absolute top-3 shadow-sm right-10
             ${props.stockStatus === 'instock' 
               ? 'bg-green-500 text-white' 
               : 'bg-red-500 text-white'
