@@ -90,6 +90,10 @@ public class Product {
     @Column(name = "average_rating")
     private double averageRating;
 
+    @ManyToOne
+    @JoinColumn(name = "brand_id",referencedColumnName = "id")
+    private Brand brand;
+
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "parent")
     private List<Variation> variations;
 

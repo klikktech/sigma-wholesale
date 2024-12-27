@@ -1,5 +1,6 @@
 package com.klikk.sigma.controller;
 
+import com.klikk.sigma.dto.BrandProductDto;
 import com.klikk.sigma.dto.BrandRequest;
 import com.klikk.sigma.entity.Brand;
 import com.klikk.sigma.service.BrandService;
@@ -26,6 +27,12 @@ public class BrandController {
     @PostMapping
     public ResponseEntity<String> addBrand(@RequestPart String name, @RequestPart(value = "image") MultipartFile image) {
         brandService.addBrand(name,image);
+        return ResponseEntity.ok("Brand added successfully!");
+    }
+
+    @PostMapping("/link")
+    public ResponseEntity<String> addBrandToProduct(@RequestBody BrandProductDto brandProductDto) {
+        brandService.addBrandToProduct(brandProductDto);
         return ResponseEntity.ok("Brand added successfully!");
     }
 

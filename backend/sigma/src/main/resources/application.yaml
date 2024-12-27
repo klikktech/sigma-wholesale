@@ -3,7 +3,7 @@ server:
 aws:
   s3:
     bucketName: "sigmaimages"
-    productImagesPath: "products"
+    productImagesPath: "productimages"
     accessKeyId: "AKIATX3PIG55LAGWCXV7"
     secretKey: "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"
 
