@@ -21,6 +21,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     Optional<Product> findByDetails(String details);
 
+    Page<Product> findAllByOrderByCreatedAtDesc(Pageable pageable);
+
     boolean existsByDetails(String details);
 
     @Query("SELECT p FROM Product p WHERE p.name LIKE %:keyword%")

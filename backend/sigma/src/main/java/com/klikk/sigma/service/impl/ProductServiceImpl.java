@@ -128,13 +128,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<ProductResponseDto> getAllProducts(Pageable pageable) {
         // Fetch products in a paginated way from the repository
-        Page<Product> products = productRepository.findAll(pageable);
+        Page<Product> products = productRepository.findAllByOrderByCreatedAtDesc(pageable);
 
-        // Map and sort by status (instock first)
         List<ProductResponseDto> sortedDtos = products
                 .stream()
-                .map(this::buildProductResponse)
-                .sorted(Comparator.comparing(product -> "instock".equalsIgnoreCase(product.getStatus()) ? 0 : 1))
+                .map(this::buildProductResponse) // Map to DTO
+                .sorted(Comparator.comparing(dto -> "instock".equalsIgnoreCase(dto.getStatus()) ? 0 : 1))
                 .toList();
 
         // Return as a page
@@ -202,12 +201,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<ProductsResponse> getAllProductsForAdmin(Pageable pageable) {
         // Fetch products in a paginated way
-        Page<Product> productsPage = productRepository.findAll(pageable);
+        Page<Product> productsPage = productRepository.findAllByOrderByCreatedAtDesc(pageable);
 
         // Map each product to ProductsResponse
         List<ProductsResponse> productsResponses = productsPage.getContent()
                 .stream()
-                .sorted(Comparator.comparing(Product::getCreatedAt).reversed()) // Sorting by createdAt in reverse order
                 .map(this::buildAdminProductResponse)
                 .collect(Collectors.toList());
 

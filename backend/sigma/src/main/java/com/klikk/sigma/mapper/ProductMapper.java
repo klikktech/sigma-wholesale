@@ -30,11 +30,12 @@ public abstract class ProductMapper {
     public abstract Product productRequestToProduct(ProductRequestDto productRequestDto);
 
 //    @Mapping(source = "displayImage", target = "displayImage", qualifiedByName = "mapDisplayImage")
-//    @Mapping(target = "images", ignore = true)
+    @Mapping(target = "brand", ignore = true)
     public abstract ProductsResponse adminAllProductsResponse(Product product);
 
 //    @Mapping(target = "displayImage", ignore = true)
 //    @Mapping(target = "images", ignore = true)
+    @Mapping(target = "brand", ignore = true)
     public abstract ProductsResponse adminProductsResponse(Product product);
 
     public abstract CategoryProductsDto productToCategoryProductsDto(Product product);
