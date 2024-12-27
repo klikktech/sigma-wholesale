@@ -19,7 +19,7 @@ const OrdersPage = async () => {
       const { data: itemsList, error: itemsError } = await axios.products.getOrderItemsList(order.id);
       if (itemsError) {
         if (itemsError.message?.includes('Unauthorised')) {
-          return <UnauthorizedError />
+          return <UnauthorizedError key={order.id} />
         } else {
           throw new Error(itemsError.message)
         }
