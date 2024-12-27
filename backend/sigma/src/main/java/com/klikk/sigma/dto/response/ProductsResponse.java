@@ -1,7 +1,5 @@
 package com.klikk.sigma.dto.response;
 
-import com.klikk.sigma.entity.Attachment;
-import com.klikk.sigma.entity.Category;
 import com.klikk.sigma.type.ProductType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,7 +26,7 @@ public class ProductsResponse {
 
     private String details;
 
-    private Category category;
+    private List<CategoryResponseDto> categories;
 
     private String price;
 
@@ -51,4 +49,6 @@ public class ProductsResponse {
     private ProductType productType;
 
     private List<VariationResponseDto> variations;
+
+    private String brand;
 }

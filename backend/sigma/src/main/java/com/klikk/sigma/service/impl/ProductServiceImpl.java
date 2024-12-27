@@ -4,10 +4,12 @@ import com.klikk.sigma.dto.request.ProductRequestDto;
 import com.klikk.sigma.dto.request.UpdateProductAdminRequest;
 import com.klikk.sigma.dto.response.*;
 import com.klikk.sigma.entity.Attachment;
+import com.klikk.sigma.entity.Brand;
 import com.klikk.sigma.entity.Product;
 import com.klikk.sigma.entity.Variation;
 import com.klikk.sigma.exception.NotFoundException;
 import com.klikk.sigma.mapper.AttachmentMapper;
+import com.klikk.sigma.mapper.CategoryMapper;
 import com.klikk.sigma.mapper.ProductMapper;
 import com.klikk.sigma.mapper.VariationMapper;
 import com.klikk.sigma.repository.*;
@@ -66,6 +68,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private AttachmentMapper attachmentMapper;
+
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     @Override
     public ProductResponseDto saveProduct(ProductRequestDto productRequest, MultipartFile displayFile, List<MultipartFile> otherFiles) throws IOException {
@@ -175,6 +180,14 @@ public class ProductServiceImpl implements ProductService {
                 .toList();
         responseDto.setImages(nonPrimaryImages);
         responseDto.setDisplayImage(primaryImage);
+        responseDto.setCategories(product.getCategories().stream().map(category -> categoryMapper.categoryToCategoryResponseDto(category)).toList());
+        if(product.getBrand()==null){
+            responseDto.setBrand("No brand");
+        }
+        else{
+            responseDto.setBrand(product.getBrand().getName());
+        }
+
         return responseDto;
     }
 
@@ -291,6 +304,13 @@ public class ProductServiceImpl implements ProductService {
 
         productRepository.delete(product.get());
         return new SuccessResponse(LocalDateTime.now(),"Product deleted successfully");
+    }
+
+    @Override
+    public Page<ProductResponseDto> getProductsByBrand(String brand, Pageable pageable) {
+        Brand queryBrand=brandRepository.findByName(brand).orElseThrow(() -> new NotFoundException("Brand not found"));
+        Page<Product> products = productRepository.findByBrand(queryBrand, pageable);
+        return products.map(this::buildProductResponse);
     }
 
 

@@ -35,4 +35,6 @@ public interface ProductService {
     SuccessResponse updateProduct(UpdateProductAdminRequest request, MultipartFile displayImage, List<MultipartFile> otherFiles);
 
     SuccessResponse deleteProduct(String details);
+
+    Page<ProductResponseDto> getProductsByBrand(String brand, Pageable pageable);
 }

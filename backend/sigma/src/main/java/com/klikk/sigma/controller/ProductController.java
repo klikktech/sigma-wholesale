@@ -45,4 +45,9 @@ public class ProductController {
     public ResponseEntity<List<VariationResponseDto>> getVariations(@PathVariable String details) {
         return ResponseEntity.ok().body(this.productService.getProductVariations(details));
     }
+
+    @GetMapping("/brands/{brand}")
+    public ResponseEntity<Page<ProductResponseDto>> getProductsByBrand(@PathVariable String brand, Pageable pageable) {
+        return ResponseEntity.ok().body(productService.getProductsByBrand(brand, pageable));
+    }
 }
