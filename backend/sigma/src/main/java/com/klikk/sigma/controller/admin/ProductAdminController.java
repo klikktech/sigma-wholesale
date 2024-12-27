@@ -36,6 +36,7 @@ public class ProductAdminController {
     }
 
     @GetMapping("/{details}")
+    @PreAuthorize("hasAnyAuthority('admin:read')")
     public ResponseEntity<ProductsResponse> getProduct(@PathVariable String details) {
         return ResponseEntity.ok().body((productService.getProductForAdmin(details)));
     }
@@ -63,7 +64,7 @@ public class ProductAdminController {
     }
 
     @DeleteMapping("/{details}")
-    @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
+    @PreAuthorize("hasAnyAuthority('admin:write','admin:put','admin:delete')")
     public ResponseEntity<SuccessResponse> deleteProduct(@PathVariable String details){
         return ResponseEntity.ok().body((productService.deleteProduct(details)));
     }

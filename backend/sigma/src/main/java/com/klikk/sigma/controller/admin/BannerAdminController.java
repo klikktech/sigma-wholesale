@@ -8,6 +8,7 @@ import com.klikk.sigma.dto.response.SuccessResponse;
 import com.klikk.sigma.service.BannerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,7 +24,9 @@ public class BannerAdminController {
     @Autowired
     private ObjectMapper objectMapper;
 
+
     @PostMapping()
+    @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
     public ResponseEntity<String> addBanner(@RequestPart("banner") String bannerString, @RequestPart(value = "image",required = false) MultipartFile image) throws JsonProcessingException {
         BannerAddDto bannerAddDto = objectMapper.readValue(bannerString, BannerAddDto.class);
         bannerService.addBanner(bannerAddDto,image);
@@ -31,12 +34,14 @@ public class BannerAdminController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('admin:write','admin:put','admin:delete')")
     public SuccessResponse deleteBanner(@PathVariable String id){
         bannerService.deleteBanner(id);
         return new SuccessResponse(LocalDateTime.now(),"Banner deleted successfully!");
     }
 
     @PutMapping()
+    @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
     public SuccessResponse updateBanner(@RequestPart("banner") BannerRequest bannerRequest, @RequestPart(value = "image",required = false) MultipartFile image){
         bannerService.updateBanner(bannerRequest,image);
         return new SuccessResponse(LocalDateTime.now(),"Banner updated successfully!");

@@ -49,7 +49,7 @@ public class OrderAdminController {
 
 
     @DeleteMapping("/{orderId}")
-    @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
+    @PreAuthorize("hasAnyAuthority('admin:write','admin:put','admin:delete')")
     public ResponseEntity<SuccessResponse> deleteProduct(@PathVariable String orderId){
         try {
             return ResponseEntity.ok().body((orderService.deleteOrder(orderId)));
