@@ -26,10 +26,10 @@ const Products = ({ products, totalPages, currentPage, size, category, brand, se
     queryParams.set('size', size.toString());
     if (searchkey) queryParams.set('keyword', searchkey);
 
-    const baseUrl = brand
-      ? `/categories/tag/${brand}/products`
-      : category
+    const baseUrl = category
         ? `/categories/${category}/products`
+        : brand
+        ? `/products/brands/${brand}`
         : '/products';
 
     console.log(brand, category, baseUrl, "baseUrl");

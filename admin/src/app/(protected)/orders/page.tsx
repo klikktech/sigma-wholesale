@@ -1,6 +1,7 @@
 import Table from "@/components/organisms/Table";
 import { ORDER_COLUMNS, renderCell } from "./columns";
 import { axios } from "@/lib/axios";
+import UnauthorizedError from "@/components/molecules/Error";
 
 export const dynamic = 'force-dynamic';
 
@@ -20,9 +21,8 @@ const OrdersPage = async ({ searchParams }: Props) => {
   console.log(data, "data")
   if (error) {
     if (error.message?.includes('Unauthorised')) {
-      throw new Error('Unauthorised', { cause: error.message });
-    }
-    else{
+      return <UnauthorizedError />
+    } else {
       throw new Error(error.message)
     }
   }

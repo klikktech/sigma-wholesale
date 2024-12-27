@@ -1,4 +1,5 @@
 import OrderCards from "@/components/organisms/ViewOrders";
+import UnauthorizedError from "@/components/molecules/Error";
 import { axios } from "@/lib/axios";
 
 const OrdersPage = async () => {
@@ -6,19 +7,9 @@ const OrdersPage = async () => {
   console.log(ordersList, "ordersList")
   if (ordersError) {
     if (ordersError.message?.includes('Unauthorised')) {
-      throw new Error('UNAUTHORIZED', {
-        cause: {
-          code: 'Unauthorised',
-          message: 'Your session has expired. Please log in again.'
-        }
-      });
+      return <UnauthorizedError />
     } else {
-      throw new Error('ERROR', {
-        cause: {
-          code: 'UNKNOWN',
-          message: ordersError.message
-        }
-      });
+      throw new Error(ordersError.message)
     }
   }
 
@@ -26,28 +17,17 @@ const OrdersPage = async () => {
   const ordersWithItems = await Promise.all(
     ordersList.map(async (order: any) => {
       const { data: itemsList, error: itemsError } = await axios.products.getOrderItemsList(order.id);
-      console.log(itemsList, "itemsList")
       if (itemsError) {
         if (itemsError.message?.includes('Unauthorised')) {
-          throw new Error('UNAUTHORIZED', {
-            cause: {
-              code: 'Unauthorised',
-              message: 'Your session has expired. Please log in again.'
-            }
-          });
+          return <UnauthorizedError />
         } else {
-          throw new Error('ERROR', {
-            cause: {
-              code: 'UNKNOWN',
-              message: itemsError.message
-            }
-          });
+          throw new Error(itemsError.message)
         }
-      }
+      } 
       let totalCount = 0;
-      itemsList.map((item: any) => {
+      itemsList.forEach((item: any) => {
         totalCount += item.quantity
-      })
+      });
       return { ...order, itemsList, totalCount };
     })
   );

@@ -1,6 +1,7 @@
 import React from "react";
 import AddCategoryForm from "@/components/organisms/forms/categories/AddCategoryForm";
 import { axios } from "@/lib/axios";
+import UnauthorizedError from "@/components/molecules/Error";
 
 export const dynamic = 'force-dynamic';
 
@@ -10,19 +11,9 @@ const AddCategoryPage = async () => {
 
   if (categoriesError) {
     if (categoriesError.message?.includes('Unauthorised')) {
-      throw new Error('UNAUTHORIZED', { 
-        cause: {
-          code: 'Unauthorised',
-          message: 'Your session has expired. Please log in again.'
-        }
-      });
+      return <UnauthorizedError />
     } else {
-      throw new Error('ERROR', { 
-        cause: {
-          code: 'UNKNOWN',
-          message: categoriesError.message
-        }
-      });
+      throw new Error(categoriesError.message)  
     }
   }
   return (

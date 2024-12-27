@@ -177,6 +177,11 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
         );
     };
 
+    // Extract category names from product.categories
+    const defaultCategories = product.categories
+        ?.filter((cat: any) => cat.type === 'product_cat')
+        ?.map((cat: any) => cat.name) || [];
+
     return (
         <form ref={formRef} action={dispatch}>
             <div className="flex gap-4">
@@ -252,7 +257,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
                                     listbox: "max-h-[400px]"
                                 }}
                                 placeholder="Select categories"
-                                selectedKeys={product.categories}
+                                defaultSelectedKeys={defaultCategories}
                             >
                                 {categories?.map((category: any) => (
                                     <SelectItem key={category.name} value={category.name}>

@@ -1,3 +1,4 @@
+import UnauthorizedError from "@/components/molecules/Error";
 import EditProductForm from "@/components/organisms/forms/Products/EditProductForm";
 import { axios } from "@/lib/axios";
 import React from "react";
@@ -10,55 +11,24 @@ const EditProductPage = async ({ params }: { params: { details: string } }) => {
 
   if (categoriesError) {
     if (categoriesError.message?.includes('Unauthorised')) {
-      throw new Error('UNAUTHORIZED', { 
-        cause: {
-          code: 'Unauthorised',
-          message: 'Your session has expired. Please log in again.'
-        }
-      });
-    }
-    else{
-      throw new Error('ERROR', { 
-        cause: {
-          code: 'UNKNOWN',
-          message: categoriesError.message
-        }
-      });
+      return <UnauthorizedError />
+    } else {
+      throw new Error(categoriesError.message)
     }
   }
   if (brandsError) {
     if (brandsError.message?.includes('Unauthorised')) {
-      throw new Error('UNAUTHORIZED', { 
-        cause: {
-          code: 'Unauthorised',
-          message: 'Your session has expired. Please log in again.'
-        }
-      });    }
-      else{
-        throw new Error('ERROR', { 
-          cause: {
-            code: 'UNKNOWN',
-            message: brandsError.message
-          }
-        });
-      }
+      return <UnauthorizedError />
+    } else {
+      throw new Error(brandsError.message)
+    }
   }
   if (productError) {
     if (productError.message?.includes('Unauthorised')) {
-      throw new Error('UNAUTHORIZED', { 
-        cause: {
-          code: 'Unauthorised',
-          message: 'Your session has expired. Please log in again.'
-        }
-      });    }
-      else{
-        throw new Error('ERROR', { 
-          cause: {
-            code: 'UNKNOWN',
-            message: productError.message
-          }
-        });
-      }
+      return <UnauthorizedError />
+    } else {
+      throw new Error(productError.message)
+    }
   }
   
   return (

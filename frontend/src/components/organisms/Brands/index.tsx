@@ -19,7 +19,7 @@ const Brands = async () => {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
                 {data.map((brand: Brand, index: number) => (
                     <Link
-                        href={`/categories/tag/${brand.name}/products?page=0&size=16`}
+                        href={`/products/brands/${brand.name}?page=0&size=16`}
                         key={index}
                         className="group relative bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 ease-in-out border border-gray-300"
                     >

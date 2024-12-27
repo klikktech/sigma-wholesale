@@ -36,7 +36,7 @@ export const ORDER_PRODUCTS_URL = (id: string) => `/orderItems/${id}`;
 export const SEARCH_PRODUCTS_URL = (keyword: string) => `/products/search/${keyword}`
 export const USER_UPDATE_URL = '/users/update'
 export const PRODUCT_BY_CATEGORY_URL = (category: string) => `/categories/${category}/products`;
-export const PRODUCT_BY_BRAND_URL = (brand:string) => `/categories/tag/${brand}/products`;
+export const PRODUCT_BY_BRAND_URL = (brand:string) => `/products/brands/${brand}`;
 export const ADDRESS_URL = (type: string) => `/users/addresses?type=${type}`;
 export const DELETE_ADDRESS_URL = (address: string) =>`/address?address=${address}`;
 export const GET_BRANDS_URL = `/brands`

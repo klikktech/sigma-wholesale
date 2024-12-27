@@ -1,25 +1,16 @@
 import { axios } from "@/lib/axios";
 import UserDetails from "@/components/organisms/UserDetails";
+import UnauthorizedError from "@/components/molecules/Error";
 const fetchUserDetails = async () => {
   const { data, error } = await axios.users.getUserDetails();
   console.log("data", data)
   if (error) {
     if (error.message?.includes('Unauthorised')) {
-      throw new Error('UNAUTHORIZED', { 
-        cause: {
-          code: 'Unauthorised',
-          message: 'Your session has expired. Please log in again.'
-        }
-      });
+      return <UnauthorizedError />
     } else {
-      throw new Error('ERROR', { 
-        cause: {
-          code: 'UNKNOWN',
-          message: error.message
-        }
-      });
+      throw new Error(error.message)
     }
-}
+  } 
   return data;
 };
 

@@ -4,6 +4,7 @@ import { renderUserTableCell, USER_COLUMNS } from "./columns";
 import Link from "next/link";
 import Button from "@/components/atoms/Button";
 import { ADD_USER_PAGE_ROUTE } from "@/utils/routes";
+import UnauthorizedError from "@/components/molecules/Error";
 
 export const dynamic = 'force-dynamic';
 
@@ -22,19 +23,9 @@ const UsersPage = async ({ searchParams }: Props) => {
 
     if (error) {
       if (error.message?.includes('Unauthorised')) {
-        throw new Error('UNAUTHORIZED', { 
-          cause: {
-            code: 'Unauthorised',
-            message: 'Your session has expired. Please log in again.'
-          }
-        });
+        return <UnauthorizedError />
       } else {
-        throw new Error('ERROR', { 
-          cause: {
-            code: 'UNKNOWN',
-            message: error.message
-          }
-        });
+        throw new Error(error.message)
       }
     }
   return (

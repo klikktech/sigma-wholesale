@@ -1,3 +1,4 @@
+import UnauthorizedError from "@/components/molecules/Error";
 import EditUserForm from "@/components/organisms/forms/users/EditUserForm";
 import { axios } from "@/lib/axios";
 import React from "react";
@@ -7,19 +8,9 @@ const EditUserPage = async ({ params }: { params: { email: string } }) => {
   console.log(data,"edit user")
   if (error) {
     if (error.message?.includes('Unauthorised')) {
-      throw new Error('UNAUTHORIZED', { 
-        cause: {
-          code: 'Unauthorised',
-          message: 'Your session has expired. Please log in again.'
-        }
-      });
+      return <UnauthorizedError />
     } else {
-      throw new Error('ERROR', { 
-        cause: {
-          code: 'UNKNOWN',
-          message: error.message
-        }
-      });
+      throw new Error(error.message)
     }
   }
   

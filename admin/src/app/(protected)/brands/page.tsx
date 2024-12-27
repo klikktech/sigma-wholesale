@@ -1,3 +1,4 @@
+import UnauthorizedError from "@/components/molecules/Error";
 import Brands from "@/components/organisms/Brands";
 import { axios } from "@/lib/axios";
 
@@ -7,21 +8,11 @@ const BrandsPage = async () => {
     const { data, error } = await axios.brands.getBrandsList();
     if (error) {
       if (error.message?.includes('Unauthorised')) {
-        throw new Error('UNAUTHORIZED', { 
-          cause: {
-            code: 'Unauthorised',
-            message: 'Your session has expired. Please log in again.'
-          }
-        });
+        return <UnauthorizedError />
       } else {
-        throw new Error('ERROR', { 
-          cause: {
-            code: 'UNKNOWN',
-            message: error.message
-          }
-        });
+        throw new Error(error.message)
       }
-  }
+    }
   return (
     <div>
         <Brands brands={data} />

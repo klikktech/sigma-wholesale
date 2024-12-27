@@ -1,4 +1,3 @@
-import ErrorComponent from '@/components/atoms/ErrorComponent';
 import Products from '@/components/organisms/Products';
 import { axios } from '@/lib/axios';
 import React from 'react';

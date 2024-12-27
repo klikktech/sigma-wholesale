@@ -1,6 +1,7 @@
 import AddProductForm from "@/components/organisms/forms/Products/AddProductForm";
 import React from "react";
 import { axios } from "@/lib/axios";
+import UnauthorizedError from "@/components/molecules/Error";
 
 export const dynamic = 'force-dynamic';
 
@@ -10,36 +11,17 @@ const AddUserPage = async () => {
 
   if (categoriesError) {
     if (categoriesError.message?.includes('Unauthorised')) {
-      throw new Error('UNAUTHORIZED', { 
-        cause: {
-          code: 'Unauthorised',
-          message: 'Your session has expired. Please log in again.'
-        }
-      });
+      return <UnauthorizedError />
+    } else {
+      throw new Error(categoriesError.message)
     }
-    else{
-      throw new Error('ERROR', { 
-        cause: {
-          code: 'UNKNOWN',
-          message: categoriesError.message
-        }
-      });    }
   }
   if (brandsError) {
     if (brandsError.message?.includes('Unauthorised')) {
-      throw new Error('UNAUTHORIZED', { 
-        cause: {
-          code: 'Unauthorised',
-          message: 'Your session has expired. Please log in again.'
-        }
-      });    }
-    else{
-      throw new Error('ERROR', { 
-        cause: {
-          code: 'UNKNOWN',
-          message: brandsError.message
-        }
-      });    }
+      return <UnauthorizedError />
+    } else {
+      throw new Error(brandsError.message)
+    }
   }
 
   return (
