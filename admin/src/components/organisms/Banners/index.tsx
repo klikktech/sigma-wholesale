@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, Button, Input, Modal, Image, ModalHeader, ModalBody, ModalFooter, ModalContent, Spacer, Textarea } from '@nextui-org/react';
 import { addBanner, deleteBanner } from './action';
+import FormMessage from '@/components/molecules/FormMessage';
 
 
 interface Banner {
@@ -60,6 +61,14 @@ const Banners = ({ bannersList }: { bannersList: Banner[] }) => {
     const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
+            const maxSize = 5 * 1024 * 1024;
+            
+            if (file.size > maxSize) {
+                <FormMessage message={{ message: "File size must be less than 5MB" }} />
+                e.target.value = '';
+                return;
+            }
+
             setSelectedFile(file);
             const image = URL.createObjectURL(file);
             setNewBanner({ ...newBanner, image });

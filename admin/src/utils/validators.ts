@@ -162,6 +162,11 @@ const ACCEPTED_IMAGE_TYPES = [
   "image/jpg",
   "image/png",
   "image/webp",
+  "video/mp4",
+  "video/webm",
+  "video/mov",
+  "video/avi",
+  "application/octet-stream"
 ];
 
 export const ProductImagesValidator = z.object({
@@ -174,7 +179,7 @@ export const ProductImagesValidator = z.object({
 
     .refine(
       (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-      ".jpg, .jpeg, .png and .webp files are accepted."
+      ".jpg, .jpeg, .png and .webp .mp4, .webm, .mov, .avi files are accepted."
     )
     .refine((file) => file.size <= MAX_FILE_SIZE, `Max file size is 5MB.`),
 
@@ -186,13 +191,26 @@ export const ProductImagesValidator = z.object({
         files.every((file) => file.size > 0 && file.name !== undefined),
       "One or more files are invalid or empty."
     )
-  // .refine(
-  //   (files) =>
-  //     files.every((file) => ACCEPTED_IMAGE_TYPES.includes(file?.type)),
-  //   "All files must be of types: .jpg, .jpeg, .png, or .webp."
-  // )
-  // .refine(
-  //   (files) => files.every((file) => file.size <= MAX_FILE_SIZE),
-  //   `Each file must be 5MB or smaller.`
-  // ),
+});
+export const EditProductImagesValidator = z.object({
+  displayImage: z
+    .any()
+    .nullable()
+    .refine((file) => {
+      if (!file) return true; // Allow null for existing images
+      if (file.size === 0) return false;
+      return ACCEPTED_IMAGE_TYPES.includes(file?.type);
+    }, ".jpg, .jpeg, .png and .webp files are accepted."),
+
+  images: z
+    .array(z.any())
+    .refine(
+      (files) => {
+        if (files.length === 0) return true; // Allow empty array for existing images
+        return files.every(file => 
+          file.size > 0 && ACCEPTED_IMAGE_TYPES.includes(file.type)
+        );
+      },
+      "One or more files are invalid or empty."
+    )
 });

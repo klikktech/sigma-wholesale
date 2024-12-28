@@ -7,6 +7,7 @@ import { Input, Spacer, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter
 import { BRANDS_PAGE_ROUTE } from '@/utils/routes';
 import { useRouter } from 'next/navigation';
 import Button from '@/components/atoms/Button';
+import FormMessage from '@/components/molecules/FormMessage';
 
 const Brands = ({ brands }: { brands: Brand[] }) => {
     const [editingBrand, setEditingBrand] = useState<Brand | null>(null);
@@ -21,8 +22,17 @@ const Brands = ({ brands }: { brands: Brand[] }) => {
         setEditingBrand(brand);
     };
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files?.[0]) {
-            setNewImage(e.target.files[0]);
+        const file = e.target.files?.[0];
+        if (file) {
+            const maxSize = 5 * 1024 * 1024;
+            
+            if (file.size > maxSize) {
+                <FormMessage message={{ message: "Image size must be less than 5MB" }} />
+                e.target.value = '';
+                return;
+            }
+            
+            setNewImage(file);
         }
     };
     const handleSubmit = async () => {

@@ -5,23 +5,32 @@ import { PRODUCTS_PAGE_ROUTE } from "@/utils/routes";
 import { Message, ProductDetails } from "@/utils/types";
 import {
     ProductFormValidator,
-    ProductImagesValidator,
 } from "@/utils/validators";
 import { redirect } from "next/navigation";
+
+// Utility function to convert URL to File
+async function urlToFile(url: string, filename: string): Promise<File> {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return new File([blob], filename, { type: blob.type });
+}
 
 export const editProductAction = async (
     details: string,
     state: undefined | Message,
     formData: FormData,
 ) => {
-    const displayImage = formData.get("displayImage");
-    const images = formData.getAll("images");
-    const formDataObject = Object.fromEntries(formData);
-    const categories = formData.getAll("categories"); // Get all category values as array
+    const displayImage = formData.get("displayImage") as File;
+    const displayImageUrl = formData.get("displayImageUrl") as string;
+    const images = formData.getAll("images") as File[];
+    const existingImageUrls = formData.get("existingImageUrls") as string;
     
+    const formDataObject = Object.fromEntries(formData);
+    const categories = formData.getAll("categories");
+
     const validatedFormFields = ProductFormValidator.safeParse({
-      ...formDataObject,
-      categories // Override categories with the array
+        ...formDataObject,
+        categories
     });
 
     let variations = [];
@@ -38,15 +47,7 @@ export const editProductAction = async (
         return { error: validatedFormFields.error.errors[0].message as string };
     }
 
-    const validatedImages = ProductImagesValidator.safeParse({
-        displayImage,
-        images,
-    });
-
-    if (validatedImages.error)
-        return { error: validatedImages.error.errors[0].message as string };
-
-    if (validatedFormFields.success && validatedImages.success) {
+    if (validatedFormFields.success) {
         const payload: ProductDetails = {
             name: validatedFormFields.data.name,
             salePrice: validatedFormFields.data.salePrice,
@@ -66,17 +67,47 @@ export const editProductAction = async (
             details: details,
         };
 
-        const formData = new FormData();
-        formData.append("product", JSON.stringify(payload));
-        if (validatedImages.data.displayImage) {
-            formData.append("displayImage", validatedImages.data.displayImage);
+        const formDataToSend = new FormData();
+        formDataToSend.append("product", JSON.stringify(payload));
+        
+        // Handle display image
+        if (displayImage?.size > 0) {
+            formDataToSend.append("displayImage", displayImage);
+        } else if (displayImageUrl) {
+            const displayImageFile = await urlToFile(
+                displayImageUrl,
+                `display-${validatedFormFields.data.sku}.jpg`
+            );
+            formDataToSend.append("displayImage", displayImageFile);
         }
-        validatedImages.data.images.forEach((image) => {
-            formData.append("images", image);
+        
+        // Handle additional images
+        console.log(existingImageUrls, "existing image urls");
+        const existingUrls = existingImageUrls ? JSON.parse(existingImageUrls) : [];
+        const existingImageFiles = await Promise.all(
+            existingUrls.map(async (url: string, index: number) => {
+                return await urlToFile(
+                    url,
+                    `image-${validatedFormFields.data.sku}-${index}.jpg`
+                );
+            })
+        );
+        
+        // Add converted existing images
+        existingImageFiles.forEach(file => {
+            formDataToSend.append("images", file);
         });
 
-        const { data, status, error } = await axios.products.updateProduct(formData);
+        // Add new images directly
+        const newImages = formData.getAll("newImages") as File[];
+        newImages.forEach(file => {
+            formDataToSend.append("images", file);
+        });
 
+        console.log(formDataToSend, "edit product form data");
+        
+        const { data, status, error } = await axios.products.updateProduct(formDataToSend);
+        console.log(data, status, error);
         if (error) {
             return { error: error.message };
         }

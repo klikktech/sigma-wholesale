@@ -108,6 +108,18 @@ interface EditProductFormProps {
 
 const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, brands }) => {
     const formAction = async (prevState: any, formData: FormData) => {
+        if (!displayImageFile && dataUrl) {
+            formData.set('displayImageUrl', dataUrl);
+        }
+
+        if (existingImageUrls.length > 0) {
+            formData.set('existingImageUrls', JSON.stringify(existingImageUrls));
+        }
+
+        newImageFiles.forEach(file => {
+            formData.append('newImages', file);
+        });
+
         return editProductAction(product.details as string, undefined, formData);
     };
 
@@ -118,12 +130,15 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
 
     const displayImageFileInput = useRef<HTMLInputElement>(null);
     const imagesFileInput = useRef<HTMLInputElement>(null);
+    const [displayImageFile, setDisplayImageFile] = useState<File | null>(null);
     const [dataUrl, setDataUrl] = useState<string | null>(
         product.displayImage?.imageUrl || null
     );
-    const [imagesDataUrl, setImagesDataUrl] = useState<string[] | null>(
-        product.images || null
+    const [existingImageUrls, setExistingImageUrls] = useState<string[]>(
+        product.images?.map((img:any) => img.imageUrl) || []
     );
+    const [newImageFiles, setNewImageFiles] = useState<File[]>([]);
+    const [newImageUrls, setNewImageUrls] = useState<string[]>([]);
 
     const [showVariations, setShowVariations] = useState(product.productType === "VARIABLE");
     // const [selectedCategories, setSelectedCategories] = useState<string[]>(
@@ -144,14 +159,19 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
         e: React.ChangeEvent<HTMLInputElement>
     ) => {
         const file = e.target.files?.[0];
-        if (file) generateDataUrlForDisplayImage(file, setDataUrl);
+        if (file) {
+            setDisplayImageFile(file);
+            generateDataUrlForDisplayImage(file, setDataUrl);
+        }
     };
 
     const handleImagesFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
         if (files && files.length > 0) {
+            const newFiles = Array.from(files);
+            setNewImageFiles(prev => [...prev, ...newFiles]);
             generateDataUrlForImages(files, (newUrls) => {
-                setImagesDataUrl(prevUrls => [...(prevUrls || []), ...newUrls]);
+                setNewImageUrls(prev => [...prev, ...newUrls]);
             });
         }
     };
@@ -171,10 +191,13 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
         }
     };
 
-    const removeImage = (indexToRemove: number) => {
-        setImagesDataUrl(prevUrls =>
-            prevUrls ? prevUrls.filter((_, index) => index !== indexToRemove) : null
-        );
+    const removeImage = (index: number, isExisting: boolean) => {
+        if (isExisting) {
+            setExistingImageUrls(prev => prev.filter((_, i) => i !== index));
+        } else {
+            setNewImageFiles(prev => prev.filter((_, i) => i !== index));
+            setNewImageUrls(prev => prev.filter((_, i) => i !== index));
+        }
     };
 
     // Extract category names from product.categories
@@ -432,30 +455,34 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
 
                         {dataUrl && (
                             <div className="flex justify-end gap-2">
-                                {imagesDataUrl?.length ? (
-                                    imagesDataUrl?.map((imageUrl, index) => (
-                                        <div
-                                            key={`image-${index}`}
-                                            className="w-16 h-16 relative flex items-center justify-center space-x-4 rounded-lg border p-1"
+                                {existingImageUrls.map((imageUrl, index) => (
+                                    <div key={`existing-${index}`} className="w-16 h-16 relative">
+                                        <VideoPreview dataUrl={imageUrl} />
+                                        <button
+                                            type="button"
+                                            onClick={() => removeImage(index, true)}
+                                            className="absolute -top-2 -right-2 bg-danger-500 text-white rounded-full w-5 h-5"
                                         >
-                                            <VideoPreview dataUrl={imageUrl} />
-                                            <button
-                                                type="button"
-                                                onClick={() => removeImage(index)}
-                                                className="absolute -top-2 -right-2 bg-danger-500 text-white rounded-full w-5 h-5 flex items-center justify-center"
-                                            >
-                                                <span className="material-symbols-rounded text-sm">close</span>
-                                            </button>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <div className="h-16 text-default-500 flex items-center">
-                                        Add more product images
+                                            <span className="material-symbols-rounded text-sm">close</span>
+                                        </button>
                                     </div>
-                                )}
+                                ))}
 
+                                {newImageUrls.map((imageUrl, index) => (
+                                    <div key={`new-${index}`} className="w-16 h-16 relative">
+                                        <VideoPreview dataUrl={imageUrl} />
+                                        <button
+                                            type="button"
+                                            onClick={() => removeImage(index, false)}
+                                            className="absolute -top-2 -right-2 bg-danger-500 text-white rounded-full w-5 h-5"
+                                        >
+                                            <span className="material-symbols-rounded text-sm">close</span>
+                                        </button>
+                                    </div>
+                                ))}
+                                
                                 <div
-                                    className="w-16 h-16 bg-default-200 flex items-center justify-center space-x-4 rounded-lg border p-1 cursor-pointer"
+                                    className="w-16 h-16 bg-default-200 flex items-center justify-center rounded-lg border p-1 cursor-pointer"
                                     onClick={() => imagesFileInput.current?.click()}
                                 >
                                     <span className="material-symbols-rounded">add</span>
