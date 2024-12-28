@@ -22,7 +22,6 @@ export const editProductAction = async (
 ) => {
     const displayImage = formData.get("displayImage") as File;
     const displayImageUrl = formData.get("displayImageUrl") as string;
-    const images = formData.getAll("images") as File[];
     const existingImageUrls = formData.get("existingImageUrls") as string;
     
     const formDataObject = Object.fromEntries(formData);
