@@ -45,6 +45,9 @@ public class Product {
     @Column(name = "details")
     private String details;
 
+    @Column(name = "sale_price")
+    private double salePrice;
+
     @Column(name = "on_sale")
     private boolean isOnSale;
 

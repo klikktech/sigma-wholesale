@@ -7,6 +7,7 @@ import com.klikk.sigma.dto.request.UpdateUserAdminRequest;
 import com.klikk.sigma.dto.request.UpdateUserRequest;
 import com.klikk.sigma.dto.response.SuccessResponse;
 import com.klikk.sigma.dto.response.UsersResponse;
+import com.klikk.sigma.entity.Address;
 import com.klikk.sigma.entity.PasswordResetToken;
 import com.klikk.sigma.entity.Token;
 import com.klikk.sigma.entity.User;
@@ -31,10 +32,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -192,9 +190,6 @@ public class UserServiceImpl implements UserService {
         if (updateUserAdminRequest.getLastname() != null) {
             user.get().setLastname(updateUserAdminRequest.getLastname());
         }
-        if (updateUserAdminRequest.getNickname() != null) {
-            user.get().setNickname(updateUserAdminRequest.getNickname());
-        }
         if (updateUserAdminRequest.getNewPassword() != null) {
             user.get().setPasswordHash(passwordEncoder.encode(updateUserAdminRequest.getNewPassword()));
         }
@@ -203,6 +198,12 @@ public class UserServiceImpl implements UserService {
         }
         if (updateUserAdminRequest.getRole() != null) {
             user.get().setRole(getRoleType(updateUserAdminRequest.getRole()));
+        }
+        if (updateUserAdminRequest.getStoreAddress() != null) {
+            if(user.get().getStoreAddress()==null){
+                user.get().setStoreAddress(new ArrayList<Address>());
+            }
+            user.get().getStoreAddress().add(Address.builder().address(updateUserAdminRequest.getStoreAddress()).city(updateUserAdminRequest.getStoreCity()).state(updateUserAdminRequest.getStoreState()).zipcode(updateUserAdminRequest.getStoreZip()).build());
         }
 
         userRepository.save(user.get());

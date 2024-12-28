@@ -14,8 +14,6 @@ public class UpdateUserAdminRequest {
 
     private String lastname;
 
-    private String nickname;
-
     private String newPassword;
 
     private String email;
@@ -23,4 +21,12 @@ public class UpdateUserAdminRequest {
     private String phone;
 
     private String role;
+
+    private String storeAddress;
+
+    private String storeCity;
+
+    private String storeState;
+
+    private String storeZip;
 }

@@ -261,6 +261,9 @@ public class ProductServiceImpl implements ProductService {
         if (request.getDetails() != null) {
             product.get().setDetails(request.getDetails());
         }
+        if (request.getSalePrice() > 0) {
+            product.get().setSalePrice(request.getSalePrice());
+        }
 
         Product updatedProduct=productRepository.save(product.get());
 

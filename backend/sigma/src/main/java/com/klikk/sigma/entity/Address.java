@@ -4,6 +4,7 @@ package com.klikk.sigma.entity;
 import com.klikk.sigma.util.StringPrefixedSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -12,6 +13,7 @@ import org.hibernate.annotations.Parameter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 @Table(name = "address")
 public class Address {
 
