@@ -48,6 +48,8 @@ const generateDataUrlForImages = (
     });
 };
 
+const imageTypes = ["jpg", "png", "jpeg", "gif", "webp", "svg", "ico", "bmp", "tiff", "tif", "heic", "heif", "avif"];
+
 const VideoPreview = ({ dataUrl }: { readonly dataUrl: string }) => {
     return (
         <Video
@@ -457,7 +459,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
                             <div className="flex justify-end gap-2">
                                 {existingImageUrls.map((imageUrl, index) => (
                                     <div key={`existing-${index}`} className="w-16 h-16 relative">
-                                        <VideoPreview dataUrl={imageUrl} />
+                                        {imageTypes.includes(imageUrl.split('.').pop() || '') ? <ImagePreview dataUrl={imageUrl} /> : <VideoPreview dataUrl={imageUrl} />}
                                         <button
                                             type="button"
                                             onClick={() => removeImage(index, true)}
@@ -470,7 +472,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
 
                                 {newImageUrls.map((imageUrl, index) => (
                                     <div key={`new-${index}`} className="w-16 h-16 relative">
-                                        <VideoPreview dataUrl={imageUrl} />
+                                        {imageTypes.includes(imageUrl.split('.').pop() || '') ? <ImagePreview dataUrl={imageUrl} /> : <VideoPreview dataUrl={imageUrl} />}
                                         <button
                                             type="button"
                                             onClick={() => removeImage(index, false)}
