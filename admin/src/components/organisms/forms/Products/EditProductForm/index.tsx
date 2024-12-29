@@ -51,15 +51,7 @@ const imageTypes = ["jpg", "png", "jpeg", "gif", "webp", "svg", "ico", "bmp", "t
 
 const VideoPreview = ({ dataUrl }: { readonly dataUrl: string }) => {
     return (
-        <video
-            className={`rounded-sm w-full h-full object-cover`}
-            autoPlay={true}
-            muted={true}
-            loop={true}
-        >
-            <source src={dataUrl} type="video/mp4" />
-            Your browser does not support the video tag.
-        </video>
+        <Video src={dataUrl} />
     );
 };
 

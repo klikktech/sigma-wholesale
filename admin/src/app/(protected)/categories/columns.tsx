@@ -56,7 +56,7 @@ export const renderCategoryTableCell = (category: Category, columnKey: React.Key
                         <Chip 
                             key={subCategory.slug} 
                             className="capitalize text-sm" 
-                            color="primary" 
+                            color="success" 
                             variant="flat"
                             size="sm"
                         >

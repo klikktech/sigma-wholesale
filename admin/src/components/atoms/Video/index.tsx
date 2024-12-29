@@ -6,12 +6,17 @@ interface Props {
     height?: string
 }
 
-const Video = ({src, width="240", height="240"}: Props) => {
+const Video = ({src}: Props) => {
   return (
-    <video width={width} height={height} controls preload="none">
-      <source src={src} type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
+    <video
+    className={`rounded-sm w-full h-full object-cover`}
+    autoPlay={true}
+    muted={true}
+    loop={true}
+>
+    <source src={src} type="video/mp4" />
+    Your browser does not support the video tag.
+</video>
   );
 };
 
