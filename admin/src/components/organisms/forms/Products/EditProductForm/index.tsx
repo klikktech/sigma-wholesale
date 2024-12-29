@@ -94,9 +94,12 @@ const DisplayImageCard = ({
             ? <ImagePreview dataUrl={dataUrl} />
             : <VideoPreview dataUrl={dataUrl} />
     ) : (
-        <p className="flex gap-2 text-default-500">
+        <p className="flex gap-2 text-default-500 justify-center items-center">
             <span className="material-symbols-rounded">add_a_photo</span>
-            Upload new display image or video
+            <span>
+                Upload new display image or video for product<br />
+                Please make sure the image is less than 10mb
+            </span>
         </p>
     );
 
@@ -472,7 +475,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
                                 {existingImageUrls.map((imageUrl, index) => (
                                     <div key={`existing-${index}`} className="w-16 h-16 relative">
                                         {getFileType(imageUrl) === 'image'
-                                        ? <ImagePreview dataUrl={imageUrl} />
+                                            ? <ImagePreview dataUrl={imageUrl} />
                                             : <VideoPreview dataUrl={imageUrl} />}
                                         <button
                                             type="button"
@@ -487,8 +490,8 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
                                 {newImageUrls.map((imageUrl, index) => (
                                     <div key={`new-${index}`} className="w-16 h-16 relative">
                                         {getFileType(imageUrl) === 'image'
-                                        ? <ImagePreview dataUrl={imageUrl} />
-                                        : <VideoPreview dataUrl={imageUrl} /> }                                        
+                                            ? <ImagePreview dataUrl={imageUrl} />
+                                            : <VideoPreview dataUrl={imageUrl} />}
                                         <button
                                             type="button"
                                             onClick={() => removeImage(index, false)}
