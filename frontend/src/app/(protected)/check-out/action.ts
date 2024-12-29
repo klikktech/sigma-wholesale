@@ -58,7 +58,11 @@ export const checkOutAction = async (
     console.log(data,status,error)
 
     if (error) {
-      return { error: error.message };
+      if (error.message?.includes('Unauthorised')) {
+        redirect('/unauthorised')
+      } else {
+        return { error: error.message };
+      }
     }
     if (data && status === 200) {
       return { success: "Order placed successfully!" };

@@ -2,14 +2,20 @@ import React from "react";
 
 interface Props {
     src: string;
-    width?: string
-    height?: string
-    onClick?: (type: 'video' | 'image') => void
+    onClick?: () => void;
+    className?: string;
 }
 
-const Video = ({src, width="240", height="240", onClick}: Props) => {
+const Video = ({ src, onClick, className = "" }: Props) => {
   return (
-    <video width={width} height={height} controls preload="none" onClick={() => onClick?.('video')}>
+    <video
+      className={`w-full h-full object-cover rounded-xl ${className}`}
+      autoPlay={true}
+      muted={true}
+      loop={true}
+      playsInline={true}
+      onClick={onClick}
+    >
       <source src={src} type="video/mp4" />
       Your browser does not support the video tag.
     </video>

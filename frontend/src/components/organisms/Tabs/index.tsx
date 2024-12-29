@@ -10,14 +10,14 @@ const Tabs = ({user}:{user:any}) => {
   const [selectedTab, setSelectedTab] = React.useState(TABS_LIST[0].key);
 
   return (
-    <section className="max-w-7xl mx-auto" id="tabs-section">
-      <div className="flex items-center justify-between mb-8">
+    <section className="w-full p-4 flex flex-col gap-4" id="tabs-section">
+      <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">OUR CATEGORIES</h2>
       </div>
       <NextUITabs
         selectedKey={selectedTab}
         onSelectionChange={(key) => setSelectedTab(key.toString())}
-        className="flex flex-col sm:flex-row justify-evenly mb-8"
+        className="flex flex-col sm:flex-row justify-evenly"
         key="underlined"
         color="primary"
         variant="underlined"
@@ -34,7 +34,7 @@ const Tabs = ({user}:{user:any}) => {
         <Button
           color="primary"
           className="px-6 py-2 text-black hover:bg-primary-600"
-          onClick={() => router.push(`/categories/${selectedTab}/products?page=1&size=16`)}
+          onPress={() => router.push(`/categories/${selectedTab}/products?page=1&size=16`)}
         >
           View More
         </Button>

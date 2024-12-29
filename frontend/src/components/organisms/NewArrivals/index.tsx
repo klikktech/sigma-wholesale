@@ -5,24 +5,21 @@ import ProductsCarousel from "../ProductsCarousel";
 import { axios } from "@/lib/axios";
 import Link from "next/link";
 import { PRODUCTS_PAGE_ROUTE } from "@/utils/urls";
-import { Button, Spacer } from "@nextui-org/react";
+import { Button, Spacer, user } from "@nextui-org/react";
+import UnauthorizedError from "@/components/molecules/Error";
 
-const NewArrivals = async ({user}:{user:any}) => {
-  let products: any = [];
+const NewArrivals = async ({ user }: { user: any }) => {
 
-  try {
-    const { data, error } = await axios.products.getNewArrivals();
-    if (data) {
-      products = data;
+  const { data, error } = await axios.products.getNewArrivals();
+  if (error) {
+    if (error.message?.includes('Unauthorised')) {
+      return <UnauthorizedError />
     } else {
-      return <div>No products available</div>;
+      throw new Error(error.message)
     }
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    return <div>Error fetching products</div>;
   }
 
-  const productElements = products.map((item: any, index: any) => (
+  const productElements = data?.map((item: any, index: any) => (
     <div
       className="embla__slide flex embla-slide w-full justify-center"
       key={index}
@@ -41,12 +38,15 @@ const NewArrivals = async ({user}:{user:any}) => {
   ));
 
   return (
-    <section className="max-w-7xl mx-auto" id="new-arrivals-section">
-      <div className="mb-8">
+    <section
+      className="w-full p-4 flex flex-col gap-4"
+      id="new-arrivals-section"
+    >
+      <div className="">
         <h2 className="text-2xl font-bold">NEW ARRIVALS</h2>
       </div>
       <ProductsCarousel>{productElements}</ProductsCarousel>
-      <div className="flex justify-center mt-4">
+      <div className="flex justify-center">
         <Button
           as={Link}
           href={PRODUCTS_PAGE_ROUTE}

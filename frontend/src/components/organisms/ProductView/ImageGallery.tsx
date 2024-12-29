@@ -15,33 +15,37 @@ const ImageGallery = ({ images, initialImage }: ImageGalleryProps) => {
 
   return (
     <div className="w-full flex flex-col gap-4">
-      {selectedImage?.type === "IMAGE" ? (
-        <Image
-          className="rounded-xl"
-          width={100}
-          height={100}
-          src={selectedImage.imageUrl}
-          layout="responsive"
-          alt=""
-        />
-      ) : (
-        <Video src={selectedImage.imageUrl} width="100%" height="100%" />
-      )}
+      <div className="relative w-full aspect-square">
+        {selectedImage?.type === "IMAGE" ? (
+          <Image
+            className="rounded-xl object-cover"
+            fill
+            sizes="(max-width: 768px) 100vw, 384px"
+            src={selectedImage.imageUrl}
+            alt=""
+          />
+        ) : (
+          <Video src={selectedImage.imageUrl} />
+        )}
+      </div>
       <ScrollShadow>
         <div className="images-list flex gap-4 overflow-x-auto">
           {imagesList.map((item, index) => {
             switch (item.type) {
               case "IMAGE":
                 return (
+                  <div className="relative w-24 aspect-square">
                   <Image
-                    className="rounded-xl"
-                    width={100}
-                    height={100}
-                    key={index}
-                    src={item.imageUrl}
-                    alt=""
-                    onClick={() => setSelectedImage(item)}
-                  />
+                    className="rounded-xl object-cover"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 384px"
+                      key={index}
+                      src={item.imageUrl}
+                      alt={`image-${index.toString()}`}
+                      onClick={() => setSelectedImage(item)}
+                      priority
+                    />
+                  </div>
                 );
               case "VIDEO":
                 return <Video key={index} src={item.imageUrl} onClick={() => setSelectedImage(item)} />;

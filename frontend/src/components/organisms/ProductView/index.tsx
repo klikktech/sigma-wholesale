@@ -19,10 +19,10 @@ const ProductView = ({ productDetails }: { productDetails: ProdDetails }) => {
       </div>
       <Spacer y={3} />
       <div className="flex flex-col md:flex-row gap-6">
-        <div className="flex-1">
+        <div className="w-full md:w-1/2">
           <ProductInteractions productDetails={productDetails} />
         </div>
-        <div className="flex-1">
+        <div className="w-full md:w-1/2">
           <ImageGallery 
             images={productDetails.images} 
             initialImage={{
@@ -32,7 +32,6 @@ const ProductView = ({ productDetails }: { productDetails: ProdDetails }) => {
           />
         </div>
       </div>
-
       <Spacer y={3} />
     </div>
   );

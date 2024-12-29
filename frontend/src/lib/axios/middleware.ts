@@ -25,7 +25,6 @@ export const verifyClient = (request: NextRequest) => {
     return NextResponse.next();
   } catch (e) {
     console.error(e,"middleware error");
-    console.error("Middleware error:", e);
     return NextResponse.next();
   }
 };

@@ -1,22 +1,25 @@
 'use server';
 
 import { axios } from "@/lib/axios";
+import { redirect } from "next/navigation";
 
 export const deleteAddressAction = async (formData: FormData) => {
-    try {
-      console.log("delete address action",formData);
-        const address = formData.get("address");
-        console.log("action received address:", address);
-        if (!address) {
-            throw new Error("Address is required");
+    console.log("delete address action", formData);
+    const address = formData.get("address");
+    console.log("action received address:", address);
+    if (!address) {
+        throw new Error("Address is required");
+    }
+    const { data, status, error } = await axios.users.deleteAddress(address as string);
+    if (error) {
+        if (error.message?.includes('Unauthorised')) {
+            redirect('/unauthorised')
+        } else {
+            return { error: error.message };
         }
-        const { data, status } = await axios.users.deleteAddress(address as string);
-        if (data && status === 200) {
-            console.log("success", status, data)
-            return { success: true };
-        }
-    } catch (error) {
-        console.error("Error deleting address:", error);
-        return { success: false, error };
+    }
+    if (data && status === 200) {
+        console.log("success", status, data)
+        return { success: true };
     }
 };

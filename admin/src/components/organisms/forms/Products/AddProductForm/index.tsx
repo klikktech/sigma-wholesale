@@ -14,6 +14,7 @@ import { Variation } from "@/utils/types";
 import { addProductAction } from "@/components/organisms/forms/Products/AddProductForm/action";
 import ProductVariations from "@/components/organisms/forms/Products/AddProductForm/ProductVariations";
 
+const imageTypes = ["jpg", "png", "jpeg", "gif", "webp", "svg", "ico", "bmp", "tiff", "tif", "heic", "heif", "avif"];
 
 
 const generateDataUrlForDisplayImage = (
@@ -49,24 +50,41 @@ const generateDataUrlForImages = (
 
 const VideoPreview = ({ dataUrl }: { readonly dataUrl: string }) => {
   return (
-    <Video
-      src={dataUrl}
-    // alt="preview"
-    // className="rounded-lg w-full h-full object-cover"
-    />
+    <video
+      className={`rounded-sm w-full h-full object-cover`}
+      autoPlay={true}
+      muted={true}
+      loop={true}
+    >
+      <source src={dataUrl} type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
   );
 };
 
 const ImagePreview = ({ dataUrl }: { readonly dataUrl: string }) => {
   return (
     <Image
+      className="w-full h-full text-center object-cover"
+      fill
+      sizes="(max-width: 768px) 100vw, 384px"
       src={dataUrl}
       alt="preview"
-      height={200}
-      width={200}
-      className="rounded-lg w-full h-full object-cover"
+      priority
     />
   );
+};
+
+const isDataUrl = (url: string) => url.startsWith('data:');
+
+const getFileType = (url: string) => {
+  if (isDataUrl(url)) {
+    const mime = url.split(';')[0].split(':')[1];
+    return mime.split('/')[0].toLowerCase(); // 'image' or 'video'
+  } else {
+    const extension = url.split('.').pop()?.toLowerCase() || '';
+    return imageTypes.includes(extension) ? 'image' : 'video';
+  }
 };
 
 const DisplayImageCard = ({
@@ -77,11 +95,11 @@ const DisplayImageCard = ({
   readonly displayImageFileInput: React.RefObject<HTMLInputElement>;
 }) => {
   const imagePreview = dataUrl ? (
-    <ImagePreview dataUrl={dataUrl} />
+    getFileType(dataUrl) === 'image' ? <ImagePreview dataUrl={dataUrl} /> : <VideoPreview dataUrl={dataUrl} />
   ) : (
     <p className="flex gap-2 text-default-500">
       <span className="material-symbols-rounded">add_a_photo</span>Upload new
-      display image
+      display image or video
     </p>
   );
 
@@ -235,7 +253,7 @@ const AddProductForm = ({ categories, brands }: { categories: any, brands: any }
               placeholder="Select categories"
             >
               {categories?.map((category: any) => (
-                <SelectItem key={category.name} value={category.name}>
+                <SelectItem key={category.slug} value={category.slug}>
                   {category.name}
                 </SelectItem>
               ))}
@@ -332,17 +350,17 @@ const AddProductForm = ({ categories, brands }: { categories: any, brands: any }
             />
           </div>
           <div className="w-full">
-            <Switch 
-              defaultSelected 
-              id="isOnSale" 
+            <Switch
+              defaultSelected
+              id="isOnSale"
               onValueChange={handleIsOnSaleChange}
             >
               Add to Deals
             </Switch>
-            <input 
-              type="hidden" 
-              name="isOnSale" 
-              value={isOnSale.toString()} 
+            <input
+              type="hidden"
+              name="isOnSale"
+              value={isOnSale.toString()}
             />
           </div>
 
@@ -394,7 +412,7 @@ const AddProductForm = ({ categories, brands }: { categories: any, brands: any }
                       key={`image-${index}`}
                       className="w-16 h-16 relative flex items-center justify-center space-x-4 rounded-lg border p-1"
                     >
-                      <VideoPreview dataUrl={imageUrl} />
+                      {getFileType(imageUrl) === 'image' ? <ImagePreview dataUrl={imageUrl} /> : <VideoPreview dataUrl={imageUrl} />}
                       <button
                         type="button"
                         onClick={() => handleRemoveImage(index)}

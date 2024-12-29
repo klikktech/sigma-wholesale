@@ -34,7 +34,11 @@ export const updateUserDetailsAction = async (
     );
 
     if (error) {
-      return { error: error.message };
+      if (error.message?.includes('Unauthorised')) {
+        redirect('/unauthorised')
+      } else {
+        return { error: error.message };
+      }
     }
 
     if (data && status === 200) {

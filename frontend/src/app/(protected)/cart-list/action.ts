@@ -2,6 +2,7 @@
 
 import { axios } from "@/lib/axios";
 import { CartItem, Message } from "@/utils/types";
+import { redirect } from "next/navigation";
 
 
 export const updateCartAction = async (
@@ -31,8 +32,11 @@ export const updateCartAction = async (
 
     const { data, status, error } = await axios.products.addToCart(payload);
     if (error) {
-        console.log("error", error)
-        return { error: error.message };
+        if (error.message?.includes('Unauthorised')) {
+            redirect('/unauthorised')
+        } else {
+            return { error: error.message };
+        }
     }
     if (data && status === 200) {
         console.log("success", status, data)
@@ -41,22 +45,20 @@ export const updateCartAction = async (
 };
 
 export const handleRemoveItemAction = async (item: any, totalQuantity: number, totalPrice: number) => {
-    try {
-        console.log(item, totalQuantity, totalPrice)
+    console.log(item, totalQuantity, totalPrice)
 
-        const { data, status, error } = await axios.products.deleteCartItem(item.variation ? item.variation.details as string : item.product.details as string);
-        if (error) {
-            console.log("error", error)
-            return { error: error.message };
+    const { data, status, error } = await axios.products.deleteCartItem(item.variation ? item.variation.details as string : item.product.details as string);
+    if (error) {
+        if (error.message?.includes('Unauthorised')) {
+            redirect('/unauthorised')
+        } else {
+            return { error: error.message, success: false };
         }
-        if (data && status === 200) {
-            const updatedQuantity = Math.max(0, totalQuantity - item.quantity);
-            const updatedPrice = Math.max(0, totalPrice - (item.quantity * (item.variation ? item.variation.price : parseInt(item.product.price))));
-            console.log("success", status, data)
-            return { error: '', success: true, updatedQuantity, updatedPrice };
-        }
-    } catch (error) {
-        console.error("Error deleting variation:", error);
-        return { success: false, error };
+    }
+    if (data && status === 200) {
+        const updatedQuantity = Math.max(0, totalQuantity - item.quantity);
+        const updatedPrice = Math.max(0, totalPrice - (item.quantity * (item.variation ? item.variation.price : parseInt(item.product.price))));
+        console.log("success", status, data)
+        return { error: '', success: true, updatedQuantity, updatedPrice };
     }
 };

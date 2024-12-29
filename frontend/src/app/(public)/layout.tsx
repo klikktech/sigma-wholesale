@@ -1,6 +1,7 @@
 import Navbar from "@/components/organisms/Navbar";
 import Footer from "@/components/organisms/Footer";
-import { getCartCount, getUser } from "@/lib/axios/session";
+import { getUser } from "@/lib/axios/session";
+import { getCartCount } from "@/components/organisms/CartList/action";
 
 const PublicLayout = async ({ children }: { children: React.ReactNode }) => {
     const user = await getUser()

@@ -1,7 +1,8 @@
 import Navbar from "@/components/organisms/Navbar";
 import HomePage from "./(public)/home/page";
 import Footer from "@/components/organisms/Footer";
-import { getCartCount, getUser } from "@/lib/axios/session";
+import { getUser } from "@/lib/axios/session";
+import { getCartCount } from "@/components/organisms/CartList/action";
 
 const App = async () => {
   const user = await getUser()
@@ -13,13 +14,13 @@ const App = async () => {
       newCartPrice = cartPrice
   }
   return (
-    <>
+    <section>
       <Navbar user={user} cartTotalCount={newCartCount} cartTotalPrice={newCartPrice} />
-      <div className="px-4 md:px-16 lg:px-32 min-h-[57vh] w-screen">
+      <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-8 min-h-[calc(100vh-20rem)]">
         <HomePage />
       </div>
       <Footer />
-    </>
+    </section>
   );
 };
 

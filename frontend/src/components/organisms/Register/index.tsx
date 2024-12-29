@@ -248,7 +248,7 @@ const SignUp = () => {
 
         <Spacer y={3} />
         {state?.error && <p style={{ color: "red" }}>{state?.error}</p>}
-        <FormSubmitButton className="hover:bg-primary-600" type="submit" color="primary" size="lg" pendingText="Registering...">
+        <FormSubmitButton className="hover:bg-primary-600 text-black" type="submit" color="primary" size="lg" pendingText="Registering...">
           Register
         </FormSubmitButton>
       </form>

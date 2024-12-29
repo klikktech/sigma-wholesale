@@ -178,7 +178,7 @@ const CartList = ({ cartItemsList }: CartListProps) => {
               <Link href={HOME_PAGE_ROUTE} className="text-blue-500 hover:text-blue-600">
                 Continue Shopping
               </Link>
-              <FormSubmitButton className="bg-primary hover:bg-primary-600" color="primary" type="submit" pendingText="Updating the cart...">
+              <FormSubmitButton className="bg-primary hover:bg-primary-600 text-black" color="primary" type="submit" pendingText="Updating the cart...">
                 <span>Update cart</span>
                 <span className="material-symbols-rounded">shopping_cart</span>
               </FormSubmitButton>
@@ -216,7 +216,7 @@ const CartList = ({ cartItemsList }: CartListProps) => {
 
             <FormSubmitButton 
               type="button" 
-              className="w-full bg-primary hover:bg-primary-600 mt-4" 
+              className="w-full bg-primary hover:bg-primary-600 text-black mt-4" 
               color="primary" 
               pendingText="Checking out.."
             >

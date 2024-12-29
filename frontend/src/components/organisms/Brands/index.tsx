@@ -3,17 +3,21 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { axios } from '@/lib/axios';
 import { Brand } from '@/utils/types';
+import UnauthorizedError from '@/components/molecules/Error';
 
 const Brands = async () => {
 
     const { data, error } = await axios.products.getBrandsList();
     if (error) {
-        throw new Error(error.message)
-    }
-
+        if (error.message?.includes('Unauthorised')) {
+          return <UnauthorizedError />
+        } else {
+          throw new Error(error.message)
+        }
+      }
     return (
-        <section className="max-w-7xl mx-auto" id="brands-section">
-            <div className="flex items-center justify-between mb-8">
+        <section className="w-full p-4 flex flex-col gap-4" id="brands-section">
+            <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-bold">OTHER BRANDS</h2>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">

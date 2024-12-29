@@ -1,7 +1,6 @@
 import "server-only";
 
 import { cookies } from "next/headers";
-import { axios } from ".";
 
 interface JwtPayload {
   sub: string;
@@ -23,33 +22,6 @@ export const deleteSession = () => {
   cookies().delete("accessToken");
   cookies().delete("refreshToken");
 };
-
-export const getCartCount = async () => {
-  const { data, error } = await axios.products.getCartList();
-  if (error) {
-    if (error.message?.includes('Unauthorised')) {
-      throw new Error('UNAUTHORIZED', { 
-        cause: {
-          code: 'Unauthorised',
-          message: 'Your session has expired. Please log in again.'
-        }
-      });
-    } else {
-      throw new Error('ERROR', { 
-        cause: {
-          code: 'UNKNOWN',
-          message: error.message
-        }
-      });
-    }
-}
-  if(!data.cartItems || data.cartItems.length === 0){
-    return {cartCount:0,cartPrice:0};
-  }
-  const cartCount = data.cartItems.reduce((acc:any, item:any) => acc + item.quantity, 0);
-  const cartPrice = data.cartItems.reduce((acc:any, item:any) => acc + (item.variation?(item.variation.price * item.quantity):(parseInt(item.product.price)* item.quantity)) , 0);
-  return {cartCount,cartPrice};
-}
 
 export const getUser = () => {
   try {

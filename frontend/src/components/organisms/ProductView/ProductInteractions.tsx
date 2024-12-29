@@ -1,6 +1,5 @@
 'use client'
 import React, { useEffect, useState } from "react";
-import { Button } from "@nextui-org/react";
 import { Message, ProdDetails } from "@/utils/types";
 import { useFormState } from "react-dom";
 import { addCartAction } from "../../../app/(public)/products/[productId]/action";
@@ -10,7 +9,6 @@ import { HOME_PAGE_ROUTE } from "@/utils/urls";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import FormSubmitButton from "@/components/molecules/FormSubmitButton";
-import { getCartCount } from "@/lib/axios/session";
 
 interface ProductInteractionsProps {
   productDetails: ProdDetails;
@@ -76,13 +74,16 @@ const ProductInteractions = ({ productDetails }: ProductInteractionsProps) => {
                 <div key={index} className="flex flex-col md:flex-row justify-between items-center mb-3">
                   <div className="md:w-2/3 w-full">
                     <div className="flex gap-x-3 md:items-center lg:items-center">
-                      <Image
-                        className="rounded-md"
-                        width={100}
-                        height={100}
-                        src={productDetails.displayImage?.imageUrl}
-                        alt=""
+                      <div className="relative w-32 aspect-square">
+                        <Image
+                          className="rounded-md"
+                          fill
+                          sizes="(max-width: 768px) 100vw, 384px"
+                          src={productDetails.displayImage?.imageUrl}
+                          alt=""
+                          priority
                       />
+                      </div>
                       <div>
                         <p className="text-sm">{item.variationName}</p>
                         <p className="font-semibold text-sm">${item.price}</p>
@@ -113,7 +114,7 @@ const ProductInteractions = ({ productDetails }: ProductInteractionsProps) => {
               ))}
         </div>
       </div>}
-      <FormSubmitButton className="w-full mt-3 px-3 hover:bg-primary-600" color="primary" type='submit' pendingText="Adding to the cart...">
+      <FormSubmitButton className="w-full mt-3 px-3 hover:bg-primary-600 text-black" color="primary" type='submit' pendingText="Adding to the cart...">
         <span>Add to cart</span>
         <span className="material-symbols-rounded">shopping_cart</span>
       </FormSubmitButton>

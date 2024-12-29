@@ -7,8 +7,8 @@ export const REFRESH_TOKEN_URL = `api/auth/admin/refresh-token`;
 export const GET_ALL_USERS_ENDPOINT = `admin/users`;
 export const EDIT_USERS_ENDPOINT = `admin/users/update`;
 export const ADD_USER_ENDPOINT = `admin/users/register`;
-export const GET_USER_ENDPOINT = (email: string) =>
-  `admin/users/${email}`;
+export const GET_USER_ENDPOINT = (keyword: string) =>
+  `admin/users/search/${keyword}`;
 export const DELETE_USER_ENDPOINT = (email: string) =>
   `admin/users/${email}`;
 // export const SEARCH_USERS_URL = (keyword: string) => `users/search/${keyword}`

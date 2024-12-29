@@ -16,7 +16,6 @@ import { editProductAction } from "@/components/organisms/forms/Products/EditPro
 import ProductVariations from "@/components/organisms/forms/Products/EditProductForm/ProductVariations";
 // import { addProductAction } from "@/components/organisms/forms/products/AddProductForm/action";
 
-
 const generateDataUrlForDisplayImage = (
     file: File,
     callback: (imageUrl: string) => void
@@ -52,24 +51,43 @@ const imageTypes = ["jpg", "png", "jpeg", "gif", "webp", "svg", "ico", "bmp", "t
 
 const VideoPreview = ({ dataUrl }: { readonly dataUrl: string }) => {
     return (
-        <Video
-            src={dataUrl}
-        // alt="preview"
-        // className="rounded-lg w-full h-full object-cover"
-        />
+        <video
+            className={`rounded-sm w-full h-full object-cover`}
+            autoPlay={true}
+            muted={true}
+            loop={true}
+        >
+            <source src={dataUrl} type="video/mp4" />
+            Your browser does not support the video tag.
+        </video>
     );
 };
 
 const ImagePreview = ({ dataUrl }: { readonly dataUrl: string }) => {
     return (
         <Image
+            className="w-full h-full text-center object-cover"
+            fill
+            sizes="(max-width: 768px) 100vw, 384px"
             src={dataUrl}
-            width={200}
-            height={200}
             alt="preview"
-            className="rounded-lg w-full h-full"
+            priority
         />
     );
+};
+
+const isDataUrl = (url: string) => url.startsWith('data:');
+
+const getFileType = (url: string) => {
+    if (isDataUrl(url)) {
+        // Handle data URLs (blobs)
+        const mime = url.split(';')[0].split(':')[1];
+        return mime.split('/')[0].toLowerCase(); // 'image' or 'video'
+    } else {
+        // Handle regular URLs
+        const extension = url.split('.').pop()?.toLowerCase() || '';
+        return imageTypes.includes(extension) ? 'image' : 'video';
+    }
 };
 
 const DisplayImageCard = ({
@@ -80,11 +98,13 @@ const DisplayImageCard = ({
     readonly displayImageFileInput: React.RefObject<HTMLInputElement>;
 }) => {
     const imagePreview = dataUrl ? (
-        <ImagePreview dataUrl={dataUrl} />
+        getFileType(dataUrl) === 'image'
+            ? <ImagePreview dataUrl={dataUrl} />
+            : <VideoPreview dataUrl={dataUrl} />
     ) : (
         <p className="flex gap-2 text-default-500">
-            <span className="material-symbols-rounded">add_a_photo</span>Upload new
-            display image
+            <span className="material-symbols-rounded">add_a_photo</span>
+            Upload new display image or video
         </p>
     );
 
@@ -137,7 +157,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
         product.displayImage?.imageUrl || null
     );
     const [existingImageUrls, setExistingImageUrls] = useState<string[]>(
-        product.images?.map((img:any) => img.imageUrl) || []
+        product.images?.map((img: any) => img.imageUrl) || []
     );
     const [newImageFiles, setNewImageFiles] = useState<File[]>([]);
     const [newImageUrls, setNewImageUrls] = useState<string[]>([]);
@@ -205,7 +225,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
     // Extract category names from product.categories
     const defaultCategories = product.categories
         ?.filter((cat: any) => cat.type === 'product_cat')
-        ?.map((cat: any) => cat.name) || [];
+        ?.map((cat: any) => cat.slug) || [];
 
     return (
         <form ref={formRef} action={dispatch}>
@@ -285,7 +305,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
                                 defaultSelectedKeys={defaultCategories}
                             >
                                 {categories?.map((category: any) => (
-                                    <SelectItem key={category.name} value={category.name}>
+                                    <SelectItem key={category.slug} value={category.slug}>
                                         {category.name}
                                     </SelectItem>
                                 ))}
@@ -459,7 +479,9 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
                             <div className="flex justify-end gap-2">
                                 {existingImageUrls.map((imageUrl, index) => (
                                     <div key={`existing-${index}`} className="w-16 h-16 relative">
-                                        {imageTypes.includes(imageUrl.split('.').pop() || '') ? <ImagePreview dataUrl={imageUrl} /> : <VideoPreview dataUrl={imageUrl} />}
+                                        {getFileType(imageUrl) === 'image'
+                                        ? <ImagePreview dataUrl={imageUrl} />
+                                            : <VideoPreview dataUrl={imageUrl} />}
                                         <button
                                             type="button"
                                             onClick={() => removeImage(index, true)}
@@ -472,7 +494,9 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
 
                                 {newImageUrls.map((imageUrl, index) => (
                                     <div key={`new-${index}`} className="w-16 h-16 relative">
-                                        {imageTypes.includes(imageUrl.split('.').pop() || '') ? <ImagePreview dataUrl={imageUrl} /> : <VideoPreview dataUrl={imageUrl} />}
+                                        {getFileType(imageUrl) === 'image'
+                                        ? <ImagePreview dataUrl={imageUrl} />
+                                        : <VideoPreview dataUrl={imageUrl} /> }                                        
                                         <button
                                             type="button"
                                             onClick={() => removeImage(index, false)}
@@ -482,7 +506,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product, categories, 
                                         </button>
                                     </div>
                                 ))}
-                                
+
                                 <div
                                     className="w-16 h-16 bg-default-200 flex items-center justify-center rounded-lg border p-1 cursor-pointer"
                                     onClick={() => imagesFileInput.current?.click()}
