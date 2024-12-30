@@ -14,6 +14,7 @@ export const createNewUser = async (
   const nickname = formData.get("nickname");
   const email = formData.get("email");
   const phone = formData.get("phone");
+  const taxNumber = formData.get("taxNumber");
   const password = formData.get("password");
   const confirmPassword = formData.get("confirmPassword");
   const shippingAddress = formData.get("shippingAddress");
@@ -31,6 +32,7 @@ export const createNewUser = async (
     nickname,
     email,
     phone,
+    taxNumber,
     password,
     confirmPassword,
     shippingAddress,

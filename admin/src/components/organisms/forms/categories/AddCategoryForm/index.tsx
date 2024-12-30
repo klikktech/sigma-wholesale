@@ -20,7 +20,7 @@ export const AddCategoryForm = ({categories}:{categories:any}) => {
                 <Spacer y={5} />
                 <div className="w-full">
                     <Switch checked={isSubcategory} onChange={() => setIsSubcategory(!isSubcategory)}>
-                        Is Sub Category
+                        Sub Category
                     </Switch>
                     <input 
                         type="hidden" 

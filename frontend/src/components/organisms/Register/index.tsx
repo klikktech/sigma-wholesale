@@ -22,6 +22,7 @@ const SignUp = () => {
     lastname: '',
     nickname: '',
     email: '',
+    taxNumber: '',
     phone: '',
     password: '',
     confirmPassword: '',
@@ -121,6 +122,19 @@ const SignUp = () => {
           type="tel"
           placeholder="123-456-7890"
           maxLength={10}
+          labelPlacement="outside"
+          fullWidth
+        />
+        <Spacer y={3} />
+
+        <Input
+          label="Tax Number *"
+          name="taxNumber"
+          value={formData.taxNumber}
+          onChange={handleChange}
+          type="number"
+          placeholder="12345678901"
+          maxLength={11}
           labelPlacement="outside"
           fullWidth
         />
