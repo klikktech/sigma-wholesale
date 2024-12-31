@@ -72,7 +72,7 @@ public class Product {
     @Column(name = "product_id", unique = true)
     private Long productId;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "product_categories",
             joinColumns = @JoinColumn(name = "product_id",referencedColumnName = "id"),
