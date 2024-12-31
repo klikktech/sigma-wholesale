@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void sendResetPasswordEmail(HttpServletRequest request, String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
         String token = UUID.randomUUID().toString().replace("-", "").substring(0,6);
         PasswordResetToken resetToken=PasswordResetToken.builder().token(token).user(user).expiryDate(LocalDateTime.now().plusMinutes(30)).build();
@@ -132,7 +132,7 @@ public class UserServiceImpl implements UserService {
         if (result.isPresent()) {
             user = result.get();
         } else {
-            throw new UsernameNotFoundException("User with username : " + email + " not found.");
+            throw new NotFoundException("User with username : " + email + " not found.");
         }
         return user;
     }
@@ -144,7 +144,7 @@ public class UserServiceImpl implements UserService {
         if (result.isPresent()) {
             user = result.get();
         } else {
-            throw new UsernameNotFoundException("User with username : " + email + " not found.");
+            throw new NotFoundException("User with username : " + email + " not found.");
         }
         return userMapper.userToUserResponse(user);
     }
@@ -164,49 +164,45 @@ public class UserServiceImpl implements UserService {
     public SuccessResponse updateUser(UpdateUserRequest updateRequest, HttpServletRequest request) {
         String token=request.getHeader("Authorization").split(" ")[1];
         String userEmail=jwtService.extractUsername(token);
-        Optional<User> user=userRepository.findByEmail(userEmail);
+        User user=userRepository.findByEmail(userEmail).orElseThrow(() -> new NotFoundException("User not found"));
 
-        if (user.isEmpty()) {
-            throw new IllegalArgumentException("User doesn't exist");
-        }
-        if (!passwordEncoder.matches(updateRequest.getCurrentPassword(), user.get().getPasswordHash())) {
+
+        if (!passwordEncoder.matches(updateRequest.getCurrentPassword(), user.getPasswordHash())) {
             throw new IllegalArgumentException("The entered password is incorrect!");
         }
-        user.get().setPasswordHash(passwordEncoder.encode(updateRequest.getNewPassword()));
-        user.get().setPhone(updateRequest.getPhone());
-        userRepository.save(user.get());
+        user.setPasswordHash(passwordEncoder.encode(updateRequest.getNewPassword()));
+        user.setPhone(updateRequest.getPhone());
+        userRepository.save(user);
         return new SuccessResponse(LocalDateTime.now(), "User details updated successfully");
     }
 
     @Override
     public SuccessResponse updateUserAdmin(UpdateUserAdminRequest updateUserAdminRequest ) {
-        Optional<User> user=userRepository.findByEmail(updateUserAdminRequest.getEmail());
-        if (user.isEmpty()) {
-            throw new IllegalArgumentException("User doesn't exist");
-        }
+        User user=userRepository.findByEmail(updateUserAdminRequest.getEmail()).orElseThrow(() -> new NotFoundException("User not found"));
+
         if (updateUserAdminRequest.getFirstname() != null) {
-            user.get().setFirstname(updateUserAdminRequest.getFirstname());
+            user.setFirstname(updateUserAdminRequest.getFirstname());
         }
         if (updateUserAdminRequest.getLastname() != null) {
-            user.get().setLastname(updateUserAdminRequest.getLastname());
+            user.setLastname(updateUserAdminRequest.getLastname());
         }
         if (updateUserAdminRequest.getNewPassword() != null) {
-            user.get().setPasswordHash(passwordEncoder.encode(updateUserAdminRequest.getNewPassword()));
+            user.setPasswordHash(passwordEncoder.encode(updateUserAdminRequest.getNewPassword()));
         }
         if (updateUserAdminRequest.getPhone() != null) {
-            user.get().setPhone(updateUserAdminRequest.getPhone());
+            user.setPhone(updateUserAdminRequest.getPhone());
         }
         if (updateUserAdminRequest.getRole() != null) {
-            user.get().setRole(getRoleType(updateUserAdminRequest.getRole()));
+            user.setRole(getRoleType(updateUserAdminRequest.getRole()));
         }
         if (updateUserAdminRequest.getStoreAddress() != null) {
-            if(user.get().getStoreAddress()==null){
-                user.get().setStoreAddress(new ArrayList<Address>());
+            if(user.getStoreAddress()==null){
+                user.setStoreAddress(new ArrayList<Address>());
             }
-            user.get().getStoreAddress().add(Address.builder().address(updateUserAdminRequest.getStoreAddress()).city(updateUserAdminRequest.getStoreCity()).state(updateUserAdminRequest.getStoreState()).zipcode(updateUserAdminRequest.getStoreZip()).build());
+            user.getStoreAddress().add(Address.builder().address(updateUserAdminRequest.getStoreAddress()).city(updateUserAdminRequest.getStoreCity()).state(updateUserAdminRequest.getStoreState()).zipcode(updateUserAdminRequest.getStoreZip()).build());
         }
 
-        userRepository.save(user.get());
+        userRepository.save(user);
 
         return new SuccessResponse(LocalDateTime.now(), "User details updated successfully");
 
@@ -216,7 +212,7 @@ public class UserServiceImpl implements UserService {
     public SuccessResponse deleteUser(String email) {
         // Find the user by ID
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with Email: " + email));
+                .orElseThrow(() -> new NotFoundException("User not found with Email: " + email));
 
         if (user.getStoreAddress() != null && !user.getStoreAddress().isEmpty()) {
             user.getStoreAddress().clear();
@@ -238,6 +234,14 @@ public class UserServiceImpl implements UserService {
         // Now delete the user
         userRepository.delete(user);
         return new SuccessResponse(LocalDateTime.now(),"User deleted successfully");
+    }
+
+    @Override
+    public List<UsersResponse> findUserByKeyword(String keyword) {
+        List<User> users = userRepository.findByKeyword(keyword);
+        return users.stream()
+                .map(userMapper::userToUserResponse)
+                .collect(Collectors.toList());
     }
 
     public RoleType getRoleType(String role){

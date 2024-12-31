@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 
 public interface UserService {
 
@@ -35,4 +37,6 @@ public interface UserService {
     SuccessResponse updateUserAdmin(UpdateUserAdminRequest updateUserAdminRequest);
 
     SuccessResponse deleteUser(String email);
+
+    List<UsersResponse> findUserByKeyword(String keyword);
 }

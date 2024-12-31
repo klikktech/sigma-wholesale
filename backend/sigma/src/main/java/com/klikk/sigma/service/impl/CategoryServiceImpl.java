@@ -52,6 +52,7 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryResponseDto> getAllCategories() {
         return categoryRepository.findAllByType("product_cat").stream()
                 .map(this::convertToDto)
+                .sorted((c1, c2) -> c1.getName().compareTo(c2.getName()))
                 .collect(Collectors.toList());
 
     }
@@ -67,6 +68,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category category=categoryRepository.findBySlugAndType(name,"product_cat");
         return category.getChildCategories().stream()
                 .map(this::convertToDto)
+                .sorted((c1, c2) -> c1.getName().compareTo(c2.getName()))
                 .collect(Collectors.toList());
     }
 

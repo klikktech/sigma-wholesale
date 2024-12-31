@@ -42,4 +42,6 @@ public class UpdateProductAdminRequest {
 
     private List<VariationDto> variations;
 
+    private  List<String> categories;
+
 }

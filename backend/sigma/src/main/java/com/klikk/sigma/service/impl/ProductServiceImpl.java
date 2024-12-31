@@ -265,6 +265,10 @@ public class ProductServiceImpl implements ProductService {
             product.get().setSalePrice(request.getSalePrice());
         }
 
+        if(request.getCategories()!=null){
+            product.get().setCategories(request.getCategories().stream().map(category -> categoryRepository.findBySlugAndType(category,"product_cat")).toList());
+        }
+
         Product updatedProduct=productRepository.save(product.get());
 
 

@@ -3,6 +3,7 @@ package com.klikk.sigma.service.impl;
 import com.klikk.sigma.entity.Address;
 import com.klikk.sigma.entity.Checkout;
 import com.klikk.sigma.entity.User;
+import com.klikk.sigma.exception.NotFoundException;
 import com.klikk.sigma.repository.CheckoutRepository;
 import com.klikk.sigma.repository.UserRepository;
 import com.klikk.sigma.service.CheckoutService;
@@ -33,11 +34,11 @@ public class CheckoutServiceImpl implements CheckoutService {
     public void addCheckoutDetails(Checkout checkout, HttpServletRequest request) {
         String token=request.getHeader("Authorization").split(" ")[1];
         String userEmail=jwtService.extractUsername(token);
-        Optional<User> user=userRepository.findByEmail(userEmail);
-        user.ifPresent(checkout::setUser);
-        if(addressService.getAddress(checkout.getBillingAddress()).isEmpty() && user.isPresent()){
-            Address newAddress= addressService.saveAddress(checkout.getBillingAddress(),checkout.getBillingCity(), checkout.getBillingState(), checkout.getPostcode(),user.get());
-            user.get().getShippingAddress().add(newAddress);
+        User user=userRepository.findByEmail(userEmail).orElseThrow(() -> new NotFoundException("User not found"));
+        checkout.setUser(user);
+        if(addressService.getAddress(checkout.getBillingAddress()).isEmpty()){
+            Address newAddress= addressService.saveAddress(checkout.getBillingAddress(),checkout.getBillingCity(), checkout.getBillingState(), checkout.getPostcode(),user);
+            user.getShippingAddress().add(newAddress);
         }
         orderService.saveOrder(checkout.getOrderTotal(),checkout.getCustomerIp(),checkout.getPaymentMethod(),request);
     }

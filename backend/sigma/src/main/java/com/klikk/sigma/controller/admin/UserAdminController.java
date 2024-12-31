@@ -20,6 +20,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -56,8 +57,15 @@ public class UserAdminController {
 
     @GetMapping("/{email}")
     @PreAuthorize("hasAuthority('admin:read')")
-    public ResponseEntity<?> getUserById(@PathVariable String email) {
+    public ResponseEntity<UsersResponse> getUserById(@PathVariable String email) {
         var result = userService.findUserByEmail(email);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("search/{keyword}")
+    @PreAuthorize("hasAuthority('admin:read')")
+    public ResponseEntity<List<UsersResponse>> getUserBySearch(@PathVariable String keyword) {
+        var result = userService.findUserByKeyword(keyword);
         return ResponseEntity.ok(result);
     }
 

@@ -14,6 +14,7 @@ import com.klikk.sigma.repository.*;
 import com.klikk.sigma.service.CartService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
@@ -148,8 +149,8 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartResponseDto getCart(String bearerToken) {
-        Optional<User> user=userRepository.findByEmail(jwtService.extractUsername(bearerToken.split(" ")[1]));
-        Optional<Cart> cart=cartRepository.findByUser(user.get());
+        User user=userRepository.findByEmail(jwtService.extractUsername(bearerToken.split(" ")[1])).orElseThrow(() -> new NotFoundException("User not found"));
+        Optional<Cart> cart=cartRepository.findByUser(user);
         if(cart.isEmpty()){
             return CartResponseDto.builder().price(0).quantity(0L).cartItems(new ArrayList<>()).build();
         }
@@ -168,8 +169,8 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void deleteCartItem(String variationOrProductToDelete, HttpServletRequest request) {
-        Optional<User> user=userRepository.findByEmail(jwtService.extractUsername(request.getHeader("Authorization").split(" ")[1]));
-        Optional<Cart> cart=cartRepository.findByUser(user.get());
+        User user=userRepository.findByEmail(jwtService.extractUsername(request.getHeader("Authorization").split(" ")[1])).orElseThrow(() ->  new NotFoundException("User not found"));
+        Optional<Cart> cart=cartRepository.findByUser(user);
         Optional<Variation> variation= variationRepository.findByDetails(variationOrProductToDelete);
         Optional<Product> product= productRepository.findByDetails(variationOrProductToDelete);
         if(variation.isEmpty() && product.isEmpty()){

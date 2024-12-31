@@ -8,6 +8,7 @@ import com.klikk.sigma.entity.Address;
 import com.klikk.sigma.entity.PasswordResetToken;
 import com.klikk.sigma.entity.Token;
 import com.klikk.sigma.entity.User;
+import com.klikk.sigma.exception.NotFoundException;
 import com.klikk.sigma.exception.UnauthorisedException;
 import com.klikk.sigma.mapper.AuthenticationMapper;
 import com.klikk.sigma.repository.PasswordResetTokenRepository;
@@ -73,7 +74,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.getStoreAddress().add(storeAddress.get());
         }
 
-        Optional<Address> shippingAddress= addressService.getAddress(request.getStoreAddress());
+        Optional<Address> shippingAddress= addressService.getAddress(request.getShippingAddress());
         if(shippingAddress.isPresent()){
             if(user.getShippingAddress()==null){
                 user.setShippingAddress(new ArrayList<>());
@@ -124,7 +125,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new NotFoundException("No user found"));
         String jwtToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(user);
@@ -135,7 +136,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public AuthenticationResponse adminAuthenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new NotFoundException("No user found"));
         RoleType role = user.getRole();
         if(role.equals(RoleType.ADMIN)){
             String jwtToken = jwtService.generateToken(user);
@@ -159,7 +160,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String email = jwtService.extractUsername(token);
         if (email != null) {
             User user = userRepository.findByEmail(email)
-                    .orElseThrow(() -> new UsernameNotFoundException("No user found"));
+                    .orElseThrow(() -> new NotFoundException("No user found"));
             if (jwtService.isRefreshTokenValid(token, user)) {
                 String accessToken = jwtService.generateToken(user);
                 String refreshToken = jwtService.generateRefreshToken(user);

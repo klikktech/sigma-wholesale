@@ -71,10 +71,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDto> findUserOrders(HttpServletRequest request){
         String userEmail= jwtService.extractUsername(request.getHeader("Authorization").split(" ")[1]);
-        Optional<User> user=userRepository.findByEmail(userEmail);
-        return user.map(value -> orderRepository.findByBuyer(value).stream().map(order -> {
+        User user=userRepository.findByEmail(userEmail).orElseThrow(() -> new NotFoundException("User not found"));
+        return  orderRepository.findByBuyer(user).stream().map(order -> {
             return orderMapper.orderToOrderDto(order);
-        }).toList()).orElse(null);
+        }).toList();
     }
 
 
@@ -85,11 +85,9 @@ public class OrderServiceImpl implements OrderService {
         Order order=Order.builder().paymentMethod(paymentMethod).customerIp(customerIp).orderTotal(orderTotal).build();
         String token=request.getHeader("Authorization").split(" ")[1];
         String userEmail=jwtService.extractUsername(token);
-        Optional<User> user=userRepository.findByEmail(userEmail);
-        if(user.isEmpty()){
-            return;
-        }
-        order.setBuyer(user.get());
+        User user=userRepository.findByEmail(userEmail).orElseThrow(() -> new NotFoundException("User not found"));
+
+        order.setBuyer(user);
         order.setOrderCreatedAt(LocalDateTime.now());
         order.setOrderModifiedAt(LocalDateTime.now());
         order.setOrderStatus(OrderStatus.PENDING);
