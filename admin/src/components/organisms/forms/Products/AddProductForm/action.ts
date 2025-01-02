@@ -15,6 +15,8 @@ export const addProductAction = async (
 ) => {
   const displayImage = formData.get("displayImage");
   const images = formData.getAll("images");
+
+  console.log(images,"images")
   
   // Create form data object with special handling for categories
   const formDataObject = Object.fromEntries(formData);
@@ -67,13 +69,22 @@ export const addProductAction = async (
       variations: variations,
     };
     console.log(payload, "payload")
-    const formData = new FormData();
-    formData.append("product", JSON.stringify(payload));
-    if (validatedImages.data.displayImage) formData.append("displayImage", validatedImages.data.displayImage);
-    validatedImages.data.images.forEach((image) => {
-      formData.append("images", image);
-    });
-    const { data, status, error } = await axios.products.addProduct(formData);
+    const formDataForSubmission = new FormData();
+    formDataForSubmission.append("product", JSON.stringify(payload));
+    
+    if (validatedImages.data.displayImage) {
+      formDataForSubmission.append("displayImage", validatedImages.data.displayImage);
+    }
+
+    // Append all images directly
+    if(validatedImages.data.images){
+      validatedImages.data.images.forEach((image) => {
+        formDataForSubmission.append("images", image);
+      });
+    }
+
+    console.log(formDataForSubmission,"formDataForSubmission")
+    const { data, status, error } = await axios.products.addProduct(formDataForSubmission);
 
     if (error) {
       return { error: error.message };

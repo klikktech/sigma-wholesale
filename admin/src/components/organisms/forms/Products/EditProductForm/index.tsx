@@ -98,7 +98,7 @@ const DisplayImageCard = ({
             <span className="material-symbols-rounded">add_a_photo</span>
             <span>
                 Upload new display image or video for product<br />
-                Please make sure the image is less than 10mb
+                Please make sure the image is less than 5mb
             </span>
         </p>
     );

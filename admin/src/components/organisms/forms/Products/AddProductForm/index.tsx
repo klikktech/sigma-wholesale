@@ -93,7 +93,7 @@ const DisplayImageCard = ({
       <span className="material-symbols-rounded">add_a_photo</span>
       <span>
         Upload new display image or video for product<br />
-        Please make sure the image is less than 10mb
+        Please make sure the image is less than 5mb
       </span>
     </p>
   );
@@ -125,6 +125,8 @@ const AddProductForm = ({ categories, brands }: { categories: any, brands: any }
   // const [availableSubCategories, setAvailableSubCategories] = useState<any[]>([]);
   // const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [isOnSale, setIsOnSale] = useState(true);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  
 
   const handleDisplayImageFileChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -136,9 +138,37 @@ const AddProductForm = ({ categories, brands }: { categories: any, brands: any }
   const handleImagesFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
+      const newFiles = Array.from(files);
+      setSelectedFiles(prevFiles => [...prevFiles, ...newFiles]);
+      
       generateDataUrlForImages(files, (newUrls) => {
         setImagesDataUrl(prevUrls => [...prevUrls, ...newUrls]);
       });
+
+      // Create a new FormData object
+      const newFormData = new FormData();
+      
+      // Append existing files from selectedFiles
+      selectedFiles.forEach(file => {
+        newFormData.append('images', file);
+      });
+      
+      // Append new files
+      newFiles.forEach(file => {
+        newFormData.append('images', file);
+      });
+
+      // Update the file input with the new FormData
+      if (imagesFileInput.current) {
+        const fileArray = newFormData.getAll('images');
+        const dataTransfer = new DataTransfer();
+        fileArray.forEach((file) => {
+          if (file instanceof File) {
+            dataTransfer.items.add(file);
+          }
+        });
+        imagesFileInput.current.files = dataTransfer.files;
+      }
     }
   };
 
@@ -158,6 +188,27 @@ const AddProductForm = ({ categories, brands }: { categories: any, brands: any }
 
   const handleRemoveImage = (indexToRemove: number) => {
     setImagesDataUrl(prevUrls => prevUrls.filter((_, index) => index !== indexToRemove));
+    setSelectedFiles(prevFiles => {
+      const updatedFiles = prevFiles.filter((_, index) => index !== indexToRemove);
+      
+      // Update the file input with remaining files
+      const newFormData = new FormData();
+      updatedFiles.forEach(file => {
+        newFormData.append('images', file);
+      });
+      if (imagesFileInput.current) {
+        const fileArray = newFormData.getAll('images');
+        const dataTransfer = new DataTransfer();
+        fileArray.forEach((file) => {
+          if (file instanceof File) {
+            dataTransfer.items.add(file);
+          }
+        });
+        imagesFileInput.current.files = dataTransfer.files;
+      }
+      
+      return updatedFiles;
+    });
   };
 
   // const handleCategoryChange = (values: string[]) => {

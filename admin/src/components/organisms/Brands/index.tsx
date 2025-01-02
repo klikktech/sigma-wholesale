@@ -162,7 +162,7 @@ const Brands = ({ brands }: { brands: Brand[] }) => {
                                                     image
                                                 </span>
                                                 <span className="text-gray-600">
-                                                    {newImage ? newImage.name : 'Click to upload or drag and drop'}
+                                                    {newImage ? newImage.name : 'Click to upload or drag and drop [5MB max]'}
                                                 </span>
                                             </div>
                                             {!newImage && (

@@ -157,7 +157,7 @@ const Banners = ({ bannersList }: { bannersList: Banner[] }) => {
                                                         {selectedFile?.type.includes('video') && 'videocam'}
                                                     </span>
                                                     <span className="text-gray-600">
-                                                        {selectedFile ? selectedFile.name : 'Click to upload or drag and drop'}
+                                                        {selectedFile ? selectedFile.name : 'Click to upload or drag and drop [5MB max]'}
                                                     </span>
                                                 </div>
                                                 {!selectedFile && (
