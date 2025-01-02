@@ -3,10 +3,7 @@ package com.klikk.sigma.service.impl;
 import com.klikk.sigma.dto.request.ProductRequestDto;
 import com.klikk.sigma.dto.request.UpdateProductAdminRequest;
 import com.klikk.sigma.dto.response.*;
-import com.klikk.sigma.entity.Attachment;
-import com.klikk.sigma.entity.Brand;
-import com.klikk.sigma.entity.Product;
-import com.klikk.sigma.entity.Variation;
+import com.klikk.sigma.entity.*;
 import com.klikk.sigma.exception.NotFoundException;
 import com.klikk.sigma.mapper.AttachmentMapper;
 import com.klikk.sigma.mapper.CategoryMapper;
@@ -264,9 +261,37 @@ public class ProductServiceImpl implements ProductService {
         if (request.getSalePrice() > 0) {
             product.get().setSalePrice(request.getSalePrice());
         }
+        if (request.getBrand()!=null){
+            Brand brand=brandRepository.findByName(request.getBrand()).orElseThrow(() -> new NotFoundException("Brand not found"));
+            product.get().setBrand(brand);
+        }
+
+        if(request.getBoxQuantity()>0){
+            product.get().setBoxQuantity(request.getBoxQuantity());
+        }
+        if(request.getStockQuantity()>0){
+            product.get().setStockQuantity(request.getBoxQuantity());
+        }
+        if(request.getCaseQuantity()>0){
+            product.get().setCaseQuantity(request.getCaseQuantity());
+        }
+        if(request.getProductType()!=null){
+            ProductType productType= request.getProductType().equalsIgnoreCase("simple")?ProductType.SIMPLE:ProductType.VARIABLE;
+            product.get().setProductType(productType);
+        }
+        if(request.getDescription()!=null){
+            product.get().setDescription(request.getDescription());
+        }
+        product.get().setOnSale(request.isOnSale());
 
         if(request.getCategories()!=null){
-            product.get().setCategories(request.getCategories().stream().map(category -> categoryRepository.findBySlugAndType(category,"product_cat")).toList());
+            List<Category> categories=request.getCategories().stream().map(category -> categoryRepository.findBySlugAndType(category,"product_cat")).toList();
+            categories.forEach(category -> {
+                if(product.get().getCategories()==null){
+                    product.get().setCategories(new ArrayList<>());
+                }
+                product.get().getCategories().add(category);
+            });
         }
 
         Product updatedProduct=productRepository.save(product.get());

@@ -44,4 +44,6 @@ public class UpdateProductAdminRequest {
 
     private  List<String> categories;
 
+    private String brand;
+
 }
