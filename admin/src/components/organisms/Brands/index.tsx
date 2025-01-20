@@ -25,13 +25,13 @@ const Brands = ({ brands }: { brands: Brand[] }) => {
         const file = e.target.files?.[0];
         if (file) {
             const maxSize = 5 * 1024 * 1024;
-            
+
             if (file.size > maxSize) {
                 <FormMessage message={{ message: "Image size must be less than 5MB" }} />
                 e.target.value = '';
                 return;
             }
-            
+
             setNewImage(file);
         }
     };
@@ -79,24 +79,29 @@ const Brands = ({ brands }: { brands: Brand[] }) => {
     return (
         <div className="my-3">
             <div className="flex justify-end mb-4">
-                <Button  onClick={() => setIsCreating(true)}
+                <Button onClick={() => setIsCreating(true)}
                     endContent={
-                      <span className="material-symbols-rounded">add</span>
+                        <span className="material-symbols-rounded">add</span>
                     }
-                  >
+                >
                     Add Brand
                 </Button>
             </div>
+
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
                 {brands.map((brand: Brand, index: number) => (
                     <div key={index} className="relative group bg-white rounded-lg p-4 border border-gray-300">
-                        <Image
-                            src={brand.image}
-                            width={100}
-                            height={100}
-                            alt={brand.name}
-                            className="w-full max-h-36 object-cover"
-                        />
+                        <div className="relative aspect-square w-full flex items-center justify-center p-4 overflow-hidden">
+                            <div className="relative w-full h-full transform group-hover:scale-105 transition-transform duration-300 ease-in-out">
+                                <Image
+                                    src={brand.image}
+                                    fill
+                                    alt={brand.name}
+                                    className="object-contain"
+                                    sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 16vw"
+                                />
+                            </div>
+                        </div>
                         <div className="absolute inset-0 bg-black bg-opacity-50 text-white opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2 items-center justify-center">
                             <button
                                 onClick={() => handleEditClick(brand)}
@@ -119,8 +124,8 @@ const Brands = ({ brands }: { brands: Brand[] }) => {
                     </div>
                 ))}
             </div>
-            <Modal 
-                isOpen={!!editingBrand || isCreating} 
+            <Modal
+                isOpen={!!editingBrand || isCreating}
                 onClose={() => {
                     setEditingBrand(null);
                     setIsCreating(false);
@@ -140,7 +145,7 @@ const Brands = ({ brands }: { brands: Brand[] }) => {
                                             type="text"
                                             value={editingBrand ? editingBrand.name : newBrandName}
                                             readOnly={editingBrand ? true : false}
-                                            onChange={(e) => editingBrand 
+                                            onChange={(e) => editingBrand
                                                 ? setEditingBrand({ ...editingBrand, name: e.target.value })
                                                 : setNewBrandName(e.target.value)
                                             }
@@ -175,14 +180,14 @@ const Brands = ({ brands }: { brands: Brand[] }) => {
                                 </form>
                             </ModalBody>
                             <ModalFooter>
-                                <Button 
-                                    color="default" 
-                                    variant="light" 
+                                <Button
+                                    color="default"
+                                    variant="light"
                                     onPress={onClose}
                                 >
                                     Cancel
                                 </Button>
-                                <Button 
+                                <Button
                                     color="primary"
                                     isDisabled={!newImage}
                                     onPress={handleSubmit}
@@ -195,8 +200,8 @@ const Brands = ({ brands }: { brands: Brand[] }) => {
                 </ModalContent>
             </Modal>
 
-            <Modal 
-                isOpen={!!brandToDelete} 
+            <Modal
+                isOpen={!!brandToDelete}
                 onClose={() => setBrandToDelete(null)}
                 size="sm"
             >
@@ -210,15 +215,15 @@ const Brands = ({ brands }: { brands: Brand[] }) => {
                                 </p>
                             </ModalBody>
                             <ModalFooter>
-                                <Button 
-                                    color="default" 
-                                    variant="light" 
+                                <Button
+                                    color="default"
+                                    variant="light"
                                     onPress={onClose}
                                 >
                                     Cancel
                                 </Button>
-                                <Button 
-                                    color="danger" 
+                                <Button
+                                    color="danger"
                                     onPress={handleDeleteConfirm}
                                 >
                                     Delete

@@ -27,7 +27,8 @@ import {
   ADD_CATEGORY_URL,
   GET_CATEGORY_LIST_URL,
   DELETE_CATEGORY_URL,
-  SEARCH_CATEGORY_URL
+  SEARCH_CATEGORY_URL,
+  GET_USER_DETAILS_ENDPOINT
 } from "@/utils/urls";
 import api, { authInstance } from "./instance";
 import {
@@ -97,7 +98,7 @@ export const axios = {
     },
     getUserDetails: async (email: string): Promise<AxiosResponse> => {
       try {
-        const { data, status } = await api.get(GET_USER_ENDPOINT(email));
+        const { data, status } = await api.get(GET_USER_DETAILS_ENDPOINT(email));
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;
