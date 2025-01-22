@@ -8,6 +8,7 @@ import {
   ProductImagesValidator,
 } from "@/utils/validators";
 import { redirect } from "next/navigation";
+import { uploadFileToS3 } from "@/lib/s3";
 
 export const addProductAction = async (
   state: undefined | Message,
@@ -72,15 +73,30 @@ export const addProductAction = async (
     const formDataForSubmission = new FormData();
     formDataForSubmission.append("product", JSON.stringify(payload));
     
+    // Upload display image to S3 if it exists
     if (validatedImages.data.displayImage) {
-      formDataForSubmission.append("displayImage", validatedImages.data.displayImage);
+      try {
+        const displayImageUrl = await uploadFileToS3(validatedImages.data.displayImage);
+        formDataForSubmission.append("displayImage", displayImageUrl);
+      } catch (error) {
+        return { error: "Failed to upload display image" };
+      }
     }
 
-    // Append all images directly
-    if(validatedImages.data.images){
-      validatedImages.data.images.forEach((image) => {
-        formDataForSubmission.append("images", image);
-      });
+    // Upload all product images to S3 if they exist
+    if (validatedImages.data.images) {
+      try {
+        const imageUrls = await Promise.all(
+          validatedImages.data.images.map(image => uploadFileToS3(image))
+        );
+        
+        // Append all image URLs to formData
+        imageUrls.forEach(url => {
+          formDataForSubmission.append("images", url);
+        });
+      } catch (error) {
+        return { error: "Failed to upload product images" };
+      }
     }
 
     console.log(formDataForSubmission,"formDataForSubmission")

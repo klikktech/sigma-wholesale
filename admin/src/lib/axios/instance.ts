@@ -78,6 +78,11 @@ const handleAxiosError = (error: any): AxiosErrorResponse => {
   if (error.response) {
     const status = error.response.status as number;
     switch (status) {
+      case 400:
+        return formatErrorResponse(
+          error.response.data.message,
+          status
+        );
       case 401:
         return formatErrorResponse(
           error.response.data.message || "Unauthorised - Please log in again",
