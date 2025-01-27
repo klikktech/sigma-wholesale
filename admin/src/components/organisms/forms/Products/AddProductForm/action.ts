@@ -17,7 +17,7 @@ export const addProductAction = async (
   const displayImage = formData.get("displayImage");
   const images = formData.getAll("images");
 
-  console.log(images,"images")
+  // console.log(images,"images")
   
   // Create form data object with special handling for categories
   const formDataObject = Object.fromEntries(formData);
@@ -49,7 +49,7 @@ export const addProductAction = async (
   });
   if (validatedImages.error)
     return { error: validatedImages.error.errors[0].message as string };
-  console.log(validatedFormFields,"validatedFormFields")
+  // console.log(validatedFormFields,"validatedFormFields")
   if (validatedFormFields.success && validatedImages.success) {
     const payload: ProductDetails = {
       name: validatedFormFields.data.name,
@@ -78,6 +78,7 @@ export const addProductAction = async (
       try {
         const displayImageUrl = await uploadFileToS3(validatedImages.data.displayImage);
         formDataForSubmission.append("displayImage", displayImageUrl);
+        console.log(displayImageUrl,"displayImageUrl")
       } catch (error) {
         return { error: "Failed to upload display image" };
       }
@@ -94,6 +95,7 @@ export const addProductAction = async (
         imageUrls.forEach(url => {
           formDataForSubmission.append("images", url);
         });
+        console.log(imageUrls,"imageUrls")
       } catch (error) {
         return { error: "Failed to upload product images" };
       }
