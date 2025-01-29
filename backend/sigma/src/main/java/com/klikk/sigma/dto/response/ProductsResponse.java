@@ -51,4 +51,6 @@ public class ProductsResponse {
     private List<VariationResponseDto> variations;
 
     private String brand;
+
+
 }

@@ -50,12 +50,22 @@ public class ProductAdminController {
         return ResponseEntity.ok(new SuccessResponse(LocalDateTime.now(), "Product Added Successfully"));
     }
 
+    @PostMapping("/newMeth")
+    @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
+    public ResponseEntity<SuccessResponse> addProduct(@RequestBody ProductRequestDto productRequestDto) throws IOException {
+
+        productService.saveProductNew(productRequestDto);
+        return ResponseEntity.ok(new SuccessResponse(LocalDateTime.now(), "Product Added Successfully"));
+
+    }
+
+
     @PutMapping()
     @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
-    public ResponseEntity<SuccessResponse> updateProduct(@RequestPart("product") String request,@RequestPart(value = "displayImage",required = false)MultipartFile displayImage, @RequestPart(value = "images",required = false) List<MultipartFile> images){
+    public ResponseEntity<SuccessResponse> updateProduct(@RequestBody UpdateProductAdminRequest updateRequest){
         try{
-            UpdateProductAdminRequest updateRequest = objectMapper.readValue(request, UpdateProductAdminRequest.class);
-            return ResponseEntity.ok(productService.updateProduct(updateRequest,displayImage,images));
+
+            return ResponseEntity.ok(productService.updateProduct(updateRequest));
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(SuccessResponse.builder().message(e.getMessage()).build());

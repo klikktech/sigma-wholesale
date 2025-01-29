@@ -46,4 +46,8 @@ public class UpdateProductAdminRequest {
 
     private String brand;
 
+    private List<String> images;
+
+    private String displayImage;
+
 }

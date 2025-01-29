@@ -45,4 +45,8 @@ public class ProductRequestDto {
 
     private List<String> categories;
 
+    private String displayImage;
+
+    private List<String> images;
+
 }

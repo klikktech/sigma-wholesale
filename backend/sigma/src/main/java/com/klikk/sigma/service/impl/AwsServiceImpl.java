@@ -103,8 +103,8 @@ public class AwsServiceImpl implements AwsService {
         }
     }
 
-    public AttachmentType determineAttachmentType(MultipartFile file) {
-        String contentType = file.getContentType();
+    public AttachmentType determineAttachmentType(String fileUrl) throws IOException {
+        String contentType = Files.probeContentType(Path.of(fileUrl));
         if (contentType != null) {
             if (contentType.startsWith("image/")) {
                 return AttachmentType.IMAGE;

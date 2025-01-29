@@ -92,28 +92,67 @@ public class ProductServiceImpl implements ProductService {
         newProduct.setProductType(newProductType);
         final Product savedProduct = productRepository.save(newProduct);
 
-        if (displayFile != null) {
-            String fileUrl = awsService.uploadFileToAws(displayFile);
-            AttachmentType attachmentType = awsService.determineAttachmentType(displayFile);
-            // Save the display file as an attachment
-            attachmentService.saveAttachment(attachmentType, fileUrl, savedProduct, true);
-        }
-
-        for (MultipartFile file : otherFiles) {
-            String fileUrl = awsService.uploadFileToAws(file);
-            AttachmentType attachmentType = awsService.determineAttachmentType(file);
-            attachmentService.saveAttachment(attachmentType, fileUrl, savedProduct, false);
-        }
-
-        List<Variation> savedVariations = productRequest.getVariations().stream()
-                .map(variation -> variationService.saveVariation(variation, savedProduct.getDetails()))
-                .toList();
+//        if (displayFile != null) {
+//            String fileUrl = awsService.uploadFileToAws(displayFile);
+//            AttachmentType attachmentType = awsService.determineAttachmentType(displayFile);
+//            // Save the display file as an attachment
+//            attachmentService.saveAttachment(attachmentType, fileUrl, savedProduct, true);
+//        }
+//
+//        for (MultipartFile file : otherFiles) {
+//            String fileUrl = awsService.uploadFileToAws(file);
+//            AttachmentType attachmentType = awsService.determineAttachmentType(file);
+//            attachmentService.saveAttachment(attachmentType, fileUrl, savedProduct, false);
+//        }
+//
+//        List<Variation> savedVariations = productRequest.getVariations().stream()
+//                .map(variation -> variationService.saveVariation(variation, savedProduct.getDetails()))
+//                .toList();
 
 
 
         return productMapper.productToProductResponseDto(savedProduct);
     }
 
+    @Override
+    public void saveProductNew(ProductRequestDto productRequest) throws IOException {
+        Product newProduct = productMapper.productRequestToProduct(productRequest);
+        newProduct.setCreatedAt(LocalDateTime.now());
+        newProduct.setDetails(generateUniqueDetails(newProduct));
+        if(productRequest.getCategories()==null){
+            newProduct.setCategories(new ArrayList<>());
+        }
+        else{
+            newProduct.setCategories(productRequest.getCategories().stream().map(category -> categoryRepository.findBySlugAndType(category,"product_cat")).toList());
+        }
+        if (brandRepository.findByName(productRequest.getBrand()).isPresent()) {
+            newProduct.setBrand(brandRepository.findByName(productRequest.getBrand()).get());
+        }
+        else {
+            newProduct.setBrand(null);
+        }
+
+        ProductType newProductType= productRequest.getProductType().toLowerCase().equals("simple")?ProductType.SIMPLE:ProductType.VARIABLE;
+        newProduct.setProductType(newProductType);
+        final Product savedProduct = productRepository.save(newProduct);
+
+        if (productRequest.getDisplayImage() != null) {
+
+            AttachmentType attachmentType = awsService.determineAttachmentType(productRequest.getDisplayImage());
+            // Save the display file as an attachment
+            attachmentService.saveAttachment(attachmentType, productRequest.getDisplayImage(), savedProduct, true);
+        }
+
+        for (String fileUrl : productRequest.getImages()) {
+
+            AttachmentType attachmentType = awsService.determineAttachmentType(fileUrl);
+            attachmentService.saveAttachment(attachmentType, fileUrl, savedProduct, false);
+        }
+
+        List<Variation> savedVariations = productRequest.getVariations().stream()
+                .map(variation -> variationService.saveVariation(variation, savedProduct.getDetails()))
+                .toList();
+    }
 
 
     @Override
@@ -228,7 +267,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public SuccessResponse updateProduct(UpdateProductAdminRequest request,MultipartFile displayImage, List<MultipartFile> otherFiles) {
+    public SuccessResponse updateProduct(UpdateProductAdminRequest request) throws IOException {
         Optional<Product> product=productRepository.findByDetails(request.getDetails());
 
         if(product.isEmpty()){
@@ -297,16 +336,16 @@ public class ProductServiceImpl implements ProductService {
         Product updatedProduct=productRepository.save(product.get());
 
 
-        if (displayImage != null) {
-            String fileUrl = awsService.uploadFileToAws(displayImage);
-            AttachmentType attachmentType = awsService.determineAttachmentType(displayImage);
+        if (request.getDisplayImage() != null) {
+
+            AttachmentType attachmentType = awsService.determineAttachmentType(request.getDisplayImage());
             // Save the display file as an attachment
-            attachmentService.saveAttachment(attachmentType, fileUrl, updatedProduct, true);
+            attachmentService.saveAttachment(attachmentType, request.getDisplayImage(), updatedProduct, true);
         }
 
-        for (MultipartFile file : otherFiles) {
-            String fileUrl = awsService.uploadFileToAws(file);
-            AttachmentType attachmentType = awsService.determineAttachmentType(file);
+        for (String fileUrl : request.getImages()) {
+
+            AttachmentType attachmentType = awsService.determineAttachmentType(fileUrl);
             attachmentService.saveAttachment(attachmentType, fileUrl, updatedProduct, false);
         }
 

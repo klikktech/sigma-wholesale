@@ -33,9 +33,9 @@ public class BannerServiceImpl implements BannerService {
 
     @Override
     public void addBanner(BannerAddDto bannerAddDto, MultipartFile image) {
-        AttachmentType type=awsService.determineAttachmentType(image);
-        Banner newBanner=Banner.builder().title(bannerAddDto.getTitle()).image(awsService.uploadFileToAws(image)).type(type).description(bannerAddDto.getDescription()).build();
-        bannerRepository.save(newBanner);
+//        AttachmentType type=awsService.determineAttachmentType(image);
+//        Banner newBanner=Banner.builder().title(bannerAddDto.getTitle()).image(awsService.uploadFileToAws(image)).type(type).description(bannerAddDto.getDescription()).build();
+//        bannerRepository.save(newBanner);
     }
 
     @Override
@@ -66,8 +66,8 @@ public class BannerServiceImpl implements BannerService {
             throw new NotFoundException("Banner not found");
         }
         awsService.deleteFileFromS3ByUrl(bannerToUpdate.get().getImage());
-        AttachmentType type= awsService.determineAttachmentType(image);
-        bannerToUpdate.get().setType(type);
+//        AttachmentType type= awsService.determineAttachmentType(image);
+//        bannerToUpdate.get().setType(type);
         bannerToUpdate.get().setImage(awsService.uploadFileToAws(image));
         bannerToUpdate.get().setDescription(bannerRequest.getDescription());
         bannerToUpdate.get().setTitle(bannerRequest.getTitle());
