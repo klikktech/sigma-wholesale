@@ -9,7 +9,7 @@ const s3Client = new S3Client({
   },
 });
 
-export async function uploadFileToS3(file: File): Promise<string> {
+export async function uploadFileToS3(file: File, key: string): Promise<string> {
   try {
     // Convert File to Buffer using arrayBuffer()
     const arrayBuffer = await file.arrayBuffer();
@@ -20,14 +20,14 @@ export async function uploadFileToS3(file: File): Promise<string> {
     
     const command = new PutObjectCommand({
       Bucket: process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME!,
-      Key: `productimages/${fileName}`,
+      Key: key,
       Body: fileBuffer,
       ContentType: file.type,
     });
 
     await s3Client.send(command);
     
-    return `https://${process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME}.s3.${process.env.NEXT_PUBLIC_AWS_REGION}.amazonaws.com/productimages/${fileName}`;
+    return `https://${process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME}.s3.${process.env.NEXT_PUBLIC_AWS_REGION}.amazonaws.com/${key}/${fileName}`;
   } catch (error) {
     console.error('Error uploading to S3:', error);
     throw new Error('Failed to upload file to S3');

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, Button, Input, Modal, Image, ModalHeader, ModalBody, ModalFooter, ModalContent, Spacer, Textarea } from '@nextui-org/react';
 import { addBanner, deleteBanner } from './action';
-import FormMessage from '@/components/molecules/FormMessage';
+import { uploadFileToS3 } from '@/lib/s3';
 
 
 interface Banner {
@@ -26,17 +26,15 @@ const Banners = ({ bannersList }: { bannersList: Banner[] }) => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
     const handleAddBanner = async () => {
-        const formData = new FormData();
         if (selectedFile && newBanner.title && newBanner.description) {
-            formData.append('image', selectedFile);
+            const imageUrl = await uploadFileToS3(selectedFile, "banners");
 
             const payload = {
+                image: imageUrl,
                 title: newBanner.title,
                 description: newBanner.description,
             };
-            formData.append('banner', JSON.stringify(payload));
-
-            const result = await addBanner(formData);
+            const result = await addBanner(payload);
 
             if (result?.success) {
                 setIsModalOpen(false);
@@ -61,14 +59,6 @@ const Banners = ({ bannersList }: { bannersList: Banner[] }) => {
     const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            const maxSize = 5 * 1024 * 1024;
-            
-            if (file.size > maxSize) {
-                <FormMessage message={{ message: "File size must be less than 5MB" }} />
-                e.target.value = '';
-                return;
-            }
-
             setSelectedFile(file);
             const image = URL.createObjectURL(file);
             setNewBanner({ ...newBanner, image });
@@ -157,7 +147,7 @@ const Banners = ({ bannersList }: { bannersList: Banner[] }) => {
                                                         {selectedFile?.type.includes('video') && 'videocam'}
                                                     </span>
                                                     <span className="text-gray-600">
-                                                        {selectedFile ? selectedFile.name : 'Click to upload or drag and drop [5MB max]'}
+                                                        {selectedFile ? selectedFile.name : 'Click to upload or drag and drop'}
                                                     </span>
                                                 </div>
                                                 {!selectedFile && (

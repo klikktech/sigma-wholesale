@@ -1,19 +1,13 @@
 "use server";
 
 import { axios } from "@/lib/axios";
+import { uploadFileToS3 } from "@/lib/s3";
 import { PRODUCTS_PAGE_ROUTE } from "@/utils/routes";
 import { Message, ProductDetails } from "@/utils/types";
 import {
     ProductFormValidator,
 } from "@/utils/validators";
 import { redirect } from "next/navigation";
-
-// Utility function to convert URL to File
-async function urlToFile(url: string, filename: string): Promise<File> {
-    const response = await fetch(url);
-    const blob = await response.blob();
-    return new File([blob], filename, { type: blob.type });
-}
 
 export const editProductAction = async (
     details: string,
@@ -23,7 +17,7 @@ export const editProductAction = async (
     const displayImage = formData.get("displayImage") as File;
     const displayImageUrl = formData.get("displayImageUrl") as string;
     const existingImageUrls = formData.get("existingImageUrls") as string;
-    
+
     const formDataObject = Object.fromEntries(formData);
     const categories = formData.getAll("categories");
 
@@ -47,6 +41,27 @@ export const editProductAction = async (
     }
 
     if (validatedFormFields.success) {
+
+        // Handle display image
+        let newDisplayImageUrl;
+        let newimageUrls: string[] = [];
+        if (displayImage?.size > 0) {
+            newDisplayImageUrl = await uploadFileToS3(displayImage, "productimages");
+        } else if (displayImageUrl) {
+            newDisplayImageUrl = displayImageUrl;
+        }
+
+        // Handle additional images
+        console.log(existingImageUrls, "existing image urls");
+        const existingUrls = existingImageUrls ? JSON.parse(existingImageUrls) : [];
+
+        // Add new images directly
+        const newImages = formData.getAll("newImages") as File[];
+        newimageUrls = await Promise.all(
+            newImages.map(image => uploadFileToS3(image, "productimages"))
+        );
+        newimageUrls.push(...existingUrls);
+
         const payload: ProductDetails = {
             name: validatedFormFields.data.name,
             salePrice: validatedFormFields.data.salePrice,
@@ -64,48 +79,11 @@ export const editProductAction = async (
             displayStatus: validatedFormFields.data.displayStatus,
             variations: variations,
             details: details,
+            displayImage: newDisplayImageUrl,
+            images: newimageUrls,
         };
 
-        const formDataToSend = new FormData();
-        formDataToSend.append("product", JSON.stringify(payload));
-        
-        // Handle display image
-        if (displayImage?.size > 0) {
-            formDataToSend.append("displayImage", displayImage);
-        } else if (displayImageUrl) {
-            const displayImageFile = await urlToFile(
-                displayImageUrl,
-                `display-${validatedFormFields.data.sku}.jpg`
-            );
-            formDataToSend.append("displayImage", displayImageFile);
-        }
-        
-        // Handle additional images
-        console.log(existingImageUrls, "existing image urls");
-        const existingUrls = existingImageUrls ? JSON.parse(existingImageUrls) : [];
-        const existingImageFiles = await Promise.all(
-            existingUrls.map(async (url: string, index: number) => {
-                return await urlToFile(
-                    url,
-                    `image-${validatedFormFields.data.sku}-${index}.jpg`
-                );
-            })
-        );
-        
-        // Add converted existing images
-        existingImageFiles.forEach(file => {
-            formDataToSend.append("images", file);
-        });
-
-        // Add new images directly
-        const newImages = formData.getAll("newImages") as File[];
-        newImages.forEach(file => {
-            formDataToSend.append("images", file);
-        });
-
-        console.log(formDataToSend, "edit product form data");
-        
-        const { data, status, error } = await axios.products.updateProduct(formDataToSend);
+        const { data, status, error } = await axios.products.updateProduct(payload);
         console.log(data, status, error);
         if (error) {
             return { error: error.message };

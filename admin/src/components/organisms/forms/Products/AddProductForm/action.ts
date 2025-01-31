@@ -17,15 +17,13 @@ export const addProductAction = async (
   const displayImage = formData.get("displayImage");
   const images = formData.getAll("images");
 
-  // console.log(images,"images")
-  
   // Create form data object with special handling for categories
   const formDataObject = Object.fromEntries(formData);
-  const categories = formData.getAll("categories"); // Get all category values as array
-  
+  const categories = formData.getAll("categories");
+
   const validatedFormFields = ProductFormValidator.safeParse({
     ...formDataObject,
-    categories // Override categories with the array
+    categories
   });
 
   let variations = [];
@@ -37,7 +35,7 @@ export const addProductAction = async (
   } catch (error) {
     return { error: "Invalid variations data" };
   }
-  console.log(validatedFormFields.error,"validatedFormFields")
+  console.log(validatedFormFields.error, "validatedFormFields")
 
   if (validatedFormFields.error) {
     return { error: validatedFormFields.error.errors[0].message as string };
@@ -49,8 +47,33 @@ export const addProductAction = async (
   });
   if (validatedImages.error)
     return { error: validatedImages.error.errors[0].message as string };
-  // console.log(validatedFormFields,"validatedFormFields")
+
   if (validatedFormFields.success && validatedImages.success) {
+
+    // Upload display image to S3 if it exists
+    let displayImageUrl;
+    let imageUrls: string[] = [];
+    if (validatedImages.data.displayImage) {
+      try {
+        displayImageUrl = await uploadFileToS3(validatedImages.data.displayImage, "productimages");
+        console.log(displayImageUrl, "displayImageUrl")
+      } catch (error) {
+        return { error: "Failed to upload display image" };
+      }
+    }
+
+    // Upload all product images to S3 if they exist
+    if (validatedImages.data.images) {
+      try {
+        imageUrls = await Promise.all(
+          validatedImages.data.images.map(image => uploadFileToS3(image, "productimages"))
+        );
+        console.log(imageUrls, "imageUrls")
+      } catch (error) {
+        return { error: "Failed to upload product images" };
+      }
+    }
+
     const payload: ProductDetails = {
       name: validatedFormFields.data.name,
       salePrice: validatedFormFields.data.salePrice,
@@ -58,7 +81,6 @@ export const addProductAction = async (
       sku: validatedFormFields.data.sku,
       brand: validatedFormFields.data.brand,
       categories: validatedFormFields.data.categories,
-      // subCategory: validatedFormFields.data.subCategory,
       isOnSale: validatedFormFields.data.isOnSale as boolean,
       status: validatedFormFields.data.status as "instock" | "outofstock",
       stockQuantity: validatedFormFields.data.stockQuantity,
@@ -68,41 +90,11 @@ export const addProductAction = async (
       productType: validatedFormFields.data.productType,
       displayStatus: validatedFormFields.data.displayStatus,
       variations: variations,
+      displayImage: displayImageUrl,
+      images: imageUrls,
     };
-    console.log(payload, "payload")
-    const formDataForSubmission = new FormData();
-    formDataForSubmission.append("product", JSON.stringify(payload));
-    
-    // Upload display image to S3 if it exists
-    if (validatedImages.data.displayImage) {
-      try {
-        const displayImageUrl = await uploadFileToS3(validatedImages.data.displayImage);
-        formDataForSubmission.append("displayImage", displayImageUrl);
-        console.log(displayImageUrl,"displayImageUrl")
-      } catch (error) {
-        return { error: "Failed to upload display image" };
-      }
-    }
 
-    // Upload all product images to S3 if they exist
-    if (validatedImages.data.images) {
-      try {
-        const imageUrls = await Promise.all(
-          validatedImages.data.images.map(image => uploadFileToS3(image))
-        );
-        
-        // Append all image URLs to formData
-        imageUrls.forEach(url => {
-          formDataForSubmission.append("images", url);
-        });
-        console.log(imageUrls,"imageUrls")
-      } catch (error) {
-        return { error: "Failed to upload product images" };
-      }
-    }
-
-    console.log(formDataForSubmission,"formDataForSubmission")
-    const { data, status, error } = await axios.products.addProduct(formDataForSubmission);
+    const { data, status, error } = await axios.products.addProduct(payload);
 
     if (error) {
       return { error: error.message };

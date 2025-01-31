@@ -141,18 +141,6 @@ export const ProductFormValidator = z.object({
     .trim(),
   isOnSale: z.coerce.boolean().optional(),
   status: z.string().optional(),
-  // displayImage:  z
-  // .any()
-  // .refine((file) => {
-  //   if (file.size === 0 || file.name === undefined) return false;
-  //   else return true;
-  // }, "Please update or add new image.")
-
-  // .refine(
-  //   (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-  //   ".jpg, .jpeg, .png and .webp files are accepted."
-  // )
-  // .refine((file) => file.size <= MAX_FILE_SIZE, `Max file size is 5MB.`),
 });
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
@@ -181,7 +169,6 @@ export const ProductImagesValidator = z.object({
       (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
       ".jpg, .jpeg, .png and .webp .mp4, .webm, .mov, .avi files are accepted."
     ),
-    // .refine((file) => file.size <= MAX_FILE_SIZE, `Max file size is 5MB.`),
 
   images: z
     .array(z.any())
@@ -191,7 +178,6 @@ export const ProductImagesValidator = z.object({
         files.every((file) => file.size > 0 && file.name !== undefined),
       "One or more files are invalid or empty."
     )
-    // .refine((files) => files.every((file) => file.size <= MAX_FILE_SIZE), "One or more files are larger than 5MB.")
 });
 export const EditProductImagesValidator = z.object({
   displayImage: z
@@ -202,7 +188,6 @@ export const EditProductImagesValidator = z.object({
       if (file.size === 0) return false;
       return ACCEPTED_IMAGE_TYPES.includes(file?.type);
     }, ".jpg, .jpeg, .png and .webp files are accepted."),
-    // .refine((file) => file?.size <= MAX_FILE_SIZE, "File is larger than 5MB."),
 
   images: z
     .array(z.any())
@@ -215,5 +200,4 @@ export const EditProductImagesValidator = z.object({
       },
       "One or more files are invalid or empty."
     )
-    // .refine((files) => files.every((file) => file.size <= MAX_FILE_SIZE), "One or more files are larger than 5MB."),
 });

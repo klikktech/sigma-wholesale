@@ -97,8 +97,7 @@ const DisplayImageCard = ({
         <p className="flex gap-2 text-default-500 justify-center items-center">
             <span className="material-symbols-rounded">add_a_photo</span>
             <span>
-                Upload new display image or video for product<br />
-                Please make sure the image is less than 5mb
+                Upload new display image or video for product
             </span>
         </p>
     );

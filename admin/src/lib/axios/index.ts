@@ -28,12 +28,14 @@ import {
   GET_CATEGORY_LIST_URL,
   DELETE_CATEGORY_URL,
   SEARCH_CATEGORY_URL,
-  GET_USER_DETAILS_ENDPOINT
+  GET_USER_DETAILS_ENDPOINT,
+  NEW_ADD_PRODUCT_ENDPOINT
 } from "@/utils/urls";
 import api, { authInstance } from "./instance";
 import {
   AxiosErrorResponse,
   AxiosResponse,
+  ProductDetails,
   UserDetails,
 } from "@/utils/types";
 
@@ -152,36 +154,37 @@ export const axios = {
         return error as AxiosErrorResponse;
       }
     },
-    addProduct: async (formData: FormData): Promise<AxiosResponse> => {
+    addProduct: async (payload: ProductDetails): Promise<AxiosResponse> => {
       try {
         const { data, status } = await api.post(
-          ADD_PRODUCT_ENDPOINT,
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-            maxContentLength: Infinity,
-            maxBodyLength: Infinity,
-          }
+          // ADD_PRODUCT_ENDPOINT,
+          NEW_ADD_PRODUCT_ENDPOINT,
+          payload,
+          // {
+          //   headers: {
+          //     'Content-Type': 'multipart/form-data',
+          //   },
+          //   maxContentLength: Infinity,
+          //   maxBodyLength: Infinity,
+          // }
         );
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;
       }
     },
-    updateProduct: async (formData: FormData): Promise<AxiosResponse> => {
+    updateProduct: async (payload: ProductDetails): Promise<AxiosResponse> => {
       try {
         const { data, status } = await api.put(
           ADD_PRODUCT_ENDPOINT,
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-            maxContentLength: Infinity,
-            maxBodyLength: Infinity,
-          }
+          payload,
+          // {
+          //   headers: {
+          //     'Content-Type': 'multipart/form-data',
+          //   },
+          //   maxContentLength: Infinity,
+          //   maxBodyLength: Infinity,
+          // }
         );
         return { data, status };
       } catch (error) {
@@ -273,32 +276,32 @@ export const axios = {
         return error as AxiosErrorResponse;
       }
     },
-    updateBrand: async (formData: FormData): Promise<AxiosResponse> => {
+    updateBrand: async (payload: any): Promise<AxiosResponse> => {
       try {
-        const { data, status } = await api.put(ADD_OR_UPDATE_BRANDS_URL, formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-            maxContentLength: Infinity,
-            maxBodyLength: Infinity,
-          }
+        const { data, status } = await api.put(ADD_OR_UPDATE_BRANDS_URL, payload,
+          // {
+          //   headers: {
+          //     'Content-Type': 'multipart/form-data',
+          //   },
+          //   maxContentLength: Infinity,
+          //   maxBodyLength: Infinity,
+          // }
         );
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;
       }
     },
-    createBrand: async (formData: FormData): Promise<AxiosResponse> => {
+    createBrand: async (payload: any): Promise<AxiosResponse> => {
       try {
-        const { data, status } = await api.post(ADD_OR_UPDATE_BRANDS_URL, formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-            maxContentLength: Infinity,
-            maxBodyLength: Infinity,
-          }
+        const { data, status } = await api.post(ADD_OR_UPDATE_BRANDS_URL, payload,
+          // {
+          //   headers: {
+          //     'Content-Type': 'multipart/form-data',
+          //   },
+          //   maxContentLength: Infinity,
+          //   maxBodyLength: Infinity,
+          // }
         );
         return { data, status };
       } catch (error) {
@@ -323,16 +326,16 @@ export const axios = {
         return error as AxiosErrorResponse;
       }
     },
-    addBanner: async (formData: FormData): Promise<AxiosResponse> => {
+    addBanner: async (payload: any): Promise<AxiosResponse> => {
       try {
-        const { data, status } = await api.post(ADD_OR_UPDATE_BANNERS_URL, formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-            maxContentLength: Infinity,
-            maxBodyLength: Infinity,
-          }
+        const { data, status } = await api.post(ADD_OR_UPDATE_BANNERS_URL, payload,
+          // {
+          //   headers: {
+          //     'Content-Type': 'multipart/form-data',
+          //   },
+          //   maxContentLength: Infinity,
+          //   maxBodyLength: Infinity,
+          // }
         );
         return { data, status };
       } catch (error) {

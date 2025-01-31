@@ -20,6 +20,7 @@ export const GET_ALL_PRODUCTS_ENDPOINT = `admin/products`;
 export const GET_PRODUCT_ENDPOINT = (details: string) =>
   `admin/products/${details}`;
 export const ADD_PRODUCT_ENDPOINT = `admin/products`;
+export const NEW_ADD_PRODUCT_ENDPOINT = `admin/products/newMeth`;
 export const DELETE_PRODUCT_ENDPOINT = (details: string) =>
   `admin/products/${details}`;
 export const SEARCH_PRODUCTS_URL = (keyword: string) => `products/search/${keyword}`

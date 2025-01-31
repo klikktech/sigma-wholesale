@@ -8,6 +8,7 @@ import { BRANDS_PAGE_ROUTE } from '@/utils/routes';
 import { useRouter } from 'next/navigation';
 import Button from '@/components/atoms/Button';
 import FormMessage from '@/components/molecules/FormMessage';
+import { uploadFileToS3 } from '@/lib/s3';
 
 const Brands = ({ brands }: { brands: Brand[] }) => {
     const [editingBrand, setEditingBrand] = useState<Brand | null>(null);
@@ -24,31 +25,28 @@ const Brands = ({ brands }: { brands: Brand[] }) => {
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            const maxSize = 5 * 1024 * 1024;
-
-            if (file.size > maxSize) {
-                <FormMessage message={{ message: "Image size must be less than 5MB" }} />
-                e.target.value = '';
-                return;
-            }
-
             setNewImage(file);
         }
     };
     const handleSubmit = async () => {
-        console.log(" handleSubmit ")
-        const formData = new FormData();
+        let imageUrl;
         if (newImage) {
-            formData.append('image', newImage);
+            imageUrl = await uploadFileToS3(newImage, "brands");
         }
 
         let result;
         if (editingBrand) {
-            formData.append('name', editingBrand.name);
-            result = await updateBrand(formData);
+            const payload = {
+                image: imageUrl,
+                name: editingBrand.name,
+            };
+            result = await updateBrand(payload);
         } else {
-            formData.append('name', newBrandName);
-            result = await createBrand(formData);
+            const payload = {
+                image: imageUrl,
+                name: newBrandName,
+            };
+            result = await createBrand(payload);
         }
 
         if (result?.success) {
@@ -167,7 +165,7 @@ const Brands = ({ brands }: { brands: Brand[] }) => {
                                                     image
                                                 </span>
                                                 <span className="text-gray-600">
-                                                    {newImage ? newImage.name : 'Click to upload or drag and drop [5MB max]'}
+                                                    {newImage ? newImage.name : 'Click to upload or drag and drop'}
                                                 </span>
                                             </div>
                                             {!newImage && (
