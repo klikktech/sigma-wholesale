@@ -107,31 +107,31 @@ export const ProductFormValidator = z.object({
   //   .string()
   //   .min(2, { message: "Details must be at least 2 characters long." })
   //   .trim(),
-    brand: z
+  brand: z
     .string()
     .min(2, { message: "Brand must be at least 2 characters long." })
     .trim(),
-    categories: z
+  categories: z
     .array(z.string())
     .min(1, { message: "Please select at least one category." }),
-    // subCategory: z
-    // .string()
-    // .min(2, { message: "Please select at least one sub category." })
-    // .trim(),
-    productType: z
+  // subCategory: z
+  // .string()
+  // .min(2, { message: "Please select at least one sub category." })
+  // .trim(),
+  productType: z
     .string()
     .min(2, { message: "Product type must be at least 2 characters long." })
     .trim(),
-    stockQuantity: z.coerce
+  stockQuantity: z.coerce
     .number({ message: "Stock quantity must be a number" })
     .min(2, { message: "Stock quantity can't be less than 0" }),
-    caseQuantity: z.coerce
+  caseQuantity: z.coerce
     .number({ message: "Case quantity must be a number" })
     .min(2, { message: "Case quantity can't be less than 0" }),
-    boxQuantity: z.coerce
+  boxQuantity: z.coerce
     .number({ message: "Box quantity must be a number" })
     .min(2, { message: "Box quantity can't be less than 0" }),
-    displayStatus: z
+  displayStatus: z
     .string()
     .min(2, { message: "Display Status must be at least 2 characters long." })
     .trim(),
@@ -143,7 +143,7 @@ export const ProductFormValidator = z.object({
   status: z.string().optional(),
 });
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024;
+// const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 const ACCEPTED_IMAGE_TYPES = [
   "image/jpeg",
@@ -154,7 +154,7 @@ const ACCEPTED_IMAGE_TYPES = [
   "video/webm",
   "video/mov",
   "video/avi",
-  "application/octet-stream"
+  "application/octet-stream",
 ];
 
 export const ProductImagesValidator = z.object({
@@ -177,7 +177,7 @@ export const ProductImagesValidator = z.object({
       (files) =>
         files.every((file) => file.size > 0 && file.name !== undefined),
       "One or more files are invalid or empty."
-    )
+    ),
 });
 export const EditProductImagesValidator = z.object({
   displayImage: z
@@ -189,15 +189,10 @@ export const EditProductImagesValidator = z.object({
       return ACCEPTED_IMAGE_TYPES.includes(file?.type);
     }, ".jpg, .jpeg, .png and .webp files are accepted."),
 
-  images: z
-    .array(z.any())
-    .refine(
-      (files) => {
-        if (files.length === 0) return true; // Allow empty array for existing images
-        return files.every(file => 
-          file.size > 0 && ACCEPTED_IMAGE_TYPES.includes(file.type)
-        );
-      },
-      "One or more files are invalid or empty."
-    )
+  images: z.array(z.any()).refine((files) => {
+    if (files.length === 0) return true; // Allow empty array for existing images
+    return files.every(
+      (file) => file.size > 0 && ACCEPTED_IMAGE_TYPES.includes(file.type)
+    );
+  }, "One or more files are invalid or empty."),
 });
