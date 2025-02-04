@@ -33,28 +33,50 @@ const Banners = ({ bannersList }: { bannersList: Banner[] }) => {
     image: "",
     title: "",
     description: "",
+    type: "IMAGE", // Default type
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false); // Loading state for UI feedback
 
-  const handleAddBanner = async () => {
-    if (selectedFile && newBanner.title && newBanner.description) {
+  const handleAddBanner = async (event: React.FormEvent) => {
+    event.preventDefault(); // Prevent form submission
+
+    if (!selectedFile || !newBanner.title || !newBanner.description) return;
+
+    setIsUploading(true);
+    try {
       const imageUrl = await uploadFileToS3(selectedFile, "banners");
+
+      const bannerData = {
+        image: imageUrl,
+        title: newBanner.title,
+        description: newBanner.description,
+        type: selectedFile.type.includes("video") ? "VIDEO" : "IMAGE",
+      };
 
       const formData = new FormData();
       formData.append("image", imageUrl);
       formData.append("title", newBanner.title);
       formData.append("description", newBanner.description);
+      formData.append(
+        "type",
+        selectedFile.type.includes("video") ? "VIDEO" : "IMAGE"
+      );
 
       const result = await addBanner(formData);
 
       if (result?.success) {
         setIsModalOpen(false);
-        setNewBanner({ image: "", title: "", description: "" });
+        setNewBanner({ image: "", title: "", description: "", type: "IMAGE" });
         setSelectedFile(null);
         router.refresh();
       } else {
         console.error(result?.error);
       }
+    } catch (error) {
+      console.error("Upload failed:", error);
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -71,8 +93,10 @@ const Banners = ({ bannersList }: { bannersList: Banner[] }) => {
     const file = e.target.files?.[0];
     if (file) {
       setSelectedFile(file);
-      const image = URL.createObjectURL(file);
-      setNewBanner({ ...newBanner, image });
+      setNewBanner({
+        ...newBanner,
+        type: file.type.includes("video") ? "VIDEO" : "IMAGE",
+      });
     }
   };
 
@@ -95,19 +119,18 @@ const Banners = ({ bannersList }: { bannersList: Banner[] }) => {
             <Card key={banner.id} className="sm:p-4 max-h-96">
               <div className="relative">
                 <div className="flex items-center justify-center">
-                  {banner.type === "IMAGE" && (
+                  {banner.type === "IMAGE" ? (
                     <Image
                       className="w-full h-48 object-cover rounded-lg"
                       src={banner.image}
                       alt={banner.title}
                     />
-                  )}
-                  {banner.type === "VIDEO" && (
+                  ) : (
                     <video
                       className="w-full h-48 object-cover rounded-lg"
-                      autoPlay={true}
-                      muted={true}
-                      loop={true}
+                      autoPlay
+                      muted
+                      loop
                     >
                       <source src={banner.image} type="video/mp4" />
                       Your browser does not support the video tag.
@@ -139,35 +162,32 @@ const Banners = ({ bannersList }: { bannersList: Banner[] }) => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         placement="center"
-        className="mx-4 sm:mx-0"
-        scrollBehavior="inside"
       >
-        <ModalContent className="max-h-[90vh] sm:max-h-[80vh]">
+        <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="px-4 sm:px-6">
-                <h3 className="text-base sm:text-lg font-semibold">
-                  Add New Banner
-                </h3>
+              <ModalHeader>
+                <h3 className="text-lg font-semibold">Add New Banner</h3>
               </ModalHeader>
-              <ModalBody className="px-4 sm:px-6">
+              <ModalBody>
                 <form onSubmit={handleAddBanner}>
                   <div className="space-y-4">
-                    <div className="mb-4">
-                      <label className="text-sm">Brand Image</label>
+                    <div>
+                      <label className="text-sm">Banner Media</label>
                       <Spacer y={1} />
-                      <div className="relative border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-gray-400 transition-colors">
+                      <div className="relative border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-gray-400 transition">
                         <input
                           type="file"
-                          accept="image/*, video/*, video/quicktime"
+                          accept="image/*, video/*"
                           onChange={handleFileSelect}
-                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                           required
                         />
                         <div className="flex items-center justify-center gap-2">
                           <span className="material-symbols-rounded text-gray-400">
-                            {selectedFile?.type.includes("image") && "image"}
-                            {selectedFile?.type.includes("video") && "videocam"}
+                            {selectedFile?.type.includes("image")
+                              ? "image"
+                              : "videocam"}
                           </span>
                           <span className="text-gray-600">
                             {selectedFile
@@ -175,33 +195,20 @@ const Banners = ({ bannersList }: { bannersList: Banner[] }) => {
                               : "Click to upload or drag and drop"}
                           </span>
                         </div>
-                        {!selectedFile && (
-                          <p className="text-sm text-gray-500 text-center mt-2">
-                            Add image or video of banner
-                          </p>
-                        )}
                       </div>
                     </div>
-                    <Spacer y={4} />
                     <Input
                       label="Title"
-                      labelPlacement="outside"
                       placeholder="Enter banner title"
                       value={newBanner.title}
                       onChange={(e) =>
                         setNewBanner({ ...newBanner, title: e.target.value })
                       }
-                      classNames={{
-                        label: "text-sm sm:text-base",
-                        input: "text-sm sm:text-base",
-                      }}
                       required
                     />
-                    <Spacer y={4} />
                     <Textarea
                       label="Description"
                       rows={3}
-                      labelPlacement="outside"
                       placeholder="Enter banner description"
                       value={newBanner.description}
                       onChange={(e) =>
@@ -210,33 +217,21 @@ const Banners = ({ bannersList }: { bannersList: Banner[] }) => {
                           description: e.target.value,
                         })
                       }
-                      classNames={{
-                        label: "text-sm sm:text-base",
-                        input: "text-sm sm:text-base",
-                      }}
                       required
                     />
                   </div>
                 </form>
               </ModalBody>
-              <ModalFooter className="px-4 sm:px-6 flex flex-col sm:flex-row gap-2 sm:gap-3">
-                <Button
-                  color="danger"
-                  variant="light"
-                  onPress={onClose}
-                  className="w-full sm:w-auto order-2 sm:order-1"
-                >
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
                   Cancel
                 </Button>
                 <Button
                   color="primary"
-                  onPress={handleAddBanner}
-                  className="w-full sm:w-auto order-1 sm:order-2"
-                  isDisabled={
-                    !selectedFile || !newBanner.title || !newBanner.description
-                  }
+                  onClick={handleAddBanner}
+                  isDisabled={isUploading}
                 >
-                  Add Banner
+                  {isUploading ? "Uploading..." : "Add Banner"}
                 </Button>
               </ModalFooter>
             </>
