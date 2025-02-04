@@ -116,12 +116,12 @@ const Brands = ({ brands }: { brands: Brand[] }) => {
               >
                 <span className="material-symbols-rounded">edit</span>
               </button>
-              <button
+              {/* <button
                 onClick={() => setBrandToDelete(brand)}
                 className="hover:underline text-red-400"
               >
                 <span className="material-symbols-rounded">delete</span>
-              </button>
+              </button> */}
             </div>
             <div className="absolute inset-x-0 bottom-0 p-2 bg-black bg-opacity-50 rounded-b-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <p className="text-white text-xs text-center truncate">
