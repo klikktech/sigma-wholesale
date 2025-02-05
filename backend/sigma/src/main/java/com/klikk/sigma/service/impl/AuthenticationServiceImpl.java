@@ -68,7 +68,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         if(registrationType.equals(RegistrationType.FROM_ADMIN)){
             RoleType role=request.getRole().equalsIgnoreCase("admin")?RoleType.ADMIN:request.getRole().equalsIgnoreCase("customer")?RoleType.CUSTOMER:RoleType.PENDING;
-
+            user.setRole(role);
         }
         else {
             user.setRole(RoleType.PENDING);
