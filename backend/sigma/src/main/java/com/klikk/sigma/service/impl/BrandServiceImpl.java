@@ -1,14 +1,19 @@
 package com.klikk.sigma.service.impl;
 
+import com.klikk.sigma.dto.request.BrandRequest;
 import com.klikk.sigma.dto.response.BrandResponse;
 import com.klikk.sigma.entity.Brand;
+import com.klikk.sigma.entity.Product;
 import com.klikk.sigma.exception.NotFoundException;
 import com.klikk.sigma.mapper.BrandMapper;
 import com.klikk.sigma.repository.BrandRepository;
+import com.klikk.sigma.repository.ProductRepository;
 import com.klikk.sigma.service.AwsService;
 import com.klikk.sigma.service.BrandService;
+import com.klikk.sigma.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -26,6 +31,12 @@ public class BrandServiceImpl implements BrandService {
     @Autowired
     private AwsService awsService;
 
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private ProductService productService;
+
     @Override
     public List<Brand> getAllBrands() {
         return brandRepository.findAll();
@@ -33,8 +44,8 @@ public class BrandServiceImpl implements BrandService {
 
 
     @Override
-    public void addBrand(String name, MultipartFile image) {
-        Brand newBrand=Brand.builder().name(name).image(awsService.uploadFileToAws(image)).build();
+    public void addBrand(BrandRequest brandRequest) {
+        Brand newBrand=Brand.builder().name(brandRequest.getName()).image(brandRequest.getImage()).build();
         brandRepository.save(newBrand);
     }
 
@@ -51,23 +62,30 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public void deleteBrand(String name) {
+
+
         Optional<Brand> brandToDelete= brandRepository.findByName(name);
         if(brandToDelete.isEmpty()){
             throw new NotFoundException("Delete a brand that exists");
         }
+        List<Product> brandProducts=productRepository.findByBrand(brandToDelete.get());
+        brandProducts.stream().map(product -> {
+            productService.deleteProduct(product.getDetails());
+            return null;
+        });
         awsService.deleteFileFromS3ByUrl(brandToDelete.get().getImage());
         brandRepository.delete(brandToDelete.get());
     }
 
     @Override
-    public void updateBrand(String name, MultipartFile image) {
-        Optional<Brand> brandToUpdate=brandRepository.findByName(name);
+    public void updateBrand(@RequestBody BrandRequest brandRequest) {
+        Optional<Brand> brandToUpdate=brandRepository.findByName(brandRequest.getName());
         if(brandToUpdate.isEmpty()){
             throw new NotFoundException("Brand not found");
         }
-        awsService.deleteFileFromS3ByUrl(brandToUpdate.get().getImage());
-        brandToUpdate.get().setName(name);
-        brandToUpdate.get().setImage(awsService.uploadFileToAws(image));
+
+        brandToUpdate.get().setName(brandRequest.getName());
+        brandToUpdate.get().setImage(brandRequest.getImage());
         brandRepository.save(brandToUpdate.get());
     }
 }

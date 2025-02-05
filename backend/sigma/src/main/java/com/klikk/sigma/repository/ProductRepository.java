@@ -29,4 +29,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     Page<Product> findByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
     Page<Product> findByBrand(Brand brand, Pageable pageable);
+
+    List<Product> findByBrand(Brand brand);
 }

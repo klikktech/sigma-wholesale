@@ -1,6 +1,8 @@
 package com.klikk.sigma.controller.admin;
 
+import com.klikk.sigma.dto.request.BrandRequest;
 import com.klikk.sigma.dto.response.SuccessResponse;
+import com.klikk.sigma.entity.Brand;
 import com.klikk.sigma.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +21,8 @@ public class BrandAdminController {
 
     @PostMapping()
     @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
-    public ResponseEntity<String> addBrand(@RequestPart("name") String name, @RequestPart(value = "image",required = false) MultipartFile image) {
-        brandService.addBrand(name,image);
+    public ResponseEntity<String> addBrand(@RequestBody BrandRequest brandRequest) {
+        brandService.addBrand(brandRequest);
         return ResponseEntity.ok("Brand added successfully!");
     }
 
@@ -33,8 +35,8 @@ public class BrandAdminController {
 
     @PutMapping()
     @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
-    public SuccessResponse updateBrand(@RequestPart("name") String name, @RequestPart(value = "image",required = false) MultipartFile image){
-        brandService.updateBrand(name,image);
+    public SuccessResponse updateBrand(@RequestBody BrandRequest brandRequest){
+        brandService.updateBrand(brandRequest);
         return new SuccessResponse(LocalDateTime.now(),"Brand updated successfully!");
     }
 
