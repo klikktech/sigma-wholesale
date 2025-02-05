@@ -47,12 +47,12 @@ const Banners = ({ bannersList }: { bannersList: Banner[] }) => {
     try {
       const imageUrl = await uploadFileToS3(selectedFile, "banners");
 
-      const bannerData = {
-        image: imageUrl,
-        title: newBanner.title,
-        description: newBanner.description,
-        type: selectedFile.type.includes("video") ? "VIDEO" : "IMAGE",
-      };
+      // const bannerData = {
+      //   image: imageUrl,
+      //   title: newBanner.title,
+      //   description: newBanner.description,
+      //   type: selectedFile.type.includes("video") ? "VIDEO" : "IMAGE",
+      // };
 
       const formData = new FormData();
       formData.append("image", imageUrl);
