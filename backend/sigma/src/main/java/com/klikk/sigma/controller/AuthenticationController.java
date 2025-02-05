@@ -7,6 +7,7 @@ import com.klikk.sigma.dto.request.ResetPasswordRequest;
 import com.klikk.sigma.dto.response.AuthenticationResponse;
 import com.klikk.sigma.service.AuthenticationService;
 import com.klikk.sigma.service.UserService;
+import com.klikk.sigma.type.RegistrationType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(authenticationService.register(request));
+        return ResponseEntity.ok(authenticationService.register(request, RegistrationType.FROM_CUSTOMER));
     }
 
     @PostMapping("/authenticate")

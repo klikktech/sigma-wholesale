@@ -38,4 +38,6 @@ public class RegisterRequest {
     private String shippingState;
 
     private String shippingZip;
+
+    private String role;
 }

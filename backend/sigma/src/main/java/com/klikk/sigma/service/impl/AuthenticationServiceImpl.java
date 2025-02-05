@@ -17,6 +17,7 @@ import com.klikk.sigma.repository.UserRepository;
 import com.klikk.sigma.service.AuthenticationService;
 import com.klikk.sigma.service.EmailService;
 import com.klikk.sigma.service.JwtService;
+import com.klikk.sigma.type.RegistrationType;
 import com.klikk.sigma.type.RoleType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -58,14 +59,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
     @Override
-    public AuthenticationResponse register(RegisterRequest request) {
+    public AuthenticationResponse register(RegisterRequest request, RegistrationType registrationType) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new IllegalArgumentException("User already exists");
         }
         User user = authenticationMapper.registerRequestToUser(request);
         user.setCreatedAt(LocalDateTime.now());
-        user.setRole(RoleType.PENDING);
 
+        if(registrationType.equals(RegistrationType.FROM_ADMIN)){
+            RoleType role=request.getRole().equalsIgnoreCase("admin")?RoleType.ADMIN:request.getRole().equalsIgnoreCase("customer")?RoleType.CUSTOMER:RoleType.PENDING;
+
+        }
+        else {
+            user.setRole(RoleType.PENDING);
+        }
         Optional<Address> storeAddress= addressService.getAddress(request.getStoreAddress());
         if(storeAddress.isPresent()){
             if(user.getStoreAddress()==null){

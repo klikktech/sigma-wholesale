@@ -9,6 +9,7 @@ import com.klikk.sigma.dto.response.UsersResponse;
 import com.klikk.sigma.exception.NotFoundException;
 import com.klikk.sigma.service.AuthenticationService;
 import com.klikk.sigma.service.UserService;
+import com.klikk.sigma.type.RegistrationType;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -73,7 +74,7 @@ public class UserAdminController {
     @PostMapping("/register")
     @PreAuthorize("hasAnyAuthority('admin:write','admin:put')")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(authenticationService.register(request));
+        return ResponseEntity.ok(authenticationService.register(request, RegistrationType.FROM_ADMIN));
     }
 
     @DeleteMapping("/{email}")
