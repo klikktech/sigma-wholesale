@@ -2,10 +2,10 @@ server:
   port: 6755
 aws:
   s3:
-    bucketName: "sigmaimages"
+    bucketName: "sigmawholeimages"
     productImagesPath: "productimages"
-    accessKeyId: "AKIATX3PIG55LAGWCXV7"
-    secretKey: "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"
+    accessKeyId: "AKIAYM7POCIYE6VYIF2X"
+    secretKey: "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"
 
 spring:
   servlet:
