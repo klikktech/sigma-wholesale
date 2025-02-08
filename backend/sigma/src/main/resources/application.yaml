@@ -2,10 +2,10 @@ server:
   port: 6754
 aws:
   s3:
-    bucketName: "sigmaimages"
+    bucketName: "sigmawholeimages"
     productImagesPath: "productimages"
-    accessKeyId: "AKIATX3PIG55LAGWCXV7"
-    secretKey: "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"
+    accessKeyId: "AKIAYM7POCIYE6VYIF2X"
+    secretKey: "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"
 spring:
   mail:
     host: smtp.gmail.com
@@ -45,12 +45,12 @@ spring:
       fail_on_empty_beans: false
   datasource:
     username: admin
-    password: rjpdevelopersteam
+    password: rjpdeveloperteam
 #    username: root
 #    password: password
 #    url: jdbc:mysql://localhost:3306/sigmawholesale
 #    url: jdbc:mysql://localhost:3306/sigmawholesale
-    url: jdbc:mysql://database-1.cjkggkiyswkw.us-east-2.rds.amazonaws.com:3306/sigmawholesale
+    url: jdbc:mysql://database-2.cvkeg884elyz.us-east-2.rds.amazonaws.com:3306/sigmawholesale
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
