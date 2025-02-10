@@ -50,7 +50,8 @@ spring:
 #    password: password
 #    url: jdbc:mysql://localhost:3306/sigmawholesale
 #    url: jdbc:mysql://localhost:3306/sigmawholesale
-    url: jdbc:mysql://database-2.cvkeg884elyz.us-east-2.rds.amazonaws.com:3306/sigmawholesale
+    url: jdbc:mysql://database-1.czqkiu2iqgip.us-east-2.rds.amazonaws.com:3306/sigmawholesale
+
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
