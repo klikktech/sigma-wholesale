@@ -23,7 +23,12 @@ import {
   CONFIRM_FORGOT_PASSWORD_URL,
 } from "@/utils/urls";
 import api, { authInstance } from "./instance";
-import { AxiosErrorResponse, AxiosResponse, RegisterDetails, UserDetails } from "@/utils/types";
+import {
+  AxiosErrorResponse,
+  AxiosResponse,
+  RegisterDetails,
+  UserDetails,
+} from "@/utils/types";
 
 export const axios = {
   auth: {
@@ -31,10 +36,13 @@ export const axios = {
       email: string;
       password: string;
     }): Promise<AxiosResponse> => {
-      console.log("post sign in")
+      console.log("post sign in");
       try {
-        const { data, status } = await authInstance.post(LOGIN_URL, credentials);
-        console.log(data, status, "inside index login")
+        const { data, status } = await authInstance.post(
+          LOGIN_URL,
+          credentials
+        );
+        console.log(data, status, "inside index login");
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;
@@ -52,9 +60,14 @@ export const axios = {
         return error as AxiosErrorResponse;
       }
     },
-    signUpWithEmail: async (userDetails: RegisterDetails): Promise<AxiosResponse> => {
+    signUpWithEmail: async (
+      userDetails: RegisterDetails
+    ): Promise<AxiosResponse> => {
       try {
-        const { data, status } = await authInstance.post(SIGNUP_URL, userDetails);
+        const { data, status } = await authInstance.post(
+          SIGNUP_URL,
+          userDetails
+        );
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;
@@ -70,8 +83,11 @@ export const axios = {
     },
     forgotPassword: async (email: string): Promise<AxiosResponse> => {
       try {
-        const payload = { email: email }
-        const { data, status } = await authInstance.post(FORGOT_PASSWORD_URL, payload);
+        const payload = { email: email };
+        const { data, status } = await authInstance.post(
+          FORGOT_PASSWORD_URL,
+          payload
+        );
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;
@@ -79,17 +95,19 @@ export const axios = {
     },
     confirmForgotPassword: async (payload: any): Promise<AxiosResponse> => {
       try {
-        const { data, status } = await authInstance.post(CONFIRM_FORGOT_PASSWORD_URL, payload);
+        const { data, status } = await authInstance.post(
+          CONFIRM_FORGOT_PASSWORD_URL,
+          payload
+        );
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;
       }
-
     },
   },
   users: {
     getAddresses: async (type: string): Promise<AxiosResponse> => {
-      console.log("get addresses", type)
+      console.log("get addresses", type);
       try {
         const { data, status } = await api.get(ADDRESS_URL(type));
         return { data, status };
@@ -98,7 +116,7 @@ export const axios = {
       }
     },
     deleteAddress: async (address: string): Promise<AxiosResponse> => {
-      console.log("delete address", address)
+      console.log("delete address", address);
       try {
         const { data, status } = await api.delete(DELETE_ADDRESS_URL(address));
         return { data, status };
@@ -107,7 +125,7 @@ export const axios = {
       }
     },
     getUserDetails: async (): Promise<AxiosResponse> => {
-      console.log("get user details")
+      console.log("get user details");
       try {
         const { data, status } = await api.get(USERS_DETAILS_URL);
         return { data, status };
@@ -115,19 +133,21 @@ export const axios = {
         return error as AxiosErrorResponse;
       }
     },
-    updateUserDetails: async (userDetails: UserDetails): Promise<AxiosResponse> => {
-      console.log("update user details", userDetails)
+    updateUserDetails: async (
+      userDetails: UserDetails
+    ): Promise<AxiosResponse> => {
+      console.log("update user details", userDetails);
       try {
         const { data, status } = await api.put(USER_UPDATE_URL, userDetails);
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;
       }
-    } 
+    },
   },
   products: {
     getNewArrivals: async (): Promise<AxiosResponse> => {
-      console.log("get new arraivalss")
+      console.log("get new arraivalss");
       try {
         const { data, status } = await api.get(`${NEW_ARRIVALS_URL}`);
         return { data, status };
@@ -135,11 +155,14 @@ export const axios = {
         return error as AxiosErrorResponse;
       }
     },
-    getAllProducts: async (page: number, size: number): Promise<AxiosResponse> => {
-      console.log("get all prods products", page, size)
+    getAllProducts: async (
+      page: number,
+      size: number
+    ): Promise<AxiosResponse> => {
+      console.log("get all prods products", page, size);
       try {
-        const { data, status } = await api.get(PRODUCTS_URL,{
-          params: { page, size }
+        const { data, status } = await api.get(PRODUCTS_URL, {
+          params: { page, size },
         });
         return { data, status };
       } catch (error) {
@@ -147,7 +170,8 @@ export const axios = {
       }
     },
     getProductDetails: async (details: string): Promise<AxiosResponse> => {
-      console.log("get prod details", details)
+      console.log("get prod details", details);
+
       try {
         const { data, status } = await api.get(`${PRODUCTS_URL}/${details}`);
         return { data, status };
@@ -155,20 +179,27 @@ export const axios = {
         return error as AxiosErrorResponse;
       }
     },
-    getCategoryProducts: async (category: string, page: number, size: number) => {
+    getCategoryProducts: async (
+      category: string,
+      page: number,
+      size: number
+    ) => {
       try {
-        const { data, status } = await api.get(PRODUCT_BY_CATEGORY_URL(category), {
-          params: { page, size }
-        });
+        const { data, status } = await api.get(
+          PRODUCT_BY_CATEGORY_URL(category),
+          {
+            params: { page, size },
+          }
+        );
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;
       }
     },
-    getBrandProducts:async (brand: string, page: number, size: number) => {
+    getBrandProducts: async (brand: string, page: number, size: number) => {
       try {
         const { data, status } = await api.get(PRODUCT_BY_BRAND_URL(brand), {
-          params: { page, size }
+          params: { page, size },
         });
         return { data, status };
       } catch (error) {
@@ -184,7 +215,7 @@ export const axios = {
       }
     },
     getCartList: async (): Promise<AxiosResponse> => {
-      console.log("get cart list")
+      console.log("get cart list");
       try {
         const { data, status } = await api.get(CART_URL);
         return { data, status };
@@ -193,9 +224,11 @@ export const axios = {
       }
     },
     deleteCartItem: async (variation: any): Promise<AxiosResponse> => {
-      console.log("delete address", variation)
+      console.log("delete address", variation);
       try {
-        const { data, status } = await api.delete(DELETE_CART_ITEM_URL(variation));
+        const { data, status } = await api.delete(
+          DELETE_CART_ITEM_URL(variation)
+        );
         return { data, status };
       } catch (error) {
         return error as AxiosErrorResponse;
@@ -210,7 +243,7 @@ export const axios = {
       }
     },
     getOrdersList: async (): Promise<AxiosResponse> => {
-      console.log("get orders list")
+      console.log("get orders list");
       try {
         const { data, status } = await api.get(ORDERS_URL);
         return { data, status };
@@ -219,7 +252,7 @@ export const axios = {
       }
     },
     getOrderItemsList: async (orderId: string): Promise<AxiosResponse> => {
-      console.log("get orders list")
+      console.log("get orders list");
       try {
         const { data, status } = await api.get(ORDER_PRODUCTS_URL(orderId));
         return { data, status };
@@ -227,11 +260,15 @@ export const axios = {
         return error as AxiosErrorResponse;
       }
     },
-    getSearchProductsList: async (keyword: string, page: number, size: number): Promise<AxiosResponse> => {
-      console.log("get search list")
+    getSearchProductsList: async (
+      keyword: string,
+      page: number,
+      size: number
+    ): Promise<AxiosResponse> => {
+      console.log("get search list");
       try {
         const { data, status } = await api.get(SEARCH_PRODUCTS_URL(keyword), {
-          params: { page, size }
+          params: { page, size },
         });
         return { data, status };
       } catch (error) {
@@ -247,7 +284,7 @@ export const axios = {
       }
     },
   },
-  banners:{
+  banners: {
     getBannersList: async (): Promise<AxiosResponse> => {
       try {
         const { data, status } = await api.get(GET_BANNERS_URL);
@@ -255,6 +292,6 @@ export const axios = {
       } catch (error) {
         return error as AxiosErrorResponse;
       }
-    }
-  }
+    },
+  },
 };
