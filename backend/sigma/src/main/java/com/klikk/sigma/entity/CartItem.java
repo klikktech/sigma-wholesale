@@ -37,11 +37,11 @@ public class CartItem {
     @JoinColumn(name = "cart_id",referencedColumnName = "id")
     private Cart cart;
 
-    @OneToOne
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "variation_id",referencedColumnName = "id")
     private Variation variation;
 
-    @OneToOne
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id",referencedColumnName = "id")
     private Product product;
 
