@@ -130,7 +130,7 @@ const EditUserForm = ({user}:any) => {
           <Textarea
             id="address"
             name="address"
-            defaultValue={user.storeAddress[0]?.address}
+            defaultValue={user.storeAddress[user.storeAddress.length-1]?.address}
           ></Textarea>
         </div>
         <div className="w-full flex gap-2">
@@ -142,7 +142,7 @@ const EditUserForm = ({user}:any) => {
               type="text"
               id="state"
               name="state"
-              defaultValue={user.storeAddress[0]?.state}
+              defaultValue={user.storeAddress[user.storeAddress.length-1]?.state}
             />
           </div>
           <div className="w-full">
@@ -153,7 +153,7 @@ const EditUserForm = ({user}:any) => {
               type="text"
               id="city"
               name="city"
-              defaultValue={user.storeAddress[0]?.city}
+              defaultValue={user.storeAddress[user.storeAddress.length-1]?.city}
             />
           </div>
           <div className="w-full">
@@ -164,7 +164,7 @@ const EditUserForm = ({user}:any) => {
               type="text"
               id="zipcode"
               name="zipcode"
-              defaultValue={user.storeAddress[0]?.zipcode}
+              defaultValue={user.storeAddress[user.storeAddress.length-1]?.zipcode}
             />
           </div>
         </div>
